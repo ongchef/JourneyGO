@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import { createServer } from "http";
 import { Server } from "socket.io";
+
+import db from './models/db_connection.js';
 import {app} from './app.js';
 
 dotenv.config();
@@ -30,8 +32,14 @@ io.on("connection", (socket) => {
 /*=====================  SERVER START  =====================*/ 
 const port = process.env.PORT || 3001;
 
-server.listen(port, () => {
-    console.log(`Server running on port http://localhost:${port}`);
+server.listen(port, async () => {
+  try{
+    await db.connect();
+    console.log(`Server running on port http://localhost:${port}.`);
+    console.log(`PostgreSQL connection established successfully.`);
+  }catch(error){
+    console.log(error);
+  }
 })
 
 
