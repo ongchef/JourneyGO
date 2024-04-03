@@ -5,11 +5,17 @@
   "repository": "git@github.com:ongchef/JourneyGO.git",
   "author": "billy784512 <billy784512369@gmail.com>",
   "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "http": "^0.0.1-security",
+    "nodemon": "^3.1.0",
     "socket.io": "^4.7.5"
   }
 }
