@@ -20,10 +20,13 @@ io.on("connection", (socket) => {
   // New user has connected
   console.log(`A user connected`);
 
-  // If server get socket message called demo 
-  socket.on("demo", (data) => {
-    // Here to handle your function
-    console.log("socket listen message successfully");
+  socket.on("enter_room", (data) => {
+    socket.join(data.groupId);
+    console.log(`${data.username} enters ${data.groupId} successfully.`);
+  })
+
+  socket.on("client_spot_change", (data) => {
+    io.to(data.groupId).emit("server_spot_change", data.payload);
   })
 });
 
