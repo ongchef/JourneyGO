@@ -25,7 +25,16 @@ export const updateTripGroupDetail = async (req, res) => {
   const { groupId } = req.params;
   const { groupName, start_date, end_date } = req.body;
   try {
-    const data = await updateTripGroupDetail(
+    //update 之前先 get get 看
+    const data = await getTripGroupDetailbyGroupID(groupId);
+
+    // no tripGroup found
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Cannot found data by given groupId." });
+    }
+    data = await updateTripGroupDetail(
       groupId,
       groupName,
       start_date,
@@ -41,7 +50,16 @@ export const updateTripGroupDetail = async (req, res) => {
 export const deleteTripGroupMember = async (req, res) => {
   const { groupId, userId } = req.params;
   try {
-    const data = await deleteTripGroupMember(groupId, userId);
+    //update 之前先 get get 看
+    const data = await getTripGroupDetailbyGroupID(groupId);
+
+    // no tripGroup found
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Cannot found data by given groupId." });
+    }
+    data = await deleteTripGroupMember(groupId, userId);
 
     return res.status(200).json(data);
   } catch (error) {
