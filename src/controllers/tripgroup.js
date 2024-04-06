@@ -32,7 +32,9 @@ export const updateTripGroupDetail = async (req, res) => {
     if (data.length === 0) {
       return res
         .status(404)
-        .json({ message: "Cannot found data by given groupId." });
+        .json({
+          message: "Update Failed. Cannot found data by given groupId.",
+        });
     }
     data = await updateTripGroupDetail(
       groupId,
@@ -57,7 +59,9 @@ export const deleteTripGroupMember = async (req, res) => {
     if (data.length === 0) {
       return res
         .status(404)
-        .json({ message: "Cannot found data by given groupId." });
+        .json({
+          message: "Delete Failed. Cannot found data by given groupId.",
+        });
     }
     data = await deleteTripGroupMember(groupId, userId);
 
