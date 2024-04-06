@@ -23,12 +23,11 @@ export const getTripGroupDetail = async (req, res) => {
 };
 export const updateTripGroupDetail = async (req, res) => {
   const { groupId } = req.params;
-  const { groupName, description, start_date, end_date } = req.body;
+  const { groupName, start_date, end_date } = req.body;
   try {
     const data = await updateTripGroupDetail(
       groupId,
       groupName,
-      description,
       start_date,
       end_date
     );
