@@ -16,3 +16,27 @@ export const getGroupByUserId = (userId) => {
         });
     });
 }
+
+export const createGroup = (userId, groupName, startDate, endDate) => {
+    return new Promise((resolve, reject) => {
+        db.query(`INSERT INTO trip_groups (group_name, start_date, end_date, status)
+                  VALUES (?, ?, ?, 'active')`, [groupName, startDate, endDate], (error, results) => {
+            if (error) {
+                reject(error);
+            } else {
+                //user and group relation
+                const groupId = results.insertId;
+                db.query(`INSERT INTO group_member (u_id, g_id) VALUES (?, ?)`, [userId, groupId], (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(groupId);
+                    }
+                });
+            }
+        });
+    });
+}
+
+//GET get group: how to know who is the group owner
+//POST create group: when to add group country
