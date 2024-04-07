@@ -8,5 +8,5 @@ import {
 const router = express.Router();
 
 router.get("/trip-groups/:groupId/details", getTripGroupDetail);
-router.put("/trip-groups/:groupId/details", updateTripGroupDetail);
+router.put("/trip-groups/details", updateTripGroupDetail);
 router.delete("/trip-groups/:groupId/member/:userId", deleteTripGroupMember);
