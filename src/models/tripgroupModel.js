@@ -2,11 +2,23 @@ import db from "./connection_db.js";
 export const getTripGroupDetailbyGroupID = (groupId) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `SELECT tg.group_name, tg.start_date, tg.end_date, ua.user_id, ua.user_name
-        FROM trip_group tg
-        JOIN group_member gm ON tg.group_id = gm.group_id
-        JOIN user_account ua ON gm.user_id = ua.user_id
-        WHERE tg.group_id = ?;`,
+      ` SELECT
+            tg.group_id,
+            tg.group_name,
+            tg.start_date,
+            tg.end_date,
+            STRING_AGG(ua.user_id || ':' || ua.user_name, ', ') AS users
+        FROM
+            trip_group tg
+        INNER JOIN
+            group_member gm ON tg.group_id = gm.group_id
+        INNER JOIN
+            user_account ua ON gm.user_id = ua.user_id
+        WHERE
+            tg.group_id = ?
+        GROUP BY
+            tg.group_id
+  `,
       [groupId],
       (error, results) => {
         if (error) {
@@ -33,6 +45,26 @@ export const updateTripGroupDetail = (
     WHERE group_id = ?;
     `,
       [groupName, start_date, end_date, groupId],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  });
+};
+
+export const getTripGroupMember = (groupId, userId) => {
+  return new Promise((resolve, reject) => {
+    db.query(
+      `
+        SELECT *
+        FROM group_member
+        WHERE group_id = ? AND user_id = ?;
+      `,
+      [groupId, userId],
       (error, results) => {
         if (error) {
           reject(error);
