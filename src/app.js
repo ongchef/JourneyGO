@@ -6,6 +6,8 @@ import tripgroupRouter from "./routes/tripgroup.js";
 
 import spotRouter from "./routes/spot.js";
 
+import usersRouter from "./routes/users.js";
+
 dotenv.config();
 
 export const app = express();
@@ -24,3 +26,4 @@ app.get("/", (req, res) => {
 
 app.use("api/spot/", spotRouter);
 app.use("api/tripgroup/", tripgroupRouter);
+app.use("api/users/", usersRouter);
