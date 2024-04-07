@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';  //for MUI
 import { ClerkProvider } from '@clerk/nextjs';  //for clerk
+import { DataProvider } from "./components/dataContext";  //for context
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +20,12 @@ export default function RootLayout({ children }) {
         </head>
         <body className={inter.className}>
           <AppRouterCacheProvider>
-            {children}
+            <DataProvider>
+              {/* add nav bar */}
+              {children}
+            </DataProvider>
           </AppRouterCacheProvider>  
-          </body>
+        </body>
       </html>
     </ClerkProvider>
   );
