@@ -1,34 +1,27 @@
 import db from "./db_connection.js";
+
 export const getTripGroupDetailbyGroupID = (groupId) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      ` SELECT
-            tg.group_id,
-            tg.group_name,
-            tg.start_date,
-            tg.end_date,
-            STRING_AGG(ua.user_id || ':' || ua.user_name, ', ') AS users
-        FROM
-            trip_groups tg
-        INNER JOIN
-            group_member gm ON tg.group_id = gm.g_id
-        INNER JOIN
-            user_account ua ON gm.u_id = ua.user_id
-        WHERE
-            tg.group_id = ${groupId.toString()}
-        GROUP BY
-            tg.group_id
-  `,
-      (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      }
-    );
-  });
+  return db.query(
+    `SELECT
+        tg.group_id,
+        tg.group_name,
+        tg.start_date,
+        tg.end_date,
+        STRING_AGG(ua.user_id || ':' || ua.user_name, ', ') AS users
+    FROM
+        trip_groups tg
+    INNER JOIN
+        group_member gm ON tg.group_id = gm.g_id
+    INNER JOIN
+        user_account ua ON gm.u_id = ua.user_id
+    WHERE
+        tg.group_id = $1
+    GROUP BY
+        tg.group_id`,
+    [groupId]
+  );
 };
+
 export const updateTripGroupDetailbyGroupId = (
   groupId,
   groupName,
