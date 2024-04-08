@@ -1,4 +1,4 @@
-import db from "./connection_db.js";
+import db from "./db_connection.js";
 export const getTripGroupDetailbyGroupID = (groupId) => {
   return new Promise((resolve, reject) => {
     db.query(
@@ -30,7 +30,7 @@ export const getTripGroupDetailbyGroupID = (groupId) => {
     );
   });
 };
-export const updateTripGroupDetail = (
+export const updateTripGroupDetailByGroupId = (
   groupId,
   groupName,
   start_date,
@@ -76,7 +76,7 @@ export const getTripGroupMember = (groupId, userId) => {
   });
 };
 
-export const deleteTripGroupMember = (groupId, userId) => {
+export const deleteTripGroupMemberbyIds = (groupId, userId) => {
   return new Promise((resolve, reject) => {
     db.query(
       `DELETE FROM group_member

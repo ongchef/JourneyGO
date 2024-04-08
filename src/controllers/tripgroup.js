@@ -1,8 +1,8 @@
 import {
   getTripGroupDetailbyGroupID,
-  updateTripGroupDetail,
+  updateTripGroupDetailByGroupId,
   getTripGroupMember,
-  deleteTripGroupMember,
+  deleteTripGroupMemberbyIds,
 } from "../models/tripgroupModel.js";
 
 export const getTripGroupDetail = async (req, res) => {
@@ -33,7 +33,7 @@ export const updateTripGroupDetail = async (req, res) => {
         message: "Update Failed. Cannot found data by given groupId.",
       });
     }
-    data = await updateTripGroupDetail(
+    data = await updateTripGroupDetailByGroupId(
       groupId,
       groupName,
       start_date,
@@ -55,7 +55,7 @@ export const deleteTripGroupMember = async (req, res) => {
         message: "Delete Failed. Cannot found data by given groupId.",
       });
     }
-    data = await deleteTripGroupMember(groupId, userId);
+    data = await deleteTripGroupMemberbyIds(groupId, userId);
 
     return res.status(200).json(data);
   } catch (error) {
