@@ -20,7 +20,7 @@ export const getSpotByGroupDay = (groupId, day) => {
   });
 };
 
-export const createSpot = (groupId, description, location, date, sequence) => {
+export const createSpotByGroupId = (groupId, description, location, day, sequence) => {
   return new Promise((resolve, reject) => {
     db.query("", (error, results) => {
       if (error) {
@@ -32,7 +32,7 @@ export const createSpot = (groupId, description, location, date, sequence) => {
   });
 };
 
-export const updateSpot = (groupId, description, location, date, sequence) => {
+export const updateSpotByGroupSpot = (groupId, spotId, description, location, day, sequence) => {
   return new Promise((resolve, reject) => {
     db.query("", (error, results) => {
       if (error) {

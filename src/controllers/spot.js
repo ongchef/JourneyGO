@@ -1,7 +1,7 @@
 import {
     getSpotByGroupDay,
-    createSpot,
-    updateSpot,
+    createSpotByGroupId,
+    updateSpotByGroupSpot,
     deleteSpotBySpotId
 } from "../models/spotModel.js";
 
@@ -30,7 +30,7 @@ export const createSpot = async (req, res) => {
             return res.status(400).json({ message: "Spot already add."});
         }
 
-        const newSpot = await createSpot(groupId, description, location, day, sequence);
+        const newSpot = await createSpotByGroupId(groupId, description, location, day, sequence);
 
         return res.status(201).json(newSpot);
     }catch (error) {
@@ -39,7 +39,7 @@ export const createSpot = async (req, res) => {
 }
 
 export const updateSpot = async (req, res) => {
-    const {groupId, description, location, date, sequence} = req.body;
+    const {groupId, spotId, description, location, date, sequence} = req.body;
     try {
         // no spot found
         const data = await getSpotByGroupDay(groupId, day);
@@ -47,7 +47,7 @@ export const updateSpot = async (req, res) => {
             return res.status(400).json({ message: "Cannot found data by given groupId/day."});
         }
 
-        const newSpot = await updateSpot(groupId, description, location, date, sequence);
+        const newSpot = await updateSpotByGroupSpot(groupId, spotId, description, location, date, sequence);
 
         return res.status(200).json(newSpot);
     }catch (error) {
