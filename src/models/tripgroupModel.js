@@ -15,11 +15,10 @@ export const getTripGroupDetailbyGroupID = (groupId) => {
         INNER JOIN
             user_account ua ON gm.u_id = ua.user_id
         WHERE
-            tg.group_id = ?
+            tg.group_id = ${groupId.toString()}
         GROUP BY
             tg.group_id
   `,
-      [groupId],
       (error, results) => {
         if (error) {
           reject(error);

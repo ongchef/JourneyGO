@@ -7,8 +7,8 @@ import {
 
 const router = express.Router();
 
-router.get("/trip-groups/:groupId/details", getTripGroupDetail);
-router.put("/trip-groups/details", updateTripGroupDetail);
-router.delete("/trip-groups/:groupId/member/:userId", deleteTripGroupMember);
+router.get("/:groupId/details", getTripGroupDetail);
+router.put("/details", updateTripGroupDetail);
+router.delete("/:groupId/member/:userId", deleteTripGroupMember);
 
-export default router
+export default router;

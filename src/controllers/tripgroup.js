@@ -6,17 +6,18 @@ import {
 } from "../models/tripgroupModel.js";
 
 export const getTripGroupDetail = async (req, res) => {
+  console.log(123);
   const { groupId } = req.params;
   try {
     const data = await getTripGroupDetailbyGroupID(groupId);
-
+    console.log(data);
     // no tripGroup found
     if (data.length === 0) {
       return res
         .status(404)
         .json({ message: "Cannot found data by given groupId." });
     }
-
+    console.log(data);
     return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ message: error.message });
