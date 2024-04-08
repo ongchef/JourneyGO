@@ -9,11 +9,11 @@ export const getTripGroupDetailbyGroupID = (groupId) => {
             tg.end_date,
             STRING_AGG(ua.user_id || ':' || ua.user_name, ', ') AS users
         FROM
-            trip_group tg
+            trip_groups tg
         INNER JOIN
-            group_member gm ON tg.group_id = gm.group_id
+            group_member gm ON tg.group_id = gm.g_id
         INNER JOIN
-            user_account ua ON gm.user_id = ua.user_id
+            user_account ua ON gm.u_id = ua.user_id
         WHERE
             tg.group_id = ?
         GROUP BY
@@ -38,7 +38,7 @@ export const updateTripGroupDetail = (
 ) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `UPDATE trip_group
+      `UPDATE trip_groups
     SET group_name = ?,
         start_date = ?,
         end_date = ?
