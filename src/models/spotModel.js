@@ -1,4 +1,4 @@
-import db from "./connection_db.js";
+import db from "./db_connection.js";
 
 export const getSpotByGroupDay = (groupId, day) => {
   return new Promise((resolve, reject) => {

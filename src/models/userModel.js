@@ -1,4 +1,4 @@
-import db from "./connection_db.js";
+import db from "./db_connection.js";
 
 // Register a new user
 export const addNewUser = ({ userName, email, password, phone, status }) => {
