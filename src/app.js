@@ -24,6 +24,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use("api/spot/", spotRouter);
-app.use("api/tripgroup/", tripgroupRouter);
-app.use("api/users/", usersRouter);
+app.use("/api/spot/", spotRouter);
+app.use("/api/tripgroup/", tripgroupRouter);
+app.use("/api/users/", usersRouter);
