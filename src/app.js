@@ -3,9 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 
 import tripgroupRouter from "./routes/tripgroup.js";
-
 import spotRouter from "./routes/spot.js";
-
 import usersRouter from "./routes/users.js";
 
 dotenv.config();
@@ -24,6 +22,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.use("api/spot/", spotRouter);
-app.use("api/tripgroup/", tripgroupRouter);
-app.use("api/users/", usersRouter);
+app.use("/api/spot/", spotRouter);
+app.use("/api/tripgroup/", tripgroupRouter);
+app.use("/api/users/", usersRouter);
