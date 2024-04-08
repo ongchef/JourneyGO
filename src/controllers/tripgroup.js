@@ -1,6 +1,6 @@
 import {
   getTripGroupDetailbyGroupID,
-  updateTripGroupDetailByGroupId,
+  updateTripGroupDetailbyGroupId,
   getTripGroupMember,
   deleteTripGroupMemberbyIds,
 } from "../models/tripgroupModel.js";
@@ -33,7 +33,7 @@ export const updateTripGroupDetail = async (req, res) => {
         message: "Update Failed. Cannot found data by given groupId.",
       });
     }
-    data = await updateTripGroupDetailByGroupId(
+    data = await updateTripGroupDetailbyGroupId(
       groupId,
       groupName,
       start_date,

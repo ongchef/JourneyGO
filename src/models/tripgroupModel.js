@@ -30,7 +30,7 @@ export const getTripGroupDetailbyGroupID = (groupId) => {
     );
   });
 };
-export const updateTripGroupDetailByGroupId = (
+export const updateTripGroupDetailbyGroupId = (
   groupId,
   groupName,
   start_date,
