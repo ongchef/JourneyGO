@@ -17,3 +17,5 @@ router.get("/trip-groups/:groupId/overview", getGroupOverview);
 router.get("/users/:userId/invitations", getInvitation);
 router.put("/invitations/:invitationId/status", putInvitation);
 
+export default router
+

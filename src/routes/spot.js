@@ -13,3 +13,4 @@ router.post("/trip-groups/:groupId/days/:day/spots", createSpot);
 router.put("/trip-groups/:groupId/days/:day/spots", updateSpot);
 router.delete("/trip-groups/:groupId/days/:day/spots/:spotId", deleteSpot)
 
+export default router
