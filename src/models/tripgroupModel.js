@@ -38,11 +38,11 @@ export const updateTripGroupDetail = (
 ) => {
   return new Promise((resolve, reject) => {
     db.query(
-      `UPDATE trip_groups
-    SET group_name = ?,
-        start_date = ?,
-        end_date = ?
-    WHERE group_id = ?;
+      ` UPDATE trip_groups
+        SET group_name = ?,
+            start_date = ?,
+            end_date = ?
+        WHERE group_id = ?;
     `,
       [groupName, start_date, end_date, groupId],
       (error, results) => {
