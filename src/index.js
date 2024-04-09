@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import axios from "axios";
+
 
 import db from './models/db_connection.js';
 import {app} from './app.js';
@@ -15,7 +17,10 @@ const io = new Server(server, {
   },
 });
 
+const port = process.env.PORT || 3001;
+
 /*=====================  SOCKET  =====================*/ 
+
 io.on("connection", (socket) => {
   // New user has connected
   console.log(`A user connected`);
@@ -25,16 +30,28 @@ io.on("connection", (socket) => {
     console.log(`${data.username} enters ${data.groupId} successfully.`);
   })
 
-  socket.on("client_spot_change", (data) => {
-    io.to(data.groupId).emit("server_spot_change", data.payload);
+  // Receive client spot seq change
+  socket.on("client_spot_change", async (data) => {
+    io.to(data.groupId).emit("server_spot_change", {
+      day: data.day, 
+      spot_sequence: data.spot_sequence
+    });
+    
+    // Call API update DB rows
+    var cnt = 0
+    data.spot_sequence.forEach(async (element) => {
+      const response = await axios.post(`http://localhost:${port}/api/tripgroup/${data.groupId}/days/${data.day}/spots`, {
+        spotId: element, 
+        sequence: cnt
+      });
+      cnt += 1
+    })
   })
 });
 
 
 
 /*=====================  SERVER START  =====================*/ 
-const port = process.env.PORT || 3001;
-
 server.listen(port, async () => {
   try{
     await db.connect();

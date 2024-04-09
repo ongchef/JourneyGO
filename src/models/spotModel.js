@@ -1,57 +1,43 @@
 import db from "./db_connection.js";
 
-export const getSpotByGroupDay = (groupId, day) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      `SELECT Spot.spot_id, Spot.spot_name, Spot.description, Spot.location, Spot.lon, Spot.lan, Spot.date, Spot.sequence
-        FROM Spot
-        JOIN Trip_groups ON Spot.G_ID = Trip_groups.group_id
-        WHERE Trip_groups.group_id = ? AND Spot.date = ?;
-        `,
-      [groupId, day],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      }
-    );
-  });
+export const getSpotByGroupIdDay = (groupId, day) => {
+  return db.any(
+    `SELECT Spot.spot_id, Spot.spot_name, Spot.description, Spot.location, Spot.lon, Spot.lan, Spot.date, Spot.sequence
+    FROM Spot
+    JOIN Trip_groups ON Spot.G_ID = Trip_groups.group_id
+    WHERE Trip_groups.group_id = $1 AND Spot.date = $2
+    ORDER BY "sequence" asc ;
+      `,[groupId, day]);
 };
 
-export const createSpotByGroupId = (groupId, description, location, day, sequence) => {
-  return new Promise((resolve, reject) => {
-    db.query("", (error, results) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
-  });
+export const getSpotBySpotId = (spotId) => {
+  return db.any(
+    `SELECT spot.*
+    FROM spot
+    WHERE spot_id = $1;
+      `,[spotId]);
 };
 
-export const updateSpotByGroupSpot = (groupId, spotId, description, location, day, sequence) => {
-  return new Promise((resolve, reject) => {
-    db.query("", (error, results) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
-  });
+export const createSpotByGroupId = (spotName, description, location, lon, lan, day, sequence, groupId) => {
+  return db.one(
+    `insert into spot (spot_name, description, "location", lon, lan, "date", "sequence", g_id)
+    values ($1, $2, $3, $4, $5, $6, $7, $8) 
+    RETURNING *;
+    `, [spotName, description, location, lon, lan, day, sequence, groupId]);
+};
+
+export const updateSpotBySpotId = (spotId, day, sequence) => {
+  return db.one(
+    `update spot
+    set date = $2, sequence = $3
+    where spot_id = $1
+    RETURNING *;
+    `, [spotId, day, sequence]
+  );
 };
 
 export const deleteSpotBySpotId = (spotId) => {
-  return new Promise((resolve, reject) => {
-    db.query("", (error, results) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
-  });
+  return db.result(
+    `delete from spot where spot_id = $1;
+  `, [spotId]);
 };
