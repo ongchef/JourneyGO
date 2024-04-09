@@ -1,7 +1,7 @@
 import {
     getGroupByUserId,
-    createGroup,
-    createInvitation,
+    createGroupModel,
+    createInvitationModel,
     getOverviewByGroupId,
     getInvitationByUserId,
     updateInvitation
@@ -11,7 +11,6 @@ export const getGroup = async (req, res) => {
     const { userId } = req.params;
     try {
         const data = await getGroupByUserId(userId);
-
         // no spot found
         if (data.length === 0){
             return res.status(404).json({ message: "Cannot found groups by given userId."});
@@ -26,8 +25,9 @@ export const getGroup = async (req, res) => {
 export const createGroup = async (req, res) => {
     const {userId, groupName, startDate, endDate} = req.body;
     try {
-        const newGroup = await createGroup(userId, groupName, startDate, endDate);
-
+        console.log(req.body);
+        const newGroup = await createGroupModel(userId, groupName, startDate, endDate);
+        
         return res.status(201).json(newGroup);
     }catch (error) {
         return res.status(500).json({ message: error.message});
@@ -36,14 +36,16 @@ export const createGroup = async (req, res) => {
 
 export const createInvitation = async (req, res) => {
     const {inviterId, inviteeId, groupId} = req.body;
+    console.log({inviterId, inviteeId, groupId});
     try {
-        const newGroup = await createInvitation(inviterId, inviteeId, groupId);
+        const newGroup = await createInvitationModel(inviterId, inviteeId, groupId);
 
         return res.status(201).json(newGroup);
     }catch (error) {
         return res.status(500).json({ message: error.message});
     }
 }
+//pk duplicated
 
 export const getGroupOverview = async (req, res) => {
     const { groupId } = req.params;
@@ -82,9 +84,12 @@ export const putInvitation = async (req, res) => {
     const { status } = req.body;
 
     try {
-        const updateInvitation = await updateInvitation(invitationId, status);
+        if (status !== "accepted" || status !== "pending" || status !== "rejected") {
+            return res.status(400).json({ message: "status need to be accepted, pending, or rejected."});
+        }
+        const updInvitation = await updateInvitation(invitationId, status);
 
-        return res.status(201).json(updateInvitation);
+        return res.status(201).json(updInvitation);
     }catch (error) {
         return res.status(500).json({ message: error.message});
     }
@@ -96,3 +101,4 @@ export const putInvitation = async (req, res) => {
 //POST create group: when to add group country
 //POST create invitation: do we need to add group_id in the invitation
 //POST create invitation: the status char
+//SQL: country

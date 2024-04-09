@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 
 import tripgroupRouter from "./routes/tripgroup.js";
+import tripRouter from "./routes/trip.js";
 import usersRouter from "./routes/users.js";
 
 dotenv.config();
@@ -23,3 +24,4 @@ app.get("/", (req, res) => {
 
 app.use("/api/tripgroup/", tripgroupRouter);
 app.use("/api/users/", usersRouter);
+app.use("/api/trip/", tripRouter);
