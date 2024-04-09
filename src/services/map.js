@@ -4,13 +4,13 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 // 沒有指定地點，只有關鍵字，使用前一個 spot 的位置
-export const findNearby = async(query, location) => {
+export const findNearby = async(query, lon, lat) => {
     const client = new Client({});
     const args = {
         params: {
             key: process.env.MAP_API_KEY,
             query: query,
-            location: location,
+            location: { lat:lat, lon:lon },
             radius: 1000,
             language: "zh-TW"
         }
