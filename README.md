@@ -23,25 +23,30 @@ root/
    │   ├── app/
    │   │   ├── trip/[id]/
    │   │   │     └── page.js
+   │   │   ├── components/
    │   │   ├── globals.css
    │   │   ├── layout.js
    │   │   └── page.js
-   │   ├── components/ 
-   │   ├── public/  
+   │   ├── middleware.js
    │   └── services/
+   ├── public/
    ├── next.config.mjs
    ├── package.json
-   └── tailwind.config.ts
+   └── tailwind.config.js
 ```
+
 ### Directory Descriptions
 * components：Reusable ui components.
 * public: Static assets including images.
-* service：API functions.
+* services：API functions.
+
+### File Descriptions
+* middleware.js: Handling authentication with Clerk.
 
 ## Routes
-1. HomePage: Overview of all groups
+1. HomePage: Overview of all groups.
   * route: `/`
   * source file: `/src/app/page.js`
-2. TripPage: Editing page of a trip given groupId
+2. TripPage: Editing page of a trip given groupId.
   * route: `/trip/[id]`
   * source file: `/src/app/trip/[id]/page.js`
