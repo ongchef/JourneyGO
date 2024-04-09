@@ -26,6 +26,7 @@ export const updateTripGroupDetail = async (req, res) => {
   try {
     //update 之前先 get get 看
     const data = await getTripGroupDetailbyGroupID(groupId);
+
     // no tripGroup found
     if (data.length === 0) {
       console.log("Cannot found group by given groupId.");
@@ -33,14 +34,15 @@ export const updateTripGroupDetail = async (req, res) => {
         message: "Update Failed. Cannot found data by given groupId.",
       });
     }
-    data = await updateTripGroupDetailbyGroupId(
+
+    const resdata = await updateTripGroupDetailbyGroupId(
       groupId,
       groupName,
       start_date,
       end_date
     );
 
-    return res.status(200).json(data);
+    return res.status(200).json(resdata);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
