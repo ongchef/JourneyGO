@@ -3,7 +3,8 @@ import {
     getSpotBySpotId,
     createSpotByGroupId,
     updateSpotBySpotId,
-    deleteSpotBySpotId
+    deleteSpotBySpotId,
+    getLocationBySpotId
 } from "../models/spotModel.js";
 import {
     getTripGroupMember
@@ -119,14 +120,15 @@ export const deleteSpot = async (req, res) => {
 }
 
 export const searchNearby = async (req, res) => {
-    const {query} = req.params;
-
+    const {query,spotId} = req.params;
+    
     try {
-        const spots = await findNearby(query)
+        const {lon,lat} = await getLocationBySpotId(spotId)
+        const spots = await findNearby(query,lon,lat)
 
         // no spot found
         if (spots.length === 0){
-            return res.status(404).json({ message: "Cannot found any spot."});
+            return res.status(404).json({ messageS: "Cannot found any spot."});
         }
         return res.status(200).json(spots);
     } catch (error) {

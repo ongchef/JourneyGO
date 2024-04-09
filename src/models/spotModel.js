@@ -41,3 +41,11 @@ export const deleteSpotBySpotId = (spotId) => {
     `delete from spot where spot_id = $1;
   `, [spotId]);
 };
+
+export const getLocationBySpotId = (spotId) => {
+  return db.oneOrNone(
+    `SELECT spot.lon, spot.lanS
+    FROM spot
+    WHERE spot_id = $1;
+      `,[spotId]);
+};
