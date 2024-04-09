@@ -8,6 +8,7 @@ import {
 import {
     getTripGroupMember
 }from "../models/tripgroupModel.js"
+import { findNearby, findPlace } from "../services/map.js";
 
 
 export const getSpots = async (req, res) => {
@@ -113,6 +114,38 @@ export const deleteSpot = async (req, res) => {
         }
         return res.status(200).json({message: "Delete successfully."});
     }catch (error) {
+        return res.status(500).json({ message: error.message});
+    }
+}
+
+export const searchNearby = async (req, res) => {
+    const {query} = req.params;
+
+    try {
+        const spots = await findNearby(query)
+
+        // no spot found
+        if (spots.length === 0){
+            return res.status(404).json({ message: "Cannot found any spot."});
+        }
+        return res.status(200).json(spots);
+    } catch (error) {
+        return res.status(500).json({ message: error.message});
+    }
+}
+
+export const searchPlace = async (req, res) => {
+    const {query} = req.params;
+
+    try {
+        const spots = await findPlace(query)
+
+        // no spot found
+        if (spots.length === 0){
+            return res.status(404).json({ message: "Cannot found any spot."});
+        }
+        return res.status(200).json(spots);
+    } catch (error) {
         return res.status(500).json({ message: error.message});
     }
 }
