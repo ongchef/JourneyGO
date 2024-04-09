@@ -2,8 +2,7 @@ import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 
 export default function TabPanel(props) {
-  const { children, value, index, groupId, ...other } = props;
-
+  const { children, value, index, groupId, ...other } = props;  
   return (
     <div
       role="tabpanel"
@@ -25,5 +24,5 @@ TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
-  groupId: PropTypes.number.isRequired,
+  groupId: PropTypes.string,
 };

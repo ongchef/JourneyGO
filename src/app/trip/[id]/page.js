@@ -1,14 +1,16 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { DataContext } from "@/app/components/dataContext";
+import TripPlan from './components/tripEdit/tripPlan';
+import TripSearch from './components/tripEdit/tripSearch';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import TabPanel from './components/tabPanel';
+import TabPanel from './components/tripEdit/tabPanel';
 import RoomIcon from '@mui/icons-material/Room';
 import DescriptionIcon from '@mui/icons-material/Description';
-import TripPlan from './components/tripPlan/tripPlan';
 
 function tabProps(index) {
   return {
@@ -18,6 +20,7 @@ function tabProps(index) {
 }
 
 export default function Trip({params}) {
+  const {allGroups} = useContext(DataContext);
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -47,12 +50,18 @@ export default function Trip({params}) {
           />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0} groupId={params.id}>
-        <TripPlan groupId={params.id} />
-      </TabPanel>
-      <TabPanel value={value} index={1} groupId={params.id}>
-        分帳
-      </TabPanel>
+      <Box>
+        <Typography variant='h4' sx={{mx: 2, my: 4}}>{allGroups[params.id]?.groupName}</Typography>
+        <TabPanel value={value} index={0} groupId={params.id}>
+          <div className='flex flex-row'>
+            <TripPlan groupId={params.id} />
+            <TripSearch groupId={params.id} />
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={1} groupId={params.id}>
+          分帳
+        </TabPanel>
+      </Box>
     </Box>
   );
 }

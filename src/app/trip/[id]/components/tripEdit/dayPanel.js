@@ -1,14 +1,14 @@
 'use client';
 
-import { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
+import { useState, useContext } from 'react';
+import TabPanel from './tabPanel';
+import AllSpots from './allSpots';
+import { DataContext } from '@/app/components/dataContext';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import TabPanel from '../tabPanel';
-import AllSpots from './allSpots';
+
 
 function tabProps(index) {
   return {
@@ -19,10 +19,8 @@ function tabProps(index) {
 
 export default function DayPanel(props) {
   const {groupId} = props;
-  // TODO: Replace days with actual data
-  const days = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-  const theme = useTheme();
+  const {allGroups} = useContext(DataContext);
+  const [days, setDays] = useState(Array.from({length: allGroups[groupId].days}, (_, i) => i));
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
