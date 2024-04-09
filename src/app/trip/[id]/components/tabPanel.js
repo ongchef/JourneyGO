@@ -15,7 +15,6 @@ export default function TabPanel(props) {
       {value === index && (
         <Box>
           {children}
-          <p>groupId: {groupId}</p>
         </Box>
       )}
     </div>

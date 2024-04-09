@@ -4,9 +4,11 @@ import { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import TabPanel from './components/tabPanel';
 import RoomIcon from '@mui/icons-material/Room';
 import DescriptionIcon from '@mui/icons-material/Description';
+import TripPlan from './components/tripPlan/tripPlan';
 
 function tabProps(index) {
   return {
@@ -15,7 +17,7 @@ function tabProps(index) {
   };
 }
 
-export default function Trip() {
+export default function Trip({params}) {
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -29,7 +31,7 @@ export default function Trip() {
             label={
               <div className='flex flex-row items-center gap-3'>
                 <RoomIcon className='scale-125'/>
-                <p className='text-md'>景點規劃</p>
+                <Typography variant='p'>景點規劃</Typography>
               </div>
             } 
             {...tabProps(0)}   
@@ -38,18 +40,18 @@ export default function Trip() {
             label={
               <div className='flex flex-row items-center gap-3'>
                 <DescriptionIcon className='scale-125'/>
-                <p className='text-md'>分帳</p>
+                <Typography variant='p'>分帳</Typography>
               </div>
             }
             {...tabProps(1)} 
           />
         </Tabs>
       </Box>
-      <TabPanel value={value} index={0} groupId={0}>
-        <p>景點規劃</p>
+      <TabPanel value={value} index={0} groupId={params.id}>
+        <TripPlan groupId={params.id} />
       </TabPanel>
-      <TabPanel value={value} index={1} groupId={0}>
-        <p>分帳</p>
+      <TabPanel value={value} index={1} groupId={params.id}>
+        分帳
       </TabPanel>
     </Box>
   );

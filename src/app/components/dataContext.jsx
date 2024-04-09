@@ -5,6 +5,21 @@ export const DataContext = createContext();
 
 export const DataProvider = ({children}) => {
   const [data, setData] = useState([]); 
+
+  const [allGroups, setAllGroups] = useState({
+    1: {
+      groupName: '花東3日遊之太魯閣馬拉松跑起來！',
+      startDate: '2022-10-10',
+      endDate: '2022-10-13',
+      userId: [1, 2, 3],
+    },
+    2: {
+      groupName: '浪漫 der 巴黎5日遊',
+      startDate: '2022-10-10',
+      endDate: '2022-10-13',
+      userId: [4, 5, 6],
+    },
+  });
   
   useEffect(() => {
     const fetchData = async () => {
@@ -14,7 +29,7 @@ export const DataProvider = ({children}) => {
   }, []);
 
   return (
-    <DataContext.Provider value={{data, setData}}>
+    <DataContext.Provider value={{data, setData, allGroups}}>
       {children} 
     </DataContext.Provider>
   )
