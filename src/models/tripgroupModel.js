@@ -28,60 +28,33 @@ export const updateTripGroupDetailbyGroupId = (
   start_date,
   end_date
 ) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      ` UPDATE trip_groups
-        SET group_name = ?,
-            start_date = ?,
-            end_date = ?
-        WHERE group_id = ?;
+  return db.query(
+    ` UPDATE trip_groups
+        SET group_name = $1,
+            start_date = $2,
+            end_date = $3
+        WHERE group_id = $4;
     `,
-      [groupName, start_date, end_date, groupId],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      }
-    );
-  });
+    [groupName, start_date, end_date, groupId]
+  );
 };
 
 export const getTripGroupMember = (groupId, userId) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      `
+  return db.query(
+    `
         SELECT *
         FROM group_member
-        WHERE group_id = ? AND user_id = ?;
+        WHERE g_id = $1 AND u_id = $2;
       `,
-      [groupId, userId],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      }
-    );
-  });
+    [groupId, userId]
+  );
 };
 
 export const deleteTripGroupMemberbyIds = (groupId, userId) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      `DELETE FROM group_member
-    WHERE group_id = ? AND user_id = ?;
+  return db.query(
+    `DELETE FROM group_member
+    WHERE g_id = $1 AND u_id = $2;
     `,
-      [groupId, userId],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(results);
-        }
-      }
-    );
-  });
+    [groupId, userId]
+  );
 };
