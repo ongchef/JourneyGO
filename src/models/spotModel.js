@@ -44,7 +44,7 @@ export const deleteSpotBySpotId = (spotId) => {
 
 export const getLocationBySpotId = (spotId) => {
   return db.oneOrNone(
-    `SELECT spot.lon, spot.lanS
+    `SELECT spot.lon, spot.lan
     FROM spot
     WHERE spot_id = $1;
       `,[spotId]);

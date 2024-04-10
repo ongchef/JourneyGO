@@ -10,13 +10,13 @@ export const findNearby = async(query, lon, lat) => {
         params: {
             key: process.env.MAP_API_KEY,
             query: query,
-            location: { lat:lat, lon:lon },
+            location: { lat:lat, lng:lon },
             radius: 1000,
             language: "zh-TW"
         }
     };
     return await client.textSearch(args).then((response)=>{
-        return console.log(response.data.results)
+        return response.data.results
       // 回傳的樣式
       // [{
       //    business_status: 'OPERATIONAL',
