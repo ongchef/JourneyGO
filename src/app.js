@@ -6,6 +6,7 @@ import tripgroupRouter from "./routes/tripgroup.js";
 import tripRouter from "./routes/trip.js";
 import usersRouter from "./routes/users.js";
 import spotRouter from "./routes/spot.js";
+import countryRounter from "./routes/country.js";
 dotenv.config();
 
 export const app = express();
@@ -28,3 +29,4 @@ app.use("/api/tripgroup/", tripgroupRouter);
 app.use("/api/users/", usersRouter);
 app.use("/api/trip/", tripRouter);
 app.use("/api/spots/", spotRouter);
+app.use("/api/countries", countryRounter)
