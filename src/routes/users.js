@@ -1,9 +1,13 @@
 import express from "express";
-import { registerUser, loginUser } from "../controllers/users.js";
+import { registerUser } from "../controllers/users.js";
+import bodyParser from "body-parser";
 
 const router = express.Router();
 
-router.post("/users/register", registerUser);
-router.post("/users/login", loginUser);
+router.post(
+  "/users/register",
+  bodyParser.raw({ type: "application/json" }),
+  registerUser
+);
 
-export default router
+export default router;

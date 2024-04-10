@@ -9,6 +9,7 @@ import spotRouter from "./routes/spot.js";
 dotenv.config();
 
 export const app = express();
+// webhook api need to comment this out
 app.use(express.json());
 app.use(
   cors({
@@ -23,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/tripgroup/", tripgroupRouter);
+
 app.use("/api/users/", usersRouter);
 app.use("/api/trip/", tripRouter);
 app.use("/api/spots/", spotRouter);
