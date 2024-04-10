@@ -281,8 +281,6 @@ export default function Home() {
           </Grid>)}
         </Grid>
       </Box>
-
-
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>新增行程</DialogTitle>
         <DialogContent>
@@ -339,10 +337,6 @@ export default function Home() {
             </Grid>
           </Grid>
         </DialogContent>
-
-
-
-
         <DialogActions>
           <Button onClick={handleCloseDialog}>取消</Button>
           <Button onClick={handleCloseDialog} variant="contained" color="primary">
@@ -352,11 +346,7 @@ export default function Home() {
       </Dialog>
 
 
-      
-
-
-
-
+    
   </main>
   );
 }
