@@ -8,7 +8,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "swagger": "node swagger.js"
   },
   "dependencies": {
     "@googlemaps/google-maps-services-js": "^3.3.42",
