@@ -40,7 +40,7 @@ export default function RootLayout({ children }) {
                       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>Journey<span style={{ color: '#0D5160' }}>Go</span>
                       </Typography>
 
-                      <IconButton color="inherit"  aria-lable="notification">
+                      <IconButton color="inherit"  aria-label="notification">
                         <img src ="notification.png" alt="notification" style={{ color:'white', width: 35, height: 35, marginRight: 10}}/>
                         
                       </IconButton>
