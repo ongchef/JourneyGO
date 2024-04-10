@@ -22,11 +22,12 @@ export const getGroup = async (req, res) => {
     }
 }
 
+//add country
 export const createGroup = async (req, res) => {
-    const {userId, groupName, startDate, endDate} = req.body;
+    const {userId, groupName, country, startDate, endDate} = req.body; 
     try {
         console.log(req.body);
-        const newGroup = await createGroupModel(userId, groupName, startDate, endDate);
+        const newGroup = await createGroupModel(userId, country, groupName, startDate, endDate);
         
         return res.status(201).json(newGroup);
     }catch (error) {
@@ -34,7 +35,7 @@ export const createGroup = async (req, res) => {
     }
 }
 
-export const createInvitation = async (req, res) => {
+export const createInvitation = async (req, res) => { //如果沒有這些人或是群組的話
     const {inviterId, inviteeId, groupId} = req.body;
     console.log({inviterId, inviteeId, groupId});
     try {
@@ -45,7 +46,7 @@ export const createInvitation = async (req, res) => {
         return res.status(500).json({ message: error.message});
     }
 }
-//pk duplicated
+
 
 export const getGroupOverview = async (req, res) => {
     const { groupId } = req.params;
@@ -99,6 +100,4 @@ export const putInvitation = async (req, res) => {
 
 //GET get group: how to know who is the group owner
 //POST create group: when to add group country
-//POST create invitation: do we need to add group_id in the invitation
-//POST create invitation: the status char
 //SQL: country
