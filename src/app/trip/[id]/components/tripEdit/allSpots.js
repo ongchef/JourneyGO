@@ -1,10 +1,15 @@
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import DndContainer from './dndContainer';
+
 export default function AllSpots(props) {
   const {groupId, day} = props;
 
   return (
-    <div>
-      <p>groupId: {groupId}</p>
-      <p>day: {day+1}</p>
+    <div className="bg-neutral-200 overflow-auto max-h-[50vh]">
+      <DndProvider backend={HTML5Backend}>
+        <DndContainer groupId={groupId} day={day} />
+      </DndProvider>
     </div>
   );
 }

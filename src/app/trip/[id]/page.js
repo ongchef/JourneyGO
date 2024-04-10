@@ -51,7 +51,7 @@ export default function Trip({params}) {
         </Tabs>
       </Box>
       <Box>
-        <Typography variant='h4' sx={{mx: 2, my: 4}}>{allGroups[params.id]?.groupName}</Typography>
+        <Typography variant='h4' sx={{mx: 2, my: 2}}>{allGroups[params.id]?.groupName}</Typography>
         <TabPanel value={value} index={0} groupId={params.id}>
           <div className='flex flex-row'>
             <TripPlan groupId={params.id} />

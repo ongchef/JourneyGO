@@ -20,7 +20,7 @@ function tabProps(index) {
 export default function DayPanel(props) {
   const {groupId} = props;
   const {allGroups} = useContext(DataContext);
-  const [days, setDays] = useState(Array.from({length: allGroups[groupId].days}, (_, i) => i));
+  const [days, setDays] = useState(Array.from({length: allGroups[groupId]?.days}, (_, i) => i));
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {

@@ -27,8 +27,11 @@ export default function TripPlan(props) {
           <Button variant="outlined" className="w-10">刪除</Button>
         </div>
       </div>
-      <div className="mt-5">
+      <div className="my-5">
         <DayPanel groupId={groupId} />
+      </div>
+      <div className="text-end">
+        <Button variant="contained" className="w-[50px]">儲存</Button>
       </div>
     </div>
   );
