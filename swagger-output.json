@@ -22,7 +22,7 @@
     "/api/tripgroup/{groupId}/details": {
       "get": {
         "tags": ["TripGroups"],
-        "description": "",
+        "description": "取得TripGroups的詳細資訊",
         "parameters": [
           {
             "name": "groupId",
@@ -47,7 +47,7 @@
     "/api/tripgroup/details": {
       "put": {
         "tags": ["TripGroups"],
-        "description": "",
+        "description": "更新TripGroups的詳細資訊",
         "parameters": [
           {
             "name": "body",
@@ -56,19 +56,19 @@
               "type": "object",
               "properties": {
                 "groupId": {
-                  "example": "any"
+                  "example": "3"
                 },
                 "groupName": {
-                  "example": "any"
+                  "example": "沖繩沖繩沖繩畢旅"
                 },
                 "start_date": {
-                  "example": "any"
+                  "example": "2024-06-14"
                 },
                 "end_date": {
-                  "example": "any"
+                  "example": "2024-06-18"
                 },
                 "userId": {
-                  "example": "any"
+                  "example": "1"
                 }
               }
             }
@@ -90,7 +90,7 @@
     "/api/tripgroup/{groupId}/member/{userId}": {
       "delete": {
         "tags": ["TripGroups"],
-        "description": "",
+        "description": "讓User離開TripGroups",
         "parameters": [
           {
             "name": "groupId",
@@ -121,7 +121,7 @@
     "/api/tripgroup/{groupId}/days/{day}/spots": {
       "get": {
         "tags": ["Trip Groups Spots"],
-        "description": "",
+        "description": "取得TripGroups特定Day的所有景點",
         "parameters": [
           {
             "name": "groupId",
@@ -158,7 +158,7 @@
       },
       "post": {
         "tags": ["Trip Groups Spots"],
-        "description": "",
+        "description": "在TripGroups特定Day新增一個景點",
         "parameters": [
           {
             "name": "groupId",
@@ -219,7 +219,7 @@
       },
       "put": {
         "tags": ["Trip Groups Spots"],
-        "description": "",
+        "description": "在TripGroups特定Day更動景點順序",
         "parameters": [
           {
             "name": "groupId",
@@ -273,7 +273,7 @@
     "/api/tripgroup/{groupId}/days/{day}/spots/{spotId}": {
       "delete": {
         "tags": ["Trip Groups Spots"],
-        "description": "",
+        "description": "在TripGroups特定Day中刪除特定景點",
         "parameters": [
           {
             "name": "groupId",
@@ -318,7 +318,7 @@
     "/api/users/users/register": {
       "post": {
         "tags": ["Users"],
-        "description": "",
+        "description": "使用者註冊",
         "parameters": [
           {
             "name": "body",
@@ -358,7 +358,7 @@
     "/api/users/users/login": {
       "post": {
         "tags": ["Users"],
-        "description": "",
+        "description": "使用者登入",
         "parameters": [
           {
             "name": "body",
@@ -392,7 +392,7 @@
     "/api/trip/users/{userId}/trip-groups": {
       "get": {
         "tags": ["Users"],
-        "description": "",
+        "description": "獲取使用者的所有TripGroup",
         "parameters": [
           {
             "name": "userId",
@@ -417,7 +417,7 @@
     "/api/trip/users/trip-groups": {
       "post": {
         "tags": ["TripGroups"],
-        "description": "",
+        "description": "創立新的TripGroup",
         "parameters": [
           {
             "name": "body",
@@ -457,7 +457,7 @@
     "/api/trip/trip-groups/invitations": {
       "post": {
         "tags": ["TripGroups"],
-        "description": "",
+        "description": "邀請其他User加入TripGroup",
         "parameters": [
           {
             "name": "body",
@@ -491,7 +491,7 @@
     "/api/trip/trip-groups/{groupId}/overview": {
       "get": {
         "tags": ["TripGroups"],
-        "description": "",
+        "description": "取得TripGroup的Overview",
         "parameters": [
           {
             "name": "groupId",
@@ -516,7 +516,7 @@
     "/api/trip/users/{userId}/invitations": {
       "get": {
         "tags": ["Users"],
-        "description": "",
+        "description": "取得User所有pending的邀請",
         "parameters": [
           {
             "name": "userId",
@@ -541,7 +541,7 @@
     "/api/trip/invitations/{invitationId}/status": {
       "put": {
         "tags": ["Users"],
-        "description": "",
+        "description": "接受或拒絕加入TripGroup的邀請",
         "parameters": [
           {
             "name": "invitationId",
@@ -578,7 +578,7 @@
     "/api/spots/search/{query}": {
       "get": {
         "tags": ["Spot search"],
-        "description": "",
+        "description": "特定景點搜尋",
         "parameters": [
           {
             "name": "query",
@@ -603,7 +603,7 @@
     "/api/spots/search/surroundings/{query}/{spotId}": {
       "get": {
         "tags": ["Spot search"],
-        "description": "",
+        "description": "周遭景點搜尋",
         "parameters": [
           {
             "name": "query",
