@@ -18,20 +18,19 @@ export default function TripPlan(props) {
             <FaceIcon className="scale-150"/>
             <FaceIcon className="scale-150"/>
             <FaceIcon className="scale-150"/>
-            <Button variant="contained" className="w-50">新增成員</Button>
-            <Button variant="outlined" className="w-50">退出</Button>
+            <Button variant="contained" className="w-28">新增成員</Button>
+            <Button variant="outlined">退出</Button>
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <Button variant="contained" className="w-10">編輯</Button>
-          <Button variant="outlined" className="w-10">刪除</Button>
+          <Button variant="contained" className="w-28">編輯行程</Button>
         </div>
       </div>
       <div className="my-5">
         <DayPanel groupId={groupId} />
       </div>
       <div className="text-end">
-        <Button variant="contained" className="w-[50px]">儲存</Button>
+        <Button variant="contained" className="w-28">儲存行程</Button>
       </div>
     </div>
   );
