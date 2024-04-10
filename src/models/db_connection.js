@@ -8,7 +8,7 @@ const db = pgp({
   host: process.env.HOST,
   port: process.env.DB_PORT,
   database: process.env.DB,
-  user: process.env.USERNAME,
+  user: process.env.USER_NAME,
   password: process.env.PASSWORD
 });
 

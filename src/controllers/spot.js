@@ -141,7 +141,7 @@ export const searchPlace = async (req, res) => {
 
     try {
         const spots = await findPlace(query)
-
+        console.log(spots)
         // no spot found
         if (spots.length === 0){
             return res.status(404).json({ message: "Cannot found any spot."});
