@@ -1,6 +1,8 @@
 import express from "express";
-import { searchNearby, searchPlace } from "../controllers/spot";
+import { searchNearby, searchPlace } from "../controllers/spot.js";
 
 const router = express.Router();
-router.get("/spots/search/:query", searchPlace)
-router.get("/spots/search/surroundings/:query/:spotId", searchNearby)
+router.get("/search/:query", searchPlace);
+router.get("/search/surroundings/:query/:spotId", searchNearby);
+
+export default router;
