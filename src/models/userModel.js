@@ -4,7 +4,7 @@ import db from "./db_connection.js";
 export const addNewUser = ({ userID, userEmail, userName, status }) => {
   console.log("here", userID);
   const query = `
-      INSERT INTO user_account (user_token, status, user_name, email)
+      INSERT INTO user_account (clerk_user_id, status, user_name, email)
       VALUES ($1, $2, $3, $4)
       RETURNING *;
     `;
