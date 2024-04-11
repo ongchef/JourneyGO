@@ -19,10 +19,10 @@ import CardMedia from '@mui/material/CardMedia';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import PersonIcon from '@mui/icons-material/Person';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -73,9 +73,9 @@ const mockData = [
   {
     id: 4,
     imageUrl: '/images/paris.jpeg',
-    name: '浪漫 der 巴黎5日遊',
+    name: '巴黎10日遊',
     place: 'Paris',
-    tripStatus: 'Ongoing',
+    tripStatus: 'Finished',
     creator: 'Dss',
     description: 'Experience the romantic city of Paris.',
     duration: '5 days'
@@ -83,9 +83,9 @@ const mockData = [
   {
     id: 5,
     imageUrl: '/images/hualian.jpg',
-    name: '花東3日遊之太魯閣馬拉松跑起來！',
+    name: '花東5日遊',
     place: 'Taiwan',
-    tripStatus: 'Ongoing',
+    tripStatus: 'Finished',
     creator: 'Abb',
     description: 'An amazing journey through Taiwan!',
     duration: '3 days'
@@ -153,7 +153,7 @@ export default function Home() {
     marginTop: `3rem !important`,
   };
 
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState('All');
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -177,14 +177,14 @@ export default function Home() {
             </Box>
               
             <Tabs value={tabValue} onChange={handleTabChange} aria-label="trip tabs" className="">
-              <Tab label="All" />
-              <Tab label="Ongoing" />
-              <Tab label="Finished" />
+              <Tab label="All" value="All"/>
+              <Tab label="Ongoing" value="Ongoing"/>
+              <Tab label="Finished" value="Finished"/>
             </Tabs>
 
             {/* Mapping over the mock data to create trip cards */}
-            {mockData.map((trip) => (
-              <Card className="flex justify-start my-10 mr-10" onClick={() => setSelectedCard(trip.id)}>
+            {mockData.filter(trip => tabValue === 'All' || trip.tripStatus === tabValue).map((trip) => (
+              <Card className="flex justify-start my-10 mr-10 hover:bg-gray-200" onClick={() => setSelectedCard(trip.id)}>
                 <div className="flex-grow flex">
                   <CardMedia
                     component="img"
@@ -204,10 +204,10 @@ export default function Home() {
                         </Typography>
                       </div>
                       <CardActions sx={cardActionsStyles} disableSpacing>
-                        <IconButton aria-label="creator" size="small">
+                        {/* <IconButton aria-label="creator" size="small">
                           <PersonIcon />
                           <span className="ml-1 text-sm">{trip.creator}</span>
-                        </IconButton>
+                        </IconButton> */}
                         <IconButton aria-label="duration" size="small">
                           <ScheduleIcon />
                           <span className="ml-1 text-sm">{trip.duration}</span>
@@ -231,9 +231,6 @@ export default function Home() {
               <Typography variant="h4" component="div" className="pl-2 pr-5">
                 旅程概覽
               </Typography>
-              <Button variant="contained" size="small" >
-                查看詳細資訊
-              </Button>
               
             </Box>
 
@@ -241,12 +238,12 @@ export default function Home() {
               <Box position="relative" className="w-full h-60 overflow-hidden rounded-xl">
                 <CardMedia
                   component="img"
-                  image='/images/hualian.jpg'
+                  image={mockData[selectedCard - 1].imageUrl}
                   alt="Trip image"
                   className="w-full h-full object-cover rounded-xl"
                 />
                 <Typography variant="h5" component="div" className="absolute top-1/2 right-0 bg-opacity-50 text-white p-2 transform -translate-y-1/2 whitespace-normal w-2/5 text-right">
-                  花東3日遊之太魯閣馬拉松跑起來！
+                  {mockData[selectedCard - 1].name}
                 </Typography>
               </Box>
 
@@ -276,6 +273,12 @@ export default function Home() {
                     3/13 - 3/15
                   </Typography>
                 </Box>
+              </Box>
+
+              <Box className="flex justify-end items-end">
+                <Button variant="text" size="large" endIcon={<ArrowForwardRoundedIcon />} sx={{ fontSize: '1.5rem'}}>
+                  查看詳細資訊
+                </Button>
               </Box>
             </Box>
           </Grid>)}
