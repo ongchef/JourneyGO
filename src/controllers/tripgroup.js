@@ -57,20 +57,25 @@ export const updateTripGroupDetail = async (req, res) => {
 };
 
 export const deleteTripGroupMember = async (req, res) => {
+  //console.log(req.params);
+  //const { userClerkId } = req.userID;
   const { groupId, userId } = req.params;
   try {
     const data = await getTripGroupMember(groupId, userId);
+    console.log(66, data);
     if (data.length === 0) {
-      console.log("user", userId, " not in group", groupId);
+      console.log("user", " not in group", groupId);
       return res.status(404).json({
         message: "Delete Failed. Cannot found data by given groupId.",
       });
     }
-    const resdata = await deleteTripGroupMemberbyIds(groupId, userId);
+
+    const resdata = await deleteTripGroupMemberbyIds(groupId, data[0].u_id);
 
     return res.status(200).json({
       ...resdata,
-      message: "user " + userId + " leave group" + groupId + " successfully",
+      message:
+        "user " + data[0].u_id + " leave group " + groupId + " successfully",
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });

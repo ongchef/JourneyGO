@@ -40,11 +40,16 @@ export const updateTripGroupDetailbyGroupId = (
 };
 
 export const getTripGroupMember = (groupId, userId) => {
+  console.log("getTripGroupMember");
+  console.log(groupId);
+  console.log(userId);
   return db.query(
     `
-        SELECT *
-        FROM group_member
-        WHERE g_id = $1 AND u_id = $2;
+    SELECT gm.g_id, gm.u_id
+FROM group_member AS gm
+JOIN user_account AS ua ON gm.u_id = ua.user_id
+WHERE ua.clerk_user_id = $2 AND gm.g_id = $1;
+    
       `,
     [groupId, userId]
   );
