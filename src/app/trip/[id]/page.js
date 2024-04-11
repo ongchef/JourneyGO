@@ -76,7 +76,7 @@ export default function Trip({params}) {
       <Box>
         <Typography variant='h4' sx={{mx: 2, my: 2}}>{allGroups[params.id]?.groupName}</Typography>
         <TabPanel value={value} index={0} groupId={params.id}>
-          <div className='flex flex-row'>
+          <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
             <TripPlan groupId={params.id} />
             <TripSearch groupId={params.id} />
           </div>

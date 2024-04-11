@@ -14,7 +14,7 @@ export default function TripSearch() {
   };
   
   return (
-    <div className='w-[100%] mx-5 flex flex-col gap-3'>
+    <div className='w-[100%] px-5 flex flex-col gap-3 overflow-auto h-[70vh]'>
       <div className='flex flex-row justify-between'>
         <Typography variant='h6'>新增景點</Typography>
         <div className='flex items-center'>
@@ -27,7 +27,7 @@ export default function TripSearch() {
         </div>
       </div>
       <SearchField />
-      <div className='overflow-auto h-[56vh] flex flex-col gap-3 p-3'>
+      <div className='flex flex-col gap-3 p-3'>
         <SearchCard />
         <SearchCard />
         <SearchCard />
