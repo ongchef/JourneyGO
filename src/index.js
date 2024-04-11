@@ -10,7 +10,7 @@ import { app } from "./app.js";
 
 dotenv.config();
 const require = createRequire(import.meta.url);
-const swaggerDocument = require("./swagger.json");
+const swaggerDocument = require("../swagger-output.json");
 
 export const server = createServer(app);
 const io = new Server(server, {
