@@ -12,6 +12,13 @@ import TabPanel from './components/tripEdit/tabPanel';
 import RoomIcon from '@mui/icons-material/Room';
 import DescriptionIcon from '@mui/icons-material/Description';
 
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+
 function tabProps(index) {
   return {
     id: `simple-tab-${index}`,
@@ -22,8 +29,24 @@ function tabProps(index) {
 export default function Trip({params}) {
   const {allGroups} = useContext(DataContext);
   const [value, setValue] = useState(0);
+  const [open, setOpen] = useState(false); 
+  const [email, setEmail] = useState(''); 
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+
+  const handleOpenDialog = () => {
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
   };
 
   return (
@@ -63,5 +86,9 @@ export default function Trip({params}) {
         </TabPanel>
       </Box>
     </Box>
+
+            
+
+
   );
 }

@@ -285,8 +285,7 @@ export default function Home() {
         <DialogTitle>新增行程</DialogTitle>
         <DialogContent>
           
-          {/* 在這裡放置輸入新行程資訊的表單元件 */}
-          {/* 例如 TextField */}
+   
           <Grid container spacing={4} alignItems="center">
             <Grid item>
               <InputLabel htmlFor="trip-name">行程名稱</InputLabel></Grid>
