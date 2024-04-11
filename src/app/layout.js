@@ -8,6 +8,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
 
 
 
@@ -31,7 +32,8 @@ export default function RootLayout({ children }) {
           <AppRouterCacheProvider>
             <DataProvider>
               {/* add nav bar */}
-              <AppBar position="static" sx= {{ backgroundColor: '#2EB3D0'}}>
+              <Box sx={{ position: 'sticky', top: 0, zIndex: 1000 }}>
+                <AppBar position="static" sx= {{ backgroundColor: '#2EB3D0'}}>
                 
                   <Toolbar disableGutters>
                     
@@ -49,6 +51,7 @@ export default function RootLayout({ children }) {
                       <Typography variant="body2" component="a" sx={{  marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' , border:'1.5px solid ' , borderRadius:'4px' ,  padding:'4px 8px'}}>個人資料</Typography>
                   </Toolbar>
               </AppBar>
+              </Box>
               {children}
             </DataProvider>
           </AppRouterCacheProvider>  
