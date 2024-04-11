@@ -426,19 +426,19 @@
               "type": "object",
               "properties": {
                 "userId": {
-                  "example": "any"
+                  "example": "3"
                 },
                 "groupName": {
-                  "example": "any"
+                  "example": "這是測試用的TripGroup"
                 },
                 "country": {
-                  "example": "any"
+                  "example": "法國"
                 },
                 "startDate": {
-                  "example": "any"
+                  "example": "2024-06-20"
                 },
                 "endDate": {
-                  "example": "any"
+                  "example": "2024-06-30"
                 }
               }
             }
@@ -466,13 +466,13 @@
               "type": "object",
               "properties": {
                 "inviterId": {
-                  "example": "any"
+                  "example": "3"
                 },
                 "inviteeId": {
-                  "example": "any"
+                  "example": "3"
                 },
                 "groupId": {
-                  "example": "any"
+                  "example": "4"
                 }
               }
             }

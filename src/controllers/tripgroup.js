@@ -38,7 +38,7 @@ export const updateTripGroupDetail = async (req, res) => {
     if (user.length === 0) {
       console.log("Cannot found user by given userId.");
       return res.status(404).json({
-        message: "Update Failed. User " + userId + " not in group" + groupId,
+        message: "Update Failed. User " + userId + " not in group " + groupId,
       });
     }
     const resdata = await updateTripGroupDetailbyGroupId(
@@ -60,7 +60,6 @@ export const deleteTripGroupMember = async (req, res) => {
   const { groupId, userId } = req.params;
   try {
     const data = await getTripGroupMember(groupId, userId);
-    console.log(data);
     if (data.length === 0) {
       console.log("user", userId, " not in group", groupId);
       return res.status(404).json({
