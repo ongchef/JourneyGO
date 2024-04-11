@@ -10,7 +10,7 @@ export default function TripPlan(props) {
   const {groupId} = props;
 
   return (
-    <div className='mx-5 w-[50%]'>
+    <div className='px-5 w-[100%] overflow-auto h-[70vh]'>
       <div className="flex flex-row justify-between">
         <div className="flex flex-col gap-3">
           <Typography variant='h6'>{allGroups[groupId]?.startDate} ~ {allGroups[groupId]?.endDate}</Typography>
@@ -28,9 +28,6 @@ export default function TripPlan(props) {
       </div>
       <div className="my-5">
         <DayPanel groupId={groupId} />
-      </div>
-      <div className="text-end">
-        <Button variant="contained" className="w-28">儲存行程</Button>
       </div>
     </div>
   );

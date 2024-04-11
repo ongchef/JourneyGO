@@ -20,8 +20,8 @@ export default function SearchField() {
   };
 
   return (
-    <div className='w-[100%]'>
-      <Paper component="form" sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 1 }}>
+    <div className='w-full'>
+      <Paper component="form" sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}>
         <IconButton sx={{ p: '10px' }} aria-label="menu">
           <MenuIcon />
         </IconButton>
@@ -34,10 +34,6 @@ export default function SearchField() {
         />
         <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleClick}>
           <SearchIcon />
-        </IconButton>
-        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-        <IconButton color="primary" sx={{ p: '10px' }} aria-label="directions">
-          <DirectionsIcon />
         </IconButton>
       </Paper>
     </div>
