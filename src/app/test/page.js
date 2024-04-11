@@ -7,7 +7,7 @@ export default function Test(props) {
   const [socketData, setSocketData] = useState(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:4000");
+    const socket = io("http://localhost:3000");
 
     function enterRoom(data) {
       socket.emit("enter_room", {
@@ -27,8 +27,12 @@ export default function Test(props) {
     socket.on("server_spot_change", data => {
       const day = data.day
       const spot_sequence = data.spot_sequence    
+      console.log("spotchange", day, spot_sequence);
     })
-
+    enterRoom();
+    spotChange();
+    
+  
   }, []);
 
   // useEffect(() => {
