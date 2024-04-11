@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
 
   socket.on("enter_room", (data) => {
     socket.join(data.groupId);
-    console.log(`${data.username} enters ${data.groupId} successfully.`);
+    console.log(`${data.jwt} enters ${data.groupId} successfully.`);
   });
 
   // Receive client spot seq change
@@ -42,7 +42,7 @@ io.on("connection", (socket) => {
     });
 
     // Call API update DB rows
-    var cnt = 0;
+    /* var cnt = 0;
     data.spot_sequence.forEach(async (element) => {
       const response = await axios.post(
         `http://localhost:${port}/api/tripgroup/${data.groupId}/days/${data.day}/spots`,
@@ -52,8 +52,11 @@ io.on("connection", (socket) => {
         }
       );
       cnt += 1;
-    });
+    }); */
   });
+
+
+  
 });
 
 /*=====================  SERVER START  =====================*/
