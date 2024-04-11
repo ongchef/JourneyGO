@@ -68,7 +68,7 @@ export const registerUser = async function (req, res) {
       userID: userid,
       userEmail: email,
       userName: username,
-      status: "active",
+      status: "Active",
     });
     res.status(201).json({
       success: true,
