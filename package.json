@@ -12,6 +12,7 @@
     "swagger": "node swagger.js"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^4.13.14",
     "@googlemaps/google-maps-services-js": "^3.3.42",
     "axios": "^1.6.8",
     "core-js": "^3.36.1",
