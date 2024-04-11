@@ -26,15 +26,7 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 import AddIcon from '@mui/icons-material/Add';
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-
-import DialogTitle from '@mui/material/DialogTitle';
-import {  Paper,InputLabel, TextField, Select, MenuItem} from '@mui/material';
-
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import NewJourneyDialog from './components/newJourney';
 
 
 
@@ -100,29 +92,17 @@ export default function Home() {
   const squareSize = theme.spacing(20); 
 
 
-  // 對話框相關的 useState 宣告
-  // const [tripName, setTripName] = useState('');
-  // const [tripLocation, setTripLocation] = useState('');
-  // const [tripDescription, setTripDescription] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
-
-  const handleDateChange = (dates) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-  };
   
   const handleOpenDialog = () => {
     setOpenDialog(true);
-    console.log('Dialog opened');
+    
+
   };
 
   const handleCloseDialog = () => {
+
     setOpenDialog(false);
   };
-
-
 
 
   
@@ -284,71 +264,12 @@ export default function Home() {
           </Grid>)}
         </Grid>
       </Box>
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>新增行程</DialogTitle>
-        <DialogContent>
-          
-   
-          <Grid container spacing={4} alignItems="center">
-            <Grid item>
-              <InputLabel htmlFor="trip-name">行程名稱</InputLabel></Grid>
-            <Grid item xs>
-              <TextField label="行程名稱" fullWidth />
-            </Grid>
-            </Grid>
 
-            <Grid container spacing={4} alignItems="center">
-            <Grid item>
-              <InputLabel htmlFor="trip-location">選擇國家</InputLabel></Grid>
-            <Grid item xs>
-              <Select id="trip-location" label="選擇國家" fullWidth>
-                <MenuItem value="Taiwan">Taiwan</MenuItem>
-                <MenuItem value="Paris">Paris</MenuItem>
-              </Select>
-              
-            </Grid>
-            </Grid>
-
-            <Grid container spacing={4} alignItems="center">
-            <Grid item>
-              <InputLabel htmlFor="add-companion">新增旅伴</InputLabel></Grid>
-              <Grid item xs>
-              <TextField label="email" fullWidth />
-            </Grid>
-            </Grid>
-
+      <NewJourneyDialog open={openDialog} onClose={handleCloseDialog} />
             
-            <Grid container spacing={4} alignItems="center">
-              <Grid item>
-                <InputLabel htmlFor="trip-time">旅程時間</InputLabel>
-              </Grid>
-            <Grid item xs>
-            <Select id="trip-location" label="" fullWidth>
-              <Paper elevation={3} variant="outlined" sx={{ p: 2 }}>
-                <DatePicker
-                   selected={startDate}
-                   onChange={handleDateChange}
-                   startDate={startDate}
-                   endDate={endDate}
-                   selectsRange
-                   inline
-                />
-             
-              </Paper>
-              </Select>
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog}>取消</Button>
-          <Button onClick={handleCloseDialog} variant="contained" color="primary">
-            儲存
-          </Button>
-        </DialogActions>
-      </Dialog>
-
 
     
   </main>
-  );
-}
+);
+
+    }
