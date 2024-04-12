@@ -3,7 +3,42 @@ import {
   updateTripGroupDetailbyGroupId,
   getTripGroupMember,
   deleteTripGroupMemberbyIds,
+  getOverviewByGroupId,
 } from "../models/tripgroupModel.js";
+import {
+  getuserIdbyClerkId,
+  getInviteeIdByEmail,
+} from "../models/userModel.js"
+
+export const createInvitation = async (req, res) => { //如果沒有這些人或是群組的話
+  const {inviteeEmail, groupId} = req.body;
+  const clerkId = req.userID;
+
+  try {
+      const inviterId = await getuserIdbyClerkId(clerkId)
+      console.log(inviterId);
+      const inviteeId = await getInviteeIdByEmail(inviteeEmail);
+      const newInvitation = await createInvitationModel(inviterId, inviteeId, groupId);
+          
+      return res.status(201).json(newInvitation);
+  }catch (error) {
+      return res.status(500).json({ message: error.message});
+  }
+}
+
+export const getGroupOverview = async (req, res) => {
+  const { groupId } = req.params;
+  try {
+      const data = await getOverviewByGroupId(groupId);
+      if (data.length === 0){
+          return res.status(404).json({ message: "Cannot found overviews by given groupId."});
+      }
+      
+      return res.status(200).json(data);
+  } catch (error) {
+      return res.status(500).json({ message: error.message});
+  }
+}
 
 export const getTripGroupDetail = async (req, res) => {
   const { groupId } = req.params;

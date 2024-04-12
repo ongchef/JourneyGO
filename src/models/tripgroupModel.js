@@ -1,5 +1,27 @@
 import db from "./db_connection.js";
 
+export const createInvitationModel = (inviterId, inviteeId, groupId) => {
+  return db.none(
+    `INSERT INTO invitation (inviter, invitee, g_id, status)
+    VALUES ($1, $2, $3, 'pending')`,
+    [inviterId, inviteeId, groupId]
+  );
+};
+
+export const getOverviewByGroupId = (groupId) => {
+  return db.manyOrNone(
+    `SELECT tg.group_name, tg.start_date, tg.end_date, tg.status, ARRAY_AGG(u.user_name) AS user_names
+    FROM trip_groups tg
+    JOIN group_member gm ON tg.group_id = gm.g_id
+    JOIN user_account u ON gm.u_id = u.user_id
+    WHERE tg.group_id = $1
+    GROUP BY tg.group_name, tg.start_date, tg.end_date, tg.status;
+    `,
+    [groupId]
+  );
+};
+
+
 export const getTripGroupDetailbyGroupID = (groupId) => {
   return db.query(
     `SELECT

@@ -3,6 +3,9 @@ import {
   getTripGroupDetail,
   updateTripGroupDetail,
   deleteTripGroupMember,
+  createInvitation,
+  getGroupOverview,
+  
 } from "../controllers/tripgroup.js";
 import {
   getSpots, 
@@ -12,6 +15,9 @@ import {
 } from "../controllers/spot.js"
 
 const router = express.Router();
+
+router.post("/invitations", createInvitation);
+router.get("/:groupId/overview", getGroupOverview);
 
 router.get("/:groupId/details", getTripGroupDetail);
 router.put("/details", updateTripGroupDetail);

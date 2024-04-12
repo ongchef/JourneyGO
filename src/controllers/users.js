@@ -1,5 +1,17 @@
 // controllers/userController.js
-import { addNewUser } from "../models/userModel.js";
+import { 
+  addNewUser,
+  getuserIdbyClerkId,
+  getGroupByUserId,
+  createGroupModel,
+  getInviteeIdByEmail,
+  getInvitationByUserId,
+  updateInvitation
+} from "../models/userModel.js";
+import {
+  createInvitationModel,
+} from "../models/tripgroupModel.js"
+
 import { Webhook } from "svix";
 import bodyParser from "body-parser";
 
@@ -78,3 +90,81 @@ export const registerUser = async function (req, res) {
     res.status(500).json({ success: false, message: err.message });
   }
 };
+
+export const getGroup = async (req, res) => {
+  const clerkId = req.userID;
+  try {
+      const userId = await getuserIdbyClerkId(clerkId)
+      console.log(userId);
+      const data = await getGroupByUserId(userId);
+      if (data.length === 0){
+          return res.status(404).json({ message: "Cannot found groups by given userId."});
+      }
+      
+      return res.status(200).json(data);
+  } catch (error) {
+      return res.status(500).json({ message: error.message});
+  }
+}
+
+export const createGroup = async (req, res) => {
+  const clerkId = req.userID;
+  
+  const { groupName, country, invitee, startDate, endDate } = req.body; 
+  try {
+      const userId = await getuserIdbyClerkId(clerkId)
+      console.log(userId);
+      const newGroup = await createGroupModel(userId, country, groupName, startDate, endDate);
+
+      const inviteeIds = [];
+      for (const email of invitee) {
+      const inviteeId = await getInviteeIdByEmail(email);
+      if (inviteeId) {
+          inviteeIds.push(inviteeId);
+      } else {
+          console.log(`User with email ${email} not found.`);
+      }
+      }
+
+      for (const inviteeId of inviteeIds) {
+      const newInvitation = await createInvitationModel(userId, inviteeId, groupId);
+      }
+
+      return res.status(201).json(newGroup);
+  }catch (error) {
+      return res.status(500).json({ message: error.message});
+  }
+}
+
+export const getInvitation = async (req, res) => {
+  const clerkId = req.userID;
+  try {
+      const userId = await getuserIdbyClerkId(clerkId)
+      console.log(userId);
+      const data = await getInvitationByUserId(userId);
+
+      if (data.length === 0){
+          return res.status(404).json({ message: "Cannot found invitations by given userId."});
+      }
+      
+      return res.status(200).json(data);
+  } catch (error) {
+      return res.status(500).json({ message: error.message});
+  }
+}
+
+export const putInvitation = async (req, res) => {
+  const { invitationId } = req.params;
+  const { status } = req.body;
+
+  try {
+      if (status !== "accepted" || status !== "pending" || status !== "rejected") {
+          return res.status(400).json({ message: "status need to be accepted, pending, or rejected."});
+      }
+      const updInvitation = await updateInvitation(invitationId, status);
+
+      return res.status(201).json(updInvitation);
+  }catch (error) {
+      return res.status(500).json({ message: error.message});
+  }
+}

@@ -14,7 +14,7 @@ dotenv.config();
 
 export const app = express();
 
-app.use("/api/users/", usersRouter);
+app.use("/api/users/", ClerkExpressRequireAuth(), getUserInfo, usersRouter);
 // webhook api need to comment this out
 
 app.use(express.json());
@@ -35,14 +35,13 @@ app.get("/", (req, res) => {
 
 // get user info
 
-app.use(
-  "/api/tripgroup/",
+app.use("/api/tripgroup/",
   ClerkExpressRequireAuth(),
   getUserInfo,
   tripgroupRouter
 );
 
-app.use("/api/trip/", ClerkExpressRequireAuth(), getUserInfo, tripRouter);
+// app.use("/api/trip/", ClerkExpressRequireAuth(), getUserInfo, tripRouter);
 app.use("/api/spots/", ClerkExpressRequireAuth(), getUserInfo, spotRouter);
 app.use(
   "/api/countries",
