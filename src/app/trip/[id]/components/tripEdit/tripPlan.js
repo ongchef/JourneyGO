@@ -11,8 +11,8 @@ export default function TripPlan(props, openDialog, setOpenDialog ) {
   const groupId = props;
 
   const handleAddMemberClick = async(inviteeID) => {
-    const result = await getNewMember(inviteeID, groupId);
-    // setOpenDialog(true);
+    // const result = await getNewMember(inviteeID, groupId);
+    props.setOpenDialog(true);
   };
 
 
@@ -25,7 +25,7 @@ export default function TripPlan(props, openDialog, setOpenDialog ) {
             <FaceIcon className="scale-150"/>
             <FaceIcon className="scale-150"/>
             <FaceIcon className="scale-150"/>
-            <Button variant="contained" className="w-28" onClick={setOpenDialog}>新增成員</Button>
+            <Button variant="contained" className="w-28" onClick={handleAddMemberClick}>新增成員</Button>
             <Button variant="outlined">退出</Button>
           </div>
         </div>
