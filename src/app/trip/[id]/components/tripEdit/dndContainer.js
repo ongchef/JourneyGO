@@ -15,11 +15,11 @@ export default function DndContainer(props) {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-  try {
-    setCards(allSpots[groupId][day]);
-  } catch (error) {
-    console.log(error)
-  }
+    try {
+      setCards(allSpots[groupId][day]);
+    } catch (error) {
+      console.log(error)
+    }
   }, [allSpots, groupId, day]);
 
   const moveCard = useCallback((dragIndex, hoverIndex) => {

@@ -1,8 +1,7 @@
 'use server';
 
-export async function getSpots() {
-  const url = '';
-  const Token = '';
+export async function getSpots(Token, groupId, day) {
+  const url = `/trip-groups/${groupId}/days/${day}/spots`;
 
   try {
     const res = await fetch(url, {
