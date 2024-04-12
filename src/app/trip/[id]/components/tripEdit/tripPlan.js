@@ -4,10 +4,17 @@ import Typography from '@mui/material/Typography';
 import FaceIcon from '@mui/icons-material/Face';
 import Button from '@mui/material/Button';
 import DayPanel from './dayPanel';
+import { getNewMember } from '@/services/getNewMember';
 
-export default function TripPlan(props) {
+export default function TripPlan(props, openDialog, setOpenDialog ) {
   const {allGroups} = useContext(DataContext);
-  const {groupId} = props;
+  const groupId = props;
+
+  const handleAddMemberClick = async(inviteeID) => {
+    const result = await getNewMember(inviteeID, groupId);
+    // setOpenDialog(true);
+  };
+
 
   return (
     <div className='px-5 w-[100%] overflow-auto h-[70vh]'>
@@ -18,7 +25,7 @@ export default function TripPlan(props) {
             <FaceIcon className="scale-150"/>
             <FaceIcon className="scale-150"/>
             <FaceIcon className="scale-150"/>
-            <Button variant="contained" className="w-28">新增成員</Button>
+            <Button variant="contained" className="w-28" onClick={setOpenDialog}>新增成員</Button>
             <Button variant="outlined">退出</Button>
           </div>
         </div>

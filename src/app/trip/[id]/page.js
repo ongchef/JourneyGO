@@ -12,12 +12,9 @@ import TabPanel from './components/tripEdit/tabPanel';
 import RoomIcon from '@mui/icons-material/Room';
 import DescriptionIcon from '@mui/icons-material/Description';
 
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import NewMemberDialog from '/src/app/components/newMember';
+// import { getNewMember } from './getNewMember';
+
 
 function tabProps(index) {
   return {
@@ -29,8 +26,9 @@ function tabProps(index) {
 export default function Trip({params}) {
   const {allGroups} = useContext(DataContext);
   const [value, setValue] = useState(0);
-  const [open, setOpen] = useState(false); 
-  const [email, setEmail] = useState(''); 
+  const [openDialog, setOpenDialog] = useState(false);
+  
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -38,18 +36,17 @@ export default function Trip({params}) {
 
 
   const handleOpenDialog = () => {
-    setOpen(true);
+    setOpenDialog(true);
   };
 
   const handleCloseDialog = () => {
-    setOpen(false);
+    setOpenDialog(false);
   };
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
+
 
   return (
+    <main>
     <Box sx={{ width: '100%' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
@@ -77,7 +74,7 @@ export default function Trip({params}) {
         <Typography variant='h4' sx={{mx: 2, my: 2}}>{allGroups[params.id]?.groupName}</Typography>
         <TabPanel value={value} index={0} groupId={params.id}>
           <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
-            <TripPlan groupId={params.id} />
+            <TripPlan params={params} groupId={params.id} openDialog={openDialog} setOpenDialog={setOpenDialog}/>
             <TripSearch groupId={params.id} />
           </div>
         </TabPanel>
@@ -86,8 +83,9 @@ export default function Trip({params}) {
         </TabPanel>
       </Box>
     </Box>
-
-            
+    
+    <NewMemberDialog open={openDialog} onClose={handleCloseDialog} />
+    </main>
 
 
   );
