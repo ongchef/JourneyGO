@@ -48,7 +48,7 @@ export const findPlace = async(query) => {
             key: process.env.MAP_API_KEY,
             input: query,
             inputtype: "textquery",
-            fields:["formatted_address","name","place_id","photo"],
+            fields:["formatted_address","name","place_id","photo","rating","geometry"],
             // locationbias:"circle:1000@25.01998258689229,121.53992081709387" ,
             language: "zh-TW"
         }
