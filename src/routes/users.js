@@ -1,5 +1,5 @@
 import express from "express";
-import { 
+import {
   registerUser,
   getGroup,
   createGroup,
@@ -11,7 +11,7 @@ import bodyParser from "body-parser";
 const router = express.Router();
 
 router.post(
-  "/users/register",
+  "/register",
   bodyParser.raw({ type: "application/json" }),
   registerUser
 );
