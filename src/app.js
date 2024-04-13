@@ -35,7 +35,8 @@ app.get("/", (req, res) => {
 
 // get user info
 
-app.use("/api/tripgroup/",
+app.use(
+  "/api/tripgroup/",
   ClerkExpressRequireAuth(),
   getUserInfo,
   tripgroupRouter
