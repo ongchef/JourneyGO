@@ -44,7 +44,7 @@ export default function TripPlan(props, openDialog, setOpenDialog ) {
       <div className="my-5">
         <DayPanel />
       </div>
-      <NewMemberDialog open={openDialog} onClose={handleCloseDialog} onSave={handleSaveNewMember} />
+      <NewMemberDialog open={openDialog} onClose={() => setOpenDialog(false)} onSave={handleSaveNewMember} />
     </div>
   );
 }

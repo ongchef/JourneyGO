@@ -29,7 +29,6 @@ export default function Trip({params}) {
   // const [openDialog, setOpenDialog] = useState(false);
   
 
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -43,9 +42,6 @@ export default function Trip({params}) {
   //   setOpenDialog(false);
   // };
 
-  // const handleSaveNewMember = (email) => {
-  //   console.log("Saving new member with email :", email);
-  // }
 
 
   return (
@@ -77,7 +73,8 @@ export default function Trip({params}) {
         <Typography variant='h4' sx={{mx: 2, my: 2}}>{allGroups[currGroupId]?.groupName}</Typography>
         <TabPanel value={value} index={0}>
           <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
-            <TripPlan params={params} groupId={params.id} openDialog={openDialog} setOpenDialog={setOpenDialog}/>
+            <TripPlan params={params} groupId={params.id}></TripPlan>
+            {/* <TripPlan params={params} groupId={params.id} openDialog={openDialog} setOpenDialog={setOpenDialog}/> */}
             <TripSearch groupId={params.id} />
           </div>
         </TabPanel>
@@ -87,7 +84,6 @@ export default function Trip({params}) {
       </Box>
     </Box>
     
-    {/* <NewMemberDialog open={openDialog} onClose={handleCloseDialog} onSave={handleSaveNewMember} /> */}
     </main>
 
 
