@@ -6,9 +6,10 @@ const getNewMember = async (inviteeID, groupID) => {
       groupID: groupID,
     };
 
+    const url = '/api/saveNewMember'; //要調
 
     try {
-      const response = await fetch('/api/saveNewMember', {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -16,14 +17,12 @@ const getNewMember = async (inviteeID, groupID) => {
         body: JSON.stringify({ requestBody }),
       });
       
-      if (response.ok) { //Invitation sent successfully
-        return true;
-      } else {
-        return false;
-      }
+
+      const data = await response.json();
+      return data;
     } catch (error) {
-      console.error('保存新成員時出現錯誤：', error);
-      return false;
-    }
+        console.error('Error:', error);
+        return undefined;
+      }
   };
   
