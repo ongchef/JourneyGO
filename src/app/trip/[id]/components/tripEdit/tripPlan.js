@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import DayPanel from './dayPanel';
 
 import NewMemberDialog from '/src/app/components/newMember';
-import { getNewMember } from '@/services/getNewMember';
+// import { getNewMember } from '@/services/getNewMember';
 
 export default function TripPlan(props, openDialog, setOpenDialog ) {
   const {allGroups, currGroupId} = useContext(DataContext);
