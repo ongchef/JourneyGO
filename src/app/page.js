@@ -27,6 +27,7 @@ import ScheduleIcon from '@mui/icons-material/Schedule';
 import AddIcon from '@mui/icons-material/Add';
 
 import NewJourneyDialog from './components/newJourney';
+import Link from "next/link";
 
 
 
@@ -257,7 +258,9 @@ export default function Home() {
 
               <Box className="flex justify-end items-end">
                 <Button variant="text" size="large" endIcon={<ArrowForwardRoundedIcon />} sx={{ fontSize: '1.5rem'}}>
-                  查看詳細資訊
+                  <Link href={`/trip/1`} > {/* need to specify groupId */}
+                    查看詳細資訊
+                  </Link>
                 </Button>
               </Box>
             </Box>
