@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 
 import getUserInfo from "./middlewares/userInfo.js";
-import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
+import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
 
 import tripgroupRouter from "./routes/tripgroup.js";
 import tripRouter from "./routes/trip.js";
@@ -14,7 +14,7 @@ dotenv.config();
 
 export const app = express();
 
-app.use("/api/users/", ClerkExpressRequireAuth(), getUserInfo, usersRouter);
+app.use("/api/users/", ClerkExpressWithAuth(), getUserInfo, usersRouter);
 // webhook api need to comment this out
 
 app.use(express.json());
@@ -37,16 +37,11 @@ app.get("/", (req, res) => {
 
 app.use(
   "/api/tripgroup/",
-  ClerkExpressRequireAuth(),
+  ClerkExpressWithAuth(),
   getUserInfo,
   tripgroupRouter
 );
 
-// app.use("/api/trip/", ClerkExpressRequireAuth(), getUserInfo, tripRouter);
-app.use("/api/spots/", ClerkExpressRequireAuth(), getUserInfo, spotRouter);
-app.use(
-  "/api/countries/",
-  ClerkExpressRequireAuth(),
-  getUserInfo,
-  countryRounter
-);
+// app.use("/api/trip/", ClerkExpressWithAuth(), getUserInfo, tripRouter);
+app.use("/api/spots/", ClerkExpressWithAuth(), getUserInfo, spotRouter);
+app.use("/api/countries/", ClerkExpressWithAuth(), getUserInfo, countryRounter);
