@@ -1,31 +1,33 @@
-'use server';
 
-
-export async function getNewMember(inviteeID, groupID){
-
-    const requestBody = {
-      inviterID:'' ,
-      inviteeID: inviteeID,
-      groupID: groupID,
-    };
+const inviteToGroup = async(inviteeEmails, groupID, inviterID)=>{
 
     const url = '/api/tripgroup/invitations'; //要調
 
+    const requestBody = {
+      inviteeEmail: inviteeEmails,
+      groupID: groupID,
+    };
+
+  
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          // 'Authorization':'',
         },
         body: JSON.stringify({ requestBody }),
       });
       
-
+      if(response.ok){
       const data = await response.json();
       return data;
-    } catch (error) {
+    }else{
+      return null;
+    }
+  }catch (error) {
         console.error('Error:', error);
-        return undefined;
+        return null;
       }
   };
   
