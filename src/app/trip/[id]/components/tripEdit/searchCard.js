@@ -2,6 +2,7 @@
 
 import { useContext } from 'react';
 import { DataContext } from '@/app/components/dataContext';
+import { postSpots } from '@/services/postSpots';
 import Image from 'next/image';
 import Typography from '@mui/material/Typography';
 import StarIcon from '@mui/icons-material/Star';
@@ -12,12 +13,27 @@ import Button from '@mui/material/Button';
 // }
 
 export default function SearchCard({title, description, rating}) {
-  const { allSpots, currGroupId, currDay, Token } = useContext(DataContext);
+  const { allSpots, currGroupId, currDay, Token, refetch } = useContext(DataContext);
 
   const handleClick = () => {
     const spots = allSpots[currGroupId][currDay];
     const spotIds = spots.map(spot => spot.id);
-    // TODO : post spot
+    async function post() {
+      const data = {
+        groupID: currGroupId,
+        description: title,
+        location: description,
+        date: currDay,
+        sequence: spotIds,
+      }
+      try {
+        const status = await postSpots(Token, currGroupId, currDay, data);
+      } catch (error) {
+        console.log("post", error)
+      }
+    }
+    post();
+    refetch();  // refresh spots
   };
 
   return (

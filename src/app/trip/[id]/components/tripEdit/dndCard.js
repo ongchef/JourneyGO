@@ -1,14 +1,18 @@
 'use client';
 
-import { useRef } from 'react'
-import { useDrag, useDrop } from 'react-dnd'
+import { useRef, useContext } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+import { deleteSpots } from '@/services/deleteSpots';
+import { DataContext } from '@/app/components/dataContext';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import CommentIcon from '@mui/icons-material/Comment';
 import Typography from '@mui/material/Typography';
+import { Button } from '@mui/material';
 
 const ItemTypes = {CARD: 'card',}
 
 export const DndCard = ({ id, text, index, address, moveCard }) => {
+  const { Token, currGroupId, currDay, setAllSpots } = useContext(DataContext);
 
   // Drag and Drop
   const ref = useRef(null)
@@ -55,6 +59,31 @@ export const DndCard = ({ id, text, index, address, moveCard }) => {
   const opacity = isDragging ? 0 : 1
   drag(drop(ref))
 
+  
+  // Delete spot
+  const handleClick = () => {
+    async function del() {
+      try {
+        const status = await deleteSpots(Token, currGroupId, currDay, id);
+        if (status === 200) {
+          setAllSpots(prevState => {  // delete spot from allSpots
+            const newSpots = prevState[currGroupId][currDay].filter(spot => spot.id !== id);
+            return {
+              ...prevState,
+              [currGroupId]: {
+                ...prevState[currGroupId] || {},
+                [currDay]: newSpots,
+              },
+            };
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    del();
+  }
+
   return (
     <div ref={ref} data-handler-id={handlerId} className='shadow bg-white p-3 rounded-md'>
       <div className='flex justify-between'>
@@ -62,6 +91,7 @@ export const DndCard = ({ id, text, index, address, moveCard }) => {
         <div className='flex gap-2'>
           <CommentIcon />
           <ThumbUpOffAltIcon />
+          <Button variant='outlined' onClick={handleClick}>刪除</Button>
         </div>
       </div>
       <Typography variant='caption'>{address}</Typography>

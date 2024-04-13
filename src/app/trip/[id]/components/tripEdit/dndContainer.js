@@ -1,7 +1,7 @@
 'use client';
 
 import update from 'immutability-helper'
-import { useCallback, useState, useContext, useEffect, use } from 'react'
+import { useCallback, useState, useContext, useEffect} from 'react'
 import { DndCard } from './dndCard.js'
 import { DataContext } from '@/app/components/dataContext.jsx';
 import { putSpots } from '@/services/putSpots.js';
@@ -40,7 +40,11 @@ export default function DndContainer({day, spotChange}) {
       },
     }));
     async function put() {
-      const status = await putSpots(Token, currGroupId, day, updateCards);
+      try {
+        const status = await putSpots(Token, currGroupId, day, updateCards);
+      } catch (error) {
+        console.log("put", error)
+      }
     }
     put();
   }, [updateCards]);

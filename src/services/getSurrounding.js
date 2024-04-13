@@ -12,6 +12,7 @@ export async function getSurrounding(Token, query, spotId) {
     //   },
     // });
     // const data = await res.json();
+    // const status = res.status;
     // return data;
 
     return(
