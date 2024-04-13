@@ -37,10 +37,14 @@ const NewJourneyDialog = ({ open, onClose }) => {
             <InputLabel htmlFor="trip-location">選擇國家</InputLabel>
           </Grid>
           <Grid item xs>
+            <TextField fullWidth defaultValue="臺灣"></TextField>
+          {/* <Grid item xs>
             <Select id="trip-location" label="選擇國家" fullWidth>
               <MenuItem value="Taiwan">Taiwan</MenuItem>
               <MenuItem value="Paris">Paris</MenuItem>
             </Select>
+            
+          </Grid> */}
           </Grid>
         </Grid>
 

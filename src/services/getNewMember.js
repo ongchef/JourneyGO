@@ -1,12 +1,15 @@
-const getNewMember = async (inviteeID, groupID) => {
+'use server';
+
+
+export async function getNewMember(inviteeID, groupID){
 
     const requestBody = {
-      // inviterID: ,
+      inviterID:'' ,
       inviteeID: inviteeID,
       groupID: groupID,
     };
 
-    const url = '/api/saveNewMember'; //要調
+    const url = '/api/tripgroup/invitations'; //要調
 
     try {
       const response = await fetch(url, {

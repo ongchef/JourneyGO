@@ -4,16 +4,23 @@ import Typography from '@mui/material/Typography';
 import FaceIcon from '@mui/icons-material/Face';
 import Button from '@mui/material/Button';
 import DayPanel from './dayPanel';
+
+import NewMemberDialog from '/src/app/components/newMember';
 import { getNewMember } from '@/services/getNewMember';
 
 export default function TripPlan(props, openDialog, setOpenDialog ) {
   const {allGroups} = useContext(DataContext);
   const groupId = props;
+  
 
   const handleAddMemberClick = async(inviteeID) => {
     // const result = await getNewMember(inviteeID, groupId);
     props.setOpenDialog(true);
   };
+
+  const handleSaveNewMember = (email) => {
+    console.log("Saving new member with email :", email);
+  }
 
 
   return (
@@ -36,6 +43,7 @@ export default function TripPlan(props, openDialog, setOpenDialog ) {
       <div className="my-5">
         <DayPanel groupId={groupId} />
       </div>
+      <NewMemberDialog open={openDialog} onClose={handleCloseDialog} onSave={handleSaveNewMember} />
     </div>
   );
 }
