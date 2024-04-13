@@ -10,7 +10,7 @@ import { app } from "./app.js";
 
 dotenv.config();
 const require = createRequire(import.meta.url);
-const swaggerDocument = require("../swagger-output.json");
+const swaggerDocument = require("../swagger0413.json");
 
 export const server = createServer(app);
 const io = new Server(server, {
@@ -54,9 +54,6 @@ io.on("connection", (socket) => {
       cnt += 1;
     }); */
   });
-
-
-  
 });
 
 /*=====================  SERVER START  =====================*/

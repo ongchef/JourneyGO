@@ -45,7 +45,7 @@ app.use(
 // app.use("/api/trip/", ClerkExpressRequireAuth(), getUserInfo, tripRouter);
 app.use("/api/spots/", ClerkExpressRequireAuth(), getUserInfo, spotRouter);
 app.use(
-  "/api/countries",
+  "/api/countries/",
   ClerkExpressRequireAuth(),
   getUserInfo,
   countryRounter

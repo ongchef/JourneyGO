@@ -24,6 +24,7 @@
     "pg-promise": "^11.5.5",
     "socket.io": "^4.7.5",
     "svix": "^1.21.0",
+    "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.0"
   }
 }

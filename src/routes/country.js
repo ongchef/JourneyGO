@@ -1,9 +1,9 @@
-import express from 'express'
-import { getCountries, getById } from '../controllers/country.js'
+import express from "express";
+import { getCountries, getById } from "../controllers/country.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("",getCountries)
-router.get("/:countryId",getById)
+router.get("/", getCountries);
+router.get("/:countryId", getById);
 
-export default router
+export default router;

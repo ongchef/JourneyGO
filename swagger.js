@@ -11,7 +11,7 @@ const doc = {
   host: "localhost:3000",
 };
 
-const outputFile = "./swagger-output.json";
+const outputFile = "./swagger0413.json";
 const routes = ["./src/app.js"];
 
 /* NOTE: If you are using the express Router, you must pass in the 'routes' only the 
