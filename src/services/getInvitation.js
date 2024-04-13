@@ -1,12 +1,12 @@
-const fetchInvitations = async () => {
-    const url = '/api/users/invitations';
+const getInvitation = async () => {
+    const url = 'localhost:3000/api/users/invitations';
   
     try {
       const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          // 'Authorization':'',
+          'Authorization':`Bearer ${Token}`,
         },
       });
   

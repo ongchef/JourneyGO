@@ -10,7 +10,7 @@ const updateInvitationStatus = async (invitationId, status) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        // 'Authorization':'',
+        'Authorization':`Bearer ${Token}`,
       },
       body: JSON.stringify(requestBody),
     });

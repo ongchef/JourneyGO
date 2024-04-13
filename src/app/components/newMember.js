@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
+import { createTripGroup } from '../../services/createTripGroup';
 
-const newMemberDialog = ({ open, onClose, onSave }) => {
+const newMemberDialog = ({ open, onClose}) => {
   const [email, setEmail] = useState('');
 
  
@@ -10,8 +11,13 @@ const newMemberDialog = ({ open, onClose, onSave }) => {
     
   };
 
-  const handleSave = () => {
-    onSave(email);
+  const handleSave = async() => {
+    const tripGroupData = await createTripGroup(groupName, startDate, endDate, country_id, inviteeEmail);
+    if (tripGroupData) {
+      console.log('New trip group created:', tripGroupData);
+      return tripGroupData;
+    }
+
     onClose();
   };
 

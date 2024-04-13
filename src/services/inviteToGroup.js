@@ -1,11 +1,11 @@
 
-const inviteToGroup = async(inviteeEmails, groupID, inviterID)=>{
+const inviteToGroup = async(inviteeEmail, groupId)=>{
 
-    const url = '/api/tripgroup/invitations'; //要調
+    const url = 'http://localhost:3000/api/tripgroup/invitations'; 
 
     const requestBody = {
-      inviteeEmail: inviteeEmails,
-      groupID: groupID,
+      inviteeEmail: inviteeEmail,
+      groupID: groupId,
     };
 
   
@@ -14,7 +14,7 @@ const inviteToGroup = async(inviteeEmails, groupID, inviterID)=>{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // 'Authorization':'',
+          'Authorization':`Bearer ${Token}`,
         },
         body: JSON.stringify({ requestBody }),
       });

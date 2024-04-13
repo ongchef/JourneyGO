@@ -3,6 +3,8 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputL
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import createTripGroup from '/services/createTripGroup';
+
 const NewJourneyDialog = ({ open, onClose }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -17,6 +19,25 @@ const NewJourneyDialog = ({ open, onClose }) => {
     setEndDate(null);
     onClose();
   };
+
+  const handleSave = async () => {
+    try {
+      // 在此處調用 createTripGroup 函數並傳遞所需的參數
+      const data = await createTripGroup(
+        document.getElementById('name').value,
+        document.getElementById('place').value,
+        startDate,
+        endDate,
+        document.getElementById('add-companion').value.split(',')
+      );
+      console.log('Trip group created:', data);
+      onClose();
+    } catch (error) {
+      console.error('Error creating trip group:', error);
+    }
+  };
+
+
 
 
   return (
