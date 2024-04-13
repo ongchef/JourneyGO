@@ -4,6 +4,7 @@ import {
   getTripGroupMember,
   deleteTripGroupMemberbyIds,
   getOverviewByGroupId,
+  createInvitationModel,
 } from "../models/tripgroupModel.js";
 import {
   getuserIdbyClerkId,
@@ -15,8 +16,8 @@ export const createInvitation = async (req, res) => { //如果沒有這些人或
   const clerkId = req.userID;
 
   try {
-      const inviterId = await getuserIdbyClerkId(clerkId)
-      console.log(inviterId);
+      let inviterId = await getuserIdbyClerkId(clerkId)
+      inviterId = inviterId.user_id
       const inviteeId = await getInviteeIdByEmail(inviteeEmail);
       const newInvitation = await createInvitationModel(inviterId, inviteeId, groupId);
           

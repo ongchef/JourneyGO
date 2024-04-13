@@ -94,8 +94,8 @@ export const registerUser = async function (req, res) {
 export const getGroup = async (req, res) => {
   const clerkId = req.userID;
   try {
-      const userId = await getuserIdbyClerkId(clerkId)
-      console.log(userId);
+      let userId = await getuserIdbyClerkId(clerkId)
+      userId = userId.user_id
       const data = await getGroupByUserId(userId);
       if (data.length === 0){
           return res.status(404).json({ message: "Cannot found groups by given userId."});
@@ -107,29 +107,38 @@ export const getGroup = async (req, res) => {
   }
 }
 
+// export const createGroup = async (req, res) => {
+//   const clerkId = req.userID;
+  
+//   const { groupName, country, invitee, startDate, endDate } = req.body; 
+//   try {
+//       let userId = await getuserIdbyClerkId(clerkId)
+//       userId = userId.user_id
+//       const newGroup = await createGroupModel(userId, country, groupName, startDate, endDate);
+
+//       const inviteeId = await getInviteeIdByEmail(email);
+
+//       const newInvitation = await createInvitationModel(userId, inviteeId, groupId);
+      
+//       return res.status(201).json(newGroup);
+//   }catch (error) {
+//       return res.status(500).json({ message: error.message});
+//   }
+// }
+
 export const createGroup = async (req, res) => {
   const clerkId = req.userID;
   
-  const { groupName, country, invitee, startDate, endDate } = req.body; 
+  const { groupName, invitee, startDate, endDate } = req.body; 
   try {
-      const userId = await getuserIdbyClerkId(clerkId)
-      console.log(userId);
-      const newGroup = await createGroupModel(userId, country, groupName, startDate, endDate);
+      let userId = await getuserIdbyClerkId(clerkId)
+      userId = userId.user_id
+      const newGroup = await createGroupModel(userId, "臺灣", groupName, startDate, endDate);
 
-      const inviteeIds = [];
-      for (const email of invitee) {
       const inviteeId = await getInviteeIdByEmail(email);
-      if (inviteeId) {
-          inviteeIds.push(inviteeId);
-      } else {
-          console.log(`User with email ${email} not found.`);
-      }
-      }
 
-      for (const inviteeId of inviteeIds) {
       const newInvitation = await createInvitationModel(userId, inviteeId, groupId);
-      }
-
+      
       return res.status(201).json(newGroup);
   }catch (error) {
       return res.status(500).json({ message: error.message});
@@ -139,8 +148,8 @@ export const createGroup = async (req, res) => {
 export const getInvitation = async (req, res) => {
   const clerkId = req.userID;
   try {
-      const userId = await getuserIdbyClerkId(clerkId)
-      console.log(userId);
+      let userId = await getuserIdbyClerkId(clerkId)
+      userId = userId.user_id 
       const data = await getInvitationByUserId(userId);
 
       if (data.length === 0){
