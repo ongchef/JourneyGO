@@ -8,6 +8,7 @@ import Checkbox from '@mui/material/Checkbox';
 
 export default function TripSearch() {
   const [checked, setChecked] = useState(true);
+  const [searchRes, setSearchRes] = useState([]); // [{title, description, imgUrl, lat, lng, rating}]
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -26,18 +27,13 @@ export default function TripSearch() {
           <Typography variant='body'>搜尋鄰近景點</Typography>
         </div>
       </div>
-      <SearchField />
+      <SearchField setSearchRes={setSearchRes} checked={checked} />
       <div className='flex flex-col gap-3 p-3'>
-        <SearchCard />
-        <SearchCard />
-        <SearchCard />
-        <SearchCard />
-        <SearchCard />
-        <SearchCard />
-        <SearchCard />
-        <SearchCard />
-        <SearchCard />
-        <SearchCard />
+        {
+          searchRes.map((spot, index) => (
+            <SearchCard key={index} title={spot.title} description={spot.description} rating={spot.rating} />
+          ))
+        }
       </div>
     </div>
   );

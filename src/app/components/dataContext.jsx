@@ -60,7 +60,7 @@ export const DataProvider = ({children}) => {
   }, [currGroupId, currDay, refetch]);   //refetch when groupId or day changes
 
   return (
-    <DataContext.Provider value={{allGroups, allSpots, setAllSpots, currGroupId, setCurrGroupId, setCurrDay, Token}}>
+    <DataContext.Provider value={{allGroups, allSpots, setAllSpots, currGroupId, currDay, setCurrGroupId, setCurrDay, Token}}>
       {children} 
     </DataContext.Provider>
   )

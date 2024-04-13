@@ -1,33 +1,22 @@
 'use server';
 
-export async function getSpots(Token, groupId, day) {
+export async function putSpots(Token, groupId, day, newSpots) {
   const url = `http://localhost:3000/api/tripgroup/${groupId}/days/${day}/spots`;
 
   try {
     // const res = await fetch(url, {
-    //   method: 'GET',
+    //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
     //     'Authorization': `${Token}`,
     //   },
+    //   body: JSON.stringify(newSpots),
     // });
     // const data = await res.json();
+    // const status = res.status;
     // return data;
 
-    return(
-      [
-        {
-          id: 1,
-          title: 'title',
-          address: 'address',
-        },
-        {
-          id: 2,
-          title: 'title2',
-          address: 'address2',
-        },
-      ]
-    );
+    return 200;
     
   } catch (error) {
     console.error('Error:', error);

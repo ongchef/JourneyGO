@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DataContext } from "@/app/components/dataContext";
 import Typography from '@mui/material/Typography';
 import FaceIcon from '@mui/icons-material/Face';
@@ -10,13 +10,14 @@ import DayPanel from './dayPanel';
 import NewMemberDialog from '/src/app/components/newMember';
 // import { getNewMember } from '@/services/getNewMember';
 
-export default function TripPlan(props, openDialog, setOpenDialog ) {
+export default function TripPlan(props) {
   const {allGroups, currGroupId} = useContext(DataContext);
+  const [openDialog, setOpenDialog] = useState(false);
 
 
   const handleAddMemberClick = async(inviteeID) => {
     // const result = await getNewMember(inviteeID, groupId);
-    props.setOpenDialog(true);
+    setOpenDialog(true);
   };
 
   const handleSaveNewMember = (email) => {

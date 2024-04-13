@@ -26,23 +26,14 @@ function tabProps(index) {
 export default function Trip({params}) {
   const {allGroups, currGroupId, setCurrGroupId} = useContext(DataContext);
   const [value, setValue] = useState(0);
-  // const [openDialog, setOpenDialog] = useState(false);
-  
-
+   
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-
-  // const handleOpenDialog = () => {
-  //   setOpenDialog(true);
-  // };
-
-  // const handleCloseDialog = () => {
-  //   setOpenDialog(false);
-  // };
-
-
+  useEffect(() => {
+    setCurrGroupId(params.id);
+  }, [params.id]);
 
   return (
     <main>
@@ -74,7 +65,6 @@ export default function Trip({params}) {
         <TabPanel value={value} index={0}>
           <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
             <TripPlan params={params} groupId={params.id}></TripPlan>
-            {/* <TripPlan params={params} groupId={params.id} openDialog={openDialog} setOpenDialog={setOpenDialog}/> */}
             <TripSearch groupId={params.id} />
           </div>
         </TabPanel>
@@ -83,9 +73,6 @@ export default function Trip({params}) {
         </TabPanel>
       </Box>
     </Box>
-    
     </main>
-
-
   );
 }

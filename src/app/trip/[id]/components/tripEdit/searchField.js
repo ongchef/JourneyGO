@@ -1,22 +1,45 @@
-import * as React from 'react';
+import {useState, useContext, useEffect} from 'react';
+import { getSearch } from '@/services/getSearch';
+import { getSurrounding } from '@/services/getSurrounding';
+import { DataContext } from '@/app/components/dataContext';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import DirectionsIcon from '@mui/icons-material/Directions';
 
-export default function SearchField() {
-  const [searchText, setSearchText] = React.useState('');
+export default function SearchField({ setSearchRes, checked }) {
+  const [searchText, setSearchText] = useState('');
+  const { Token, currGroupId, currDay, allSpots } = useContext(DataContext);
+  const [lastSpot, setLastSpot] = useState(); //id
+
+  useEffect(() => {
+    if (currGroupId === -1 || currDay === -1) return;
+    function fetchLastSpot() {
+      if (allSpots && allSpots[currGroupId] && allSpots[currGroupId][currDay]){
+        const lastSpot = allSpots[currGroupId][currDay].slice(-1)[0];
+        setLastSpot(lastSpot.id);
+      }
+    }
+    fetchLastSpot();
+  }, [currGroupId, currDay, allSpots]);
+
 
   const handleInputChange = (event) => {
     setSearchText(event.target.value);
   };
 
   const handleClick = () => {
-    console.log('Searched for:', searchText);
-    // Add your logic to send the search text here
+    async function search() {
+      if (checked==true) {
+        const res = await getSurrounding(Token, searchText);
+        setSearchRes(res);
+      } else {
+        const res = await getSearch(Token, searchText, lastSpot);
+        setSearchRes(res);
+      }
+    };
+    search();
   };
 
   return (
