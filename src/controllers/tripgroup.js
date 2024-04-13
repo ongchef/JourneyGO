@@ -9,37 +9,44 @@ import {
 import {
   getuserIdbyClerkId,
   getInviteeIdByEmail,
-} from "../models/userModel.js"
+} from "../models/userModel.js";
 
-export const createInvitation = async (req, res) => { //如果沒有這些人或是群組的話
-  const {inviteeEmail, groupId} = req.body;
+export const createInvitation = async (req, res) => {
+  //如果沒有這些人或是群組的話
+  const { inviteeEmail, groupId } = req.body;
   const clerkId = req.userID;
 
   try {
-      let inviterId = await getuserIdbyClerkId(clerkId)
-      inviterId = inviterId.user_id
-      const inviteeId = await getInviteeIdByEmail(inviteeEmail);
-      const newInvitation = await createInvitationModel(inviterId, inviteeId, groupId);
-          
-      return res.status(201).json(newInvitation);
-  }catch (error) {
-      return res.status(500).json({ message: error.message});
+    let inviterId = await getuserIdbyClerkId(clerkId);
+    inviterId = inviterId.user_id;
+    const inviteeId = await getInviteeIdByEmail(inviteeEmail);
+    const newInvitation = await createInvitationModel(
+      inviterId,
+      inviteeId,
+      groupId
+    );
+
+    return res.status(201).json(newInvitation);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
-}
+};
 
 export const getGroupOverview = async (req, res) => {
   const { groupId } = req.params;
   try {
-      const data = await getOverviewByGroupId(groupId);
-      if (data.length === 0){
-          return res.status(404).json({ message: "Cannot found overviews by given groupId."});
-      }
-      
-      return res.status(200).json(data);
+    const data = await getOverviewByGroupId(groupId);
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Cannot found overviews by given groupId." });
+    }
+
+    return res.status(200).json(data);
   } catch (error) {
-      return res.status(500).json({ message: error.message});
+    return res.status(500).json({ message: error.message });
   }
-}
+};
 
 export const getTripGroupDetail = async (req, res) => {
   const { groupId } = req.params;
@@ -60,7 +67,7 @@ export const getTripGroupDetail = async (req, res) => {
   }
 };
 export const updateTripGroupDetail = async (req, res) => {
-  const { userClerkId } = req.userID;
+  const userClerkId = req.userID;
   const { groupId, groupName, start_date, end_date } = req.body;
   try {
     //update 之前先 get get 看
@@ -75,10 +82,12 @@ export const updateTripGroupDetail = async (req, res) => {
     }
     // no user found
     if (user.length === 0) {
-      console.log("Cannot found user by given userId.");
+      console.log(
+        "Cannot found user by given userId.",
+        "Update Failed. User" + " not in group " + groupId
+      );
       return res.status(404).json({
-        message:
-          "Update Failed. User " + data[0].u_id + " not in group " + groupId,
+        message: "Update Failed. User" + " not in group " + groupId,
       });
     }
     const resdata = await updateTripGroupDetailbyGroupId(
@@ -97,15 +106,15 @@ export const updateTripGroupDetail = async (req, res) => {
 };
 
 export const deleteTripGroupMember = async (req, res) => {
-  //console.log(req.params);
-  const { userClerkId } = req.userID;
+  const userClerkId = req.userID;
   const { groupId } = req.params;
+  console.log(userClerkId, groupId);
   try {
     const data = await getTripGroupMember(groupId, userClerkId);
     if (data.length === 0) {
       console.log("user", " not in group", groupId);
       return res.status(404).json({
-        message: "Delete Failed. Cannot found data by given groupId.",
+        message: "Delete Failed. User not in group " + groupId,
       });
     }
 

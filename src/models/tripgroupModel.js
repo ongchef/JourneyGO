@@ -21,7 +21,6 @@ export const getOverviewByGroupId = (groupId) => {
   );
 };
 
-
 export const getTripGroupDetailbyGroupID = (groupId) => {
   return db.query(
     `SELECT
@@ -29,7 +28,8 @@ export const getTripGroupDetailbyGroupID = (groupId) => {
         tg.group_name,
         tg.start_date,
         tg.end_date,
-        STRING_AGG(ua.user_id || ':' || ua.user_name, ', ') AS users
+        (tg.end_date - tg.start_date) AS days,
+        STRING_AGG( ua.user_name, ', ') AS users
     FROM
         trip_groups tg
     INNER JOIN
