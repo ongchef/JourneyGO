@@ -170,8 +170,8 @@ export const putInvitation = async (req, res) => {
   const { status } = req.body;
   
   try {
-      if (status !== "accepted" || status !== "pending" || status !== "rejected") {
-          return res.status(400).json({ message: "status need to be accepted, pending, or rejected."});
+      if (status !== "accepted" && status !== "pending" && status !== "rejected") {
+        return res.status(400).json({ message: "status need to be accepted, pending, or rejected."});
       }
       const updInvitation = await updateInvitation(invitationId, status);
 
