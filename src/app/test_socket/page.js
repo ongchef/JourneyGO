@@ -1,6 +1,7 @@
 'use client';
 import { io } from 'socket.io-client';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { DataContext } from '../components/dataContext';
 
 export default function Test(props) {
   const { Id } = props;
@@ -8,14 +9,12 @@ export default function Test(props) {
 
   useEffect(() => {
     const socket = io("http://localhost:3000");
-
     function enterRoom(data) {
       socket.emit("enter_room", {
         groupId: 1,  //int
         jwt: "test",
       });
     }
-    
     function spotChange(data) {
       socket.emit("client_spot_change", {
         groupId: 1,
@@ -23,7 +22,6 @@ export default function Test(props) {
         spot_sequence: [1, 2, 3],
       });
     }
-
     socket.on("server_spot_change", data => {
       const day = data.day
       const spot_sequence = data.spot_sequence    
