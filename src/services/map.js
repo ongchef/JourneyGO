@@ -53,7 +53,6 @@ export const findPlace = async(query) => {
     return await client.textSearch(args).then((response)=>{
         console.log(response.data.results)
         return response.data.results
-        // 回傳樣式自己定義
     })
     // return await client.findPlaceFromText(args).then((response)=>{
     //     console.log(response.data.candidates)
