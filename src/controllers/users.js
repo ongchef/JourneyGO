@@ -135,9 +135,9 @@ export const createGroup = async (req, res) => {
   try {
       let userId = await getuserIdbyClerkId(clerkId)
       userId = userId[0].user_id
-      const newGroup = await createGroupModel(userId, groupName, countryName, startDate, endDate);
+      const newGroup = await createGroupModel(userId, groupName, countries, startDate, endDate);
 
-      const inviteeId = await getInviteeIdByEmail(email);
+      const inviteeId = await getInviteeIdByEmail(invitee);
 
       const newInvitation = await createInvitationModel(userId, inviteeId, groupId);
       
