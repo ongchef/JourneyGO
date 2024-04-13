@@ -8,6 +8,8 @@ import { createRequire } from "module";
 import db from "./models/db_connection.js";
 import { app } from "./app.js";
 
+import {updateSpotBySpotId} from "./models/spotModel.js";
+
 dotenv.config();
 const require = createRequire(import.meta.url);
 const swaggerDocument = require("../swagger0413.json");
@@ -42,17 +44,11 @@ io.on("connection", (socket) => {
     });
 
     // Call API update DB rows
-    /* var cnt = 0;
+    var cnt = 0;
     data.spot_sequence.forEach(async (element) => {
-      const response = await axios.post(
-        `http://localhost:${port}/api/tripgroup/${data.groupId}/days/${data.day}/spots`,
-        {
-          spotId: element,
-          sequence: cnt,
-        }
-      );
+      updateSpotBySpotId(element, data.day, cnt)
       cnt += 1;
-    }); */
+    });
   });
 });
 

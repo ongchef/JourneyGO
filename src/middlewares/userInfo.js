@@ -6,7 +6,9 @@ export default async function getUserInfo(req, res, next) {
   // Optionally ClerkExpressWithAuth returns an empty user with no error
   // ClerkExpressWithAuth(),
   console.log("---------------");
-  // console.log("req", req.auth);
+  //console.log("req", req)
+  console.log("req.rawHeaders", req.rawHeaders);
+  console.log("req.auth", req.auth);
   console.log("req_Id", req.auth.userId);
 
   const getToken = req.auth.getToken;
