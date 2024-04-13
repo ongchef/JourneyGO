@@ -38,6 +38,7 @@ export const DataProvider = ({children}) => {
 
 
   // store all spots given groupId and day
+  const [refetch, setRefetch] = useState(() => () => {});
   const [allSpots, setAllSpots] = useState({}); // {groupId: {day: spots_sequence}}
   useEffect(() => {                             //  sequence [{id, title, startTime, endTime, numLikes, comments, imgUrl},]
     const fetchSpots = async () => {
@@ -56,10 +57,10 @@ export const DataProvider = ({children}) => {
       }
     };
     fetchSpots();
-  }, [currGroupId, currDay]);   //refetch when groupId or day changes
+  }, [currGroupId, currDay, refetch]);   //refetch when groupId or day changes
 
   return (
-    <DataContext.Provider value={{allGroups, allSpots, currGroupId, setCurrGroupId, setCurrDay}}>
+    <DataContext.Provider value={{allGroups, allSpots, setAllSpots, currGroupId, setCurrGroupId, setCurrDay, Token}}>
       {children} 
     </DataContext.Provider>
   )
