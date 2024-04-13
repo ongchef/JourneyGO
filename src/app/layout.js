@@ -31,7 +31,6 @@ export default function RootLayout({ children }) {
         <body className={inter.className}>
           <AppRouterCacheProvider>
             <DataProvider>
-              {/* add nav bar */}
               <Box sx={{ position: 'sticky', top: 0, zIndex: 1000 }}>
                 <AppBar position="static" sx= {{ backgroundColor: '#2EB3D0'}}>
                 

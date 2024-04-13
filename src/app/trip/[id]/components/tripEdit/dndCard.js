@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 const ItemTypes = {CARD: 'card',}
 
-export const DndCard = ({ id, text, index, time, moveCard }) => {
+export const DndCard = ({ id, text, index, address, moveCard }) => {
 
   // Drag and Drop
   const ref = useRef(null)
@@ -64,7 +64,7 @@ export const DndCard = ({ id, text, index, time, moveCard }) => {
           <ThumbUpOffAltIcon />
         </div>
       </div>
-      <Typography variant='caption'>{time}</Typography>
+      <Typography variant='caption'>{address}</Typography>
     </div>
   )
 }

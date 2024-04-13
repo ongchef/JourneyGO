@@ -9,7 +9,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-
 function tabProps(index) {
   return {
     id: `full-width-tab-${index}`,
@@ -18,9 +17,10 @@ function tabProps(index) {
 }
 
 export default function DayPanel(props) {
-  const {groupId} = props;
-  const {allGroups} = useContext(DataContext);
-  const [days, setDays] = useState(Array.from({length: allGroups[groupId]?.days}, (_, i) => i));
+  const {allGroups, currGroupId} = useContext(DataContext);
+  // const [days, setDays] = useState(Array.from({length: allGroups[currGroupId]?.days}, (_, i) => i));
+  const days = [0, 1, 2, 3, 4, 5, 6];
+  
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -51,7 +51,7 @@ export default function DayPanel(props) {
       {days.map((day) => {
         return (
           <TabPanel value={value} index={day} key={day}>
-            <AllSpots groupId={groupId} day={day}/>
+            <AllSpots day={day}/>
           </TabPanel>
         );
       })}

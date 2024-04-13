@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { DataContext } from "@/app/components/dataContext";
 import TripPlan from './components/tripEdit/tripPlan';
 import TripSearch from './components/tripEdit/tripSearch';
@@ -24,7 +24,7 @@ function tabProps(index) {
 }
 
 export default function Trip({params}) {
-  const {allGroups} = useContext(DataContext);
+  const {allGroups, currGroupId, setCurrGroupId} = useContext(DataContext);
   const [value, setValue] = useState(0);
   // const [openDialog, setOpenDialog] = useState(false);
   
@@ -74,15 +74,14 @@ export default function Trip({params}) {
         </Tabs>
       </Box>
       <Box>
-        <Typography variant='h4' sx={{mx: 2, my: 2}}>{allGroups[params.id]?.groupName}</Typography>
-        <TabPanel value={value} index={0} groupId={params.id}>
+        <Typography variant='h4' sx={{mx: 2, my: 2}}>{allGroups[currGroupId]?.groupName}</Typography>
+        <TabPanel value={value} index={0}>
           <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
-            <TripPlan params={params} groupId={params.id}/>
-            {/* <TripPlan params={params} groupId={params.id} openDialog={openDialog} setOpenDialog={setOpenDialog}/> */}
+            <TripPlan params={params} groupId={params.id} openDialog={openDialog} setOpenDialog={setOpenDialog}/>
             <TripSearch groupId={params.id} />
           </div>
         </TabPanel>
-        <TabPanel value={value} index={1} groupId={params.id}>
+        <TabPanel value={value} index={1}>
           分帳
         </TabPanel>
       </Box>
