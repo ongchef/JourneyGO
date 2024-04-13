@@ -14,9 +14,9 @@ dotenv.config();
 
 export const app = express();
 
-app.use("/api/users/", ClerkExpressWithAuth(),express.json(), getUserInfo, usersRouter);
+app.use("/api/users/", ClerkExpressWithAuth(), getUserInfo, usersRouter);
 // webhook api need to comment this out
-
+app.use(express.json());
 app.use(
   cors({
     origin: "*",

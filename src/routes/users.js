@@ -17,8 +17,8 @@ router.post(
 );
 
 router.get("/trip-groups", getGroup);
-router.post("/trip-groups", createGroup);
+router.post("/trip-groups", express.json(), createGroup);
 router.get("/invitations", getInvitation);
-router.put("/invitations/:invitationId/status", putInvitation);
+router.put("/invitations/:invitationId/status", express.json(), putInvitation);
 
 export default router;
