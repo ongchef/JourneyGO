@@ -46,16 +46,17 @@ export const findPlace = async(query) => {
     const args = {
         params: {
             key: process.env.MAP_API_KEY,
-            input: query,
-            inputtype: "textquery",
-            fields:["formatted_address","name","place_id","photo","rating","geometry"],
-            // locationbias:"circle:1000@25.01998258689229,121.53992081709387" ,
+            query: query,
             language: "zh-TW"
         }
     };
-    return await client.findPlaceFromText(args).then((response)=>{
-        console.log(response.data.candidates)
-        return response.data.candidates
-        // 回傳樣式自己定義
+    return await client.textSearch(args).then((response)=>{
+        console.log(response.data.results)
+        return response.data.results
     })
+    // return await client.findPlaceFromText(args).then((response)=>{
+    //     console.log(response.data.candidates)
+    //     return response.data.candidates
+    //     // 回傳樣式自己定義
+    // })
 }
