@@ -10,9 +10,8 @@ const newMemberDialog = ({ open, onClose, onSave }) => {
     
   };
 
-
   const handleSave = () => {
-    // onSave(email);
+    onSave(email);
     onClose();
   };
 

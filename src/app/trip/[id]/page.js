@@ -43,6 +43,11 @@ export default function Trip({params}) {
     setOpenDialog(false);
   };
 
+  const handleSaveNewMember = (email) => {
+    console.log("Saving new member with email :", email);
+  }
+
+
 
 
   return (
@@ -84,7 +89,7 @@ export default function Trip({params}) {
       </Box>
     </Box>
     
-    <NewMemberDialog open={openDialog} onClose={handleCloseDialog} />
+    <NewMemberDialog open={openDialog} onClose={handleCloseDialog} onSave={handleSaveNewMember} />
     </main>
 
 
