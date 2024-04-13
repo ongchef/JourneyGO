@@ -1,3 +1,5 @@
+'use client';
+
 import { useContext } from "react";
 import { DataContext } from "@/app/components/dataContext";
 import Typography from '@mui/material/Typography';
@@ -7,8 +9,8 @@ import DayPanel from './dayPanel';
 import { getNewMember } from '@/services/getNewMember';
 
 export default function TripPlan(props, openDialog, setOpenDialog ) {
-  const {allGroups} = useContext(DataContext);
-  const groupId = props;
+  const {allGroups, currGroupId} = useContext(DataContext);
+
 
   const handleAddMemberClick = async(inviteeID) => {
     // const result = await getNewMember(inviteeID, groupId);
@@ -20,7 +22,7 @@ export default function TripPlan(props, openDialog, setOpenDialog ) {
     <div className='px-5 w-[100%] overflow-auto h-[70vh]'>
       <div className="flex flex-row justify-between">
         <div className="flex flex-col gap-3">
-          <Typography variant='h6'>{allGroups[groupId]?.startDate} ~ {allGroups[groupId]?.endDate}</Typography>
+          <Typography variant='h6'>{allGroups[currGroupId]?.startDate} ~ {allGroups[currGroupId]?.endDate}</Typography>
           <div className="flex gap-5 items-center">
             <FaceIcon className="scale-150"/>
             <FaceIcon className="scale-150"/>
@@ -34,7 +36,7 @@ export default function TripPlan(props, openDialog, setOpenDialog ) {
         </div>
       </div>
       <div className="my-5">
-        <DayPanel groupId={groupId} />
+        <DayPanel />
       </div>
     </div>
   );

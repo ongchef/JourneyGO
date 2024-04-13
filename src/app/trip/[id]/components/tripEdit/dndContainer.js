@@ -1,7 +1,7 @@
 'use client';
 
 import update from 'immutability-helper'
-import { useCallback, useState, useContext, useEffect } from 'react'
+import { useCallback, useState, useContext, useEffect, use } from 'react'
 import { DndCard } from './dndCard.js'
 import { DataContext } from '@/app/components/dataContext.jsx';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
@@ -9,18 +9,24 @@ import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function DndContainer(props) {
-  const {allSpots} = useContext(DataContext);
-  const {groupId, day} = props;
+  const {allSpots, currGroupId, setCurrDay} = useContext(DataContext);
+  const {day} = props;
   const [updateCards, setUpdateCards] = useState([])
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
+    setCurrDay(day);
+  }, [day]);
+
+  useEffect(() => {
     try {
-      setCards(allSpots[groupId][day]);
+      if (allSpots && allSpots[currGroupId] && allSpots[currGroupId][day] !== undefined) {
+        setCards(allSpots[currGroupId][day]);
+      }
     } catch (error) {
-      console.log(error)
+      console.log("setCards", error)
     }
-  }, [allSpots, groupId, day]);
+  }, [allSpots, currGroupId, day]);
 
   const moveCard = useCallback((dragIndex, hoverIndex) => {
     setCards((prevCards) => {
@@ -33,20 +39,19 @@ export default function DndContainer(props) {
       setUpdateCards(updatedCards);
       return updatedCards;
     });
-    
   }, []);
 
   return (
     <>
       <div className='flex flex-col gap-2 p-5'>
-        {cards?.map((card, index) => {
+        {cards?.map((card, index) => {  
           return (
             <div key={card.id}>
               <DndCard
                 index={index}
                 id={card.id}
-                text={card.text}
-                time={card.time}
+                text={card.title}
+                address={card.address}
                 moveCard={moveCard}
               />
               {index !== cards.length - 1 &&  
