@@ -7,7 +7,7 @@ export const createInvitationModel = (inviterId, inviteeId, groupId) => {
     [inviterId, inviteeId, groupId]
   );
 };
-
+//days, groupId
 export const getOverviewByGroupId = (groupId) => {
   return db.manyOrNone(
     `SELECT tg.group_name, tg.start_date, tg.end_date, tg.status, ARRAY_AGG(u.user_name) AS user_names

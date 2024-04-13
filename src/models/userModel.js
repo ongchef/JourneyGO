@@ -24,11 +24,10 @@ export const getGroupByUserId = (userId) => {
     SELECT tg.group_name, tg.start_date, tg.end_date, tg.status
     FROM trip_groups tg
     JOIN group_member gm ON tg.group_id = gm.g_id
-    JOIN group_country gc ON tg.group_id = gc.g_id
-    JOIN country c ON gc.c_id = c.country_id
     WHERE gm.u_id = $1;
   `, [userId]);
 };
+
 
 export const createGroupModel = (userId, groupName, countries, startDate, endDate) => {
   return new Promise((resolve, reject) => {

@@ -15,11 +15,14 @@ export const createInvitation = async (req, res) => {
   //如果沒有這些人或是群組的話
   const { inviteeEmail, groupId } = req.body;
   const clerkId = req.userID;
-
+  console.log(inviteeEmail, groupId);
   try {
     let inviterId = await getuserIdbyClerkId(clerkId);
-    inviterId = inviterId.user_id;
-    const inviteeId = await getInviteeIdByEmail(inviteeEmail);
+    console.log(inviterId);
+    inviterId = inviterId[0].user_id;
+    let inviteeId = await getInviteeIdByEmail(inviteeEmail);
+    inviteeId = inviteeId.user_id
+
     const newInvitation = await createInvitationModel(
       inviterId,
       inviteeId,

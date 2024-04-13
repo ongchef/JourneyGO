@@ -95,7 +95,9 @@ export const getGroup = async (req, res) => {
   const clerkId = req.userID;
   try {
       let userId = await getuserIdbyClerkId(clerkId)
-      userId = userId.user_id
+      console.log(userId);
+      userId = userId[0].user_id
+      console.log(userId);
       const data = await getGroupByUserId(userId);
       if (data.length === 0){
           return res.status(404).json({ message: "Cannot found groups by given userId."});
@@ -128,12 +130,12 @@ export const getGroup = async (req, res) => {
 
 export const createGroup = async (req, res) => {
   const clerkId = req.userID;
-  
-  const { groupName, invitee, startDate, endDate } = req.body; 
+  console.log(req.body);
+  const { groupName, countries, invitee, startDate, endDate } = req.body; 
   try {
       let userId = await getuserIdbyClerkId(clerkId)
-      userId = userId.user_id
-      const newGroup = await createGroupModel(userId, "臺灣", groupName, startDate, endDate);
+      userId = userId[0].user_id
+      const newGroup = await createGroupModel(userId, groupName, countryName, startDate, endDate);
 
       const inviteeId = await getInviteeIdByEmail(email);
 
@@ -149,7 +151,7 @@ export const getInvitation = async (req, res) => {
   const clerkId = req.userID;
   try {
       let userId = await getuserIdbyClerkId(clerkId)
-      userId = userId.user_id 
+      userId = userId[0].user_id 
       const data = await getInvitationByUserId(userId);
 
       if (data.length === 0){
@@ -164,8 +166,9 @@ export const getInvitation = async (req, res) => {
 
 export const putInvitation = async (req, res) => {
   const { invitationId } = req.params;
+  console.log(req.body);
   const { status } = req.body;
-
+  
   try {
       if (status !== "accepted" || status !== "pending" || status !== "rejected") {
           return res.status(400).json({ message: "status need to be accepted, pending, or rejected."});
