@@ -14,20 +14,18 @@ import { findNearby, findPlace } from "../services/map.js";
 
 export const getSpots = async (req, res) => {
     const {groupId, day} = req.params;
-    const u_id = req.headers.u_id
-    //const u_id = req.u_id;
+    const { userClerkId } = req.userID;
     try {
-        const spots = await getSpotByGroupIdDay(groupId, day);
+        // check user in this group or not 
+        const user = await getTripGroupMember(groupId, userClerkId);
+        if (user.length === 0){
+            return res.status(400).json({ message: "User not in group."})
+        }
 
+        const spots = await getSpotByGroupIdDay(groupId, day);
         // no spot found
         if (spots.length === 0){
             return res.status(404).json({ message: "Cannot found data by given groupId/day."});
-        }
-
-        // check user in this group or not 
-        const user = await getTripGroupMember(groupId, u_id);
-        if (user.length === 0){
-            return res.status(400).json({ message: "User not in group."})
         }
         
         return res.status(200).json(spots);
@@ -39,9 +37,15 @@ export const getSpots = async (req, res) => {
 export const createSpot = async (req, res) => {
     const {day, groupId} = req.params;
     const {spotName, description, location, lan, lon, sequence} = req.body;
-    const u_id = req.headers.u_id
-    //const u_id = req.u_id;
+    const { userClerkId } = req.userID;
     try {
+
+        // check user in this group or not 
+        const user = await getTripGroupMember(groupId, userClerkId);
+        if (user.length === 0){
+            return res.status(400).json({ message: "User not in group."})
+        }
+
         // spot already existed.
         const spots = await getSpotByGroupIdDay(groupId, day);
         spots.forEach(element => {
@@ -49,12 +53,6 @@ export const createSpot = async (req, res) => {
                 return res.status(400).json({ message: "Spot already add."});
             }
         })
-
-        // check user in this group or not 
-        const user = await getTripGroupMember(groupId, u_id);
-        if (user.length === 0){
-            return res.status(400).json({ message: "User not in group."})
-        }
 
         // create spot
         const newSpot = await createSpotByGroupId(spotName, description, location, lan, lon, day, sequence, groupId);
@@ -67,20 +65,19 @@ export const createSpot = async (req, res) => {
 export const updateSpot = async (req, res) => {
     const {day, groupId} = req.params
     const {spotId, sequence} = req.body;
-    const u_id = req.headers.u_id
-    // const u_id = req.u_id;
+    const { userClerkId } = req.userID;
 
     try {
+        // check user in this group or not 
+        const user = await getTripGroupMember(groupId, userClerkId);
+        if (user.length === 0){
+            return res.status(400).json({ message: "User not in group."})
+        }
+
         // no such spotId
         const spots = await getSpotBySpotId(spotId);
         if (spots.length === 0){
             return res.status(404).json({ message: "Cannot found data by given groupId/day."});
-        }
-
-        // check user in this group or not 
-        const user = await getTripGroupMember(groupId, u_id);
-        if (user.length === 0){
-            return res.status(400).json({ message: "User not in group."})
         }
         
         // update spot
@@ -93,19 +90,19 @@ export const updateSpot = async (req, res) => {
 
 export const deleteSpot = async (req, res) => {
     const {spotId, groupId, day} = req.params;
-    const u_id = req.headers.u_id
-    // const u_id = req.u_id;
+    const { userClerkId } = req.userID;
+
     try {
+        // check user in this group or not 
+        const user = await getTripGroupMember(groupId, userClerkId);
+        if (user.length === 0){
+            return res.status(400).json({ message: "User not in group."})
+        }
+
         // no spot found
         const spots = await getSpotBySpotId(spotId);
         if (spots.length === 0){
             return res.status(404).json({ message: "Cannot found data by given groupId/day."});
-        }
-
-        // check user in this group or not 
-        const user = await getTripGroupMember(groupId, u_id);
-        if (user.length === 0){
-            return res.status(400).json({ message: "User not in group."})
         }
 
         // delete spot
