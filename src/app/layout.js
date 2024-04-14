@@ -1,5 +1,8 @@
+'use client';
+
 import { Inter } from "next/font/google";
 import "./globals.css";
+
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';  //for MUI
 import { ClerkProvider } from '@clerk/nextjs';  //for clerk
 import { DataProvider } from "./components/dataContext";  //for context
@@ -9,17 +12,31 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
+// import NavBar from './components/navBar'; 
+import NotificationDialog from "./components/NotificationDialog";
 
 
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata = {
-  title: "JourneyGo",
-  description: "Start your journey with JourneyGo",
-};
+// export const metadata = {
+//   title: "JourneyGo",
+//   description: "Start your journey with JourneyGo",
+// };
 
 export default function RootLayout({ children }) {
+  const [showNotification, setShowNotification] = React.useState(false);
+  const [notifications, setNotifications] = React.useState([]);
+
+
+  const handleNotificationClick = () => {
+    const newNotification = fetch('/api/users/invitations');
+    setShowNotification(true);
+  }
+
+  const handleCloseNotification = () => {
+    setShowNotification(false);
+  }
 
   
   return (
@@ -31,7 +48,7 @@ export default function RootLayout({ children }) {
         <body className={inter.className}>
           <AppRouterCacheProvider>
             <DataProvider>
-              <Box sx={{ position: 'sticky', top: 0, zIndex: 1000 }}>
+            <Box sx={{ position: 'sticky', top: 0, zIndex: 1000 }}>
                 <AppBar position="static" sx= {{ backgroundColor: '#2EB3D0'}}>
                 
                   <Toolbar disableGutters>
@@ -41,7 +58,7 @@ export default function RootLayout({ children }) {
                       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>Journey<span style={{ color: '#0D5160' }}>Go</span>
                       </Typography>
 
-                      <IconButton color="inherit"  aria-label="notification">
+                      <IconButton color="inherit"  aria-label="notification" onClick={handleNotificationClick}>
                         <img src ="notification.png" alt="notification" style={{ color:'white', width: 35, height: 35, marginRight: 10}}/>
                         
                       </IconButton>
@@ -52,6 +69,7 @@ export default function RootLayout({ children }) {
               </AppBar>
               </Box>
               {children}
+              {showNotification && <NotificationDialog open={true} onClose={handleCloseNotification} />}
             </DataProvider>
           </AppRouterCacheProvider>  
         </body>

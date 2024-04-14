@@ -3,11 +3,14 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputL
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import createTripGroup from '/services/createTripGroup';
+import { createTripGroup } from '../../services/createTripGroup';
 
 const NewJourneyDialog = ({ open, onClose }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [groupName, setGroupName] = useState('');
+  const [country, setCountry] = useState('');
+  const [companionEmail, setCompanionEmail] = useState('');
 
   const handleDateChange = (dates) => {
     const [start, end] = dates;
@@ -23,14 +26,8 @@ const NewJourneyDialog = ({ open, onClose }) => {
   const handleSave = async () => {
     try {
       // 在此處調用 createTripGroup 函數並傳遞所需的參數
-      const data = await createTripGroup(
-        document.getElementById('name').value,
-        document.getElementById('place').value,
-        startDate,
-        endDate,
-        document.getElementById('add-companion').value.split(',')
-      );
-      console.log('Trip group created:', data);
+      const tripGroupData = await createTripGroup(groupName, startDate, endDate, country, companionEmail);
+      console.log('Trip group created:', tripGroupData);
       onClose();
     } catch (error) {
       console.error('Error creating trip group:', error);
@@ -103,7 +100,7 @@ const NewJourneyDialog = ({ open, onClose }) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCancel}>取消</Button>
-        <Button onClick={onClose} variant="contained" color="primary">儲存</Button>
+        <Button onClick={handleSave} variant="contained" color="primary">儲存</Button>
       </DialogActions>
     </Dialog>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
-import { createTripGroup } from '../../services/createTripGroup';
+import { getInvitation } from '../../services/getInvitation';
 
 const newMemberDialog = ({ open, onClose}) => {
   const [email, setEmail] = useState('');
@@ -12,13 +12,14 @@ const newMemberDialog = ({ open, onClose}) => {
   };
 
   const handleSave = async() => {
-    const tripGroupData = await createTripGroup(groupName, startDate, endDate, country_id, inviteeEmail);
-    if (tripGroupData) {
-      console.log('New trip group created:', tripGroupData);
-      return tripGroupData;
+    try {
+   
+      const invitationData = await getInvitation(inviteeEmail);
+      console.log('Invitation data:', invitationData);
+      onClose();
+    } catch (error) {
+      console.error('Error fetching invitations:', error);
     }
-
-    onClose();
   };
 
   const handleCancel = () => {

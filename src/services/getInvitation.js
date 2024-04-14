@@ -1,4 +1,4 @@
-const getInvitation = async () => {
+const getInvitation = async (Token) => {
     const url = 'localhost:3000/api/users/invitations';
   
     try {
