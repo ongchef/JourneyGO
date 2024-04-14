@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 // import NavBar from './components/navBar'; 
 import NotificationDialog from "./components/NotificationDialog";
-
+import { getInvitation } from '../services/getInvitation';
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -26,12 +26,23 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   const [showNotification, setShowNotification] = React.useState(false);
-  const [notifications, setNotifications] = React.useState([]);
+  // const [notifications, setNotifications] = React.useState([]);
 
 
-  const handleNotificationClick = () => {
-    const newNotification = fetch('/api/users/invitations');
-    setShowNotification(true);
+  const handleNotificationClick = async () => {
+    try {
+      const Token = localStorage.getItem('Token'); 
+      if (Token) { 
+        const invitations = await getInvitation(Token);
+        if (invitations) {
+          setShowNotification(true);
+        }
+      } else {
+        console.error('Token not found in local storage.');
+      }
+    } catch (error) {
+      console.error('Error fetching invitations:', error);
+    }
   }
 
   const handleCloseNotification = () => {

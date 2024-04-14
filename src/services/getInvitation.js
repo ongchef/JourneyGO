@@ -1,5 +1,5 @@
 const getInvitation = async (Token) => {
-    const url = 'localhost:3000/api/users/invitations';
+    const url = '/api/users/invitations';
   
     try {
       const response = await fetch(url, {

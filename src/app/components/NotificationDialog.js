@@ -49,6 +49,7 @@ const NotificationDialog = ({ open, onClose}) => {
     const snackbarElement = document.getElementById('notification-snackbar');
     if (snackbarElement) {
       const { height } = snackbarElement.getBoundingClientRect();
+      //console.log('Snackbar height:', height);
       setSnackbarHeight(height);
     }
   };
@@ -62,9 +63,9 @@ const NotificationDialog = ({ open, onClose}) => {
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        onEnter={handleSnackbarEnter}
         TransitionComponent={SlideTransition}
       >
+
         <MuiAlert elevation={6} variant="filled" severity="info" onClose={handleCloseSnackbar}>
           你有新的通知！
         </MuiAlert>
