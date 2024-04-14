@@ -18,7 +18,7 @@ export default function SearchField({ setSearchRes, checked }) {
     function fetchLastSpot() {
       if (allSpots && allSpots[currGroupId] && allSpots[currGroupId][currDay]){
         const lastSpot = allSpots[currGroupId][currDay].slice(-1)[0];
-        setLastSpot(lastSpot.id);
+        setLastSpot(lastSpot?.id);
       }
     }
     fetchLastSpot();
@@ -31,12 +31,16 @@ export default function SearchField({ setSearchRes, checked }) {
 
   const handleClick = () => {
     async function search() {
-      if (checked==true) {
-        const res = await getSurrounding(Token, searchText);
-        setSearchRes(res);
-      } else {
-        const res = await getSearch(Token, searchText, lastSpot);
-        setSearchRes(res);
+      try {
+        if (checked==true) {
+          const res = await getSurrounding(Token, searchText);
+          setSearchRes(res);
+        } else {
+          const res = await getSearch(Token, searchText, lastSpot);
+          setSearchRes(res);
+        }
+      } catch (error) {
+        console.log("search", error)
       }
     };
     search();

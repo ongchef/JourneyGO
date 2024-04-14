@@ -7,8 +7,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import DndContainer from './dndContainer';
 import { io } from 'socket.io-client';
 
-export default function AllSpots(props) {
-  const {day} = props;
+export default function AllSpots({day}) {
   const {allSpots, setAllSpots, currGroupId, Token} = useContext(DataContext);
 
   const socket = io("http://localhost:3000");

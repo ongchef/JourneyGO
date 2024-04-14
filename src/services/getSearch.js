@@ -2,16 +2,17 @@
 
 export async function getSearch(Token, query) {
   const url = `http://localhost:3000/api/spots/search/${query}`;
-
+  const bearer_token = `Bearer ${Token}`;
   try {
     // const res = await fetch(url, {
     //   method: 'GET',
     //   headers: {
     //     'Content-Type': 'application/json',
-    //     'Authorization': `${Token}`,
+    //     'Authorization': `${bearer_token}`,
     //   },
     // });
     // const data = await res.json();
+    // const status = res.status;
     // return data;
 
     return(
