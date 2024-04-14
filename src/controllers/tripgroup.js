@@ -13,6 +13,7 @@ import {
 
 export const createInvitation = async (req, res) => {
   //如果沒有這些人或是群組的話
+  console.log(req.body);
   const { inviteeEmail, groupId } = req.body;
   const clerkId = req.userID;
   console.log(inviteeEmail, groupId);

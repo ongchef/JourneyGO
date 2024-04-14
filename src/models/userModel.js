@@ -21,7 +21,7 @@ export const getuserIdbyClerkId = (clerkId) => {
 
 export const getGroupByUserId = (userId) => {
   return db.query(`
-    SELECT tg.group_name, tg.start_date, tg.end_date, tg.status
+    SELECT tg.group_id, tg.group_name, tg.start_date, tg.end_date, tg.status
     FROM trip_groups tg
     JOIN group_member gm ON tg.group_id = gm.g_id
     WHERE gm.u_id = $1;
