@@ -12,19 +12,19 @@ import Button from '@mui/material/Button';
 //   return `https://random.splash.com/${src}?w=${width}&q=${quality || 75}`
 // }
 
-export default function SearchCard({title, description, rating}) {
+export default function SearchCard({title, location, rating, lng, lat}) {
   const { allSpots, currGroupId, currDay, Token, refetch } = useContext(DataContext);
 
   const handleClick = () => {
     const spots = allSpots[currGroupId][currDay];
-    const spotIds = spots.map(spot => spot.id);
+    const spotIds = spots?.map(spot => spot.id);
     async function post() {
       const data = {
-        groupID: currGroupId,
-        description: title,
-        location: description,
-        date: currDay,
-        sequence: spotIds,
+        spotName: title,
+        description: "",
+        location: location,
+        lon: lng,
+        lan: lat,
       }
       try {
         const status = await postSpots(Token, currGroupId, currDay, data);
@@ -42,7 +42,7 @@ export default function SearchCard({title, description, rating}) {
       <div className='flex flex-row shadow-lg w-full justify-between'>
         <div className='flex flex-col p-3'>
           <Typography variant='h6'>{title}</Typography>
-          <Typography variant='subtitile'>{description}</Typography>
+          <Typography variant='subtitile'>{location}</Typography>
         </div>
         <div className='p-1 h-full flex items-center gap-2'>
           <div className='flex items-center'>

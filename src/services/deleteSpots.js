@@ -23,3 +23,10 @@ export async function deleteSpots(Token, groupId, day, spotId) {
     return undefined;
   }
 }
+
+/*
+{
+    "spotId": 5,
+    "sequence": 4
+}
+*/

@@ -11,7 +11,7 @@ import { Button } from '@mui/material';
 
 const ItemTypes = {CARD: 'card',}
 
-export const DndCard = ({ id, text, index, address, moveCard }) => {
+export const DndCard = ({ id, index, title, location, moveCard }) => {
   const { Token, currGroupId, currDay, setAllSpots } = useContext(DataContext);
 
   // Drag and Drop
@@ -87,14 +87,14 @@ export const DndCard = ({ id, text, index, address, moveCard }) => {
   return (
     <div ref={ref} data-handler-id={handlerId} className='shadow bg-white p-3 rounded-md'>
       <div className='flex justify-between'>
-        <Typography variant='inherit'>{text}</Typography>
+        <Typography variant='inherit'>{title}</Typography>
         <div className='flex gap-2'>
           <CommentIcon />
           <ThumbUpOffAltIcon />
           <Button variant='outlined' onClick={handleClick}>刪除</Button>
         </div>
       </div>
-      <Typography variant='caption'>{address}</Typography>
+      <Typography variant='caption'>{location}</Typography>
     </div>
   )
 }

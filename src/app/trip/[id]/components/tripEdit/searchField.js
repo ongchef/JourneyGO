@@ -17,8 +17,8 @@ export default function SearchField({ setSearchRes, checked }) {
     if (currGroupId === -1 || currDay === -1) return;
     function fetchLastSpot() {
       if (allSpots && allSpots[currGroupId] && allSpots[currGroupId][currDay]){
-        const lastSpot = allSpots[currGroupId][currDay].slice(-1)[0];
-        setLastSpot(lastSpot?.id);
+        const last = allSpots[currGroupId][currDay].slice(-1)[0];
+        setLastSpot(last?.id);
       }
     }
     fetchLastSpot();
@@ -33,10 +33,10 @@ export default function SearchField({ setSearchRes, checked }) {
     async function search() {
       try {
         if (checked==true) {
-          const res = await getSurrounding(Token, searchText);
+          const res = await getSurrounding(Token, searchText, lastSpot);
           setSearchRes(res);
         } else {
-          const res = await getSearch(Token, searchText, lastSpot);
+          const res = await getSearch(Token, searchText);
           setSearchRes(res);
         }
       } catch (error) {
