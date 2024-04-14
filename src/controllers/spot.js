@@ -21,11 +21,11 @@ export const getSpots = async (req, res) => {
 
     const spots = await getSpotByGroupIdDay(groupId, day);
     // no spot found
-    if (spots.length === 0) {
+    /* if (spots.length === 0) {
       return res
         .status(404)
         .json({ message: "Cannot found data by given groupId/day." });
-    }
+    } */
 
     return res.status(200).json(spots);
   } catch (error) {
