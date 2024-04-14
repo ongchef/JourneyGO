@@ -1,6 +1,8 @@
 'use client';
 import "../globals.css";
-import React from 'react';
+import { useContext } from 'react';
+import { getTripGroupOverview } from '@/services/getTripGroupOverview';
+import { DataContext } from '@/app/components/dataContext';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
@@ -15,7 +17,27 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ScheduleIcon from '@mui/icons-material/Schedule';
 
-function TripList({ mockData, tabValue, setSelectedCard }) {
+function TripList({ data, tabValue, setTripOverview }) {
+    const { Token, setAllGroups } = useContext(DataContext);
+
+    const handleClick = (group_id) => {
+        async function fetch() {
+            try {
+                const data = await getTripGroupOverview(Token, group_id);
+                console.log('Trip group overview:', data[0]);
+                // change date format into yyyy/mm/dd
+                data[0].start_date = data[0].start_date.split('T')[0];
+                data[0].end_date = data[0].end_date.split('T')[0];
+
+                setTripOverview(data[0]);
+                setAllGroups(data[0]);
+                } catch (error) {
+                console.error('Error fetching trip group overview:', error);
+                }
+        }
+        fetch();
+    };
+
 
     const theme = useTheme();
     // Determine the square size based on theme or fixed value
@@ -45,24 +67,26 @@ function TripList({ mockData, tabValue, setSelectedCard }) {
     };
 
     return (
-    mockData.filter(trip => tabValue === 'All' || trip.tripStatus === tabValue).map((trip) => (
-        <Card className="flex justify-start my-10 mr-10 hover:bg-gray-200" onClick={() => setSelectedCard(trip.id)}>
+    // if data is undefined, return empty div
+    data &&
+    data.filter(trip => tabValue === 'All' || trip.status === tabValue).map((trip) => (
+        <Card className="flex justify-start my-10 mr-10 hover:bg-gray-200" onClick={() => handleClick(trip.group_id)}>
             <div className="flex-grow flex">
                 <CardMedia
                     component="img"
                     sx={mediaStyles}
-                    image={trip.imageUrl}
-                    alt={trip.name}
+                    image="/images/hualian.jpg"
+                    alt={trip.group_name}
                 />
                 <div className="flex flex-col h-full">
                     <CardContent sx={cardContentStyles}>
                         <Stack direction="row" spacing={2}>
-                        <Chip label={trip.place} size="small" />
-                        <Chip label={trip.tripStatus} size="small" color="primary" />
+                        <Chip label="place" size="small" />
+                        <Chip label={trip.status} size="small" color="primary" />
                         </Stack>
                         <div className="pt-1">
                             <Typography variant="h6" component="div">
-                                {trip.name}
+                                {trip.group_name}
                             </Typography>
                         </div>
                         <CardActions sx={cardActionsStyles} disableSpacing>
@@ -72,7 +96,7 @@ function TripList({ mockData, tabValue, setSelectedCard }) {
                             </IconButton> */}
                             <IconButton aria-label="duration" size="small">
                                 <ScheduleIcon />
-                                <span className="ml-1 text-sm">{trip.duration}</span>
+                                <span className="ml-1 text-sm">{trip.duration} days</span>
                             </IconButton>
                         </CardActions>
                     </CardContent>
