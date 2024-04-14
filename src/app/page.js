@@ -16,6 +16,8 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 
 import NewJourneyDialog from './components/newJourney';
+import getInvitation from '@/services/getInvitation';
+
 
 
 // Mock data array
@@ -54,7 +56,11 @@ export default function Home() {
   };
 
   const { Token } = useContext(DataContext);
-  console.log('Token from DataContext:' + Token);
+  // console.log('Token from DataContext:' + Token);
+
+
+
+
 
   async function fetchAllGroups() {
     try {
@@ -72,7 +78,7 @@ export default function Home() {
       console.error('Error fetching all groups:', error);
     }
   }
-  fetchAllGroups();
+  fetchAllGroups(); // Fetch all trip groups when the component mounts
   // console.log("user's trip groups:");
   // console.log(tripGroups);
 
@@ -105,9 +111,8 @@ export default function Home() {
         </Grid>
       </Box>
 
-      <NewJourneyDialog open={openDialog} onClose={handleCloseDialog} />
+      <NewJourneyDialog open={openDialog} onClose={handleCloseDialog} token={Token} />
     
   </main>
 );
-
 }

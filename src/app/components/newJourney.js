@@ -2,21 +2,38 @@ import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { DataContext } from '@/app/components/dataContext';
 
-import { createTripGroup } from '../../services/createTripGroup';
+import { createTripGroup } from '@/services/createTripGroup';
 
-const NewJourneyDialog = ({ open, onClose }) => {
+const NewJourneyDialog = ({ open, onClose, token }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [groupName, setGroupName] = useState('');
-  const [country, setCountry] = useState('');
-  const [companionEmail, setCompanionEmail] = useState('');
+  const [country, setCountry] = useState("臺灣");
+  const [inviteeEmail, setCompanionEmail] = useState('');
+  
+  console.log('Token from DataContext:' + token); 
 
   const handleDateChange = (dates) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
   };
+
+  const handleGroupNameChange = (event) => {
+    setGroupName(event.target.value);
+  };
+
+  // const handleCountryChange = (event) => {
+  //   setCountry(event.target.value);
+  // };
+
+  const handleInviteeEmailChange = (event) => {
+    setCompanionEmail(event.target.value);
+  };
+
+
   const handleCancel = () => {
     setStartDate(null);
     setEndDate(null);
@@ -25,8 +42,13 @@ const NewJourneyDialog = ({ open, onClose }) => {
 
   const handleSave = async () => {
     try {
-      // 在此處調用 createTripGroup 函數並傳遞所需的參數
-      const tripGroupData = await createTripGroup(groupName, startDate, endDate, country, companionEmail);
+      console.log("Group Name: "+groupName);
+      console.log("Start Date: "+startDate);
+      console.log("End Date: "+endDate);
+      console.log("Country: "+country);
+      console.log("Invitee Email: "+inviteeEmail);
+
+      const tripGroupData = await createTripGroup(token, groupName, startDate, endDate, country, inviteeEmail);
       console.log('Trip group created:', tripGroupData);
       onClose();
     } catch (error) {
@@ -46,7 +68,9 @@ const NewJourneyDialog = ({ open, onClose }) => {
             <InputLabel htmlFor="trip-name">行程名稱</InputLabel>
           </Grid>
           <Grid item xs>
-            <TextField label="行程名稱" fullWidth />
+            <TextField label="行程名稱" fullWidth 
+              onChange={handleGroupNameChange}
+            />
           </Grid>
         </Grid>
 
@@ -71,7 +95,9 @@ const NewJourneyDialog = ({ open, onClose }) => {
             <InputLabel htmlFor="add-companion">新增旅伴</InputLabel>
           </Grid>
           <Grid item xs>
-            <TextField label="email" fullWidth />
+            <TextField label="email" fullWidth 
+              onChange={handleInviteeEmailChange}
+            />
           </Grid>
         </Grid>
 

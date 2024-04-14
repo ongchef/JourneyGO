@@ -1,5 +1,10 @@
-const createTripGroup = async (groupName, startDate, endDate, country_id, inviteeEmail) => {
-    const url = 'api/users/trip-groups';
+'use server';
+
+
+export async function createTripGroup(Token, groupName, startDate, endDate, country_id, inviteeEmail){
+    
+    const url = 'http://localhost:3000/api/users/trip-groups';
+    const bearer_token = `Bearer ${Token}`;
   
     // const requestBody = {
     //   userID: userID,
@@ -16,19 +21,22 @@ const createTripGroup = async (groupName, startDate, endDate, country_id, invite
       startDate: startDate,
       endDate: endDate,
     };
-  
+
+    console.log('Request body:', requestBody);
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':`Bearer${Token}`,
+          'Authorization': `${bearer_token}`,
         },
         body: JSON.stringify(requestBody),
       });
-  
+      
+      console.log('Response:', response);
       if (response.ok) {
         const data = await response.json();
+        console.log('Group:', data);
         return data; // Optionally return created trip group data
       } else {
         console.error('Failed to create trip group:', response.statusText);

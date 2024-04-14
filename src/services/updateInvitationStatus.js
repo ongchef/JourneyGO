@@ -1,5 +1,9 @@
-const updateInvitationStatus = async (invitationId, status) => {
-  const url = `/api/users/invitations/${invitationId}/status`;
+'use server';
+
+export async function updateInvitationStatus(Token, invitationId, status) {
+
+  const url = `http://localhost:3000/api/users/invitations/${invitationId}/status`;
+  const bearer_token = `Bearer ${Token}`;
 
   const requestBody = {
     status: status,
@@ -10,20 +14,20 @@ const updateInvitationStatus = async (invitationId, status) => {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization':`Bearer ${Token}`,
+        'Authorization': `${bearer_token}`,
       },
       body: JSON.stringify(requestBody),
     });
 
-    if (response.ok) {
-      const data = await response.json();
-      return data; // Optionally return updated invitation data
-    } else {
-      console.error('Failed to update invitation status:', response.statusText);
-      return null;
-    }
+    // if (response.ok) {
+    //   const data = await response.json();
+    //   return data; // Optionally return updated invitation data
+    // } else {
+    //   console.error('Failed to update invitation status:', response.statusText);
+    //   return null;
+    // }
   } catch (error) {
     console.error('Error updating invitation status:', error);
     return null;
   }
-};
+}

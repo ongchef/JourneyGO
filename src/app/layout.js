@@ -6,13 +6,15 @@ import "./globals.css";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';  //for MUI
 import { ClerkProvider } from '@clerk/nextjs';  //for clerk
 import { DataProvider } from "./components/dataContext";  //for context
+import { useContext, useState } from 'react';
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-// import NavBar from './components/navBar'; 
+import { DataContext } from '@/app/components/dataContext';
+
 import NotificationDialog from "./components/NotificationDialog";
 import { getInvitation } from '../services/getInvitation';
 
@@ -24,14 +26,15 @@ const inter = Inter({ subsets: ["latin"] });
 //   description: "Start your journey with JourneyGo",
 // };
 
-export default function RootLayout({ children }) {
-  const [showNotification, setShowNotification] = React.useState(false);
-  // const [notifications, setNotifications] = React.useState([]);
+export default function Layout() {
+  const [showNotification, setShowNotification] = useState(false);
+  const { Token } = useContext(DataContext);
 
 
+  
   const handleNotificationClick = async () => {
     try {
-      const Token = localStorage.getItem('Token'); 
+      
       if (Token) { 
         const invitations = await getInvitation(Token);
         if (invitations) {

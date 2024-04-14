@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
-import { getInvitation } from '../../services/getInvitation';
+import {inviteToGroup} from '@/services/inviteToGroup';
 
-const newMemberDialog = ({ open, onClose}) => {
-  const [email, setEmail] = useState('');
+const newMemberDialog = ({ open, onClose, token}) => {
+  const [inviterEmail, setInviterEmail] = useState('');
+  const [inviteeEmail, setInviteeEmail] = useState('');
+  const [groupId, setGroupId] = useState('');
 
  
   const handleChange = (event) => {
@@ -13,9 +15,12 @@ const newMemberDialog = ({ open, onClose}) => {
 
   const handleSave = async() => {
     try {
+      // console.log("Inviter Email: "+inviterEmail);
+      // console.log("Invitee Email: "+inviteeEmail);
+      // console.log("Group ID: "+groupId);
    
-      const invitationData = await getInvitation(inviteeEmail);
-      console.log('Invitation data:', invitationData);
+      const invitationData = await inviteToGroup(token, inviterEmail, inviteeEmail, groupId);
+      // console.log('Invitation data:', invitationData);
       onClose();
     } catch (error) {
       console.error('Error fetching invitations:', error);
@@ -26,7 +31,6 @@ const newMemberDialog = ({ open, onClose}) => {
     setEmail(''); 
     onClose();
   };
-
 
 
   return (

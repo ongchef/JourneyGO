@@ -9,7 +9,15 @@ export const getToken = () => {
 
 export const getUserId = () => {
   const session = Cookies.get('__session');
-  const decoded_session = jwtDecode(session);
-  const userId = decoded_session.sub;
-  return userId;
+  if (session) {
+    const decoded_session = jwtDecode(session);
+    const userId = decoded_session.sub;
+    return userId;
+  }else{
+    console.error("No session found" );
+    return null;
+  }
+  
 }
+
+console.log("Get: "+getToken());

@@ -1,9 +1,12 @@
+'use server';
 
-const inviteToGroup = async(inviteeEmail, groupId)=>{
+export async function inviteToGroup(Token, inviterEmail, inviteeEmail, groupId) {
 
     const url = 'http://localhost:3000/api/tripgroup/invitations'; 
+    const bearer_token = `Bearer ${Token}`;
 
     const requestBody = {
+      inviterEmail: inviterEmail,
       inviteeEmail: inviteeEmail,
       groupID: groupId,
     };
@@ -14,20 +17,20 @@ const inviteToGroup = async(inviteeEmail, groupId)=>{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization':`Bearer ${Token}`,
+          'Authorization': `${bearer_token}`,
         },
         body: JSON.stringify({ requestBody }),
       });
       
-      if(response.ok){
-      const data = await response.json();
-      return data;
-    }else{
-      return null;
-    }
+    //   if(response.ok){
+    //   const data = await response.json();
+    //   return data;
+    // }else{
+    //   return null;
+    // }
   }catch (error) {
         console.error('Error:', error);
         return null;
       }
-  };
+  }
   

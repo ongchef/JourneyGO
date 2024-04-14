@@ -72,7 +72,9 @@ export default function Trip({params}) {
           分帳
         </TabPanel>
       </Box>
+
     </Box>
+      <NewMemberDialog open={open} onClose={handleClose} token={Token} />
     </main>
   );
 }
