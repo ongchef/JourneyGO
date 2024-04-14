@@ -30,8 +30,15 @@ export default function TripSearch() {
       <SearchField setSearchRes={setSearchRes} checked={checked} />
       <div className='flex flex-col gap-3 p-3'>
         {
-          searchRes.map((spot, index) => (
-            <SearchCard key={index} title={spot.title} description={spot.description} rating={spot.rating} />
+          searchRes?.map((spot, index) => (
+            <SearchCard 
+              key={index} 
+              title={spot.title} 
+              location={spot.location}
+              rating={spot.rating} 
+              lng={spot.lng}
+              lat={spot.lat}
+            />
           ))
         }
       </div>

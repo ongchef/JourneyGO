@@ -42,6 +42,7 @@ export default function DndContainer({day, spotChange}) {
     async function put() {
       try {
         const status = await putSpots(Token, currGroupId, day, updateCards);
+        console.log("put", status);
       } catch (error) {
         console.log("put", error)
       }
@@ -71,8 +72,8 @@ export default function DndContainer({day, spotChange}) {
               <DndCard
                 index={index}
                 id={card.id}
-                text={card.title}
-                address={card.address}
+                title={card.title}
+                location={card.location}
                 moveCard={moveCard}
               />
               {index !== cards.length - 1 &&  
