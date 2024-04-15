@@ -5,7 +5,7 @@ import { DataContext } from '@/app/components/dataContext';
 import SelectedContent from './components/SelectedContent';
 import TripList from './components/TripList';
 
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
@@ -40,6 +40,7 @@ export default function Home() {
   const [openDialog, setOpenDialog] = useState(false); 
   const [tripGroups, setTripGroups] = useState([]); // [{group_id, group_name, start_date, end_date, status}
   const [tripOverview, setTripOverview] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -56,17 +57,19 @@ export default function Home() {
   };
 
   const { Token } = useContext(DataContext);
-  // console.log('Token from DataContext:' + Token);
+  console.log('Token from DataContext:' + Token);
 
-
-
-
+  useEffect(() => {
+    fetchAllGroups();
+  }, [Token]);
+  
 
   async function fetchAllGroups() {
     try {
       const data = await getTripGroups(Token);
       // console.log('Trip groups:', data);
       // calculate the duration of each trip group
+
       data.forEach(trip => {
         const startDate = new Date(trip.start_date);
         const endDate = new Date(trip.end_date);
@@ -74,14 +77,16 @@ export default function Home() {
         trip.duration = duration;
       });
       setTripGroups(data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching all groups:', error);
     }
   }
-  fetchAllGroups(); // Fetch all trip groups when the component mounts
   // console.log("user's trip groups:");
   // console.log(tripGroups);
-
+  if (loading) {
+    return <div>Loading...</div>; // return a loading message while the data is being fetched
+  }
 
   return (
     <main className="m-3">

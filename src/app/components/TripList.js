@@ -24,13 +24,17 @@ function TripList({ data, tabValue, setTripOverview }) {
         async function fetch() {
             try {
                 const data = await getTripGroupOverview(Token, group_id);
-                console.log('Trip group overview:', data[0]);
-                // change date format into yyyy/mm/dd
-                data[0].start_date = data[0].start_date.split('T')[0];
-                data[0].end_date = data[0].end_date.split('T')[0];
+                console.log('Trip group overview:', data);
+                if (data && data.length !== 0) {
+                    // change date format into yyyy/mm/dd
+                    data[0].start_date = data[0].start_date.split('T')[0];
+                    data[0].end_date = data[0].end_date.split('T')[0];
 
-                setTripOverview(data[0]);
-                setAllGroups(data[0]);
+                    setTripOverview(data[0]);
+                    setAllGroups(data[0]);
+                }else {
+                    console.error('No trip group overview data found');
+                }
                 } catch (error) {
                 console.error('Error fetching trip group overview:', error);
                 }

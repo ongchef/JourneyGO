@@ -18,12 +18,17 @@ export async function getTripGroupOverview(Token, group_id) {
         console.log('Status:', status);
         console.log('Data:', data);
         
+        // prevent empty data
+        if (data === undefined) {
+            console.error('No data found');
+            return undefined;
+        }
 
         return data;
 
 
     } catch (error) {
-    console.error('Error:', error);
+        console.error('Error:', error);
     return undefined;
     }
 }
