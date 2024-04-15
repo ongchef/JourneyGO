@@ -10,8 +10,6 @@ export async function inviteToGroup(Token, inviterEmail, inviteeEmail, groupId) 
       inviteeEmail: inviteeEmail,
       groupID: groupId,
     };
-
-  
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -21,6 +19,8 @@ export async function inviteToGroup(Token, inviterEmail, inviteeEmail, groupId) 
         },
         body: JSON.stringify({ requestBody }),
       });
+        const data = await response.json();
+      return data;
       }catch (error) {
         console.error('Error:', error);
         return null;

@@ -6,7 +6,7 @@ import { getInvitation } from '@/services/getInvitation';
 import NotificationDialog from './NotificationDialog';
 
 //
-const NotificationButton = ({ onClick }) => {
+const NotificationButton = ({}) => {
   const [invitationCount, setInvitationCount] = useState(0); // 邀请数量
   const [dialogOpen, setDialogOpen] = useState(false); // open dialog or not
   const { token } = useContext(DataContext);

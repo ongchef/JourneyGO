@@ -12,7 +12,7 @@ import { Button } from '@mui/material';
 const ItemTypes = {CARD: 'card',}
 
 export const DndCard = ({ id, index, title, location, moveCard }) => {
-  const { Token, currGroupId, currDay, setAllSpots } = useContext(DataContext);
+  const { Token, currGroupId, currDay, setAllSpots, setRefetch } = useContext(DataContext);
 
   // Drag and Drop
   const ref = useRef(null)
@@ -76,6 +76,7 @@ export const DndCard = ({ id, index, title, location, moveCard }) => {
               },
             };
           });
+          setRefetch((prev) => prev + 1);  // refetch
         }
       } catch (e) {
         console.error(e);

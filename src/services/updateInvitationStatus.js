@@ -17,9 +17,14 @@ export async function updateInvitationStatus(Token, invitationId, status) {
         'Authorization': `${bearer_token}`,
       },
       body: JSON.stringify(requestBody),
+
     });
+    // console.log('Response:', response);
+      const data = await response.json();
+      return data;
   } catch (error) {
     console.error('Error updating invitation status:', error);
     return null;
   }
 }
+

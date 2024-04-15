@@ -38,7 +38,7 @@ export default function AllSpots({day}) {
       const { socket_day, spot_sequence } = data;
       try {
         const prevCards = allSpots[currGroupId][socket_day];
-        const reorderedCards = prevCards.sort((a, b) =>
+        const reorderedCards = prevCards?.sort((a, b) =>
           spot_sequence.indexOf(a.id) - spot_sequence.indexOf(b.id)
         );
         setAllSpots(prevState => ({

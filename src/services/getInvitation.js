@@ -14,9 +14,8 @@ export async function getInvitation(Token) {
         },
       });
       const data = await response.json();
-      // console.log('GetInvitationData:', data);
+      console.log('GetInvitationData:', data);
       return data; // Return invitation data
-
     } catch (error) {
       console.error('Error:', error);
       return undefined;

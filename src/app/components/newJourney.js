@@ -57,8 +57,6 @@ const NewJourneyDialog = ({ open, onClose, token }) => {
   };
 
 
-
-
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
       <DialogTitle>新增行程</DialogTitle>

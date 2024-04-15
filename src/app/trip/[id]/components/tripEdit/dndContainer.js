@@ -4,54 +4,70 @@ import update from 'immutability-helper'
 import { useCallback, useState, useContext, useEffect} from 'react'
 import { DndCard } from './dndCard.js'
 import { DataContext } from '@/app/components/dataContext.jsx';
-import { putSpots } from '@/services/putSpots.js';
+import { getSpots } from '@/services/getSpots';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function DndContainer({day, spotChange}) {
-  const {allSpots, setAllSpots, currGroupId, setCurrDay, Token} = useContext(DataContext);
+  const {allSpots, setAllSpots, currGroupId, currDay, setCurrDay, Token, refetch} = useContext(DataContext);
   const [updateCards, setUpdateCards] = useState([])
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
     setCurrDay(day);
-  }, []);
+  }, [day]);
+
+
+  useEffect(() => {                             //  sequence [{id, title, startTime, endTime, numLikes, comments, imgUrl},]
+    const fetchSpots = async () => {
+      console.log("fetchSpots", currGroupId, currDay);
+      if (currGroupId===undefined || currDay===undefined) return;     // Do nothing if groupId or day is not set
+      try {
+        const res = await getSpots(Token, currGroupId, currDay);
+        console.log("res", res);
+        if (res === undefined) return;
+        setCards(res);
+        setAllSpots((prevState) => {
+          const updatedState = {
+            ...prevState,
+            [currGroupId]: {
+              ...(prevState[currGroupId] || {}),
+              [currDay]: res,
+            },
+          };
+          return updatedState;
+        });
+        console.log("allSpots", allSpots);
+        console.log("cards", cards);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    fetchSpots();
+  }, [currGroupId, currDay, refetch]);
 
   // update cards when allSpots changes
-  useEffect(() => {
-    try {
-      if (allSpots && allSpots[currGroupId] && allSpots[currGroupId][day] !== undefined) {
-        setCards(allSpots[currGroupId][day]);
-      }
-    } catch (error) {
-      console.log("setCards", error)
-    }
-  }, [allSpots]);
+  // useEffect(() => {
+  //   try {
+  //     if (allSpots && allSpots[currGroupId] && allSpots[currGroupId][day] !== undefined) {
+  //       setCards(allSpots?.currGroupId?.day);
+  //     }
+  //   } catch (error) {
+  //     console.log("setCards", error)
+  //   }
+  // }, [refetch]);
 
   // update allSpots and put when update cards locally
   useEffect(() => {
     spotChange(day, updateCards); //socket
-    async function put() {
-      try {
-        const updateCards_sequnce = updateCards.map((card, index) => {
-          return (card.id)
-        });
-        const status = await putSpots(Token, currGroupId, day, updateCards_sequnce);
-        if (status === 200){
-          setAllSpots(prevState => ({
-            ...prevState,
-            [currGroupId]: {
-              ...prevState[currGroupId] || {},  // Ensure nested object exists
-              [day]: updateCards,
-            },
-          }));
-        }
-      } catch (error) {
-        console.log("put", error)
-      }
-    }
-    put();
+    setAllSpots(prevState => ({
+      ...prevState,
+      [currGroupId]: {
+        ...prevState[currGroupId] || {}, 
+        [day]: updateCards,
+      },
+    }));
   }, [updateCards]);
 
   const moveCard = useCallback((dragIndex, hoverIndex) => {
@@ -67,17 +83,18 @@ export default function DndContainer({day, spotChange}) {
     });
   }, []);
 
+
   return (
     <>
       <div className='flex flex-col gap-2 p-5'>
         {cards?.map((card, index) => {  
           return (
-            <div key={card.id}>
+            <div key={card?.id}>
               <DndCard
                 index={index}
-                id={card.id}
-                title={card.title}
-                location={card.location}
+                id={card?.id}
+                title={card?.title}
+                location={card?.location}
                 moveCard={moveCard}
               />
               {index !== cards.length - 1 &&  

@@ -1,8 +1,7 @@
 'use server';
 
 export async function getSpots(Token, groupId, day) {
-  // day = day + 1;
-  // Token = `eyJhbGciOiJSUzI1NiIsImNhdCI6ImNsX0I3ZDRQRDIyMkFBQSIsImtpZCI6Imluc18yZXJrc29jbDB6T2kzbmVmRFlSSkg4OXI5MzMiLCJ0eXAiOiJKV1QifQ.eyJhenAiOiJodHRwOi8vbG9jYWxob3N0OjMwMDEiLCJleHAiOjIwMjgzNjM2ODEsImlhdCI6MTcxMzAwMzY4MSwiaXNzIjoiaHR0cHM6Ly9pbW1lbnNlLXNhaWxmaXNoLTQ2LmNsZXJrLmFjY291bnRzLmRldiIsImp0aSI6IjgzYmEwNGM0MWQwMjUzYzZjMThkIiwibmJmIjoxNzEzMDAzNjc2LCJzdWIiOiJ1c2VyXzJleFFzVFF0a2J3SEZmRFJweUp3cEtJb1JITyIsInVzZXJFbWFpbCI6Inplcm93b3JrQGhvdG1haWwuY29tIiwidXNlcklEIjoidXNlcl8yZXhRc1RRdGtid0hGZkRScHlKd3BLSW9SSE8iLCJ1c2VyTmFtZSI6Indvcmt5In0.IjvDDC7wEiqget3qauB_sYmmppoykgFYfQ4huCtOOx7OlASyoZAn9-IZK5q9JDNC-W8oNo99jUH8KjFD5uqJPjmYy28pROgPbI0RHmQpoAKnHrYcG7gtNJjXKRL7vJVQzlfGWmAejvSTpPR35HAoXsuy4_WtVCuxFCAlo9BKMe9HNyCzIbisZB-7OPCN6NSV8f0nTfTg2bs-xQ7e2gcUFez0A_PwzIxeQFNrLVzZyyFsE3W2GzLDx2Y8X7OhGujhvcWJbQQlEh4Nd2Dgek88bx0v12LoByKAOM_fPfCggFvxvZzM1Bx6zwSdGddF-lJ6BYc7xdb32P8thLEoqQUGtw`;
+  day = day + 1;
   const url = `http://localhost:3000/api/tripgroup/${groupId}/days/${day}/spots`;
   const bearer_token = `Bearer ${Token}`;
 
@@ -13,24 +12,26 @@ export async function getSpots(Token, groupId, day) {
         'Content-Type': 'application/json',
         'Authorization': `${bearer_token}`,
       },
+      cache: 'no-cache',
     });
     const data = await res.json();
-    console.log('Spots:', data);
+
     const status = res.status;
     if (status === 404) {
       return undefined;
     }
-    const formattedData = data.map((spot) => {
+    const formattedData = data?.map((spot) => {
         return {
-          id: spot.spot_id,
-          title: spot.spot_name,
-          location: spot.location,
-          description: spot.description,
-          lng: spot.lon,
-          lat: spot.lan,
+          id: spot?.spot_id,
+          title: spot?.spot_name,
+          location: spot?.location,
+          description: spot?.description,
+          lng: spot?.lon,
+          lat: spot?.lan,
         };
       }
     );
+    console.log("formattedData", formattedData);
     return formattedData;
   } catch (error) {
     console.error('Error:', error);

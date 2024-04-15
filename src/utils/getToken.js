@@ -19,5 +19,3 @@ export const getUserId = () => {
   }
   
 }
-
-console.log("Get: "+getToken());
