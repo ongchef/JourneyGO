@@ -6,7 +6,6 @@ export async function inviteToGroup(Token, inviterEmail, inviteeEmail, groupId) 
     const bearer_token = `Bearer ${Token}`;
 
     const requestBody = {
-      inviterEmail: inviterEmail,
       inviteeEmail: inviteeEmail,
       groupID: groupId,
     };
@@ -17,7 +16,7 @@ export async function inviteToGroup(Token, inviterEmail, inviteeEmail, groupId) 
           'Content-Type': 'application/json',
           'Authorization': `${bearer_token}`,
         },
-        body: JSON.stringify({ requestBody }),
+        body: JSON.stringify( requestBody ),
       });
         const data = await response.json();
       return data;

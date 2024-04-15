@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -6,14 +6,15 @@ import { DataContext } from '@/app/components/dataContext';
 
 import { createTripGroup } from '@/services/createTripGroup';
 
-const NewJourneyDialog = ({ open, onClose, token }) => {
+const NewJourneyDialog = ({ open, onClose}) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [groupName, setGroupName] = useState('');
   const [country, setCountry] = useState("臺灣");
   const [inviteeEmail, setCompanionEmail] = useState('');
+  const { Token } = useContext(DataContext);
   
-  // console.log('Token from DataContext:' + token); 
+ // console.log('Token from newJourney:' + Token); 
 
   const handleDateChange = (dates) => {
     const [start, end] = dates;
@@ -48,9 +49,11 @@ const NewJourneyDialog = ({ open, onClose, token }) => {
       console.log("Country: "+country);
       console.log("Invitee Email: "+inviteeEmail);
 
-      const tripGroupData = await createTripGroup(token, groupName, startDate, endDate, country, inviteeEmail);
+      const tripGroupData = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail);
       console.log('Trip group created:', tripGroupData);
       onClose();
+
+      window.location.reload();
     } catch (error) {
       console.error('Error creating trip group:', error);
     }

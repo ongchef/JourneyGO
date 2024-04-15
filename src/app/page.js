@@ -19,7 +19,6 @@ import NewJourneyDialog from './components/newJourney';
 import getInvitation from '@/services/getInvitation';
 
 
-
 // Mock data array
 const mockData = [
   {

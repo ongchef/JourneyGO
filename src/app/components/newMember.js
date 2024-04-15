@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
 import {getInvitation} from '@/services/getInvitation';
+import { DataContext } from '@/app/components/dataContext';
 
-const newMemberDialog = ({ open, onClose, token}) => {
+const newMemberDialog = ({ open, onClose}) => {
 
   const [inviteeEmail, setInviteeEmail] = useState('');
   const [groupId, setGroupId] = useState('');
+  const { Token } = useContext(DataContext);
 
  
   const handleChange = (event) => {
@@ -18,7 +20,7 @@ const newMemberDialog = ({ open, onClose, token}) => {
       // console.log("Invitee Email: "+inviteeEmail);
       // console.log("Group ID: "+groupId);
    
-      const invitationData = await getInvitation(token);
+      const invitationData = await getInvitation(Token);
       // console.log('Invitation data:', invitationData);
       onClose();
     } catch (error) {
