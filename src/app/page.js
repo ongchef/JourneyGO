@@ -60,9 +60,9 @@ export default function Home() {
   console.log('Token from DataContext:' + Token);
 
   useEffect(() => {
+  useEffect(() => {
     fetchAllGroups();
-  }, [Token]);
-  
+  }, [Token, tripOverview]);
 
   async function fetchAllGroups() {
     try {
@@ -84,8 +84,9 @@ export default function Home() {
   }
   // console.log("user's trip groups:");
   // console.log(tripGroups);
+
   if (loading) {
-    return <div>Loading...</div>; // return a loading message while the data is being fetched
+    return <div>Loading...</div>;
   }
 
   return (
