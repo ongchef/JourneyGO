@@ -65,7 +65,7 @@ export const DndCard = ({ id, index, title, location, moveCard }) => {
     async function del() {
       try {
         const status = await deleteSpots(Token, currGroupId, currDay, id);
-        if (status === 200) {
+        if (status === 204 || status === 200) {  
           setAllSpots(prevState => {  // delete spot from allSpots
             const newSpots = prevState[currGroupId][currDay].filter(spot => spot.id !== id);
             return {

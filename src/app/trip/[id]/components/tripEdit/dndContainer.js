@@ -32,17 +32,21 @@ export default function DndContainer({day, spotChange}) {
   // update allSpots and put when update cards locally
   useEffect(() => {
     spotChange(day, updateCards); //socket
-    setAllSpots(prevState => ({
-      ...prevState,
-      [currGroupId]: {
-        ...prevState[currGroupId] || {},  
-        [day]: cards,
-      },
-    }));
     async function put() {
       try {
-        const status = await putSpots(Token, currGroupId, day, updateCards);
-        console.log("put", status);
+        const updateCards_sequnce = updateCards.map((card, index) => {
+          return (card.id)
+        });
+        const status = await putSpots(Token, currGroupId, day, updateCards_sequnce);
+        if (status === 200){
+          setAllSpots(prevState => ({
+            ...prevState,
+            [currGroupId]: {
+              ...prevState[currGroupId] || {},  // Ensure nested object exists
+              [day]: updateCards,
+            },
+          }));
+        }
       } catch (error) {
         console.log("put", error)
       }

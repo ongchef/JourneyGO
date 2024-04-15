@@ -28,12 +28,14 @@ export default function SearchCard({title, location, rating, lng, lat}) {
       }
       try {
         const status = await postSpots(Token, currGroupId, currDay, data);
+        if (status === 201 || status === 200) {
+          refetch();
+        }
       } catch (error) {
         console.log("post", error)
       }
     }
     post();
-    refetch();  // refresh spots
   };
 
   return (
