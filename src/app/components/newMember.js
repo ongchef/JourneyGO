@@ -45,7 +45,7 @@ const newMemberDialog = ({ open, onClose, token}) => {
           label="電子郵件"
           type="email"
           fullWidth
-          value={email}
+          // value={email}
           onChange={handleChange}
         />
       </DialogContent>

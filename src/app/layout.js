@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -6,7 +6,7 @@ import "./globals.css";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';  //for MUI
 import { ClerkProvider } from '@clerk/nextjs';  //for clerk
 import { DataProvider } from "./components/dataContext";  //for context
-import { useContext, useState } from 'react';
+// import { useContext, useState } from 'react';
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -21,14 +21,14 @@ import { getInvitation } from '../services/getInvitation';
 
 const inter = Inter({ subsets: ["latin"] });
 
-// export const metadata = {
-//   title: "JourneyGo",
-//   description: "Start your journey with JourneyGo",
-// };
+export const metadata = {
+  title: "JourneyGo",
+  description: "Start your journey with JourneyGo",
+};
 
-export default function Layout() {
-  const [showNotification, setShowNotification] = useState(false);
-  const { Token } = useContext(DataContext);
+export default function RootLayout({children}) {
+  // const [showNotification, setShowNotification] = useState(false);
+  // const { Token } = useContext(DataContext);
 
 
   
@@ -62,7 +62,7 @@ export default function Layout() {
         <body className={inter.className}>
           <AppRouterCacheProvider>
             <DataProvider>
-            <Box sx={{ position: 'sticky', top: 0, zIndex: 1000 }}>
+            {/* <Box sx={{ position: 'sticky', top: 0, zIndex: 1000 }}>
                 <AppBar position="static" sx= {{ backgroundColor: '#2EB3D0'}}>
                 
                   <Toolbar disableGutters>
@@ -81,9 +81,9 @@ export default function Layout() {
                       <Typography variant="body2" component="a" sx={{  marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' , border:'1.5px solid ' , borderRadius:'4px' ,  padding:'4px 8px'}}>個人資料</Typography>
                   </Toolbar>
               </AppBar>
-              </Box>
+              </Box> */}
               {children}
-              {showNotification && <NotificationDialog open={true} onClose={handleCloseNotification} />}
+              {/* {showNotification && <NotificationDialog open={true} onClose={handleCloseNotification} />} */}
             </DataProvider>
           </AppRouterCacheProvider>  
         </body>
