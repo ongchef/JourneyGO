@@ -1,6 +1,7 @@
 import db from "./db_connection.js";
 
 export const createInvitationModel = (inviterId, inviteeId, groupId) => {
+  console.log("start to create invitation");
   return db.none(
     `INSERT INTO invitation (inviter, invitee, g_id, status)
     VALUES ($1, $2, $3, 'pending')`,

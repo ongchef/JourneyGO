@@ -131,15 +131,18 @@ export const getGroup = async (req, res) => {
 export const createGroup = async (req, res) => {
   const clerkId = req.userID;
   console.log(req.body);
-  const { groupName, countries, invitee, startDate, endDate } = req.body; 
+  const { groupName, countries, inviteeEmail, startDate, endDate } = req.body; 
   try {
       let userId = await getuserIdbyClerkId(clerkId)
       userId = userId[0].user_id
-      const newGroup = await createGroupModel(userId, groupName, countries, startDate, endDate);
-
-      const inviteeId = await getInviteeIdByEmail(invitee);
-
-      const newInvitation = await createInvitationModel(userId, inviteeId, groupId);
+      console.log(userId, groupName, countries, inviteeEmail, startDate, endDate);
+      const newGroup = await createGroupModel(userId, groupName, startDate, endDate);
+      console.log("newGroup", newGroup);
+      console.log("?");
+      let inviteeId = await getInviteeIdByEmail(inviteeEmail);
+      inviteeId = inviteeId.user_id
+      console.log("inviteeeee", inviteeId);
+      const newInvitation = await createInvitationModel(userId, inviteeId, newGroup);
       
       return res.status(201).json(newGroup);
   }catch (error) {

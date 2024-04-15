@@ -29,23 +29,10 @@ export const getGroupByUserId = (userId) => {
 };
 
 
-export const createGroupModel = (userId, groupName, countries, startDate, endDate) => {
+export const createGroupModel = (userId, groupName, startDate, endDate) => {
   return new Promise((resolve, reject) => {
     db.tx(async (t) => {
-      const groupCountries = [];
-
-      // Step 1: Get country_ids for each country_name
-      for (const countryName of countries) {
-        const countryId = await t.oneOrNone(
-          `SELECT country_id FROM country WHERE country_name = $1`,
-          [countryName]
-        );
-        if (countryId) {
-          groupCountries.push({ country_id: countryId.country_id });
-        } else {
-          reject(`Country ${countryName} not found in the database.`);
-        }
-      }
+      
 
       // Step 2: Insert group into trip_groups table
       const { group_id: groupId } = await t.one(
@@ -54,15 +41,7 @@ export const createGroupModel = (userId, groupName, countries, startDate, endDat
          RETURNING group_id`,
         [groupName, startDate, endDate]
       );
-
-      // Step 3: Insert into group_country table for each country_id
-      for (const groupCountry of groupCountries) {
-        await t.none(
-          `INSERT INTO group_country (g_id, c_id)
-           VALUES ($1, $2)`,
-          [groupId, groupCountry.country_id]
-        );
-      }
+      console.log("1");
 
       // Step 4: Insert into group_member table
       await t.none(
@@ -70,19 +49,23 @@ export const createGroupModel = (userId, groupName, countries, startDate, endDat
          VALUES ($1, $2)`,
         [userId, groupId]
       );
+      console.log("2");
 
       return groupId;
     })
       .then((groupId) => {
+        console.log("groupId", groupId);
         resolve(groupId);
       })
       .catch((error) => {
+        console.log("error", error);
         reject(error);
       });
   });
 };
 
 export const getInviteeIdByEmail = (email) => {
+  console.log(email);
   return db.oneOrNone(
     `SELECT user_id FROM user_account WHERE email = $1`,
     [email]
