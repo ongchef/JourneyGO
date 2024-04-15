@@ -14,7 +14,7 @@ const NotificationButton = ({ onClick }) => {
   // open dialog when button is clicked
   //關掉Dialog放在NotificationDialog.js處理
   const handleButtonClick = () => { 
-    onClick();
+    // onClick();
     setDialogOpen(true);
   }
 
@@ -40,7 +40,7 @@ const NotificationButton = ({ onClick }) => {
       <IconButton color="inherit" aria-label="notification" onClick={handleButtonClick}>
         <img src="notification.png" alt="notification" style={{ color: 'white', width: 35, height: 35, marginRight: 10 }} />
       </IconButton>
-      <NotificationDialog open={open} onClose={() => setDialogOpen(false)} /> {/* 在通知按鈕被點擊時顯示通知對話框 */}
+      <NotificationDialog open={dialogOpen} onClose={() => setDialogOpen(false)} /> {/* 在通知按鈕被點擊時顯示通知對話框 */}
     </>
   );
 }

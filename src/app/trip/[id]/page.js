@@ -26,13 +26,19 @@ function tabProps(index) {
 export default function Trip({params}) {
   const {allGroups, currGroupId, setCurrGroupId} = useContext(DataContext);
   const [value, setValue] = useState(0);
+  const [groupinfo, setGroupinfo] = useState({}); 
+
+  useEffect(() => {
+    setGroupinfo(allGroups);
+  }, [allGroups, currGroupId]);
    
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    setCurrGroupId(params.id);
+    const groupId = params?.id;
+    setCurrGroupId(groupId);
   }, [params.id]);
 
   return (
@@ -61,7 +67,7 @@ export default function Trip({params}) {
         </Tabs>
       </Box>
       <Box>
-        <Typography variant='h4' sx={{mx: 2, my: 2}}>{allGroups[currGroupId]?.groupName}</Typography>
+        <Typography variant='h4' sx={{mx: 2, my: 2}}>{groupinfo?.group_name}</Typography>
         <TabPanel value={value} index={0}>
           <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
             <TripPlan params={params} groupId={params.id}></TripPlan>
@@ -74,7 +80,6 @@ export default function Trip({params}) {
       </Box>
 
     </Box>
-      {/* <NewMemberDialog open={open} onClose={handleClose} token={Token} /> */}
     </main>
   );
 }

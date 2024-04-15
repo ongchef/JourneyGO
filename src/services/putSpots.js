@@ -1,3 +1,5 @@
+// not using this api
+
 'use server';
 
 export async function putSpots(Token, groupId, day, updateCards_sequnce) {

@@ -63,7 +63,7 @@ const NotificationDialog = ({open, onClose, token, invitations }) => {
           </IconButton>
         </Box>
         <DialogContent>
-          {showGrid && invitations.map(({ id, inviterEmail, inviteeEmail, groupId }) => (
+          {showGrid && invitations?.map(({ id, inviterEmail, inviteeEmail, groupId }) => (
             <Grid key={id} container spacing={4} alignItems="center" justifyContent="flex-end">
             <Grid item xs={12}>
               <InputLabel htmlFor="notification">{inviterEmail}邀請你加入{groupId}</InputLabel>

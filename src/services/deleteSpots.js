@@ -1,6 +1,7 @@
 'use server';
 
 export async function deleteSpots(Token, groupId, day, spotId) {
+  day = day + 1;
   const url = `http://localhost:3000/api/tripgroup/${groupId}/days/${day}/spots/${spotId}`;
   const bearer_token = `Bearer ${Token}`;
 
@@ -20,10 +21,3 @@ export async function deleteSpots(Token, groupId, day, spotId) {
     return undefined;
   }
 }
-
-/*
-{
-    "spotId": 5,
-    "sequence": 4
-}
-*/

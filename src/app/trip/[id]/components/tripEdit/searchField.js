@@ -29,6 +29,13 @@ export default function SearchField({ setSearchRes, checked }) {
     setSearchText(event.target.value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleClick();
+    }
+  }
+
   const handleClick = () => {
     async function search() {
       try {
@@ -58,6 +65,7 @@ export default function SearchField({ setSearchRes, checked }) {
           inputProps={{ 'aria-label': 'search google maps' }}
           value={searchText}
           onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
         />
         <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleClick}>
           <SearchIcon />
