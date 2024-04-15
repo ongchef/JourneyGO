@@ -7,10 +7,11 @@ import Button from '@mui/material/Button';
 import Slide from '@mui/material/Slide';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-import { getInvitation } from '@/services/getInvitation';
-import { DataContext } from '@/app/components/dataContext';
-import {updateInvitation} from '@/services/updateInvitation';
 
+import { DataContext } from '@/app/components/dataContext';
+
+import {inviteToGroup} from '@/services/inviteToGroup';
+import {updateInvitationStatus} from '@/services/updateInvitationStatus';
 
 
 // const SlideTransition = (props) => {
@@ -22,45 +23,41 @@ const NotificationDialog = ({ open, onClose, token}) => {
   const [notifications, setNotifications] = useState([]); 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [showGrid, setShowGrid] = useState(true);
-  // const [snackbarHeight, setSnackbarHeight] = useState(0);
 
-  const handleCancel = () => {
-    onClose();
-  }
-
-  useEffect(() => {
-    const fetchInvitations = async () => {
-      try {
-      if (Token) { 
-        const invitations = await getInvitation(Token);
-        if (invitations) {
-          setNotifications(invitations);
-          // setSnackbarOpen(true);
-        }
-      } else {
-        console.error('Token not found in local storage.');
-      }
-      }catch (error) {  
-        console.error('Error fetching invitations:', error);
-    };
-    }
-    fetchInvitations();
-    }, [token]);
+  // useEffect(() => {
+  //   const fetchInvitations = async () => {
+  //     try {
+  //     if (Token) { 
+  //       const invitations = await getInvitation(Token);
+  //       if (invitations) {
+  //         setNotifications(invitations);
+  //         // setSnackbarOpen(true);
+  //       }
+  //     } else {
+  //       console.error('Token not found in local storage.');
+  //     }
+  //     }catch (error) {  
+  //       console.error('Error fetching invitations:', error);
+  //   };
+  //   }
+  //   fetchInvitations();
+  //   }, [token]);
     
 
-
-      const handleAccept = async () => {
+      //accept invitation
+      const handleAccept = async () => { 
         try {
-          await updateInvitation(token, invitationId, 'accepted');
+          await updateInvitationStatus(token, invitationId, 'accepted');
+          await inviteToGroup(token, inviterEmail, inviteeEmail, groupId);
           setShowGrid(false);
         } catch (error) {
           console.error('Error accepting invitation:', error);
         }
       };
-
+      //decline invitation
       const handleDecline = async () => {
         try {
-          await updateInvitation(token, invitationId, 'declined');
+          await updateInvitationStatus(token, invitationId, 'declined');
           setShowGrid(false);
         } catch (error) {
           console.error('Error declining invitation:', error);
@@ -68,21 +65,8 @@ const NotificationDialog = ({ open, onClose, token}) => {
       };
 
 
-  return (
-    // <React.Fragment>
-    //   <Snackbar
-    //     id="notification-snackbar"
-    //     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-    //     open={snackbarOpen}
-    //     autoHideDuration={6000}
-    //     onClose={handleCloseSnackbar}
-    //     TransitionComponent={SlideTransition}
-    //   >
 
-    //     <MuiAlert elevation={6} variant="filled" severity="info" onClose={handleCloseSnackbar}>
-    //       你有新的通知！
-    //     </MuiAlert>
-    //   </Snackbar>
+  return (
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" >
         <DialogTitle>通知</DialogTitle>
           <div style= {{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -101,13 +85,7 @@ const NotificationDialog = ({ open, onClose, token}) => {
             </Grid>
           </Grid>
 
-          {/* <ul>
-            {notifications && notifications.map(notification => (
-              <li key={notification.id}>
-                {notification.message}
-              </li>
-            ))}
-          </ul> */}
+        
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>關閉</Button>

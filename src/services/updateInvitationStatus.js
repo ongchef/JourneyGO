@@ -18,14 +18,6 @@ export async function updateInvitationStatus(Token, invitationId, status) {
       },
       body: JSON.stringify(requestBody),
     });
-
-    // if (response.ok) {
-    //   const data = await response.json();
-    //   return data; // Optionally return updated invitation data
-    // } else {
-    //   console.error('Failed to update invitation status:', response.statusText);
-    //   return null;
-    // }
   } catch (error) {
     console.error('Error updating invitation status:', error);
     return null;

@@ -21,14 +21,7 @@ export async function inviteToGroup(Token, inviterEmail, inviteeEmail, groupId) 
         },
         body: JSON.stringify({ requestBody }),
       });
-      
-    //   if(response.ok){
-    //   const data = await response.json();
-    //   return data;
-    // }else{
-    //   return null;
-    // }
-  }catch (error) {
+      }catch (error) {
         console.error('Error:', error);
         return null;
       }
