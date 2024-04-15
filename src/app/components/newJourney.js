@@ -13,7 +13,7 @@ const NewJourneyDialog = ({ open, onClose, token }) => {
   const [country, setCountry] = useState("臺灣");
   const [inviteeEmail, setCompanionEmail] = useState('');
   
-  console.log('Token from DataContext:' + token); 
+  // console.log('Token from DataContext:' + token); 
 
   const handleDateChange = (dates) => {
     const [start, end] = dates;

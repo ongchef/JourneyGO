@@ -19,11 +19,12 @@ import {updateInvitationStatus} from '@/services/updateInvitationStatus';
 const NotificationDialog = ({open, onClose, token, invitations }) => {
   const [notifications, setNotifications] = useState([]); 
   const [showGrid, setShowGrid] = useState(true); //是否顯示包含通知的Grid
-
+  
  
       //accept invitation
       const handleAccept = async (invitationId, inviterEmail, inviteeEmail, groupId) => { 
         try {
+          
           await updateInvitationStatus(token, invitationId, 'accepted');
           await inviteToGroup(token, inviterEmail, inviteeEmail, groupId);
           setShowGrid(false);
@@ -41,6 +42,7 @@ const NotificationDialog = ({open, onClose, token, invitations }) => {
         }
       };
 
+
       const handleCancel = () => {
         onClose();
       }
@@ -55,7 +57,7 @@ const NotificationDialog = ({open, onClose, token, invitations }) => {
 
 
   return (
-      <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm" >
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
         <DialogTitle>通知</DialogTitle>
         <Box sx={{ position: 'absolute', top: 0, right: 0 }}>
           <IconButton onClick={handleCancel}>
@@ -63,7 +65,7 @@ const NotificationDialog = ({open, onClose, token, invitations }) => {
           </IconButton>
         </Box>
         <DialogContent>
-          {showGrid && invitations.map(({ id, inviterEmail, inviteeEmail, groupId }) => (
+          {/* {showGrid && invitations.map(({ id, inviterEmail, inviteeEmail, groupId }) => (
             <Grid key={id} container spacing={4} alignItems="center" justifyContent="flex-end">
             <Grid item xs={12}>
               <InputLabel htmlFor="notification">{inviterEmail}邀請你加入{groupId}</InputLabel>
@@ -73,7 +75,18 @@ const NotificationDialog = ({open, onClose, token, invitations }) => {
               <Button variant="contained" color="secondary" onClick={() => handleDecline(id)}>拒絕</Button>
             </Grid>
             </Grid>
-          ))}
+          ))} */}
+            <Grid  container spacing={4} alignItems="center" justifyContent="flex-end">
+            <Grid item xs={12}>
+              <InputLabel htmlFor="notification">jackey邀請你加入"臺灣四日遊"</InputLabel>
+            </Grid>
+            <Grid item xs={12} >
+              {/* <Button variant="contained" color="primary" onClick={() => handleAccept(id, inviterEmail, inviteeEmail, groupId)}>接受</Button> */}
+              {/* <Button variant="contained" color="secondary" onClick={() => handleDecline(id)}>拒絕</Button> */}
+              <Button variant="contained" color="primary" onClick={handleAccept}>接受</Button>
+              <Button variant="contained" color="secondary" onClick={handleDecline}>拒絕</Button>
+            </Grid>
+            </Grid>
         </DialogContent>
       </Dialog>
     );

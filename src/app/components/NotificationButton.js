@@ -9,21 +9,20 @@ import NotificationDialog from './NotificationDialog';
 const NotificationButton = ({ onClick }) => {
   const [invitationCount, setInvitationCount] = useState(0); // 邀请数量
   const [dialogOpen, setDialogOpen] = useState(false); // open dialog or not
-  const { Token } = useContext(DataContext);
+  const { token } = useContext(DataContext);
 
   // open dialog when button is clicked
   //關掉Dialog放在NotificationDialog.js處理
   const handleButtonClick = () => { 
-    onClick();
     setDialogOpen(true);
   }
 
     // fetch invitations when token is available
   useEffect(() => {
-    if (Token) {
+    if (token) {
       const fetchInvitations = async () => {
         try {
-          const invitations = await getInvitation(Token);
+          const invitations = await getInvitation(token);
           if (invitations) {
             setInvitationCount(invitations.length); // 邀请数量
           }
@@ -33,7 +32,8 @@ const NotificationButton = ({ onClick }) => {
       };
       fetchInvitations();
     }
-  }, [Token]);
+  })
+  //, [Token]);
 
   
   return (
@@ -41,7 +41,7 @@ const NotificationButton = ({ onClick }) => {
       <IconButton color="inherit" aria-label="notification" onClick={handleButtonClick}>
         <img src="notification.png" alt="notification" style={{ color: 'white', width: 35, height: 35, marginRight: 10 }} />
       </IconButton>
-      <NotificationDialog open={open} onClose={() => setDialogOpen(false)} /> {/* 在通知按鈕被點擊時顯示通知對話框 */}
+      <NotificationDialog open={dialogOpen}  onClose={() => setDialogOpen(false)}/>
     </>
   );
 }

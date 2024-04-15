@@ -1,3 +1,4 @@
+
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -14,10 +15,7 @@ export const metadata = {
   title: "JourneyGo",
   description: "Start your journey with JourneyGo",
 };
-export const metadata = {
-  title: "JourneyGo",
-  description: "Start your journey with JourneyGo",
-};
+
 
 export default function RootLayout({children}) {
  
@@ -31,13 +29,8 @@ export default function RootLayout({children}) {
         <body className={inter.className}>
           <AppRouterCacheProvider>
             <DataProvider>
-              <NavBar>
-                {/* <Box sx={{ position: 'sticky', top: 0, zIndex: 1000 }}>
-                  </Box> */}
-                  </NavBar>
-          
+              <NavBar></NavBar>
               {children}
-              {showNotification && <NotificationDialog open={true} onClose={handleCloseNotification} />}
             </DataProvider>
           </AppRouterCacheProvider>  
         </body>
