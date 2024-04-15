@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
-import {inviteToGroup} from '@/services/inviteToGroup';
+import {getInvitation} from '@/services/getInvitation';
 
 const newMemberDialog = ({ open, onClose, token}) => {
-  const [inviterEmail, setInviterEmail] = useState('');
+
   const [inviteeEmail, setInviteeEmail] = useState('');
   const [groupId, setGroupId] = useState('');
 
@@ -15,11 +15,10 @@ const newMemberDialog = ({ open, onClose, token}) => {
 
   const handleSave = async() => {
     try {
-      // console.log("Inviter Email: "+inviterEmail);
       // console.log("Invitee Email: "+inviteeEmail);
       // console.log("Group ID: "+groupId);
    
-      const invitationData = await inviteToGroup(token, inviterEmail, inviteeEmail, groupId);
+      const invitationData = await getInvitation(token);
       // console.log('Invitation data:', invitationData);
       onClose();
     } catch (error) {
