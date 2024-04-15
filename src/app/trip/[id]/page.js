@@ -74,7 +74,7 @@ export default function Trip({params}) {
       </Box>
 
     </Box>
-      <NewMemberDialog open={open} onClose={handleClose} token={Token} />
+      {/* <NewMemberDialog open={open} onClose={handleClose} token={Token} /> */}
     </main>
   );
 }

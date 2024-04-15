@@ -18,7 +18,11 @@ export async function getTripGroups(Token) {
         console.log('Status:', status);
         console.log('Data:', data);
         
-
+        // prevent empty data
+        if (data === undefined) {
+            console.error('No data found');
+            return undefined;
+        }
         return data;
 
 

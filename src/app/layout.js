@@ -14,6 +14,10 @@ export const metadata = {
   title: "JourneyGo",
   description: "Start your journey with JourneyGo",
 };
+export const metadata = {
+  title: "JourneyGo",
+  description: "Start your journey with JourneyGo",
+};
 
 export default function RootLayout({children}) {
  
@@ -33,6 +37,7 @@ export default function RootLayout({children}) {
                   </NavBar>
           
               {children}
+              {showNotification && <NotificationDialog open={true} onClose={handleCloseNotification} />}
             </DataProvider>
           </AppRouterCacheProvider>  
         </body>

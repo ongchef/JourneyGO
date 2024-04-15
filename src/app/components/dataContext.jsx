@@ -35,7 +35,17 @@ export const DataProvider = ({children}) => {
 
   // store all groups
   const [allGroups, setAllGroups] = useState({}); // {groupId: {groupId, groupName, startDate, endDate}}
-
+  /*
+  {
+    "group_id":13,
+    "group_name":"花東四天三夜遊-我好想去綠島玩122",
+    "start_date":"2024-06-13",
+    "end_date":"2024-06-17",
+    "status":"finished",
+    "user_names":["jacky","worky","picky","needy","wonuuu"],
+    "days":5
+  }
+  */
 
   // store all spots given groupId and day
   const [refetch, setRefetch] = useState(() => () => {});
