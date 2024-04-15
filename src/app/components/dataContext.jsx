@@ -1,13 +1,13 @@
 'use client';
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useRef, useCallback } from 'react';
 import { getSpots } from '@/services/getSpots';
 import { getToken } from '@/utils/getToken';
 import { getUserId } from '@/utils/getToken';
 
 export const DataContext = createContext();
 export const DataProvider = ({children}) => {
-  const [currGroupId, setCurrGroupId] = useState(-1);
-  const [currDay, setCurrDay] = useState(-1);
+  const [currGroupId, setCurrGroupId] = useState();
+  const [currDay, setCurrDay] = useState();
   const [Token, setToken] = useState("");
   const [userId, setUserId] = useState();
 
@@ -34,7 +34,7 @@ export const DataProvider = ({children}) => {
 
 
   // store all groups
-  const [allGroups, setAllGroups] = useState({}); // {groupId: {groupId, groupName, startDate, endDate}}
+  const [allGroups, setAllGroups] = useState({});
   /*
   {
     "group_id":13,
@@ -48,29 +48,35 @@ export const DataProvider = ({children}) => {
   */
 
   // store all spots given groupId and day
-  const [refetch, setRefetch] = useState(() => () => {});
   const [allSpots, setAllSpots] = useState({}); // {groupId: {day: spots_sequence}}
-  useEffect(() => {                             //  sequence [{id, title, startTime, endTime, numLikes, comments, imgUrl},]
-    const fetchSpots = async () => {
-      if (currGroupId===-1 || currDay===-1) return;     // Do nothing if groupId or day is not set
-      try {
-        const res = await getSpots(Token, currGroupId, currDay);
-        setAllSpots(prevState => ({
-          ...prevState,
-          [currGroupId]: {
-            ...prevState[currGroupId] || {},  // Ensure nested object exists
-            [currDay]: res,
-          },
-        }));
-      } catch (e) {
-        console.error(e);
-      }
-    };
-    fetchSpots();
-  }, [currGroupId, currDay, refetch]);   //refetch when groupId or day changes
+  const [refetch, setRefetch] = useState(0);
+
+  // useEffect(() => {                             //  sequence [{id, title, startTime, endTime, numLikes, comments, imgUrl},]
+  //   const fetchSpots = async () => {
+  //     if (currGroupId===undefined || currDay===undefined) return;     // Do nothing if groupId or day is not set
+  //     try {
+  //       const res = await getSpots(Token, currGroupId, currDay);
+  //       if (res === undefined) return;
+        
+  //       setAllSpots((prevState) => {
+  //         const updatedState = {
+  //           ...prevState,
+  //           [currGroupId]: {
+  //             ...(prevState[currGroupId] || {}),
+  //             [currDay]: res,
+  //           },
+  //         };
+  //         return updatedState;
+  //       });
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //   };
+  //   fetchSpots();
+  // }, [currGroupId, currDay, refetch]);   //refetch when groupId or day changes
 
   return (
-    <DataContext.Provider value={{allGroups, setAllGroups, allSpots, setAllSpots, currGroupId, currDay, setCurrGroupId, setCurrDay, Token, refetch}}>
+    <DataContext.Provider value={{allGroups, setAllGroups, allSpots, setAllSpots, currGroupId, currDay, setCurrGroupId, setCurrDay, Token, setRefetch, refetch}}>
       {children} 
     </DataContext.Provider>
   )

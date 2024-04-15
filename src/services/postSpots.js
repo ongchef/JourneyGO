@@ -27,10 +27,14 @@ export async function postSpots(Token, groupId, day, spot_data) {
 
 /*
 {
-    "spotName": "新竹市立動物園",
+    "spot_id": 20,
+    "spot_name": "新竹市綠水市民活動中心",
     "description": "臣服 於我",
-    "location": "新竹市鼓山區萬壽路350號",
-    "lan":  120.58,
-    "lon": 24.48
+    "location": "300新竹市東區博愛街106號",
+    "lon": "120.97",
+    "lan": "24.81",
+    "date": 1,
+    "sequence": 1,
+    "g_id": 13
 }
 */

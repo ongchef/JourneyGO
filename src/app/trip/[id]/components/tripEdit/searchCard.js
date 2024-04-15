@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 // }
 
 export default function SearchCard({title, location, rating, lng, lat}) {
-  const { allSpots, currGroupId, currDay, Token, refetch } = useContext(DataContext);
+  const { allSpots, currGroupId, currDay, Token, setRefetch } = useContext(DataContext);
 
   const handleClick = () => {
     const spots = allSpots[currGroupId][currDay];
@@ -25,11 +25,12 @@ export default function SearchCard({title, location, rating, lng, lat}) {
         location: location,
         lon: lng,
         lan: lat,
+        sequence: spotIds.length,
       }
       try {
         const status = await postSpots(Token, currGroupId, currDay, data);
         if (status === 201 || status === 200) {
-          refetch();
+          setRefetch((prev) => prev + 1);
         }
       } catch (error) {
         console.log("post", error)

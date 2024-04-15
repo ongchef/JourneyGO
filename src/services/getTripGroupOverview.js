@@ -15,8 +15,8 @@ export async function getTripGroupOverview(Token, group_id) {
         const data = await res.json();
         const status = res.status;
 
-        console.log('Status:', status);
-        console.log('Data:', data);
+        // console.log('Status:', status);
+        // console.log('Data:', data);
         
         // prevent empty data
         if (data === undefined) {

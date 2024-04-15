@@ -57,7 +57,7 @@ export default function Home() {
   };
 
   const { Token } = useContext(DataContext);
-  console.log('Token from DataContext:' + Token);
+  // console.log('Token from DataContext:' + Token);
 
   useEffect(() => {
     fetchAllGroups();

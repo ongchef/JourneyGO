@@ -19,7 +19,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 
 function SelectedContent({ data, setTripOverview, setDividerStyles }) {
-    console.log('trip overview data:' + JSON.stringify(data));
+    // console.log('trip overview data:' + JSON.stringify(data));
 
     const [loading, setLoading] = useState(false);
     const router = useRouter();
