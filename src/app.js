@@ -30,10 +30,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// authenticate user
-
-// get user info
-
 app.use(
   "/api/tripgroup/",
   ClerkExpressWithAuth(),
