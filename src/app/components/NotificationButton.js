@@ -35,6 +35,7 @@ const NotificationButton = ({ onClick }) => {
     }
   }, [Token]);
 
+  
   return (
     <>
       <IconButton color="inherit" aria-label="notification" onClick={handleButtonClick}>
