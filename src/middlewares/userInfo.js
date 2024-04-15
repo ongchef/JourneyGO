@@ -7,7 +7,7 @@ export default async function getUserInfo(req, res, next) {
   // ClerkExpressWithAuth(),
   console.log("---------------");
   //console.log("req", req)
-  console.log("req.rawHeaders", req.rawHeaders);
+  //console.log("req.rawHeaders", req.rawHeaders);
   console.log("req.auth", req.auth);
   console.log("req_Id", req.auth.userId);
 
