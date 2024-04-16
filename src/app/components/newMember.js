@@ -34,7 +34,7 @@ const newMemberDialog = ({ open, onClose}) => {
   };
 
   const handleCancel = () => {
-    setEmail(''); 
+    setInviteeEmail(''); 
     onClose();
   };
 
