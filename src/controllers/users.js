@@ -98,9 +98,7 @@ export const getGroup = async (req, res) => {
     console.log(userId);
     const data = await getGroupByUserId(userId);
     if (data.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Cannot found groups by given userId." });
+      return res.status(200).json([]);
     }
 
     return res.status(200).json(data);
