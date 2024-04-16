@@ -29,6 +29,12 @@ export default function Home() {
   // for resetting the page
   const [key, setKey] = useState(0); 
 
+  const tabValues = {
+    incoming: ['incoming', 'Incoming'],
+    finished: ['finished', 'Finished'],
+  };
+  
+
   useEffect(() => {
     return () => {
       setKey(prevKey => prevKey + 1);
@@ -39,9 +45,7 @@ export default function Home() {
     const handlePopState = () => {
       window.location.reload();
     };
-
     window.addEventListener('popstate', handlePopState);
-
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
@@ -114,8 +118,8 @@ export default function Home() {
               
             <Tabs value={tabValue} onChange={handleTabChange} aria-label="trip tabs" className="">
               <Tab label="All" value="All"/>
-              <Tab label="Incoming" value="incoming"/>
-              <Tab label="Finished" value="finished"/>
+              <Tab label="Incoming" value={tabValues.incoming}/>
+              <Tab label="Finished" value={tabValues.finished}/>
             </Tabs>
 
             <TripList data={tripGroups} tabValue={tabValue} setTripOverview={setTripOverview}/>
