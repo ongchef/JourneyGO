@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useContext } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper, Box } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { DataContext } from '@/app/components/dataContext';
@@ -15,6 +15,8 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const [country, setCountry] = useState("臺灣");
   const [inviteeEmail, setCompanionEmail] = useState('');
   const { Token } = useContext(DataContext);
+  const [creationStatusOpen, setCreationStatusOpen] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
   
  // console.log('Token from newJourney:' + Token); 
 
@@ -53,16 +55,32 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
       const tripGroupData = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail);
       console.log('Trip group created:', tripGroupData);
-      onClose();
 
-      window.location.reload();
+      if (!tripGroupData) {
+        setStatusMessage('新增行程失敗!');
+        setCreationStatusOpen(true);
+        return;
+      }
+      setStatusMessage('已新增行程');
+      setCreationStatusOpen(true);
+
+      // onClose();
+      // window.location.reload();
     } catch (error) {
       console.error('Error creating trip group:', error);
+      setStatusMessage('新增行程失敗!');
+      setCreationStatusOpen(true);
     }
   };
 
+  const handleCreationStatusDialogClose = () => {
+    setCreationStatusOpen(false)
+    window.location.reload();
+  }
+
 
   return (
+  <div>
     <Dialog open={open} onClose={onClose} fullWidth>
       <DialogTitle>新增行程</DialogTitle>
       <DialogContent>
@@ -132,6 +150,18 @@ const NewJourneyDialog = ({ open, onClose}) => {
         <Button onClick={handleSave} variant="contained" color="primary">儲存</Button>
       </DialogActions>
     </Dialog>
+
+    <Dialog open={creationStatusOpen} onClose={handleCreationStatusDialogClose} fullWidth maxWidth="sm">
+      <DialogContent>
+        {statusMessage}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', height: '100%'}}>
+          <Button onClick={handleCreationStatusDialogClose}>
+            確定
+          </Button>
+        </Box>
+      </DialogContent>
+    </Dialog>
+  </div>
   );
 };
 
