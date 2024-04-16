@@ -15,9 +15,12 @@ export async function deleteSpots(Token, groupId, day, spotId) {
     });
     const data = await res.json();
     const status = res.status;
+    console.log('Status:', status);
+    console.log('Data:', data);
     return status;    
   } catch (error) {
     console.error('Error:', error);
+    console.error('Response:', await res.text());
     return undefined;
   }
 }

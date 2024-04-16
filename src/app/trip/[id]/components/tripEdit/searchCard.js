@@ -16,16 +16,17 @@ export default function SearchCard({title, location, rating, lng, lat}) {
   const { allSpots, currGroupId, currDay, Token, setRefetch } = useContext(DataContext);
 
   const handleClick = () => {
-    const spots = allSpots[currGroupId][currDay];
-    const spotIds = spots?.map(spot => spot.id);
     async function post() {
+      const spots = allSpots?.currGroupId?.currDay;
+      console.log("spots in search", spots);
+      const spotIds = spots?.map(spot => spot.id);
       const data = {
         spotName: title,
         description: "",
         location: location,
         lon: lng,
         lan: lat,
-        sequence: spotIds.length,
+        sequence: spotIds?.length || 0, 
       }
       try {
         const status = await postSpots(Token, currGroupId, currDay, data);

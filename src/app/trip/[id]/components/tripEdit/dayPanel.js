@@ -18,9 +18,7 @@ function tabProps(index) {
 
 export default function DayPanel(props) {
   const {allGroups, currGroupId} = useContext(DataContext);
-  // const [days, setDays] = useState(Array.from({length: allGroups[currGroupId]?.days}, (_, i) => i));
-  const days = [0, 1, 2, 3, 4, 5, 6];
-  
+  const [days, setDays] = useState(Array.from({length: allGroups?.days}, (_, i) => i));  
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
