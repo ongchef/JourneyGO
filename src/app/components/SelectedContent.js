@@ -3,44 +3,25 @@ import "../globals.css";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation'
 
-import CircularProgress from '@mui/material/CircularProgress';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import {deepOrange, deepPurple, lightBlue, green, cyan} from '@mui/material/colors';
+import { Grid, Box, Typography, AvatarGroup, Avatar, CardMedia, Button, IconButton, colors } from '@mui/material';
+import { ArrowBackIos as ArrowBackIosIcon, ArrowForwardRounded as ArrowForwardRoundedIcon } from '@mui/icons-material';
 
-import AvatarGroup from '@mui/material/AvatarGroup';
-import Avatar from '@mui/material/Avatar';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
 
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 
-function SelectedContent({ data, setTripOverview, setDividerStyles }) {
+
+function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndicator }) {
     // console.log('trip overview data:' + JSON.stringify(data));
 
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    // useEffect(() => {
-    //     const handleStart = () => setLoading(true);
-    //     const handleComplete = () => setLoading(false);
     
-    //     router.events.on('routeChangeStart', handleStart);
-    //     router.events.on('routeChangeComplete', handleComplete);
-    //     router.events.on('routeChangeError', handleComplete);
-    
-    //     return () => {
-    //         router.events.off('routeChangeStart', handleStart);
-    //         router.events.off('routeChangeComplete', handleComplete);
-    //         router.events.off('routeChangeError', handleComplete);
-    //     };
-    // }, [router]);
 
     const handleClick =  () => {
+        setLoading(true);
         router.push(`/trip/${data.group_id}`);
+        // setLoading(false);
     };
 
     const avatarColors = [];
@@ -54,7 +35,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles }) {
 
     return (
         data !== null && (
-            loading ? <CircularProgress /> :
+            loading ? <LoadingIndicator /> : (
             <Grid item xs={12} md={6} className="border-l-2 border-black-500" sx={setDividerStyles}>
                 <Box className="m-5 flex items-center">
                     <IconButton color="primary" aria-label="get back" onClick={() => setTripOverview(null)}>
@@ -99,24 +80,20 @@ function SelectedContent({ data, setTripOverview, setDividerStyles }) {
                     </Typography>
                     <Box className="flex items-center mt-2">
                         <Typography variant="h4" component="div" sx={{ color: cyan[700] }}>
-                        {data.start_date} ~ {data.end_date}
+                            {data.start_date} ~ {data.end_date}
                         </Typography>
                     </Box>
                     </Box>
 
                     <Box className="flex justify-end items-end">
-                        <Button
-                            variant="text"
-                            size="large"
-                            endIcon={<ArrowForwardRoundedIcon />}
-                            sx={{ fontSize: '1.5rem'}}
-                            onClick={handleClick}>
+                        <Button variant="text" size="large" endIcon={<ArrowForwardRoundedIcon />} sx={{ fontSize: '1.5rem'}} onClick={handleClick}>
                             查看詳細資訊
                         </Button>
                     </Box>
                 </Box>
             </Grid>
             )
+        )
     );
 }
 

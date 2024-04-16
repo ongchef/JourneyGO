@@ -4,34 +4,20 @@ import { getTripGroups } from '@/services/getTripGroups';
 import { DataContext } from '@/app/components/dataContext';
 import SelectedContent from './components/SelectedContent';
 import TripList from './components/TripList';
+import NewJourneyDialog from './components/newJourney';
 
 import { useContext, useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import { CircularProgress, Box, Typography, Tabs, Tab, Grid, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
-import NewJourneyDialog from './components/newJourney';
-import getInvitation from '@/services/getInvitation';
 
-
-// Mock data array
-const mockData = [
-  {
-    id: 1,
-    imageUrl: '/images/hualian.jpg',
-    name: '花東3日遊之太魯閣馬拉松跑起來！',
-    place: 'Taiwan',
-    tripStatus: 'Ongoing',
-    creator: 'Abb',
-    description: 'An amazing journey through Taiwan!',
-    duration: '3 days'
-  }
-];
+function LoadingIndicator() {
+  return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', }}>
+          <CircularProgress size={50} />
+      </Box>
+  );
+}
 
 export default function Home() {
 
@@ -89,7 +75,7 @@ export default function Home() {
       // calculate the duration of each trip group
       console.log("data after getTripGroups:");
       console.log(data);
-      
+
       if (Array.isArray(data)) {
         data.forEach(trip => {
           const startDate = new Date(trip.start_date);
@@ -108,7 +94,7 @@ export default function Home() {
   // console.log(tripGroups);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingIndicator />;
   }
 
   return (
@@ -135,7 +121,7 @@ export default function Home() {
             <TripList data={tripGroups} tabValue={tabValue} setTripOverview={setTripOverview}/>
           </Grid>
 
-          <SelectedContent data={tripOverview} setTripOverview={setTripOverview} setDividerStyles={setDividerStyles}/>
+          <SelectedContent data={tripOverview} setTripOverview={setTripOverview} setDividerStyles={setDividerStyles} LoadingIndicator={LoadingIndicator}/>
         </Grid>
       </Box>
 

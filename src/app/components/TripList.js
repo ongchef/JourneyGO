@@ -3,19 +3,8 @@ import "../globals.css";
 import { useContext } from 'react';
 import { getTripGroupOverview } from '@/services/getTripGroupOverview';
 import { DataContext } from '@/app/components/dataContext';
-import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import CardActions from '@mui/material/CardActions';
-import IconButton from '@mui/material/IconButton';
-
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import ScheduleIcon from '@mui/icons-material/Schedule';
+import { useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia, CardActions, IconButton } from '@mui/material';
+import { MoreVert as MoreVertIcon, Schedule as ScheduleIcon } from '@mui/icons-material';
 
 function TripList({ data, tabValue, setTripOverview }) {
     const { Token, setAllGroups } = useContext(DataContext);
