@@ -19,9 +19,14 @@ export async function updateInvitationStatus(Token, invitationId, status) {
       body: JSON.stringify(requestBody),
 
     });
-    // console.log('Response:', response);
-      const data = await response.json();
-      return data;
+      // console.log('Response:', response);
+      // const data = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      console.log(`Invitation status: ${status} updated successfully`);  
+      return response.status;
   } catch (error) {
     console.error('Error updating invitation status:', error);
     return null;

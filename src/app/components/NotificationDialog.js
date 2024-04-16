@@ -18,6 +18,8 @@ import {updateInvitationStatus} from '@/services/updateInvitationStatus';
 
 const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvitations}) => {
   const { Token } = useContext(DataContext);
+  const [invitationStatusOpen, setInvitationStatusOpen] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
 
   console.log('Token from Notification:' + Token);
 
@@ -25,26 +27,35 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
       //accept invitation
       const handleAccept = async (invitation) => {
         try {
+          console.log("invitation " + invitation)
           await updateInvitationStatus(Token, invitation.invitation_id, 'accepted');
-          console.log("Invitation status:" + invitation.status)
+          // console.log("Invitation status:" + invitation.status)
 
-          await inviteToGroup(Token, invitation.inviter_name, invitation.invitee_name, invitation.group_name);
+          // await inviteToGroup(Token, invitation.inviter_name, invitation.invitee_name, invitation.group_name);
           
           setPendingInvitations(pendingInvitations.filter((inv) => inv.id !== invitation.id));
-          
+          setStatusMessage('已接受邀請');
+          setInvitationStatusOpen(true);
         
         } catch (error) {
           console.error('Error accepting invitation:', error);
+          setStatusMessage('接受邀請失敗!');
+          setInvitationStatusOpen(true);
         }
       };
 
       const handleDecline = async (invitation) => {
         try {
-          await updateInvitationStatus(Token, invitation.invitation_id, 'declined');
+          await updateInvitationStatus(Token, invitation.invitation_id, 'rejected');
           setPendingInvitations(pendingInvitations.filter((inv) => inv.id !== invitation.id));
+
+          setStatusMessage('已拒絕邀請');
+          setInvitationStatusOpen(true);
           
         } catch (error) {
           console.error('Error declining invitation:', error);
+          setStatusMessage('拒絕邀請失敗!');
+          setInvitationStatusOpen(true);
         }
       };
 
@@ -53,7 +64,13 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
         window.location.reload();
       }
 
+      const handleInvitationStatusDialogClose = () => {
+        setInvitationStatusOpen(false)
+        handleCancel();
+      }
+
   return (
+    <div>
       <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
         <DialogTitle>通知</DialogTitle>
         <DialogContent>
@@ -79,7 +96,19 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
           ))}
         </DialogContent>
       </Dialog>
-    );
-  };
+
+      <Dialog open={invitationStatusOpen} onClose={handleInvitationStatusDialogClose} fullWidth maxWidth="sm">
+          <DialogContent>
+            <Box sx={{ position: 'absolute', top: 0, right: 0 }}>
+              <IconButton onClick={handleInvitationStatusDialogClose}>
+              <img src="/close.png" alt="close" style={{ width: '30px', height: '30px' }}/>
+              </IconButton>
+            </Box>
+            {statusMessage}
+          </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
 
 export default NotificationDialog;
