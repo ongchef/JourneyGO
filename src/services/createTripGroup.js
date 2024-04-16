@@ -33,12 +33,11 @@ export async function createTripGroup(Token, groupName, startDate, endDate, coun
         body: JSON.stringify(requestBody),
       });
       
-      console.log('Response:', response);
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Group:', data);
-        return data; // Optionally return created trip group data
-      } else {
+      console.log('createTripGroup Response:', response);
+      if (!response.ok) {
+        // const data = await response.json();
+        // console.log('Group:', data);
+        // return data; 
         console.error('Failed to create trip group:', response.statusText);
         return null;
       }

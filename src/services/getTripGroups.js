@@ -12,16 +12,21 @@ export async function getTripGroups(Token) {
             'Authorization': `${bearer_token}`,
         },
         });
+        
         const data = await res.json();
+        console.log("getTripGroups: ")
+        console.log(data)
         const status = res.status;
+        console.log('Status:', status);
+
 
         // console.log('Status:', status);
         // console.log('Data:', data);
         
-        // prevent empty data
-        if (data === undefined) {
-            console.error('No data found');
-            return undefined;
+        
+        if (!res.ok) {
+            console.error('Failed to fetch trip groups:', res.statusText);
+            return null;
         }
         return data;
 

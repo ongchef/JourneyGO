@@ -1,26 +1,31 @@
 import React, { useState, useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
-import {getInvitation} from '@/services/getInvitation';
+// import {getInvitation} from '@/services/getInvitation';
+import { inviteToGroup } from '@/services/inviteToGroup';
 import { DataContext } from '@/app/components/dataContext';
 
 const newMemberDialog = ({ open, onClose}) => {
 
   const [inviteeEmail, setInviteeEmail] = useState('');
-  const [groupId, setGroupId] = useState('');
-  const { Token } = useContext(DataContext);
+  const { Token, allGroups } = useContext(DataContext);
 
+  const [groupId, setGroupId] = useState(allGroups.group_id);
+  console.log('Token from newMemberDialog:' + Token);
+  
  
   const handleChange = (event) => {
-    setEmail(event.target.value);
-    
+    setInviteeEmail(event.target.value);
   };
 
   const handleSave = async() => {
     try {
       // console.log("Invitee Email: "+inviteeEmail);
       // console.log("Group ID: "+groupId);
+      
+      //setGroupId(allGroups.group_id);
+      console.log("group_id: "+groupId);
    
-      const invitationData = await getInvitation(Token);
+      await inviteToGroup(Token, inviteeEmail, groupId);
       // console.log('Invitation data:', invitationData);
       onClose();
     } catch (error) {
