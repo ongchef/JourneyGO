@@ -72,7 +72,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchAllGroups();
-  }, [Token, tripOverview, tripGroups]);
+  }, [Token, tripOverview]);
 
   async function fetchAllGroups() {
     try {
@@ -124,7 +124,7 @@ export default function Home() {
             <TripList data={tripGroups} tabValue={tabValue} setTripOverview={setTripOverview}/>
           </Grid>
 
-          <SelectedContent data={tripOverview} setTripOverview={setTripOverview} setDividerStyles={setDividerStyles} />
+          <SelectedContent data={tripOverview} setTripOverview={setTripOverview} setDividerStyles={setDividerStyles}/>
         </Grid>
       </Box>
 

@@ -65,7 +65,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles }) {
                     </Typography>
                 </Box>
 
-                <Box className="m-5">
+                <Box className="m-5" style={{ position: 'sticky', right: 0, top: 0 }}>
                     <Box position="relative" className="w-full h-60 overflow-hidden rounded-xl">
                     <CardMedia
                         component="img"
