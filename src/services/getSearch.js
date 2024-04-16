@@ -1,16 +1,19 @@
-'use server';
+"use server";
 
 export async function getSearch(Token, query) {
+  console.log("Token:", Token);
+  console.log("query:", query);
   const url = `https://backend-rd2rxwzuga-de.a.run.app/api/spots/search/${query}`;
   const bearer_token = `Bearer ${Token}`;
   try {
     const res = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `${bearer_token}`,
+        "Content-Type": "application/json",
+        Authorization: `${bearer_token}`,
       },
     });
+    console.log("res:", res);
     const data = await res.json();
     const formattedData = data.map((spot) => {
       return {
@@ -24,7 +27,7 @@ export async function getSearch(Token, query) {
     const status = res.status;
     return formattedData;
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     return undefined;
   }
 }
