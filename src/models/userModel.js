@@ -42,6 +42,7 @@ export const createGroupModel = (
   endDate
 ) => {
   return new Promise((resolve, reject) => {
+    console.log("endDate", endDate);
     db.tx(async (t) => {
       const groupCountries = [];
 
@@ -57,15 +58,13 @@ export const createGroupModel = (
           reject(`Country ${countryName} not found in the database.`);
         }
       }
-
       // Step 2: Insert group into trip_groups table
       const { group_id: groupId } = await t.one(
-        `INSERT INTO trip_groups (group_name, start_date, end_date, status)
-         VALUES ($1, $2, $3, 'Incoming')
+        `INSERT INTO trip_groups (group_name, start_date, end_date, status)VALUES 
+        ($1, $2, $3, 'Incoming')
          RETURNING group_id`,
         [groupName, startDate, endDate]
       );
-
       // Step 3: Insert into group_country table for each country_id
       for (const groupCountry of groupCountries) {
         await t.none(
@@ -74,7 +73,6 @@ export const createGroupModel = (
           [groupId, groupCountry.country_id]
         );
       }
-
       // Step 4: Insert into group_member table
       await t.none(
         `INSERT INTO group_member (u_id, g_id)
@@ -88,6 +86,7 @@ export const createGroupModel = (
         resolve(groupId);
       })
       .catch((error) => {
+        console.log("error", error);
         reject(error);
       });
   });

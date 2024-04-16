@@ -1,16 +1,14 @@
 // controllers/userController.js
-import { 
+import {
   addNewUser,
   getuserIdbyClerkId,
   getGroupByUserId,
   createGroupModel,
   getInviteeIdByEmail,
   getInvitationByUserId,
-  updateInvitation
+  updateInvitation,
 } from "../models/userModel.js";
-import {
-  createInvitationModel,
-} from "../models/tripgroupModel.js"
+import { createInvitationModel } from "../models/tripgroupModel.js";
 
 import { Webhook } from "svix";
 import bodyParser from "body-parser";
@@ -94,25 +92,27 @@ export const registerUser = async function (req, res) {
 export const getGroup = async (req, res) => {
   const clerkId = req.userID;
   try {
-      let userId = await getuserIdbyClerkId(clerkId)
-      console.log(userId);
-      userId = userId[0].user_id
-      console.log(userId);
-      const data = await getGroupByUserId(userId);
-      if (data.length === 0){
-          return res.status(404).json({ message: "Cannot found groups by given userId."});
-      }
-      
-      return res.status(200).json(data);
+    let userId = await getuserIdbyClerkId(clerkId);
+    console.log(userId);
+    userId = userId[0].user_id;
+    console.log(userId);
+    const data = await getGroupByUserId(userId);
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Cannot found groups by given userId." });
+    }
+
+    return res.status(200).json(data);
   } catch (error) {
-      return res.status(500).json({ message: error.message});
+    return res.status(500).json({ message: error.message });
   }
-}
+};
 
 // export const createGroup = async (req, res) => {
 //   const clerkId = req.userID;
-  
-//   const { groupName, country, invitee, startDate, endDate } = req.body; 
+
+//   const { groupName, country, invitee, startDate, endDate } = req.body;
 //   try {
 //       let userId = await getuserIdbyClerkId(clerkId)
 //       userId = userId.user_id
@@ -121,7 +121,7 @@ export const getGroup = async (req, res) => {
 //       const inviteeId = await getInviteeIdByEmail(email);
 
 //       const newInvitation = await createInvitationModel(userId, inviteeId, groupId);
-      
+
 //       return res.status(201).json(newGroup);
 //   }catch (error) {
 //       return res.status(500).json({ message: error.message});
@@ -131,55 +131,73 @@ export const getGroup = async (req, res) => {
 export const createGroup = async (req, res) => {
   const clerkId = req.userID;
   console.log(req.body);
-  const { groupName, countries, inviteeEmail, startDate, endDate } = req.body; 
+  const { groupName, countries, inviteeEmail, startDate, endDate } = req.body;
   try {
-      let userId = await getuserIdbyClerkId(clerkId)
-      userId = userId[0].user_id
-      console.log(userId, groupName, countries, inviteeEmail, startDate, endDate);
-      const newGroup = await createGroupModel(userId, groupName, startDate, endDate);
-      console.log("newGroup", newGroup);
-      console.log("?");
-      let inviteeId = await getInviteeIdByEmail(inviteeEmail);
-      inviteeId = inviteeId.user_id
-      console.log("inviteeeee", inviteeId);
-      const newInvitation = await createInvitationModel(userId, inviteeId, newGroup);
-      
-      return res.status(201).json(newGroup);
-  }catch (error) {
-      return res.status(500).json({ message: error.message});
+    let userId = await getuserIdbyClerkId(clerkId);
+    userId = userId[0].user_id;
+    console.log(userId, groupName, countries, inviteeEmail, startDate, endDate);
+    const newGroup = await createGroupModel(
+      userId,
+      groupName,
+      ["臺灣"],
+      startDate,
+      endDate
+    );
+    console.log("newGroup", newGroup);
+    console.log("?");
+    let inviteeId = await getInviteeIdByEmail(inviteeEmail);
+    inviteeId = inviteeId.user_id;
+    console.log("inviteeeee", inviteeId);
+    const newInvitation = await createInvitationModel(
+      userId,
+      inviteeId,
+      newGroup
+    );
+
+    return res.status(201).json(newGroup);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
-}
+};
 
 export const getInvitation = async (req, res) => {
   const clerkId = req.userID;
   try {
-      let userId = await getuserIdbyClerkId(clerkId)
-      userId = userId[0].user_id 
-      const data = await getInvitationByUserId(userId);
+    let userId = await getuserIdbyClerkId(clerkId);
+    userId = userId[0].user_id;
+    const data = await getInvitationByUserId(userId);
 
-      if (data.length === 0){
-          return res.status(404).json({ message: "Cannot found invitations by given userId."});
-      }
-      
-      return res.status(200).json(data);
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Cannot found invitations by given userId." });
+    }
+
+    return res.status(200).json(data);
   } catch (error) {
-      return res.status(500).json({ message: error.message});
+    return res.status(500).json({ message: error.message });
   }
-}
+};
 
 export const putInvitation = async (req, res) => {
   const { invitationId } = req.params;
   console.log(req.body);
   const { status } = req.body;
-  
-  try {
-      if (status !== "accepted" && status !== "pending" && status !== "rejected") {
-        return res.status(400).json({ message: "status need to be accepted, pending, or rejected."});
-      }
-      const updInvitation = await updateInvitation(invitationId, status);
 
-      return res.status(201).json(updInvitation);
-  }catch (error) {
-      return res.status(500).json({ message: error.message});
+  try {
+    if (
+      status !== "accepted" &&
+      status !== "pending" &&
+      status !== "rejected"
+    ) {
+      return res
+        .status(400)
+        .json({ message: "status need to be accepted, pending, or rejected." });
+    }
+    const updInvitation = await updateInvitation(invitationId, status);
+
+    return res.status(201).json(updInvitation);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
-}
+};
