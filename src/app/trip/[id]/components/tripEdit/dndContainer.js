@@ -21,11 +21,9 @@ export default function DndContainer({day, spotChange}) {
 
   useEffect(() => {                             //  sequence [{id, title, startTime, endTime, numLikes, comments, imgUrl},]
     const fetchSpots = async () => {
-      console.log("fetchSpots", currGroupId, currDay);
       if (currGroupId===undefined || currDay===undefined) return;     // Do nothing if groupId or day is not set
       try {
         const res = await getSpots(Token, currGroupId, currDay);
-        console.log("res", res);
         if (res === undefined) return;
         setCards(res);
         setAllSpots((prevState) => {
@@ -38,8 +36,6 @@ export default function DndContainer({day, spotChange}) {
           };
           return updatedState;
         });
-        console.log("allSpots", allSpots);
-        console.log("cards", cards);
       } catch (e) {
         console.error(e);
       }

@@ -12,7 +12,7 @@ const newMemberDialog = ({ open, onClose}) => {
   const { Token, allGroups } = useContext(DataContext);
 
   const [groupId, setGroupId] = useState(allGroups.group_id);
-  console.log('Token from newMemberDialog:' + Token);
+  // console.log('Token from newMemberDialog:' + Token);
   
  
   const handleChange = (event) => {

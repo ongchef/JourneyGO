@@ -15,18 +15,6 @@ export default function SearchField({ setSearchRes, checked }) {
   const { Token, currGroupId, currDay, allSpots } = useContext(DataContext);
   const [lastSpot, setLastSpot] = useState(); //id
 
-  useEffect(() => {
-    if (currGroupId === -1 || currDay === -1) return;
-    function fetchLastSpot() {
-      if (allSpots && allSpots[currGroupId] && allSpots[currGroupId][currDay]){
-        const last = allSpots[currGroupId][currDay].slice(-1)[0];
-        setLastSpot(last?.id);
-      }
-    }
-    fetchLastSpot();
-  }, [currGroupId, currDay, allSpots]);
-
-
   const handleInputChange = (event) => {
     setSearchText(event.target.value);
   };
@@ -42,8 +30,12 @@ export default function SearchField({ setSearchRes, checked }) {
     async function search() {
       try {
         if (checked==true) {
-          const res = await getSurrounding(Token, searchText, lastSpot);
-          setSearchRes(res);
+          if (currGroupId === undefined || currDay === undefined) return;
+          const last = allSpots?.[currGroupId]?.[currDay].slice(-1)[0]?.['id'];
+          if (last) {
+            const res = await getSurrounding(Token, searchText, last);
+            setSearchRes(res);
+          }
         } else {
           const res = await getSearch(Token, searchText);
           setSearchRes(res);

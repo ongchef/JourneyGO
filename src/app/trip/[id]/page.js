@@ -32,14 +32,14 @@ export default function Trip({params}) {
     setGroupinfo(allGroups);
   }, [allGroups, currGroupId]);
    
+  useEffect(() => {
+    const groupId = String(params.id);
+    setCurrGroupId(groupId);
+  }, []);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  useEffect(() => {
-    const groupId = params?.id;
-    setCurrGroupId(groupId);
-  }, [params.id]);
 
   return (
     <main>

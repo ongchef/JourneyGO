@@ -16,10 +16,15 @@ export async function putSpots(Token, groupId, day, updateCards_sequnce) {
       },
       body: JSON.stringify(updateCards_sequnce),
     });
-    const data = await res.json();
-    const status = res.status;
-    return status;
-    
+    if(res) {
+      const data = await res.json();
+      const status = res.status;
+      console.log("putSpots", status);
+      return status;
+    } else {
+      console.log("putSpots", res);
+      return undefined;
+    }
   } catch (error) {
     console.error('Error:', error);
     return undefined;

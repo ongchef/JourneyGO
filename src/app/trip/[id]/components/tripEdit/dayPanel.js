@@ -49,7 +49,7 @@ export default function DayPanel(props) {
       {days.map((day) => {
         return (
           <TabPanel value={value} index={day} key={day}>
-            <AllSpots day={day}/>
+            <AllSpots day={String(day)}/>
           </TabPanel>
         );
       })}

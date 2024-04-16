@@ -21,7 +21,7 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
   const [invitationStatusOpen, setInvitationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
 
-  console.log('Token from Notification:' + Token);
+  // console.log('Token from Notification:' + Token);
 
 
       //accept invitation
@@ -80,7 +80,7 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
             </IconButton>
           </Box>
 
-          {pendingInvitations.map(invitation => (
+          {pendingInvitations?.map(invitation => (
             <Box key={invitation.id} bgcolor="#E5F7FF" p={2} borderRadius={6} style={{ marginBottom: '10px' } }>
             <Grid  key={invitation.id} container spacing={4} alignItems="center">
             <Grid item xs={12}>

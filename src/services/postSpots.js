@@ -14,12 +14,17 @@ export async function postSpots(Token, groupId, day, spot_data) {
       },
       body: JSON.stringify(spot_data),
     });
-    const data = await res.json();
-    if (data) {
-      console.log("postSpots", data);
+    if(res) {
+      const data = await res.json();
+      if (data) {
+        console.log("postSpots", data);
+        const status = res.status;
+        return status;  
+      }
+    } else {
+      console.log("postSpots", res);
+      return undefined;
     }
-    const status = res.status;
-    return status;    
   } catch (error) {
     console.error('Error:', error);
     return undefined;

@@ -11,18 +11,24 @@ export async function getSearch(Token, query) {
         'Authorization': `${bearer_token}`,
       },
     });
-    const data = await res.json();
-    const formattedData = data.map((spot) => {
-      return {
-        title: spot.name,
-        location: spot.formatted_address,
-        rating: spot.rating,
-        lng: spot.geometry.location.lng,
-        lat: spot.geometry.location.lat,
-      };
-    });
-    const status = res.status;
-    return formattedData;
+    if(res) {
+      const data = await res.json();
+      const formattedData = data?.map((spot) => {
+        return {
+          title: spot?.name,
+          location: spot?.formatted_address,
+          rating: spot?.rating,
+          lng: spot?.geometry?.location?.lng,
+          lat: spot?.geometry?.location?.lat,
+        };
+      });
+      const status = res.status;
+      console.log("getSearch", status);
+      return formattedData;
+    } else {
+      console.log("getSearch", res);
+      return undefined;
+    }
   } catch (error) {
     console.error('Error:', error);
     return undefined;
