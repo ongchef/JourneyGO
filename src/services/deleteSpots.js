@@ -13,11 +13,16 @@ export async function deleteSpots(Token, groupId, day, spotId) {
         'Authorization': `${bearer_token}`,
       },
     });
-    const data = await res.json();
-    const status = res.status;
-    console.log('Status:', status);
-    console.log('Data:', data);
-    return status;    
+    if (res){
+      const data = await res.json();
+      const status = res.status;
+      console.log('Status:', status);
+      console.log('Data:', data);
+      return status;
+    } else {
+      return undefined;
+    }
+        
   } catch (error) {
     console.error('Error:', error);
     console.error('Response:', await res.text());

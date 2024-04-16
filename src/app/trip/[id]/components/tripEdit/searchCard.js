@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DataContext } from '@/app/components/dataContext';
 import { postSpots } from '@/services/postSpots';
 import Image from 'next/image';
@@ -14,19 +14,22 @@ import Button from '@mui/material/Button';
 
 export default function SearchCard({title, location, rating, lng, lat}) {
   const { allSpots, currGroupId, currDay, Token, setRefetch } = useContext(DataContext);
+  const [spotsList, setSpotsList] = useState([]);
+
+  useEffect(() => {
+    setSpotsList(allSpots?.currGroupId?.currDay);
+  }, [allSpots]);
 
   const handleClick = () => {
     async function post() {
-      const spots = allSpots?.currGroupId?.currDay;
-      console.log("spots in search", spots);
-      const spotIds = spots?.map(spot => spot.id);
+      const spotIds = spotsList?.map(spot => spot.id);
       const data = {
         spotName: title,
         description: "",
         location: location,
         lon: lng,
         lan: lat,
-        sequence: spotIds?.length || 0, 
+        sequence: spotIds?.length || 0, //cannot correctly get the spotsList length
       }
       try {
         const status = await postSpots(Token, currGroupId, currDay, data);
