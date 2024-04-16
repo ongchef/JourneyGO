@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
 import {getInvitation} from '@/services/getInvitation';
 import { DataContext } from '@/app/components/dataContext';
