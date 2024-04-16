@@ -40,6 +40,14 @@ export default function Home() {
   const [tripGroups, setTripGroups] = useState([]); // [{group_id, group_name, start_date, end_date, status}
   const [tripOverview, setTripOverview] = useState(null);
   const [loading, setLoading] = useState(true);
+  // for resetting the page
+  const [key, setKey] = useState(0); 
+
+  useEffect(() => {
+    return () => {
+      setKey(prevKey => prevKey + 1);
+    };
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -72,7 +80,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchAllGroups();
-  }, [Token, tripOverview]);
+  }, [Token, tripOverview, key]);
 
   async function fetchAllGroups() {
     try {
@@ -81,12 +89,15 @@ export default function Home() {
       // calculate the duration of each trip group
       console.log("data after getTripGroups:");
       console.log(data);
-      data.forEach(trip => {
-        const startDate = new Date(trip.start_date);
-        const endDate = new Date(trip.end_date);
-        const duration = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
-        trip.duration = duration;
-      });
+      
+      if (Array.isArray(data)) {
+        data.forEach(trip => {
+          const startDate = new Date(trip.start_date);
+          const endDate = new Date(trip.end_date);
+          const duration = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
+          trip.duration = duration;
+        });
+      }
       setTripGroups(data);
       setLoading(false);
     } catch (error) {
