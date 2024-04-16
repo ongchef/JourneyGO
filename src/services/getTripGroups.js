@@ -1,7 +1,7 @@
 'use server';
 
 export async function getTripGroups(Token) {
-    const url = `http://localhost:3000/api/users/trip-groups`;
+    const url = `https://backend-rd2rxwzuga-de.a.run.app/api/users/trip-groups`;
     const bearer_token = `Bearer ${Token}`;
 
     try {

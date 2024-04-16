@@ -2,7 +2,7 @@
 
 export async function getInvitation(Token) {
 
-    const url = 'http://localhost:3000/api/users/invitations';
+    const url = 'https://backend-rd2rxwzuga-de.a.run.app/api/users/invitations';
     const bearer_token = `Bearer ${Token}`;
   
     try {

@@ -1,7 +1,7 @@
 'use server';
 
 export async function getSearch(Token, query) {
-  const url = `http://localhost:3000/api/spots/search/${query}`;
+  const url = `https://backend-rd2rxwzuga-de.a.run.app/api/spots/search/${query}`;
   const bearer_token = `Bearer ${Token}`;
   try {
     const res = await fetch(url, {

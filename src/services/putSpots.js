@@ -4,7 +4,7 @@
 
 export async function putSpots(Token, groupId, day, updateCards_sequnce) {
   day = day + 1;
-  const url = `http://localhost:3000/api/tripgroup/${groupId}/days/${day}/spots`;
+  const url = `https://backend-rd2rxwzuga-de.a.run.app/api/tripgroup/${groupId}/days/${day}/spots`;
   const bearer_token = `Bearer ${Token}`;
 
   try {

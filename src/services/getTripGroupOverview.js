@@ -1,7 +1,7 @@
 'use server';
 
 export async function getTripGroupOverview(Token, group_id) {
-    const url = `http://localhost:3000/api/tripgroup/${group_id}/overview`;
+    const url = `https://backend-rd2rxwzuga-de.a.run.app/api/tripgroup/${group_id}/overview`;
     const bearer_token = `Bearer ${Token}`;
 
     try {

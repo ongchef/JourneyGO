@@ -10,7 +10,7 @@ import { io } from 'socket.io-client';
 export default function AllSpots({day}) {
   const {allSpots, setAllSpots, currGroupId, Token} = useContext(DataContext);
 
-  const socket = io("http://localhost:3000");
+  const socket = io("https://backend-rd2rxwzuga-de.a.run.app");
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards.map(card => card.id);
     socket.emit("client_spot_change", {

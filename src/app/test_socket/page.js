@@ -8,7 +8,7 @@ export default function Test(props) {
   const [socketData, setSocketData] = useState(null);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000");
+    const socket = io("https://backend-rd2rxwzuga-de.a.run.app");
     function enterRoom(data) {
       socket.emit("enter_room", {
         groupId: 1,  //int

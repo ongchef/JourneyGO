@@ -2,7 +2,7 @@
 
 export async function updateInvitationStatus(Token, invitationId, status) {
 
-  const url = `http://localhost:3000/api/users/invitations/${invitationId}/status`;
+  const url = `https://backend-rd2rxwzuga-de.a.run.app/api/users/invitations/${invitationId}/status`;
   const bearer_token = `Bearer ${Token}`;
 
   const requestBody = {
