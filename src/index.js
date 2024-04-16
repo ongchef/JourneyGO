@@ -55,9 +55,8 @@ io.on("connection", (socket) => {
 /*=====================  SERVER START  =====================*/
 server.listen(port, async () => {
   try {
-    await db.connect();
+    // await db.connect();
     console.log(`Server running on port http://localhost:${port}.`);
-    console.log(`PostgreSQL connection established successfully.`);
   } catch (error) {
     console.log(error);
   }

@@ -10,9 +10,20 @@ import tripRouter from "./routes/trip.js";
 import usersRouter from "./routes/users.js";
 import spotRouter from "./routes/spot.js";
 import countryRounter from "./routes/country.js";
+
+import db from "./models/db_connection.js";
+
 dotenv.config();
 
 export const app = express();
+
+db.connect()
+  .then(() => {
+    console.log("PostgreSQL connection established successfully.")
+  })
+  .catch(error => {
+    console.log(error)
+  })
 
 app.use("/api/users/", ClerkExpressWithAuth(), getUserInfo, usersRouter);
 // webhook api need to comment this out
