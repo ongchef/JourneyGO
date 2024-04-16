@@ -16,16 +16,15 @@ export async function deleteSpots(Token, groupId, day, spotId) {
     if (res){
       const data = await res.json();
       const status = res.status;
-      console.log('Status:', status);
-      console.log('Data:', data);
+      console.log('deleteSpots', status);
       return status;
     } else {
+      console.log('deleteSpots', res);
       return undefined;
     }
         
   } catch (error) {
     console.error('Error:', error);
-    console.error('Response:', await res.text());
     return undefined;
   }
 }

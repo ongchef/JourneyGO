@@ -14,7 +14,7 @@ function TripList({ data, tabValue, setTripOverview }) {
         async function fetch() {
             try {
                 const data = await getTripGroupOverview(Token, group_id);
-                // console.log('Trip group overview:', data);
+                console.log('Trip group overview:', data);
                 if (data && data.length !== 0) {
                     // change date format into yyyy/mm/dd
                     data[0].start_date = data[0].start_date.split('T')[0];

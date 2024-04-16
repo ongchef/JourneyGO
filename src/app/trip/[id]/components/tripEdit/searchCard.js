@@ -14,22 +14,23 @@ import Button from '@mui/material/Button';
 
 export default function SearchCard({title, location, rating, lng, lat}) {
   const { allSpots, currGroupId, currDay, Token, setRefetch } = useContext(DataContext);
-  const [spotsList, setSpotsList] = useState([]);
-
-  useEffect(() => {
-    setSpotsList(allSpots?.currGroupId?.currDay);
-  }, [allSpots]);
 
   const handleClick = () => {
     async function post() {
-      const spotIds = spotsList?.map(spot => spot.id);
+      let spotIds;
+      if (allSpots?.[currGroupId]?.[currDay]?.length) {
+        spotIds = allSpots?.[currGroupId]?.[currDay]?.length;
+      } else {
+        spotIds = 0;
+      }
+      console.log("post spotIds", spotIds);
       const data = {
         spotName: title,
         description: "",
         location: location,
         lon: lng,
         lan: lat,
-        sequence: spotIds?.length || 0, //cannot correctly get the spotsList length
+        sequence: spotIds, 
       }
       try {
         const status = await postSpots(Token, currGroupId, currDay, data);
