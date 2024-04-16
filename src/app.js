@@ -3,7 +3,10 @@ import dotenv from "dotenv";
 import express from "express";
 
 import getUserInfo from "./middlewares/userInfo.js";
-import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
+import {
+  ClerkExpressWithAuth,
+  ClerkExpressRequireAuth,
+} from "@clerk/clerk-sdk-node";
 
 import tripgroupRouter from "./routes/tripgroup.js";
 import tripRouter from "./routes/trip.js";
@@ -19,13 +22,13 @@ export const app = express();
 
 db.connect()
   .then(() => {
-    console.log("PostgreSQL connection established successfully.")
+    console.log("PostgreSQL connection established successfully.");
   })
-  .catch(error => {
-    console.log(error)
-  })
+  .catch((error) => {
+    console.log(error);
+  });
 
-app.use("/api/users/", ClerkExpressWithAuth(), getUserInfo, usersRouter);
+app.use("/api/users/", usersRouter);
 // webhook api need to comment this out
 app.use(express.json());
 app.use(

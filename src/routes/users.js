@@ -7,6 +7,8 @@ import {
   putInvitation,
 } from "../controllers/users.js";
 import bodyParser from "body-parser";
+import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
+import getUserInfo from "../middlewares/userInfo.js";
 
 const router = express.Router();
 
@@ -16,9 +18,21 @@ router.post(
   registerUser
 );
 
-router.get("/trip-groups", getGroup);
-router.post("/trip-groups", express.json(), createGroup);
-router.get("/invitations", getInvitation);
-router.put("/invitations/:invitationId/status", express.json(), putInvitation);
+router.get("/trip-groups", ClerkExpressWithAuth(), getUserInfo, getGroup);
+router.post(
+  "/trip-groups",
+  ClerkExpressWithAuth(),
+  getUserInfo,
+  express.json(),
+  createGroup
+);
+router.get("/invitations", ClerkExpressWithAuth(), getUserInfo, getInvitation);
+router.put(
+  "/invitations/:invitationId/status",
+  ClerkExpressWithAuth(),
+  getUserInfo,
+  express.json(),
+  putInvitation
+);
 
 export default router;

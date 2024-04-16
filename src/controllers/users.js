@@ -14,8 +14,6 @@ import { Webhook } from "svix";
 import bodyParser from "body-parser";
 
 export const registerUser = async function (req, res) {
-  bodyParser.raw({ type: "application/json" });
-
   // Check if the 'Signing Secret' from the Clerk Dashboard was correctly provided
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET_ADD;
   console.log(WEBHOOK_SECRET);
@@ -26,7 +24,8 @@ export const registerUser = async function (req, res) {
   // Grab the headers and body
   const headers = req.headers;
   const payload = req.body;
-
+  console.log(payload);
+  console.log(headers);
   // Get the Svix headers for verification
   const svix_id = headers["svix-id"];
   const svix_timestamp = headers["svix-timestamp"];
