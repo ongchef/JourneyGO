@@ -20,7 +20,8 @@ export async function getSpots(Token, groupId, day) {
     if (status === 404) {
       return undefined;
     }
-    const formattedData = data?.map((spot) => {
+    if (data){
+      const formattedData = data?.map((spot) => {
         return {
           id: spot?.spot_id,
           title: spot?.spot_name,
@@ -28,10 +29,16 @@ export async function getSpots(Token, groupId, day) {
           description: spot?.description,
           lng: spot?.lon,
           lat: spot?.lan,
-        };
-      }
-    );
-    console.log("formattedData", formattedData);
+        }
+      });
+      console.log("formattedData", formattedData);
+      return formattedData;
+    }
+    else {
+      console.log("data", data);
+      return undefined;
+    }
+    
     return formattedData;
   } catch (error) {
     console.error('Error:', error);

@@ -16,7 +16,9 @@ export async function postSpots(Token, groupId, day, spot_data) {
       body: JSON.stringify(spot_data),
     });
     const data = await res.json();
-    console.log("postSpots", data);
+    if (data) {
+      console.log("postSpots", data);
+    }
     const status = res.status;
     return status;    
   } catch (error) {
