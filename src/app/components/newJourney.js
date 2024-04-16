@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper } from '@mui/material';
 import DatePicker from 'react-datepicker';

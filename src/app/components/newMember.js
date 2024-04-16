@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
 // import {getInvitation} from '@/services/getInvitation';

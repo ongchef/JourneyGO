@@ -1,3 +1,5 @@
+'use client';
+
 import {useState, useContext, useEffect} from 'react';
 import { getSearch } from '@/services/getSearch';
 import { getSurrounding } from '@/services/getSurrounding';
