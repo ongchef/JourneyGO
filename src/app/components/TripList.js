@@ -4,7 +4,8 @@ import { useContext } from 'react';
 import { getTripGroupOverview } from '@/services/getTripGroupOverview';
 import { DataContext } from '@/app/components/dataContext';
 import { useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia, CardActions, IconButton } from '@mui/material';
-import { MoreVert as MoreVertIcon, Schedule as ScheduleIcon } from '@mui/icons-material';
+import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from '@mui/icons-material';
+
 
 function TripList({ data, tabValue, setTripOverview }) {
     const { Token, setAllGroups } = useContext(DataContext);
@@ -88,7 +89,7 @@ function TripList({ data, tabValue, setTripOverview }) {
                                 <span className="ml-1 text-sm">{trip.creator}</span>
                             </IconButton> */}
                             <IconButton aria-label="duration" size="small">
-                                <ScheduleIcon />
+                                <DateRangeIcon />
                                 <span className="ml-1 text-sm">{trip.duration} days</span>
                             </IconButton>
                         </CardActions>
