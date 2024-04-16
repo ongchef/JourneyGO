@@ -14,6 +14,10 @@ export async function getInvitation(Token) {
         },
       });
       const data = await response.json();
+      if (data === undefined || data.length === 0 || data === null) {
+        console.log('No invitation data found');
+        return []; // return an empty array 
+      }
       console.log('GetInvitationData:', data);
       return data; // Return invitation data
     } catch (error) {
