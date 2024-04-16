@@ -8,7 +8,7 @@ import { createRequire } from "module";
 import db from "./models/db_connection.js";
 import { app } from "./app.js";
 
-import {updateSpotBySpotId} from "./models/spotModel.js";
+import { updateSpotBySpotId } from "./models/spotModel.js";
 
 dotenv.config();
 const require = createRequire(import.meta.url);
@@ -42,11 +42,11 @@ io.on("connection", (socket) => {
       day: data.day,
       spot_sequence: data.spot_sequence,
     });
-
     // Call API update DB rows
     var cnt = 0;
     data.spot_sequence.forEach(async (element) => {
-      updateSpotBySpotId(element, data.day, cnt)
+      //updateSpotBySpotId(element, data.day, cnt);
+      updateSpotBySpotId(element, data.day + 1, cnt);
       cnt += 1;
     });
   });
