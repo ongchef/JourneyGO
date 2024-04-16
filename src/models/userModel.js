@@ -122,7 +122,6 @@ export const updateInvitation = (invitationId, status) => {
         `SELECT g_id, invitee FROM invitation WHERE invitation_id = $1`,
         [invitationId]
       );
-      console.log(invitationInfo);
       if (invitationInfo) {
         const { g_id: groupId, invitee: invitee } = invitationInfo;
 
