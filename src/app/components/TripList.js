@@ -64,7 +64,7 @@ function TripList({ data, tabValue, setTripOverview }) {
     // if data is undefined, return empty div
     data &&
     data.filter(trip => tabValue === 'All' || tabValue.includes(trip.status)).map((trip) => (
-        <Card className="flex justify-start my-10 mr-10 hover:bg-gray-200" onClick={() => handleClick(trip.group_id)}>
+        <Card key={trip.group_id} className="flex justify-start my-10 mr-10 hover:bg-gray-200" onClick={() => handleClick(trip.group_id)}>
             <div className="flex-grow flex">
                 <CardMedia
                     component="img"

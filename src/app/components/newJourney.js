@@ -127,7 +127,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
             <InputLabel htmlFor="trip-time">旅程時間</InputLabel>
           </Grid>
           <Grid item xs sx={{ minWidth: 200 }}>
-            <Paper elevation={4} variant="outlined" sx={{ borderRadius: '5px', padding: '15px' }}>
+            <Paper variant="outlined" sx={{ borderRadius: '5px', padding: '15px' }}>
               <DatePicker
                 selected={startDate}
                 onChange={handleDateChange}
