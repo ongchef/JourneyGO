@@ -6,7 +6,7 @@ export async function getSpots(Token, groupId, day) {
   const bearer_token = `Bearer ${Token}`;
 
   try {
-    console.log("getSpots params", groupId, day);
+    // console.log("getSpots params", groupId, day);
     const res = await fetch(url, {
       method: 'GET',
       headers: {
@@ -16,7 +16,7 @@ export async function getSpots(Token, groupId, day) {
       cache: 'no-cache',
     });
     if(res.ok) {
-      console.log("getSpots status", res.status);
+      // console.log("getSpots status", res.status);
       const data = await res.json();
       const formattedData = data?.map((spot) => {
         return {
@@ -30,10 +30,12 @@ export async function getSpots(Token, groupId, day) {
       });
       return formattedData;
     } else {
-      throw new Error(`getSpots error Status: ${res.status}`);
+      // throw new Error(`getSpots error Status: ${res.status}`);
+      console.error(`getSpots error Status: ${res.status}`);
+      return undefined;
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error(error);
     return undefined;
   }
 }
