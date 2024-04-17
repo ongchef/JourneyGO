@@ -1,7 +1,7 @@
 'use server';
 
 export async function postSpots(Token, groupId, day, spot_data) {
-  day = day + 1;
+  day = Number(day) + 1;
   const url = `http://localhost:3000/api/tripgroup/${groupId}/days/${day}/spots`;
   const bearer_token = `Bearer ${Token}`;
 
