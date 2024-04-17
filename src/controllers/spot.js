@@ -134,8 +134,11 @@ export const searchNearby = async (req, res) => {
   const { query, spotId } = req.params;
 
   try {
-    const { lon, lan } = await getLocationBySpotId(spotId);
-    console.log(lon, lan);
+    const loc = await getLocationBySpotId(spotId)
+    if(!loc){
+      return res.status(404).json({message: "No nearby"})
+    }
+    const { lon, lan } = loc
     const spots = await findNearby(query, lon, lan);
 
     // no spot found
