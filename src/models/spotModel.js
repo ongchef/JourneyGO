@@ -1,7 +1,6 @@
 import db from "./db_connection.js";
 
 export const getSpotByGroupIdDay = (groupId, day) => {
-  console.log("in model");
   return db.any(
     `SELECT Spot.spot_id, Spot.spot_name, Spot.description, Spot.location, Spot.lon, Spot.lan, Spot.date, Spot.sequence
     FROM Spot
