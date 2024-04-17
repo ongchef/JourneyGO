@@ -11,7 +11,7 @@ export async function getSearch(Token, query) {
         'Authorization': `${bearer_token}`,
       },
     });
-    if(res) {
+    if(res.ok) {
       const data = await res.json();
       const formattedData = data?.map((spot) => {
         return {

@@ -1,11 +1,12 @@
 'use server';
 
 export async function getSpots(Token, groupId, day) {
-  day = day + 1;
+  day = Number(day) + 1;
   const url = `http://localhost:3000/api/tripgroup/${groupId}/days/${day}/spots`;
   const bearer_token = `Bearer ${Token}`;
 
   try {
+    console.log("getSpots params", groupId, day);
     const res = await fetch(url, {
       method: 'GET',
       headers: {
@@ -14,12 +15,9 @@ export async function getSpots(Token, groupId, day) {
       },
       cache: 'no-cache',
     });
-    if(res) {
+    if(res.ok) {
+      console.log("getSpots status", res.status);
       const data = await res.json();
-      const status = res.status;
-      if (status === 404) {
-        return undefined;
-      }
       const formattedData = data?.map((spot) => {
         return {
           id: spot?.spot_id,
@@ -30,11 +28,9 @@ export async function getSpots(Token, groupId, day) {
           lat: spot?.lan,
         }
       });
-      console.log("getSpots", formattedData);
       return formattedData;
     } else {
-      console.log("getSpots", res);
-      return undefined;
+      throw new Error(`getSpots error Status: ${res.status}`);
     }
   } catch (error) {
     console.error('Error:', error);
