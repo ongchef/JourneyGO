@@ -37,7 +37,7 @@ const NotificationButton = ({}) => {
 
   const pendingInvitations = invitations?.filter(invitation => invitation.status === 'pending');
   const pendingInvitationCount = invitations?.filter(invitation => invitation.status === 'pending').length;
-  console.log('pendingInvitations:', pendingInvitations);
+  // console.log('pendingInvitations:', pendingInvitations);
 
   return (
     <>

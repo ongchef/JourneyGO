@@ -21,27 +21,39 @@ export default function DndContainer({day, spotChange}) {
 
   useEffect(() => {                             //  sequence [{id, title, startTime, endTime, numLikes, comments, imgUrl},]
     const fetchSpots = async () => {
-      if (currGroupId===undefined || currDay===undefined) return;     // Do nothing if groupId or day is not set
+      if (currGroupId===undefined || currDay===undefined) return;  
       try {
         const res = await getSpots(Token, currGroupId, currDay);
-        if (res === undefined) return;
-        setCards(res);
-        setAllSpots((prevState) => {
-          const updatedState = {
-            ...prevState,
-            [currGroupId]: {
-              ...(prevState[currGroupId] || {}),
-              [currDay]: res,
-            },
-          };
-          return updatedState;
-        });
+        
+        // console.log("getSpots", currDay, res);
+        // TODO: refresh page if res is undefined
+        
+        if (res !== undefined && res.length !== 0 ) {
+          setAllSpots((prevState) => {
+            const updatedState = {
+              ...prevState,
+              [currGroupId]: {
+                ...(prevState[currGroupId] || {}),
+                [currDay]: res,
+              },
+            };
+            return updatedState;
+          });
+        }
       } catch (e) {
         console.error(e);
       }
     };
     fetchSpots();
   }, [currGroupId, currDay, refetch]);
+
+  useEffect(() => {
+    const cards_data = allSpots?.[currGroupId]?.[day];
+    if (cards_data !== undefined && cards_data.length !== 0) {
+      setCards(cards_data);
+      console.log("setCards", cards_data);
+    }
+  }, [allSpots]);
 
   // update cards when allSpots changes
   // useEffect(() => {
@@ -56,6 +68,7 @@ export default function DndContainer({day, spotChange}) {
 
   // update allSpots and put when update cards locally
   useEffect(() => {
+    if (updateCards.length === 0 || updateCards === undefined ) return;
     spotChange(day, updateCards); //socket
     setAllSpots(prevState => ({
       ...prevState,
