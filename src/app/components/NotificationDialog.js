@@ -1,6 +1,6 @@
 'use client';
 
-import React , { useEffect, useState, useContext, use } from 'react';
+import React , { useEffect, useState, useContext } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -16,7 +16,7 @@ import {updateInvitationStatus} from '@/services/updateInvitationStatus';
 
 
 
-const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvitations}) => {
+const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvitations, setReload}) => {
   const { Token } = useContext(DataContext);
   const [invitationStatusOpen, setInvitationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
@@ -61,7 +61,8 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
 
       const handleCancel = () => {
         onClose();
-        window.location.reload();
+        setReload(reload => !reload);
+        console.log('reload navbar');
       }
 
       const handleInvitationStatusDialogClose = () => {
@@ -82,7 +83,7 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
 
           {pendingInvitations?.map(invitation => (
             <Box key={invitation.id} bgcolor="#E5F7FF" p={2} borderRadius={6} style={{ marginBottom: '10px' } }>
-            <Grid  key={invitation.id} container spacing={4} alignItems="center">
+            <Grid container spacing={4} alignItems="center">
             <Grid item xs={12}>
               <InputLabel htmlFor={`notification-${invitation.id}`}>{invitation.inviter_name}邀請您加入"{invitation.group_name}"</InputLabel>
             </Grid>

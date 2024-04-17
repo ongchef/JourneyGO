@@ -75,8 +75,8 @@ function TripList({ data, tabValue, setTripOverview }) {
                 <div className="flex flex-col h-full">
                     <CardContent sx={cardContentStyles}>
                         <Stack direction="row" spacing={2}>
-                        <Chip label="place" size="small" />
-                        <Chip label={trip.status} size="small" color="primary" />
+                            <Chip label="place" size="small" />
+                            <Chip label={trip.status} size="small" color="primary" />
                         </Stack>
                         <div className="pt-1">
                             <Typography variant="h6" component="div">

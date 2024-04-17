@@ -9,8 +9,9 @@ import NotificationDialog from './NotificationDialog';
 const NotificationButton = ({}) => {
   const [invitations, setInvitations] = useState([]); // 邀请
   const [dialogOpen, setDialogOpen] = useState(false); // open dialog or not
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const { Token } = useContext(DataContext);
+  const [reload, setReload] = useState(false); 
 
   // open dialog when button is clicked
   //關掉Dialog放在NotificationDialog.js處理
@@ -21,19 +22,19 @@ const NotificationButton = ({}) => {
   useEffect(() => {
     const fetchInvitations = async () => {
       if (Token) {
-        setLoading(true);
+        // setLoading(true);
         try {
           const fetchedInvitations = await getInvitation(Token);
           setInvitations(fetchedInvitations);
         } catch (error) {
           console.error('Error fetching invitations:', error);
         } finally {
-          setLoading(false);
+          // setLoading(false);
         }
       }
     };
     fetchInvitations();
-  }, [Token]);
+  }, [Token, reload]);
 
   const pendingInvitations = invitations?.filter(invitation => invitation.status === 'pending');
   const pendingInvitationCount = invitations?.filter(invitation => invitation.status === 'pending').length;
@@ -62,7 +63,7 @@ const NotificationButton = ({}) => {
         }}>{pendingInvitationCount}</span>}
         </div>
       </IconButton>
-      <NotificationDialog open={dialogOpen}  onClose={() => setDialogOpen(false)} invitations={invitations} pendingInvitations={pendingInvitations} setPendingInvitations={setInvitations} />
+      <NotificationDialog open={dialogOpen}  onClose={() => setDialogOpen(false)} invitations={invitations} pendingInvitations={pendingInvitations} setPendingInvitations={setInvitations} setReload={setReload} />
     </>
   );
 }
