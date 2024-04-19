@@ -2,7 +2,7 @@
 
 export async function getSpots(Token, groupId, day) {
   day = Number(day) + 1;
-  const url = `http://localhost:3000/api/tripgroup/${groupId}/days/${day}/spots`;
+  const url = `${process.env.BASE_URL}/api/tripgroup/${groupId}/days/${day}/spots`;
   const bearer_token = `Bearer ${Token}`;
 
   try {

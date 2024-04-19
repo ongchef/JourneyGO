@@ -18,13 +18,14 @@ export const metadata = {
 
 
 export default function RootLayout({children}) {
- 
 
   return (
     <ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
       <html lang="en">
         <head>
-          <script src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAP_API_KEY}&libraries=maps,marker`}></script>
+        <script
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAP_API_KEY}&libraries=maps,marker&loading=async`}
+        ></script>
         </head>
         <body className={inter.className}>
           <AppRouterCacheProvider>

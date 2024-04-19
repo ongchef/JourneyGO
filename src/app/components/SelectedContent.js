@@ -20,7 +20,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
 
     const handleClick =  () => {
         setLoading(true);
-        router.push(`/trip/${data.group_id}`);
+        router.push(`/trip/${data?.group_id}`);
         // setLoading(false);
     };
 
@@ -55,7 +55,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
                         className="w-full h-full object-cover rounded-xl"
                     />
                     <Typography variant="h5" component="div" className="absolute top-1/2 right-0 bg-opacity-50 text-white p-2 transform -translate-y-1/2 whitespace-normal w-2/5 text-right">
-                        {data.group_name}
+                        {data?.group_name}
                     </Typography>
                     </Box>
 
@@ -65,8 +65,8 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
                         </Typography>
                         <Box className="flex items-center mt-2">
                             <AvatarGroup max={5} spacing={-20}>
-                                {data.user_names.map((name, index) => (
-                                    <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }}>
+                                {data?.user_names.map((name, index) => (
+                                    <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
                                         {name[0].toUpperCase()}
                                     </Avatar>
                                 ))}
@@ -80,7 +80,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
                     </Typography>
                     <Box className="flex items-center mt-2">
                         <Typography variant="h4" component="div" sx={{ color: cyan[700] }}>
-                            {data.start_date} ~ {data.end_date}
+                            {data?.start_date} ~ {data?.end_date}
                         </Typography>
                     </Box>
                     </Box>

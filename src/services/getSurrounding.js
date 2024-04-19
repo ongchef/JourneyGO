@@ -13,7 +13,7 @@ export async function getSurrounding(Token, query, spotId) {
         'Authorization': `${bearer_token}`,
       },
     });
-    if(res) {
+    if(res.ok) {
       const data = await res.json();
       const formattedData = data?.map((spot) => {
           return {
@@ -29,7 +29,7 @@ export async function getSurrounding(Token, query, spotId) {
       console.log("getSurrounding", status);
       return formattedData;
     } else {
-      console.log("getSurrounding", res);
+      console.log("getSurrounding", res.status, res.json());
       return undefined;
     }
   } catch (error) {

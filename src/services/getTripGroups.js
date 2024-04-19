@@ -15,7 +15,7 @@ export async function getTripGroups(Token) {
         
         const data = await res.json();
         console.log("getTripGroups: ")
-        console.log(data)
+        // console.log(data)
         const status = res.status;
         console.log('Status:', status);
 

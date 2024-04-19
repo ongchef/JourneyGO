@@ -77,8 +77,8 @@ export default function Home() {
       const data = await getTripGroups(Token);
       // console.log('Trip groups:', data);
       // calculate the duration of each trip group
-      console.log("data after getTripGroups:");
-      console.log(data);
+      // console.log("data after getTripGroups:");
+      // console.log(data);
 
       if (Array.isArray(data)) {
         data.forEach(trip => {

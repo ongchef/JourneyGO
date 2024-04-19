@@ -18,13 +18,12 @@ export default function DndContainer({day, spotChange}) {
     setCurrDay(day);
   }, [day]);
 
-
-  useEffect(() => {                             //  sequence [{id, title, startTime, endTime, numLikes, comments, imgUrl},]
+  // fetch spots
+  useEffect(() => {                             
     const fetchSpots = async () => {
       if (currGroupId===undefined || currDay===undefined) return;  
       try {
         const res = await getSpots(Token, currGroupId, currDay);
-        
         // console.log("getSpots", currDay, res);
         // TODO: refresh page if res is undefined
         
@@ -49,26 +48,12 @@ export default function DndContainer({day, spotChange}) {
 
   useEffect(() => {
     const cards_data = allSpots?.[currGroupId]?.[day];
-    if (cards_data !== undefined && cards_data.length !== 0) {
       setCards(cards_data);
-      console.log("setCards", cards_data);
-    }
+      setUpdateCards(cards_data);
   }, [allSpots]);
 
-  // update cards when allSpots changes
-  // useEffect(() => {
-  //   try {
-  //     if (allSpots && allSpots[currGroupId] && allSpots[currGroupId][day] !== undefined) {
-  //       setCards(allSpots?.currGroupId?.day);
-  //     }
-  //   } catch (error) {
-  //     console.log("setCards", error)
-  //   }
-  // }, [refetch]);
-
-  // update allSpots and put when update cards locally
   useEffect(() => {
-    if (updateCards.length === 0 || updateCards === undefined ) return;
+    if (updateCards?.length === 0 || updateCards === undefined ) return;
     spotChange(day, updateCards); //socket
     setAllSpots(prevState => ({
       ...prevState,

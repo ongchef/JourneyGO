@@ -26,7 +26,7 @@ export async function getSearch(Token, query) {
       console.log("getSearch", status);
       return formattedData;
     } else {
-      console.log("getSearch", res);
+      console.log("getSearch", res.body);
       return undefined;
     }
   } catch (error) {

@@ -18,7 +18,7 @@ export async function getInvitation(Token) {
         console.log('No invitation data found');
         return []; // return an empty array 
       }
-      console.log('GetInvitationData:', data);
+      // console.log('GetInvitationData:', data);
       return data; // Return invitation data
     } catch (error) {
       console.error('Error:', error);

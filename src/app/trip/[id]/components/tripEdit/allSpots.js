@@ -12,7 +12,7 @@ export default function AllSpots({day}) {
 
   const socket = io("http://localhost:3000");
   const spotChange = (_day, updateCards) => {
-    const spot_sequence = updateCards.map(card => card.id);
+    const spot_sequence = updateCards?.map(card => card.id);
     socket.emit("client_spot_change", {
       groupId: currGroupId,
       day: _day,
@@ -37,7 +37,7 @@ export default function AllSpots({day}) {
     socket.on("server_spot_change", data => {
       const { socket_day, spot_sequence } = data;
       try {
-        const prevCards = allSpots?.currGroupId?.socket_day;
+        const prevCards = allSpots?.[currGroupId]?.[socket_day];
         const reorderedCards = prevCards?.sort((a, b) =>
           spot_sequence.indexOf(a.id) - spot_sequence.indexOf(b.id)
         );

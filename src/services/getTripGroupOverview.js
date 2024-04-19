@@ -1,7 +1,7 @@
 'use server';
 
 export async function getTripGroupOverview(Token, group_id) {
-    const url = `http://localhost:3000/api/tripgroup/${group_id}/overview`;
+    const url = `${process.env.BASE_URL}/api/tripgroup/${group_id}/overview`;
     const bearer_token = `Bearer ${Token}`;
 
     try {
@@ -12,23 +12,23 @@ export async function getTripGroupOverview(Token, group_id) {
             'Authorization': `${bearer_token}`,
         },
         });
-        const data = await res.json();
-        const status = res.status;
-
-        // console.log('Status:', status);
-        // console.log('Data:', data);
-        
-        // prevent empty data
-        if (data === undefined) {
-            console.error('No data found');
+        if (res.ok) {
+            const data = await res.json();
+            const status = res.status;
+            console.log('getGroup Status:', status);
+            
+            // console.log('getGroup Data:', data);
+            // change date format into yyyy/mm/dd
+            data[0].start_date = data[0].start_date.split('T')[0];
+            data[0].end_date = data[0].end_date.split('T')[0];
+            return data[0];
+        }
+        else {
+            console.error('getGroup Error:', res.status);
             return undefined;
         }
-
-        return data;
-
-
     } catch (error) {
         console.error('Error:', error);
-    return undefined;
+        return undefined;
     }
 }
