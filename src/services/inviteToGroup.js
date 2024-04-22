@@ -2,7 +2,7 @@
 
 export async function inviteToGroup(Token, inviteeEmail, groupId) {
 
-    const url = 'http://localhost:3000/api/tripgroup/invitations'; 
+    const url = `${process.env.BASE_URL}/api/tripgroup/invitations`; 
     const bearer_token = `Bearer ${Token}`;
 
     const requestBody = {

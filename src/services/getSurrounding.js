@@ -2,10 +2,11 @@
 
 export async function getSurrounding(Token, query, spotId) {
   spotId = String(spotId);
-  const url = `http://localhost:3000/api/spots/search/surroundings/${query}/${spotId}`;
+  const url = `${process.env.BASE_URL}/api/spots/search/surroundings/${query}/${spotId}`;
   const bearer_token = `Bearer ${Token}`;
 
   try {
+    console.log("getSurrounding", query, spotId);
     const res = await fetch(url, {
       method: 'GET',
       headers: {
@@ -29,7 +30,7 @@ export async function getSurrounding(Token, query, spotId) {
       console.log("getSurrounding", status);
       return formattedData;
     } else {
-      console.log("getSurrounding", res.status, res.json());
+      console.log("getSurrounding", res.status, res.body);
       return undefined;
     }
   } catch (error) {

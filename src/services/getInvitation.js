@@ -2,7 +2,7 @@
 
 export async function getInvitation(Token) {
 
-    const url = 'http://localhost:3000/api/users/invitations';
+    const url = `${process.env.BASE_URL}/api/users/invitations`;
     const bearer_token = `Bearer ${Token}`;
   
     try {

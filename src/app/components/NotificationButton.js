@@ -44,7 +44,7 @@ const NotificationButton = ({}) => {
     <>
       <IconButton color="inherit" aria-label="notification" onClick={handleButtonClick}>
         <div style={{ position: 'relative' }}>
-        <img src="notification.png" alt="notification" style={{ color: 'white', width: 35, height: 35, marginRight: 10 }} />
+        <img src="/notification.png" alt="notification" style={{ color: 'white', width: 35, height: 35, marginRight: 10 }} />
         {pendingInvitationCount > 0 && <span style={{ 
           position: 'absolute',
           bottom: -5, 

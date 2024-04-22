@@ -3,7 +3,7 @@
 
 export async function createTripGroup(Token, groupName, startDate, endDate, country_id, inviteeEmail){
     
-    const url = 'http://localhost:3000/api/users/trip-groups';
+    const url = `${process.env.BASE_URL}/api/users/trip-groups`;
     const bearer_token = `Bearer ${Token}`;
   
     // const requestBody = {

@@ -1,6 +1,7 @@
 'use client';
 
-import {useState, useContext, useEffect} from 'react';
+import {useState, useContext} from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { getSearch } from '@/services/getSearch';
 import { getSurrounding } from '@/services/getSurrounding';
 import { DataContext } from '@/app/components/dataContext';
@@ -13,7 +14,8 @@ import SearchIcon from '@mui/icons-material/Search';
 export default function SearchField({ setSearchRes, checked }) {
   const [searchText, setSearchText] = useState('');
   const { Token, currGroupId, currDay, allSpots } = useContext(DataContext);
-  const [lastSpot, setLastSpot] = useState(); //id
+  const router = useRouter();
+  const pathname = usePathname()
 
   const handleInputChange = (event) => {
     setSearchText(event.target.value);
@@ -34,10 +36,16 @@ export default function SearchField({ setSearchRes, checked }) {
           const last = allSpots?.[currGroupId]?.[currDay].slice(-1)[0]?.['id'];
           if (last) {
             const res = await getSurrounding(Token, searchText, last);
+            if (res === undefined) {
+              router.push(pathname, undefined, { scroll: false });
+            }
             setSearchRes(res);
           }
         } else {
           const res = await getSearch(Token, searchText);
+          if (res === undefined) {
+            router.push(pathname, undefined, { scroll: false });
+          }
           setSearchRes(res);
         }
       } catch (error) {

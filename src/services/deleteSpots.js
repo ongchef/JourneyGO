@@ -2,7 +2,7 @@
 
 export async function deleteSpots(Token, groupId, day, spotId) {
   day = Number(day) + 1;
-  const url = `http://localhost:3000/api/tripgroup/${groupId}/days/${day}/spots/${spotId}`;
+  const url = `${process.env.BASE_URL}/api/tripgroup/${groupId}/days/${day}/spots/${spotId}`;
   const bearer_token = `Bearer ${Token}`;
 
   try {

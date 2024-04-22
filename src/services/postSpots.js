@@ -2,7 +2,7 @@
 
 export async function postSpots(Token, groupId, day, spot_data) {
   day = Number(day) + 1;
-  const url = `http://localhost:3000/api/tripgroup/${groupId}/days/${day}/spots`;
+  const url = `${process.env.BASE_URL}/api/tripgroup/${groupId}/days/${day}/spots`;
   const bearer_token = `Bearer ${Token}`;
 
   try {
@@ -20,7 +20,7 @@ export async function postSpots(Token, groupId, day, spot_data) {
       console.log("postSpots", status);
       return status;  
     } else {
-      console.log("postSpots error", res.body);
+      console.log("postSpots error", res.status, res.body);
       return undefined;
     }
   } catch (error) {

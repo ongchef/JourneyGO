@@ -1,7 +1,7 @@
 'use server';
 
 export async function getTripGroups(Token) {
-    const url = `http://localhost:3000/api/users/trip-groups`;
+    const url = `${process.env.BASE_URL}/api/users/trip-groups`;
     const bearer_token = `Bearer ${Token}`;
 
     try {
