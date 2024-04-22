@@ -8,8 +8,8 @@ export default async function getUserInfo(req, res, next) {
   console.log("---------------");
   //console.log("req", req)
   //console.log("req.rawHeaders", req.rawHeaders);
-  console.log("req.auth", req.auth);
-  console.log("req_Id", req.auth.userId);
+  //console.log("req.auth", req.auth);
+  //console.log("req_Id", req.auth.userId);
 
   const getToken = req.auth.getToken;
   //get user jwt template

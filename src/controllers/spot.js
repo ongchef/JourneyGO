@@ -10,9 +10,6 @@ import { getTripGroupMember } from "../models/tripgroupModel.js";
 import { findNearby, findPlace } from "../services/map.js";
 
 export const getSpots = async (req, res) => {
-
-  console.log("in controller");
-
   const { groupId, day } = req.params;
   const userClerkId = req.userID;
   try {
