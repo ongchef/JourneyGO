@@ -4,6 +4,20 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 // 沒有指定地點，只有關鍵字，使用前一個 spot 的位置
+const getPhoto = async(reference) => {
+    const client = new Client({})
+    const args = {
+        params: {
+            key: process.env.MAP_API_KEY,
+            photoreference: reference,
+            maxwidth: 400
+        }
+    }
+    return await client.placePhoto(args).then((response)=>{
+        return response.data
+    })
+    .catch((error)=>console.log(error))
+}
 export const findNearby = async(query, lon, lat) => {
     const client = new Client({});
     const args = {
@@ -16,6 +30,7 @@ export const findNearby = async(query, lon, lat) => {
         }
     };
     return await client.textSearch(args).then((response)=>{
+        // map 所有 response 的圖片長怎樣
         return response.data.results
       // 回傳的樣式
       // [{
@@ -52,7 +67,20 @@ export const findPlace = async(query) => {
     };
     return await client.textSearch(args).then((response)=>{
         console.log(response.data.results)
-        return response.data.results
+        const place_list = response.data.results.map(async (place)=>{
+            if (place.photos[0]){
+                console.log(place.photos[0].photo_reference)
+                const photo = await getPhoto(place.photos[0].photo_reference)
+                console.log(photo)
+                place.photos = photo
+                return place
+            }
+            else{
+                place.photos = undefined
+                return place
+            }
+        })
+        return Promise.all(place_list)
     })
     // return await client.findPlaceFromText(args).then((response)=>{
     //     console.log(response.data.candidates)
