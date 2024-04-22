@@ -14,7 +14,21 @@ const getPhoto = async(reference) => {
         }
     }
     return await client.placePhoto(args).then((response)=>{
-        return response.data
+        console.log(response.data.results)
+        const place_list = response.data.results.map(async (place)=>{
+            if (place.photos[0]){
+                console.log(place.photos[0].photo_reference)
+                const photo = await getPhoto(place.photos[0].photo_reference)
+                console.log(photo)
+                place.photos = photo
+                return place
+            }
+            else{
+                place.photos = undefined
+                return place
+            }
+        })
+        return Promise.all(place_list)
     })
     .catch((error)=>console.log(error))
 }
