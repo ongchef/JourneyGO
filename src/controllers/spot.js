@@ -60,8 +60,8 @@ export const createSpot = async (req, res) => {
       spotName,
       description,
       location,
-      lan,
       lon,
+      lan,
       day,
       sequence,
       groupId
