@@ -8,9 +8,10 @@ import { getSpots } from '@/services/getSpots';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import TrainIcon from '@mui/icons-material/Train';
 
 export default function DndContainer({day, spotChange}) {
-  const {allSpots, setAllSpots, currGroupId, currDay, setCurrDay, Token, refetch} = useContext(DataContext);
+  const {allSpots, setAllSpots, currGroupId, currDay, setCurrDay, Token, refetch, allTrans} = useContext(DataContext);
   const [updateCards, setUpdateCards] = useState([])
   const [cards, setCards] = useState([]);
 
@@ -24,9 +25,6 @@ export default function DndContainer({day, spotChange}) {
       if (currGroupId===undefined || currDay===undefined) return;  
       try {
         const res = await getSpots(Token, currGroupId, currDay);
-        // console.log("getSpots", currDay, res);
-        // TODO: refresh page if res is undefined
-        
         if (res !== undefined && res.length !== 0 ) {
           setAllSpots((prevState) => {
             const updatedState = {
@@ -38,7 +36,10 @@ export default function DndContainer({day, spotChange}) {
             };
             return updatedState;
           });
-        }
+        } 
+        // else {
+        //   window.location.reload(true);
+        // }
       } catch (e) {
         console.error(e);
       }
@@ -94,8 +95,13 @@ export default function DndContainer({day, spotChange}) {
               {index !== cards.length - 1 &&  
                 <div className='flex flex-row items-center justify-start gap-2 my-2 ml-5'>
                   <MoreVertIcon className='scale-125 mr-3'/>
-                  <DirectionsCarIcon className='text-center'/>
-                  <Typography variant='body2' className='text-center'>開車五分鐘</Typography>
+                  {(allTrans?.[currGroupId]?.[currDay] === '自駕車') &&
+                    <DirectionsCarIcon className='text-center'/> 
+                  }
+                  {(allTrans?.[currGroupId]?.[currDay] === '大眾運輸') &&
+                    <TrainIcon className='text-center'/> 
+                  }
+                  <Typography variant='body2' className='text-center'>{allTrans?.[currGroupId]?.[currDay]}</Typography>
                 </div>
               }
             </div>

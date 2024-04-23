@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import FaceIcon from '@mui/icons-material/Face';
 import Button from '@mui/material/Button';
 import DayPanel from './dayPanel';
+import SelectTransport from "./selectTransport";
 import NewMemberDialog from '/src/app/components/newMember';
 // import { getNewMember } from '@/services/getNewMember';
 
@@ -31,6 +32,7 @@ export default function TripPlan({groupInfo}) {
             <Button variant="contained" className="w-28" onClick={handleAddMemberClick}>新增成員</Button>
             <Button variant="outlined">退出</Button>
           </div>
+          <SelectTransport />
         </div>
         <div className="flex flex-col gap-3">
           <Button variant="contained" className="w-28">編輯行程</Button>

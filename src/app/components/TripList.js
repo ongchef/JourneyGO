@@ -14,7 +14,7 @@ function TripList({ data, tabValue, setTripOverview }) {
         async function fetch() {
             try {
                 const data = await getTripGroupOverview(Token, group_id);
-                console.log('Trip group overview:', data);
+                // console.log('Trip group overview:', data);
                 if (data && data.length !== 0) {
                     setTripOverview(data);
                     setAllGroups(data);

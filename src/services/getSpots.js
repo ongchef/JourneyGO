@@ -30,8 +30,7 @@ export async function getSpots(Token, groupId, day) {
       });
       return formattedData;
     } else {
-      // throw new Error(`getSpots error Status: ${res.status}`);
-      console.error(`getSpots error Status: ${res.status}`);
+      console.error(`getSpots error`, res.status, res.body);
       return undefined;
     }
   } catch (error) {

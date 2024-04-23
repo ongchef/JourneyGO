@@ -31,11 +31,13 @@ export default function AllSpots({day}) {
         groupId: currGroupId,  //int
         jwt: Token,
       });
+      // console.log("socket is connected");
     }
   
     // update allSpots when server_spot_change
     socket.on("server_spot_change", data => {
       const { socket_day, spot_sequence } = data;
+      // console.log("server_spot_change", data);
       try {
         const prevCards = allSpots?.[currGroupId]?.[socket_day];
         const reorderedCards = prevCards?.sort((a, b) =>
