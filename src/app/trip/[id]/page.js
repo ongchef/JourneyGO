@@ -13,6 +13,8 @@ import Typography from '@mui/material/Typography';
 import TabPanel from './components/tripEdit/tabPanel';
 import RoomIcon from '@mui/icons-material/Room';
 import DescriptionIcon from '@mui/icons-material/Description';
+import BillList from './components/billEdit/billList';
+import BillOverview from './components/billEdit/billOverview';
 
 function tabProps(index) {
   return {
@@ -52,6 +54,8 @@ export default function Trip({params}) {
     setValue(newValue);
   };
 
+  
+
   return (
     <main>
     <Box sx={{ width: '100%' }}>
@@ -86,8 +90,19 @@ export default function Trip({params}) {
             <TripSearch />
           </div>}
         </TabPanel>
+        
+        
+        
         <TabPanel value={value} index={1}>
-          分帳
+          {!isLoad && <Loading />}
+            {isLoad && <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
+              <div className='lg:w-1/2 w-full'>
+              <BillOverview/>
+              </div>
+              <div className='lg:w-1/2 w-full'>
+              <BillList/>
+              </div>
+            </div>}
         </TabPanel>
       </Box>
     </Box>
