@@ -32,20 +32,22 @@ export const findNearby = async(query, lon, lat) => {
     };
     return await client.textSearch(args).then((response)=>{
         // map 所有 response 的圖片長怎樣
-        const place_list = response.data.results.map(async (place)=>{
-            if (place.photos[0]){
-                console.log(place.photos[0].photo_reference)
-                const photo = await getPhoto(place.photos[0].photo_reference)
-                console.log(photo)
-                place.photos = photo
-                return place
-            }
-            else{
-                place.photos = undefined
-                return place
-            }
-        })
-        return Promise.all(place_list)
+        return response.data.results
+        // const place_list = response.data.results.map(async (place)=>{
+        //     if (place.photos[0]){
+        //         console.log(place.photos[0].photo_reference)
+        //         const photo = await getPhoto(place.photos[0].photo_reference)
+        //         console.log(photo)
+        //         place.photos = photo
+        //         return place
+        //     }
+        //     else{
+        //         place.photos = undefined
+        //         return place
+        //     }
+        // })
+        // return Promise.all(place_list)
+
       // 回傳的樣式
       // [{
       //    business_status: 'OPERATIONAL',
@@ -80,20 +82,21 @@ export const findPlace = async(query) => {
         }
     };
     return await client.textSearch(args).then((response)=>{
-        const place_list = response.data.results.map(async (place)=>{
-            if (place.photos[0]){
-                console.log(place.photos[0].photo_reference)
-                const photo = await getPhoto(place.photos[0].photo_reference)
-                console.log('photo',photo)
-                place.photos = photo
-                return place
-            }
-            else{
-                place.photos = undefined
-                return place
-            }
-        })
-        return Promise.all(place_list)
+        return response.data.results
+        // const place_list = response.data.results.map(async (place)=>{
+        //     if (place.photos[0]){
+        //         console.log(place.photos[0].photo_reference)
+        //         const photo = await getPhoto(place.photos[0].photo_reference)
+        //         console.log('photo',photo)
+        //         place.photos = photo
+        //         return place
+        //     }
+        //     else{
+        //         place.photos = undefined
+        //         return place
+        //     }
+        // })
+        // return Promise.all(place_list)
     })
     // return await client.findPlaceFromText(args).then((response)=>{
     //     console.log(response.data.candidates)
