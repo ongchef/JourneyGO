@@ -33,11 +33,12 @@ export default function TripSearch() {
           searchRes?.map((spot, index) => (
             <SearchCard 
               key={index} 
-              title={spot.title} 
-              location={spot.location}
-              rating={spot.rating} 
-              lng={spot.lng}
-              lat={spot.lat}
+              title={spot?.title} 
+              location={spot?.location}
+              rating={spot?.rating} 
+              lng={spot?.lng}
+              lat={spot?.lat}
+              photo={spot?.photo}
             />
           ))
         }
