@@ -95,7 +95,7 @@ export default function DndContainer({day, spotChange}) {
               {index !== cards.length - 1 &&  
                 <div className='flex flex-row items-center justify-start gap-2 my-2 ml-5'>
                   <MoreVertIcon className='scale-125 mr-3'/>
-                  {(allTrans?.[currGroupId]?.[currDay] === '自駕車') &&
+                  {(allTrans?.[currGroupId]?.[currDay] === '汽車') &&
                     <DirectionsCarIcon className='text-center'/> 
                   }
                   {(allTrans?.[currGroupId]?.[currDay] === '大眾運輸') &&

@@ -41,7 +41,7 @@ export default function SelectTransport() {
           onChange={handleChange}
         >
           <FormControlLabel value="大眾運輸" control={<Radio />} label="大眾運輸" />
-          <FormControlLabel value="自駕車" control={<Radio />} label="自駕車" />
+          <FormControlLabel value="汽車" control={<Radio />} label="汽車" />
         </RadioGroup>
       </FormControl>
     </>

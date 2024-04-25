@@ -9,11 +9,7 @@ import Typography from '@mui/material/Typography';
 import StarIcon from '@mui/icons-material/Star';
 import Button from '@mui/material/Button';
 
-// const imageLoader = ({ src, width, quality }) => {
-//   return `https://random.splash.com/${src}?w=${width}&q=${quality || 75}`
-// }
-
-export default function SearchCard({title, location, rating, lng, lat}) {
+export default function SearchCard({title, location, rating, lng, lat, photo}) {
   const { allSpots, currGroupId, currDay, Token, setRefetch } = useContext(DataContext);
   const router = useRouter();
   const pathname = usePathname();
@@ -33,6 +29,7 @@ export default function SearchCard({title, location, rating, lng, lat}) {
         lon: lng,
         lan: lat,
         sequence: spotIds, 
+        photo: photo,
       }
       try {
         const status = await postSpots(Token, currGroupId, currDay, data);
@@ -50,7 +47,7 @@ export default function SearchCard({title, location, rating, lng, lat}) {
 
   return (
     <div className='flex flex-row'>
-      <Image src='/images/hualian.jpg' alt='random' width={100} height={100} />
+      <Image src={photo} alt='place_photo' width={100} height={100} className='object-cover aspect-square'/>
       <div className='flex flex-row shadow-lg w-full justify-between'>
         <div className='flex flex-col p-3'>
           <Typography variant='h6'>{title}</Typography>
