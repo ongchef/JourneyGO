@@ -30,7 +30,7 @@ export default function SelectTransport() {
   };
 
   return (
-    <>
+    <div className='text-center'>
       <FormControl>
         {/* <FormLabel id="demo-controlled-radio-buttons-group">交通工具</FormLabel> */}
         <RadioGroup
@@ -44,6 +44,6 @@ export default function SelectTransport() {
           <FormControlLabel value="汽車" control={<Radio />} label="汽車" />
         </RadioGroup>
       </FormControl>
-    </>
+    </div>
   );
 }

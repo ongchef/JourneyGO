@@ -41,12 +41,15 @@ export default function DayPanel({days}) {
           onChange={handleChange}
           indicatorColor="secondary"
           textColor="inherit"
-          variant="fullWidth"
+          variant="scrollable"
+          scrollButtons="auto"
           aria-label="full width tabs example"
+          sx={{ color: "text.primary"}}
+          className="MuiTabScrollButton-root bg-blue-200"
         >
           {numDays?.map((day) => {
             return (
-              <Tab label={`Day ${day+1}`} {...tabProps(day)} key={day} sx={{bgcolor: "grey.100", color: "text.primary"}}/>
+              <Tab label={`Day ${day+1}`} {...tabProps(day)} key={day} sx={{color: "text.primary"}}/>
             );
           })}
         </Tabs>

@@ -5,6 +5,7 @@ import { useCallback, useState, useContext, useEffect} from 'react'
 import { DndCard } from './dndCard.js'
 import { DataContext } from '@/app/components/dataContext.jsx';
 import { getSpots } from '@/services/getSpots';
+import SelectTransport from './selectTransport.js';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -81,7 +82,8 @@ export default function DndContainer({day, spotChange}) {
 
   return (
     <>
-      <div className='flex flex-col gap-2 p-5'>
+      <div className='flex flex-col gap-2 lg:p-5 p-3'>
+        <SelectTransport />
         {cards?.map((card, index) => {  
           return (
             <div key={card?.id}>

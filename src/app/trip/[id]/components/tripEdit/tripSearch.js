@@ -1,48 +1,74 @@
 'use client';
 
 import { useState } from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import SearchField from './searchField';
-import SearchCard from './searchCard';
-import Checkbox from '@mui/material/Checkbox';
+import TabPanel from './tabPanel';
+import GoogleMap from './googleMap';
+import SearchPanel from './searchPanel';
+
+function tabProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 export default function TripSearch() {
-  const [checked, setChecked] = useState(true);
-  const [searchRes, setSearchRes] = useState([]); // [{title, description, imgUrl, lat, lng, rating}]
+  const [value, setValue] = useState(0);
 
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
-  
+
   return (
-    <div className='lg:w-[50vw] mx-4 flex flex-col gap-3 overflow-auto h-[70vh]'>
-      <div className='flex flex-row justify-between'>
-        <Typography variant='h6'>新增景點</Typography>
-        <div className='flex items-center'>
-          <Checkbox
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ 'aria-label': 'controlled' }}
-          />
-          <Typography variant='body'>搜尋鄰近景點</Typography>
-        </div>
-      </div>
-      <SearchField setSearchRes={setSearchRes} checked={checked} />
-      <div className='flex flex-col gap-3 p-3'>
-        {
-          searchRes?.map((spot, index) => (
-            <SearchCard 
-              key={index} 
-              title={spot?.title} 
-              location={spot?.location}
-              rating={spot?.rating} 
-              lng={spot?.lng}
-              lat={spot?.lat}
-              photo={spot?.photo}
+    <div className='lg:w-[50vw] lg:mb-0 mb-[1rem]'>
+      <Box sx={{ width: '100%' }}>
+        <Box>
+          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" sx={{minHeight: '2rem', marginLeft: '1rem'}}>
+            <Tab 
+              sx={{height: '1rem', minHeight: '1rem'}}
+              label={
+                <div>
+                  <Typography variant='p'>地圖</Typography>
+                </div>
+              } 
+              {...tabProps(0)}   
             />
-          ))
-        }
-      </div>
+            <Tab 
+              sx={{height: '1rem', minHeight: '1rem'}}
+              label={
+                <div>
+                  <Typography variant='p'>搜尋</Typography>
+                </div>
+              }
+              {...tabProps(1)} 
+            />
+            <Tab 
+              sx={{height: '1rem', minHeight: '1rem'}}
+              label={
+                <div>
+                  <Typography variant='p'>推薦</Typography>
+                </div>
+              }
+              {...tabProps(2)} 
+            />
+          </Tabs>
+        </Box>
+        <Box>
+          <TabPanel value={value} index={0}>
+            <GoogleMap />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <SearchPanel />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <div className='mx-4'>recommend</div>
+          </TabPanel>
+        </Box>
+      </Box>
     </div>
   );
 }

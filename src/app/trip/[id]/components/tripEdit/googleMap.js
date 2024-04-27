@@ -17,8 +17,8 @@ const Map = () => {
   useEffect(() => {
     setMarkerPositions(allSpots?.[currGroupId]?.[currDay]?.map((spot) => {
       return {
-        lng: Number(spot?.lat),
-        lat: Number(spot?.lng),
+        lng: Number(spot?.lng),
+        lat: Number(spot?.lat),
         title: spot?.title,
       };
     }));
@@ -96,13 +96,12 @@ const Map = () => {
     initMap();
   }, [markerPositions]);
 
-  return <div ref={mapRef} className='h-[calc(70vh_-_50px)]'/>;
+  return <div ref={mapRef} className='h-[calc(70vh_-_3rem)] mt-[1rem]'/>;
 };
 
 export default function GoogleMap() {
   return (
-    <div className='lg:w-[50vw] mx-2'>
-      <p className='h-[50px]'>test</p>
+    <div className='mx-4'>
       <Map />
     </div>
   );
