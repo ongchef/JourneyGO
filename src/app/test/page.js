@@ -1,11 +1,11 @@
 'use client';
-import TripMap from "../trip/[id]/components/tripEdit/googleMap";
+import GoogleMap from "../trip/[id]/components/tripEdit/googleMap";
 
 export default function Test() {
 
   return (
-    <>
-      <TripMap />
-    </>
+    <div className="w-[50vw]">
+      <GoogleMap />
+    </div>
   );
 }
