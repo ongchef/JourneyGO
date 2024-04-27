@@ -15,7 +15,7 @@ export default function TripSearch() {
   };
   
   return (
-    <div className='w-[100%] px-5 flex flex-col gap-3 overflow-auto h-[70vh]'>
+    <div className='lg:w-[50vw] mx-4 flex flex-col gap-3 overflow-auto h-[70vh]'>
       <div className='flex flex-row justify-between'>
         <Typography variant='h6'>新增景點</Typography>
         <div className='flex items-center'>

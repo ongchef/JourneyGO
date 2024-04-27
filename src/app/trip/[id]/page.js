@@ -4,6 +4,7 @@ import { useState, useContext, useEffect } from 'react';
 import { DataContext } from "@/app/components/dataContext";
 import TripPlan from './components/tripEdit/tripPlan';
 import TripSearch from './components/tripEdit/tripSearch';
+import GoogleMap from './components/tripEdit/googleMap';
 import Loading from '@/app/components/loading';
 import { getTripGroupOverview } from '@/services/getTripGroupOverview';
 import Tabs from '@mui/material/Tabs';
@@ -81,9 +82,10 @@ export default function Trip({params}) {
         <Typography variant='h4' sx={{mx: 2, my: 2}}>{groupInfo?.group_name}</Typography>
         <TabPanel value={value} index={0}>
           {!isLoad && <Loading />}
-          {isLoad && <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
+          {isLoad && <div className='flex lg:flex-row flex-col'>
             <TripPlan groupInfo={groupInfo} />
-            <TripSearch />
+            {/* <TripSearch /> */}
+            <GoogleMap />
           </div>}
         </TabPanel>
         <TabPanel value={value} index={1}>

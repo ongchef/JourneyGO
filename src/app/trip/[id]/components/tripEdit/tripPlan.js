@@ -21,8 +21,8 @@ export default function TripPlan({groupInfo}) {
   }
 
   return (
-    <div className='px-5 w-[100%] overflow-auto h-[70vh]'>
-      <div className="flex flex-row justify-between">
+    <div className='mx-2 lg:w-[50vw] overflow-auto h-[70vh]'>
+      <div className="flex flex-row justify-between p-2">
         <div className="flex flex-col gap-3">
           <Typography variant='h6'>{groupInfo?.start_date} ~ {groupInfo?.end_date}</Typography>
           <div className="flex gap-5 items-center">
@@ -35,7 +35,7 @@ export default function TripPlan({groupInfo}) {
           <SelectTransport />
         </div>
         <div className="flex flex-col gap-3">
-          <Button variant="contained" className="w-28">編輯行程</Button>
+          {/* <Button variant="contained" className="w-28">編輯行程</Button> */}
         </div>
       </div>
       <div className="my-5">

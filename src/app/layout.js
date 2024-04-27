@@ -27,7 +27,7 @@ export default function RootLayout({children}) {
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAP_API_KEY}&libraries=maps,marker&loading=async`}
         ></script>
         </head>
-        <body className={inter.className}>
+        <body className="overscroll-none">
           <AppRouterCacheProvider>
             <DataProvider>
               <NavBar></NavBar>

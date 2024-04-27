@@ -1,5 +1,6 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
+import { DataContext } from '@/app/components/dataContext';
 
 // interface MarkerPosition {
 //   lat: number;
@@ -7,17 +8,27 @@ import React, { useEffect, useRef } from 'react';
 //   title: string;
 // }
 
-const GoogleMap = () => {
+const Map = () => {
   const mapRef = useRef();
+  const  {allSpots, currGroupId, currDay} = useContext(DataContext);
+  const [markerPositions, setMarkerPositions] = useState([]); // Array<MarkerPosition> = [
 
   // Array of marker positions with titles
-  const markerPositions = [
-    { lat: 37.4239163, lng: -122.0947209, title: 'Marker 1' },
-    { lat: 37.4114685, lng: -122.0539898, title: 'Marker 2' },
-    { lat: 37.3968706, lng: -122.0418258, title: 'Marker 3' },
-    { lat: 37.4055460, lng: -122.0138953, title: 'Marker 4' },
-    // Add more marker positions as needed
-  ];
+  useEffect(() => {
+    setMarkerPositions(allSpots?.[currGroupId]?.[currDay]?.map((spot) => {
+      return {
+        lng: Number(spot?.lat),
+        lat: Number(spot?.lng),
+        title: spot?.title,
+      };
+    }));
+  }, [allSpots, currGroupId, currDay]);
+  // const markerPositions = [
+  //   { lat: 37.4239163, lng: -122.0947209, title: 'Marker 1' },
+  //   { lat: 37.4114685, lng: -122.0539898, title: 'Marker 2' },
+  //   { lat: 37.3968706, lng: -122.0418258, title: 'Marker 3' },
+  //   { lat: 37.4055460, lng: -122.0138953, title: 'Marker 4' },
+  // ];
 
   useEffect(() => {
     const initMap = async () => {
@@ -30,7 +41,7 @@ const GoogleMap = () => {
         // Define the options for the DirectionsRenderer
         const rendererOptions = {
           polylineOptions: {
-            strokeColor: 'blue', // Red color
+            strokeColor: 'blue',
             strokeOpacity: 0.5,
             strokeWeight: 3
           }
@@ -38,8 +49,9 @@ const GoogleMap = () => {
         const directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
 
         // Create the map instance.
+        if (markerPositions?.length === 0 || markerPositions === undefined) return;
         const map = new Map(mapRef.current, {
-          center: { lat: 37.4239163, lng: -122.0947209 },
+          center: { lat: markerPositions[0].lat, lng: markerPositions[0].lng },
           zoom: 12,
           mapId: '4504f8b37365c3d0',
         });
@@ -82,15 +94,16 @@ const GoogleMap = () => {
     };
 
     initMap();
-  }, []);
+  }, [markerPositions]);
 
-  return <div ref={mapRef} style={{ height: '400px' }} />;
+  return <div ref={mapRef} className='h-[calc(70vh_-_50px)]'/>;
 };
 
-export default function TripMap() {
+export default function GoogleMap() {
   return (
-    <div className='w-[50vw]'>
-      <GoogleMap />
+    <div className='lg:w-[50vw] mx-2'>
+      <p className='h-[50px]'>test</p>
+      <Map />
     </div>
   );
 }
