@@ -35,7 +35,7 @@ export const getSpots = async (req, res) => {
 
 export const createSpot = async (req, res) => {
   const { day, groupId } = req.params;
-  const { spotName, description, location, lan, lon, sequence } = req.body;
+  const { spotName, description, location, lat, lon, sequence } = req.body;
   const userClerkId = req.userID;
   try {
     // check user in this group or not
@@ -58,7 +58,7 @@ export const createSpot = async (req, res) => {
       description,
       location,
       lon,
-      lan,
+      lat,
       day,
       sequence,
       groupId
@@ -135,8 +135,8 @@ export const searchNearby = async (req, res) => {
     if(!loc){
       return res.status(404).json({message: "No nearby"})
     }
-    const { lon, lan } = loc
-    const spots = await findNearby(query, lon, lan);
+    const { lon, lat } = loc
+    const spots = await findNearby(query, lon, lat);
 
     // no spot found
     if (spots.length === 0) {

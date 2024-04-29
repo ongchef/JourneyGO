@@ -2,7 +2,7 @@ import db from "./db_connection.js";
 
 export const getSpotByGroupIdDay = (groupId, day) => {
   return db.any(
-    `SELECT Spot.spot_id, Spot.spot_name, Spot.description, Spot.location, Spot.lon, Spot.lan, Spot.date, Spot.sequence
+    `SELECT Spot.spot_id, Spot.spot_name, Spot.description, Spot.location, Spot.lon, Spot.lat, Spot.date, Spot.sequence
     FROM Spot
     JOIN Trip_groups ON Spot.G_ID = Trip_groups.group_id
     WHERE Trip_groups.group_id = $1 AND Spot.date = $2
@@ -18,12 +18,12 @@ export const getSpotBySpotId = (spotId) => {
       `,[spotId]);
 };
 
-export const createSpotByGroupId = (spotName, description, location, lon, lan, day, sequence, groupId) => {
+export const createSpotByGroupId = (spotName, description, location, lon, lat, day, sequence, groupId) => {
   return db.one(
-    `insert into spot (spot_name, description, "location", lon, lan, "date", "sequence", g_id)
+    `insert into spot (spot_name, description, "location", lon, lat, "date", "sequence", g_id)
     values ($1, $2, $3, $4, $5, $6, $7, $8) 
     RETURNING *;
-    `, [spotName, description, location, lon, lan, day, sequence, groupId]);
+    `, [spotName, description, location, lon, lat, day, sequence, groupId]);
 };
 
 export const updateSpotBySpotId = (spotId, day, sequence) => {
@@ -44,7 +44,7 @@ export const deleteSpotBySpotId = (spotId) => {
 
 export const getLocationBySpotId = (spotId) => {
   return db.oneOrNone(
-    `SELECT spot.lon, spot.lan
+    `SELECT spot.lon, spot.lat
     FROM spot
     WHERE spot_id = $1;
       `,[spotId]);

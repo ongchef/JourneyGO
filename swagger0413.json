@@ -365,7 +365,7 @@
                 "location": {
                   "example": "any"
                 },
-                "lan": {
+                "lat": {
                   "example": "any"
                 },
                 "lon": {
