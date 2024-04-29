@@ -202,7 +202,6 @@ export const deleteShareBillModel = (bill_id) => {
 };
 
 export const getBillsByBillId = (billId) => {
-  console.log("????");
   return db.manyOrNone(
     `SELECT 
       b.description AS bill_name, 
