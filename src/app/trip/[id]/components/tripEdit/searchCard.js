@@ -27,7 +27,7 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
         description: "",
         location: location,
         lon: lng,
-        lan: lat,
+        lat: lat,
         sequence: spotIds, 
         photo: photo,
       }

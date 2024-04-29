@@ -25,7 +25,7 @@ export async function getSpots(Token, groupId, day) {
           location: spot?.location,
           description: spot?.description,
           lng: spot?.lon,
-          lat: spot?.lan,
+          lat: spot?.lat,
         }
       });
       return formattedData;
@@ -47,7 +47,7 @@ export async function getSpots(Token, groupId, day) {
         "description": "邊哭邊跨年",
         "location": "106台北市大安區新生南路二段1號",
         "lon": "121.53541",
-        "lan": "25.03329",
+        "lat": "25.03329",
         "date": 1,
         "sequence": 1
     },
@@ -57,7 +57,7 @@ export async function getSpots(Token, groupId, day) {
         "description": "承服 於我 猴子",
         "location": "高雄市鼓山區萬壽路350號",
         "lon": "120.2756",
-        "lan": "22.6353",
+        "lat": "22.6353",
         "date": 1,
         "sequence": 2
     },
@@ -67,7 +67,7 @@ export async function getSpots(Token, groupId, day) {
         "description": "臣服 於我",
         "location": "新竹市東區食品路66號",
         "lon": "120.58",
-        "lan": "24.48",
+        "lat": "24.48",
         "date": 1,
         "sequence": 3
     }

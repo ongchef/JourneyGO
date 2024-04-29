@@ -36,7 +36,7 @@ export async function postSpots(Token, groupId, day, spot_data) {
     "description": "臣服 於我",
     "location": "300新竹市東區博愛街106號",
     "lon": "120.97",
-    "lan": "24.81",
+    "lat": "24.81",
     "date": 1,
     "sequence": 1,
     "g_id": 13
