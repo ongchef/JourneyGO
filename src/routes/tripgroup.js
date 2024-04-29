@@ -6,6 +6,11 @@ import {
   createInvitation,
   getGroupOverview,
   getDate,
+  getBills,
+  getBillResult,
+  createBill,
+  updateBill,
+  getBillDetail
 } from "../controllers/tripgroup.js";
 import {
   getSpots,
@@ -27,6 +32,13 @@ router.get("/:groupId/days/:day/spots", getSpots);
 router.post("/:groupId/days/:day/spots", createSpot);
 router.put("/:groupId/days/:day/spots", updateSpot);
 router.delete("/:groupId/days/:day/spots/:spotId", deleteSpot);
+
+// bill
+router.get("/:groupId/transaction", getBills);
+router.get("/:groupId/transactionResult", getBillResult);
+router.post("/:groupId/transaction", createBill);
+router.put("/:groupId/transaction/:transactionId", updateBill);
+router.get("/:groupId/transaction/:transactionId", getBillDetail);
 // For test
 // router.get("/getDate/:groupId",getDate)
 export default router;

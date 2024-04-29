@@ -95,3 +95,137 @@ export const getTripGroupDays = (groupId) => {
     [groupId]
   )
 }
+
+export const getBillsByGroupId = (groupId) => {
+  return db.manyOrNone(
+    `SELECT 
+      b.description AS bill_name, 
+      b.date,
+      b.time,
+      u2.user_name as payer_name, 
+      b.amount, 
+      ARRAY_AGG(u.user_name) AS participants
+    FROM 
+      bill b
+    JOIN 
+      user_account u2 ON b.payer_id = u2.user_id
+    LEFT JOIN 
+      share_bill sb ON b.bill_id = sb.b_id
+    LEFT JOIN 
+      user_account u ON sb.u_id = u.user_id
+    WHERE 
+      b.g_id = $1
+    GROUP BY
+      b.description, b.date, b.time, u2.user_name, b.amount  
+    ORDER BY 
+      b.date, b.time;
+    `,
+    [groupId]
+  );
+};
+
+export const getGroupMemberName = (groupId) => {
+  console.log("getTripGroupMemberName");
+  console.log(groupId);
+  return db.query(
+    `
+    SELECT 
+      ua.user_name
+    FROM
+      group_member gm
+    JOIN 
+      user_account ua ON gm.u_id = ua.user_id
+    WHERE 
+      gm.g_id = $1;
+    `,
+    [groupId]
+  );
+};
+
+export const getUndoneBillsByGroupId = (groupId) => {
+  return db.manyOrNone(
+    `SELECT 
+      b.g_id, b.bill_id, u2.user_name as payer_name, u.user_name, sb.amount
+    FROM 
+      bill b
+    JOIN
+      user_account u2 ON b.payer_id = u2.user_id
+    LEFT JOIN
+      share_bill sb ON b.bill_id = sb.b_id
+    LEFT JOIN 
+      user_account u ON sb.u_id = u.user_id
+    WHERE 
+      b.g_id = $1 AND sb.status = 'open'
+    ORDER BY
+      b.g_id, b.bill_id;
+    `,
+    [groupId]
+  );
+};
+
+export const createBillModel = (bill_name, groupId, date, time, payer_id, amount) => {
+  //console.log("start to create bill");
+  return db.one(
+    `INSERT INTO bill (g_id, payer_id, description, amount, date, time, status)
+    VALUES ($1, $2, $3, $4, $5, $6, 'open')
+    RETURNING bill_id`,
+    [groupId, payer_id, bill_name, amount, date, time]
+  );
+};
+
+export const createShareBills = (b_id, u_id, amount) => {
+  //console.log("start to create share bill");
+  return db.none(
+    `INSERT INTO share_bill (b_id, u_id, amount, status)
+    VALUES ($1, $2, $3, 'open')`,
+    [b_id, u_id, amount]
+  );
+};
+
+export const updateBillModel = (transactionId, bill_name, date, time, payer_id, amount) => {
+  //console.log("start to update bill");
+  return db.none(
+    `UPDATE bill 
+    SET description = $1, date = $2, time = $3, payer_id = $4, amount = $5
+    WHERE bill_id = $6`,
+    [bill_name, date, time, payer_id, amount, transactionId]
+  );
+};
+
+export const deleteShareBillModel = (bill_id) => {
+  //console.log("start to delete share bill");
+  return db.none(
+    `DELETE FROM share_bill
+    WHERE b_id = $1`,
+    [bill_id]
+  );
+};
+
+export const getBillsByBillId = (billId) => {
+  console.log("????");
+  return db.manyOrNone(
+    `SELECT 
+      b.description AS bill_name, 
+      b.date,
+      b.time,
+      u2.user_name as payer_name, 
+      b.amount, 
+      ARRAY_AGG(u.user_name) AS participants
+    FROM 
+      bill b
+    JOIN 
+      user_account u2 ON b.payer_id = u2.user_id
+    LEFT JOIN 
+      share_bill sb ON b.bill_id = sb.b_id
+    LEFT JOIN 
+      user_account u ON sb.u_id = u.user_id
+    WHERE 
+      b.bill_id = $1
+    GROUP BY
+      b.description, b.date, b.time, u2.user_name, b.amount  
+    ORDER BY 
+      b.date, b.time;
+    `,
+    [billId]
+  );
+};

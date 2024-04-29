@@ -22,6 +22,15 @@ export const getuserIdbyClerkId = (clerkId) => {
   );
 };
 
+export const getuserNamebyClerkId = (clerkId) => {
+  return db.query(
+    `
+    SELECT user_name From user_account WHERE clerk_user_id = $1;
+  `,
+    [clerkId]
+  );
+};
+
 export const getGroupByUserId = (userId) => {
   return db.query(
     `

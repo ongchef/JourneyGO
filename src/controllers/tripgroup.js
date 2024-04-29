@@ -5,11 +5,20 @@ import {
   deleteTripGroupMemberbyIds,
   getOverviewByGroupId,
   createInvitationModel,
-  getTripGroupDays
+  getTripGroupDays,
+  getBillsByGroupId,
+  getGroupMemberName,
+  getUndoneBillsByGroupId,
+  createBillModel,
+  createShareBills,
+  updateBillModel,
+  deleteShareBillModel,
+  getBillsByBillId,
 } from "../models/tripgroupModel.js";
 import {
   getuserIdbyClerkId,
   getInviteeIdByEmail,
+  getuserNamebyClerkId,
 } from "../models/userModel.js";
 
 export const createInvitation = async (req, res) => {
@@ -141,3 +150,163 @@ export const getDate = async(req, res) => {
   const result = await getTripGroupDays(groupId)
   return res.json({ message:result})
 }
+
+export const getBills = async (req, res) => {
+  const { groupId } = req.params;
+  //console.log(groupId);
+  try {
+    const data = await getBillsByGroupId(groupId);
+    //console.log(data);
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Cannot find bills by given groupId." });
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getBillResult = async (req, res) => {
+  const { groupId } = req.params;
+  const userClerkId = req.userID;
+  try {
+    const members = await getGroupMemberName(groupId);
+
+    const transactionsDict = {};
+    const transactions = await getUndoneBillsByGroupId(groupId);
+
+    transactions.forEach(transaction => {
+      const payer = transaction.payer_name;
+      const participant = transaction.user_name;
+      let amount = transaction.amount;
+    
+      if (payer === participant) {
+        return;
+      }
+      transactionsDict[payer] = transactionsDict[payer] || {};
+      transactionsDict[payer][participant] = (transactionsDict[payer][participant] || 0) - amount;
+    });
+    
+    let hasOffsetTransactions = true;
+    while (hasOffsetTransactions) {
+      hasOffsetTransactions = false;
+
+      Object.keys(transactionsDict).forEach(payer => {
+        Object.keys(transactionsDict[payer]).forEach(participant => {
+          if (transactionsDict[participant] && transactionsDict[participant][payer]) {
+            const offsetAmount = Math.min(transactionsDict[payer][participant], transactionsDict[participant][payer]);
+            transactionsDict[payer][participant] -= offsetAmount;
+            transactionsDict[participant][payer] -= offsetAmount;
+
+            if (transactionsDict[payer][participant] === 0) {
+              delete transactionsDict[payer][participant];
+            }
+            if (transactionsDict[participant][payer] === 0) {
+              delete transactionsDict[participant][payer];
+            }
+            hasOffsetTransactions = true;
+          }
+        });
+      });
+    }
+    //console.log(transactionsDict);
+
+    const result = [];
+
+    Object.keys(transactionsDict).forEach(payer => {
+      Object.keys(transactionsDict[payer]).forEach(payee => {
+        const amount = transactionsDict[payer][payee];
+        result.push({ payer, payee, amount });
+      });
+    });
+
+    const balance = {};
+    Object.keys(transactionsDict).forEach(user => {
+      balance[user] = 0;
+      Object.values(transactionsDict[user]).forEach(amount => {
+        balance[user] += amount;
+      });
+    });
+
+    //console.log({ balance, transactions: result });
+    const user_name = await getuserNamebyClerkId(userClerkId)
+    //console.log(user_name);
+    const user_balance = balance[user_name[0].user_name]
+
+    const data = {
+      "balance": user_balance,
+      "transactions": result
+    }
+
+    if (transactions.length === 0 || members.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Cannot find overviews by given groupId." });
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const createBill = async (req, res) => {
+  const { groupId } = req.params;
+  const { bill_name, date, time, payer_id, participant, amount } = req.body;
+  //console.log(bill_name, date, time, payer_id, participant, amount);
+  try {
+    const newBill = await createBillModel(bill_name, groupId, date, time, payer_id, amount);
+    //console.log(newBill);
+    const share_amount = -amount / (participant.length +1)
+    const payer_amount = amount + share_amount
+    const payer_bill = createShareBills(newBill.bill_id, payer_id, payer_amount)
+    participant.forEach(p => {
+      const share_bill = createShareBills(newBill.bill_id, p, share_amount)
+    })
+    return res.status(201).json(newBill);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateBill = async (req, res) => {
+  const { groupId, transactionId } = req.params;
+  const { bill_name, date, time, payer_id, participant, amount } = req.body;
+  //console.log(bill_name, date, time, payer_id, participant, amount);
+  try {
+    const updatedBill = await updateBillModel(transactionId, bill_name, date, time, payer_id, amount);
+    //console.log(newBill);
+    //先刪掉所有之前的share_bill再重新插入新的
+    const del = await deleteShareBillModel(transactionId)
+    const share_amount = -amount / (participant.length +1)
+    const payer_amount = amount + share_amount
+    const payer_bill = createShareBills(transactionId, payer_id, payer_amount)
+    participant.forEach(p => {
+      const share_bill = createShareBills(transactionId, p, share_amount)
+    })
+    return res.status(201).json({ message: "update bill succeed"});
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getBillDetail = async (req, res) => {
+  const { groupId, transactionId } = req.params;
+  //console.log(groupId, transactionId);
+  try {
+    const data = await getBillsByBillId(transactionId);
+    //console.log(data);
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "Cannot find bills by given groupId." });
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
