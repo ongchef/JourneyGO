@@ -138,7 +138,7 @@ export const getRoute = async(groupId,day,transType) => {
         }).catch((err)=>console.log(err))
     }
     else{
-        return "No spot"
+        return undefined
     }
     
 }
