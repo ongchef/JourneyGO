@@ -1,6 +1,7 @@
 import {Client} from "@googlemaps/google-maps-services-js";
 import dotenv from 'dotenv'
 import { getTripGroupDays } from "../models/tripgroupModel.js";
+import { getOneDayLonLat } from "../models/spotModel.js";
 
 dotenv.config()
 
@@ -106,38 +107,38 @@ export const findPlace = async(query) => {
     // })
 }
 
-export const getRoute = async(groupId) => {
-    const {date} = getTripGroupDays(groupId)
+export const getRoute = async(groupId,day,transType) => {
+    const spots = await getOneDayLonLat(groupId,day)
     const client = new Client({})
-    // for (let i = 0;i<date;i++){
-
-    // }
-    const args = {
-        params: {
-            key: process.env.MAP_API_KEY,
-            origin: { lat:120.28747, lng:22.625622 },
-            destination: {lat:121.7431519, lng:25.128445},
-            waypoint: [{lat:121.450483,lng:25.176219}],
-            language: "zh-TW"
-        }
-    };
-    // Route API
-    return await client.directions(args).then((response)=>{
-        console.log(response.data)
-        return response.data.results
-        // const place_list = response.data.results.map(async (place)=>{
-        //     if (place.photos[0]){
-        //         console.log(place.photos[0].photo_reference)
-        //         const photo = await getPhoto(place.photos[0].photo_reference)
-        //         console.log('photo',photo)
-        //         place.photos = photo
-        //         return place
-        //     }
-        //     else{
-        //         place.photos = undefined
-        //         return place
-        //     }
-        // })
-        // return Promise.all(place_list)
-    }).catch((err)=>console.log(err))
+    const lonLatStr = spots.map((spot)=>{
+        return spot.lat+","+spot.lon
+    })
+    if(lonLatStr.length>0){
+        console.log(lonLatStr)
+        console.log(lonLatStr[0])
+        console.log(lonLatStr.slice(-1)[0])
+        console.log(lonLatStr.slice(1,-1))
+        const args = {
+            params: {
+                key: process.env.MAP_API_KEY,
+                // origin: 'Disneyland',
+                // destination: 'Universal',
+                origin: lonLatStr[0],
+                destination: lonLatStr.slice(-1)[0],
+                waypoint: lonLatStr.slice(1,-1),
+                mode:transType,
+                language: "zh-TW"
+            }
+        };
+        // Route API
+        
+        return await client.directions(args).then((response)=>{
+            console.log(response.data)
+            return response.data
+        }).catch((err)=>console.log(err))
+    }
+    else{
+        return "No spot"
+    }
+    
 }

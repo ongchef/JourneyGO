@@ -6,6 +6,6 @@ router.get("/search/:query", searchPlace);
 router.get("/search/surroundings/:query/:spotId", searchNearby);
 
 // For test
-router.get("/route/:groupId",constructRoute)
+router.get("/route/:groupId/:day/:transType",constructRoute)
 
 export default router;

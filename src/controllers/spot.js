@@ -167,10 +167,10 @@ export const searchPlace = async (req, res) => {
 
 
 export const constructRoute = async (req, res) => {
-  const { groupId } = req.params;
+  const { groupId,day,transType } = req.params;
   console.log(groupId)
   try {
-    const result = await getRoute(groupId);
+    const result = await getRoute(groupId,day,transType);
     
     return res.status(200).json(result);
   } catch (error) {
