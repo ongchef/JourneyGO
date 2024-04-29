@@ -49,3 +49,13 @@ export const getLocationBySpotId = (spotId) => {
     WHERE spot_id = $1;
       `,[spotId]);
 };
+
+export const getOneDayLonLat = (groupId, day) => {
+  return db.manyOrNone(
+    `SELECT spot.lon, spot.lat
+    FROM spot 
+    WHERE g_id = $1 and date = $2
+    ORDER by sequence`,
+    [groupId,day]
+  )
+}
