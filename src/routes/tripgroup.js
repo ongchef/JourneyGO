@@ -5,6 +5,7 @@ import {
   deleteTripGroupMember,
   createInvitation,
   getGroupOverview,
+  getDate,
 } from "../controllers/tripgroup.js";
 import {
   getSpots,
@@ -26,5 +27,6 @@ router.get("/:groupId/days/:day/spots", getSpots);
 router.post("/:groupId/days/:day/spots", createSpot);
 router.put("/:groupId/days/:day/spots", updateSpot);
 router.delete("/:groupId/days/:day/spots/:spotId", deleteSpot);
-
+// For test
+// router.get("/getDate/:groupId",getDate)
 export default router;

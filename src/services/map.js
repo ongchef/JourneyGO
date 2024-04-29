@@ -1,5 +1,6 @@
 import {Client} from "@googlemaps/google-maps-services-js";
 import dotenv from 'dotenv'
+import { getTripGroupDays } from "../models/tripgroupModel.js";
 
 dotenv.config()
 
@@ -105,10 +106,38 @@ export const findPlace = async(query) => {
     // })
 }
 
-export const getRoute = async(query) => {
+export const getRoute = async(groupId) => {
+    const {date} = getTripGroupDays(groupId)
     const client = new Client({})
+    // for (let i = 0;i<date;i++){
+
+    // }
+    const args = {
+        params: {
+            key: process.env.MAP_API_KEY,
+            origin: { lat:120.28747, lng:22.625622 },
+            destination: {lat:121.7431519, lng:25.128445},
+            waypoint: [{lat:121.450483,lng:25.176219}],
+            language: "zh-TW"
+        }
+    };
     // Route API
-    client.directions
-    // 距離矩陣，這好像可以放多個地點
-    client.distancematrix
+    return await client.directions(args).then((response)=>{
+        console.log(response.data)
+        return response.data.results
+        // const place_list = response.data.results.map(async (place)=>{
+        //     if (place.photos[0]){
+        //         console.log(place.photos[0].photo_reference)
+        //         const photo = await getPhoto(place.photos[0].photo_reference)
+        //         console.log('photo',photo)
+        //         place.photos = photo
+        //         return place
+        //     }
+        //     else{
+        //         place.photos = undefined
+        //         return place
+        //     }
+        // })
+        // return Promise.all(place_list)
+    }).catch((err)=>console.log(err))
 }

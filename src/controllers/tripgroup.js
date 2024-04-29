@@ -5,6 +5,7 @@ import {
   deleteTripGroupMemberbyIds,
   getOverviewByGroupId,
   createInvitationModel,
+  getTripGroupDays
 } from "../models/tripgroupModel.js";
 import {
   getuserIdbyClerkId,
@@ -133,3 +134,10 @@ export const deleteTripGroupMember = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+// For test
+export const getDate = async(req, res) => {
+  const {groupId} = req.params
+  const result = await getTripGroupDays(groupId)
+  return res.json({ message:result})
+}

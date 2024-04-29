@@ -87,3 +87,11 @@ export const deleteTripGroupMemberbyIds = (groupId, userId) => {
     [groupId, userId]
   );
 };
+
+export const getTripGroupDays = (groupId) => {
+  return db.query(
+    `SELECT end_date-start_date as date FROM trip_groups
+    WHERE group_id = $1;`,
+    [groupId]
+  )
+}

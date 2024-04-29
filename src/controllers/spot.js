@@ -7,7 +7,7 @@ import {
   getLocationBySpotId,
 } from "../models/spotModel.js";
 import { getTripGroupMember } from "../models/tripgroupModel.js";
-import { findNearby, findPlace } from "../services/map.js";
+import { findNearby, findPlace, getRoute } from "../services/map.js";
 
 export const getSpots = async (req, res) => {
   const { groupId, day } = req.params;
@@ -163,3 +163,19 @@ export const searchPlace = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
+
+export const constructRoute = async (req, res) => {
+  const { groupId } = req.params;
+  console.log(groupId)
+  try {
+    const result = await getRoute(groupId);
+    
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
