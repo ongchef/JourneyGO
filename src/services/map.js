@@ -113,11 +113,8 @@ export const getRoute = async(groupId,day,transType) => {
     const lonLatStr = spots.map((spot)=>{
         return spot.lat+","+spot.lon
     })
+    const spotIdList = spots.map((spot)=>spot.spot_id)
     if(lonLatStr.length>0){
-        console.log(lonLatStr)
-        console.log(lonLatStr[0])
-        console.log(lonLatStr.slice(-1)[0])
-        console.log(lonLatStr.slice(1,-1))
         const args = {
             params: {
                 key: process.env.MAP_API_KEY,
@@ -125,16 +122,32 @@ export const getRoute = async(groupId,day,transType) => {
                 // destination: 'Universal',
                 origin: lonLatStr[0],
                 destination: lonLatStr.slice(-1)[0],
-                waypoint: lonLatStr.slice(1,-1),
+                waypoints: lonLatStr.slice(1,-1),
                 mode:transType,
                 language: "zh-TW"
             }
         };
         // Route API
-        
+        console.log(args)
         return await client.directions(args).then((response)=>{
             console.log(response.data)
-            return response.data
+            if(response.data.routes.length === 0){
+                return response.data
+            }
+            else{
+                const routes = response.data.routes[0].legs.map((route,index)=>{
+                    return {
+                        distance: route.distance.value,
+                        duration: route.duration.value,
+                        travel_mode: transType,
+                        dep_id: spotIdList[index],
+                        arr_id:spotIdList[index+1]
+                    }
+                })
+                return {routes: routes,
+                    spotIdList: spotIdList}
+            }
+            
         }).catch((err)=>console.log(err))
     }
     else{

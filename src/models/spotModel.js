@@ -52,7 +52,7 @@ export const getLocationBySpotId = (spotId) => {
 
 export const getOneDayLonLat = (groupId, day) => {
   return db.manyOrNone(
-    `SELECT spot.lon, spot.lat
+    `SELECT spot.spot_id ,spot.lon, spot.lat
     FROM spot 
     WHERE g_id = $1 and date = $2
     ORDER by sequence`,
