@@ -6,6 +6,7 @@ export async function deleteSpots(Token, groupId, day, spotId) {
   const bearer_token = `Bearer ${Token}`;
 
   try {
+    console.log('deleteSpots', groupId, day, spotId);
     const res = await fetch(url, {
       method: 'DELETE',
       headers: {
@@ -20,7 +21,7 @@ export async function deleteSpots(Token, groupId, day, spotId) {
       // console.log('deleteSpots', data);
       return status;
     } else {
-      console.log('deleteSpots', res.status);
+      console.log('deleteSpots', res.status, res.statusText);
       return res.status;
     }
         

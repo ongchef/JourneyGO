@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 
 export const getToken = () => {
   const session = Cookies.get('__session');
+  // console.log("getToken", session);
   return session;
 }
 

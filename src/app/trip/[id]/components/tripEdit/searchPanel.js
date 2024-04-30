@@ -7,7 +7,7 @@ import SearchCard from './searchCard';
 import Checkbox from '@mui/material/Checkbox';
 
 export default function SearchPanel() {
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
   const [searchRes, setSearchRes] = useState([]); // [{title, description, imgUrl, lat, lng, rating}]
 
   const handleChange = (event) => {

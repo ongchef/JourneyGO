@@ -32,7 +32,7 @@ export async function getSearch(Token, query) {
       console.log("getSearch", status);
       return formattedData;
     } else {
-      console.log("getSearch",res.status, res.body);
+      console.log("getSearch",res.status, res.statusText);
       return undefined;
     }
   } catch (error) {

@@ -15,7 +15,7 @@ export async function getTripGroupOverview(Token, group_id) {
         if (res.ok) {
             const data = await res.json();
             const status = res.status;
-            console.log('getGroup Status:', status);
+            console.log('getGroup Status:', group_id, status);
             
             // console.log('getGroup Data:', data);
             // change date format into yyyy/mm/dd
@@ -24,7 +24,7 @@ export async function getTripGroupOverview(Token, group_id) {
             return data[0];
         }
         else {
-            console.error('getGroup Error:', res.status);
+            console.error('getGroup Error:', res.status, res.statusText);
             return undefined;
         }
     } catch (error) {

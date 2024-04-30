@@ -6,6 +6,7 @@ export async function postSpots(Token, groupId, day, spot_data) {
   const bearer_token = `Bearer ${Token}`;
 
   try {
+    console.log("postSpots", groupId, day);
     const res = await fetch(url, {
       method: 'POST',
       headers: {
@@ -17,10 +18,11 @@ export async function postSpots(Token, groupId, day, spot_data) {
     if(res.ok) {
       const data = await res.json();
       const status = res.status;
-      console.log("postSpots", status);
+      console.log("postSpots", status, data);
       return status;  
-    } else {
-      console.log("postSpots error", res.status, res.body);
+    } 
+    else {
+      console.log("postSpots error", res.status, res.statusText);
       return undefined;
     }
   } catch (error) {

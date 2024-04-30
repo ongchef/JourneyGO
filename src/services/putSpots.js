@@ -22,7 +22,7 @@ export async function putSpots(Token, groupId, day, updateCards_sequnce) {
       console.log("putSpots", status);
       return status;
     } else {
-      console.log("putSpots", res);
+      console.log("putSpots", res.status, res.statusText);
       return undefined;
     }
   } catch (error) {

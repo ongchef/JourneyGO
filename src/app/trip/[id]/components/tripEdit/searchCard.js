@@ -29,7 +29,6 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
         lon: lng,
         lat: lat,
         sequence: spotIds, 
-        photo: photo,
       }
       try {
         const status = await postSpots(Token, currGroupId, currDay, data);

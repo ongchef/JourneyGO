@@ -1,7 +1,7 @@
 'use server';
 
 export async function getSurrounding(Token, query, spotId) {
-  spotId = String(spotId);
+  // spotId = String(spotId);
   const url = `${process.env.BASE_URL}/api/spots/search/surroundings/${query}/${spotId}`;
   const bearer_token = `Bearer ${Token}`;
 
@@ -34,10 +34,9 @@ export async function getSurrounding(Token, query, spotId) {
       );
       const status = res.status;
       console.log("getSurrounding", status);
-      // console.log("getSurrounding", formattedData);
       return formattedData;
     } else {
-      console.log("getSurrounding", res.status, res.body);
+      console.log("getSurrounding", res.status, res.statusText);
       return undefined;
     }
   } catch (error) {
