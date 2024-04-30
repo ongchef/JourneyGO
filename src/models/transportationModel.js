@@ -1,7 +1,7 @@
 import db from "./db_connection.js"
 
 export const getTransByGroupIdDay = async(groupId,day) => {
-    db.any(`SELECT trans.* 
+    return db.any(`SELECT trans.* 
         FROM Transportation as trans
         WHERE 
         (trans.dep_id in (SELECT spot.spot_id FROM Spot as spot WHERE spot.g_id = $1 and spot.date = $2)) 
@@ -11,7 +11,6 @@ export const getTransByGroupIdDay = async(groupId,day) => {
 }
 
 export const saveTransportation = async(transList) => {
-    console.log(transList.spotIdList)
     await db.none(`DELETE FROM transportation where dep_id = ANY($1) or arr_id = ANY($1)`,[transList.spotIdList])
     db.tx(t=>{
         const insert_queries = transList.routes.map((trans)=>{
