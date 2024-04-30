@@ -212,7 +212,7 @@ export const getBillResult = async (req, res) => {
         });
       });
     }
-    console.log(transactionsDict);
+    // console.log(transactionsDict);
 
     // 初始化每个人的总收入和总支出
     const totalReceived = {};
@@ -240,7 +240,7 @@ export const getBillResult = async (req, res) => {
       });
     });
 
-    console.log("balance", balance);
+    //console.log("balance", balance);
     const result = [];
 
     Object.keys(transactionsDict).forEach(payer => {
@@ -250,7 +250,7 @@ export const getBillResult = async (req, res) => {
       });
     });
 
-    console.log({ balance, transactions: result });
+    // console.log({ balance, transactions: result });
     const user_name = await getuserNamebyClerkId(userClerkId)
     //console.log(user_name);
     const user_balance = -balance[user_name[0].user_name]
