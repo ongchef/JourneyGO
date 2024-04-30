@@ -212,8 +212,35 @@ export const getBillResult = async (req, res) => {
         });
       });
     }
-    //console.log(transactionsDict);
+    console.log(transactionsDict);
 
+    // 初始化每个人的总收入和总支出
+    const totalReceived = {};
+    const totalPaid = {};
+
+    // 遍历交易字典
+    Object.keys(transactionsDict).forEach(payer => {
+      Object.keys(transactionsDict[payer]).forEach(payee => {
+        const amount = transactionsDict[payer][payee];
+        // 计算每个人的总收入和总支出
+        totalReceived[payee] = (totalReceived[payee] || 0) + amount;
+        totalPaid[payer] = (totalPaid[payer] || 0) + amount;
+      });
+    });
+
+    // 初始化每个人的总余额
+    const balance = {};
+
+    // 计算每个人欠其他人多少钱
+    Object.keys(transactionsDict).forEach(payer => {
+      Object.keys(transactionsDict[payer]).forEach(payee => {
+        const amount = transactionsDict[payer][payee];
+        balance[payee] = (balance[payee] || 0) + amount;
+        balance[payer] = (balance[payer] || 0) - amount;
+      });
+    });
+
+    console.log("balance", balance);
     const result = [];
 
     Object.keys(transactionsDict).forEach(payer => {
@@ -223,18 +250,10 @@ export const getBillResult = async (req, res) => {
       });
     });
 
-    const balance = {};
-    Object.keys(transactionsDict).forEach(user => {
-      balance[user] = 0;
-      Object.values(transactionsDict[user]).forEach(amount => {
-        balance[user] += amount;
-      });
-    });
-
-    //console.log({ balance, transactions: result });
+    console.log({ balance, transactions: result });
     const user_name = await getuserNamebyClerkId(userClerkId)
     //console.log(user_name);
-    const user_balance = balance[user_name[0].user_name]
+    const user_balance = -balance[user_name[0].user_name]
 
     const data = {
       "balance": user_balance,
