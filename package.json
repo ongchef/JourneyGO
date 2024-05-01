@@ -20,6 +20,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "http": "^0.0.1-security",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.0",
     "pg-promise": "^11.5.5",
     "socket.io": "^4.7.5",

@@ -13,6 +13,7 @@ import tripRouter from "./routes/trip.js";
 import usersRouter from "./routes/users.js";
 import spotRouter from "./routes/spot.js";
 import countryRounter from "./routes/country.js";
+import transportationRouter from './routes/transportation.js'
 
 import db from "./models/db_connection.js";
 
@@ -54,3 +55,4 @@ app.use(
 // app.use("/api/trip/", ClerkExpressWithAuth(), getUserInfo, tripRouter);
 app.use("/api/spots/", ClerkExpressWithAuth(), getUserInfo, spotRouter);
 app.use("/api/countries/", ClerkExpressWithAuth(), getUserInfo, countryRounter);
+app.use("/api/transportation/",ClerkExpressRequireAuth(),getUserInfo, transportationRouter)

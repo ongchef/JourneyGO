@@ -6,6 +6,7 @@ import {
   deleteSpotBySpotId,
   getLocationBySpotId,
 } from "../models/spotModel.js";
+import { saveTransportation } from "../models/transportationModel.js";
 import { getTripGroupMember } from "../models/tripgroupModel.js";
 import { findNearby, findPlace, getRoute } from "../services/map.js";
 
@@ -26,7 +27,10 @@ export const getSpots = async (req, res) => {
         .status(404)
         .json({ message: "Cannot found data by given groupId/day." });
     } */
-
+    // const result = {
+    //   spots:spots,
+    //   tran
+    // }
     return res.status(200).json(spots);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -176,10 +180,11 @@ export const constructRoute = async (req, res) => {
       return res.status(400).json({message:"No Spot"})
     }
 
-    if(result.routes.length === 0 && "available_travel_modes" in result){
+    if("available_travel_modes" in result){
       return res.status(205).json({available_travel_modes:result.available_travel_modes})
     }
-
+    await saveTransportation(result)
+    console.log(result)
     return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({ message: error.message });
