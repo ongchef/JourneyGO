@@ -23,12 +23,6 @@ const Map = () => {
       };
     }));
   }, [allSpots, currGroupId, currDay]);
-  // const markerPositions = [
-  //   { lat: 37.4239163, lng: -122.0947209, title: 'Marker 1' },
-  //   { lat: 37.4114685, lng: -122.0539898, title: 'Marker 2' },
-  //   { lat: 37.3968706, lng: -122.0418258, title: 'Marker 3' },
-  //   { lat: 37.4055460, lng: -122.0138953, title: 'Marker 4' },
-  // ];
 
   useEffect(() => {
     const initMap = async () => {

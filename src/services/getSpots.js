@@ -38,38 +38,3 @@ export async function getSpots(Token, groupId, day) {
     return undefined;
   }
 }
-
-/*
-[
-    {
-        "spot_id": 3,
-        "spot_name": "大安森林公園",
-        "description": "邊哭邊跨年",
-        "location": "106台北市大安區新生南路二段1號",
-        "lon": "121.53541",
-        "lat": "25.03329",
-        "date": 1,
-        "sequence": 1
-    },
-    {
-        "spot_id": 5,
-        "spot_name": "壽山動物園",
-        "description": "承服 於我 猴子",
-        "location": "高雄市鼓山區萬壽路350號",
-        "lon": "120.2756",
-        "lat": "22.6353",
-        "date": 1,
-        "sequence": 2
-    },
-    {
-        "spot_id": 7,
-        "spot_name": "新竹市立動物園",
-        "description": "臣服 於我",
-        "location": "新竹市東區食品路66號",
-        "lon": "120.58",
-        "lat": "24.48",
-        "date": 1,
-        "sequence": 3
-    }
-]
-*/
