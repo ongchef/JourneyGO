@@ -29,11 +29,11 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 io.on("connection", (socket) => {
   // New user has connected
-  console.log(`A user connected`);
+  console.log(`${socket.id} connected`);
 
   socket.on("enter_room", (data) => {
     socket.join(data.groupId);
-    console.log(`${data.jwt} enters ${data.groupId} successfully.`);
+    console.log(`${socket.id} (jwt: ${data.jwt}) enters ${data.groupId} successfully.`);
   });
 
   // Receive client spot seq change
@@ -45,8 +45,7 @@ io.on("connection", (socket) => {
     // Call API update DB rows
     var cnt = 0;
     data.spot_sequence.forEach(async (element) => {
-      //updateSpotBySpotId(element, data.day, cnt);
-      updateSpotBySpotId(element, data.day + 1, cnt);
+      updateSpotBySpotId(element, Number(data.day) + 1, cnt);
       cnt += 1;
     });
   });
