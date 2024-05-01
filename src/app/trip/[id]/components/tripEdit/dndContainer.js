@@ -54,31 +54,23 @@ export default function DndContainer({day, spotChange}) {
       setUpdateCards(cards_data);
   }, [allSpots]);
 
-  useEffect(() => {
-    if (updateCards?.length === 0 || updateCards === undefined ) return;
-    spotChange(day, updateCards); //socket
+  const moveCard = useCallback((dragIndex, hoverIndex) => {
+    const prevCards = allSpots?.[currGroupId]?.[currDay];
+    const updatedCards = update(prevCards, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, prevCards[dragIndex]],
+      ],
+    });
     setAllSpots(prevState => ({
       ...prevState,
       [currGroupId]: {
         ...prevState[currGroupId] || {}, 
-        [day]: updateCards,
+        [day]: updatedCards,
       },
     }));
-  }, [updateCards]);
-
-  const moveCard = useCallback((dragIndex, hoverIndex) => {
-    setCards((prevCards) => {
-      const updatedCards = update(prevCards, {
-        $splice: [
-          [dragIndex, 1],
-          [hoverIndex, 0, prevCards[dragIndex]],
-        ],
-      });
-      setUpdateCards(updatedCards);
-      return updatedCards;
-    });
-  }, []);
-
+    spotChange(day, updatedCards); //socket
+  });
 
   return (
     <>

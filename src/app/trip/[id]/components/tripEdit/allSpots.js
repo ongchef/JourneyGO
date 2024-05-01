@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { DataContext } from '@/app/components/dataContext';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -9,17 +9,21 @@ import { io } from 'socket.io-client';
 
 export default function AllSpots({day}) {
   const {allSpots, setAllSpots, currGroupId, Token} = useContext(DataContext);
+  const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
+  const [newDay, setNewDay] = useState();       //store day from socket
 
-  const socket = io("http://localhost:3000");
+  const socket = io("http://localhost:3000"); //cannot access environment variable on client side
+
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
+    // console.log("spotChange", _day, spot_sequence);
     socket.emit("client_spot_change", {
       groupId: currGroupId,
       day: _day,
       spot_sequence: spot_sequence,
     });
   }
- 
+
   useEffect(() => {
     function enterRoom() {
       // check if socket is already connected
@@ -36,26 +40,28 @@ export default function AllSpots({day}) {
   
     // update allSpots when server_spot_change
     socket.on("server_spot_change", data => {
-      const { socket_day, spot_sequence } = data;
+      const { day, spot_sequence } = data;
       // console.log("server_spot_change", data);
-      try {
-        const prevCards = allSpots?.[currGroupId]?.[socket_day];
-        const reorderedCards = prevCards?.sort((a, b) =>
-          spot_sequence.indexOf(a.id) - spot_sequence.indexOf(b.id)
-        );
-        setAllSpots(prevState => ({
-          ...prevState,
-          [currGroupId]: {
-            ...prevState[currGroupId] || {},  
-            [socket_day]: reorderedCards,
-          },
-        }));
-      } catch (error) {
-        console.log("server_spot_change", error)
-      }
+      setNewCards(spot_sequence);
+      setNewDay(day);
     })
     enterRoom();
   }, []);
+
+  // 
+  useEffect(() => {
+    const prevCards = allSpots?.[currGroupId]?.[newDay];
+    const reorderedCards = prevCards?.sort((a, b) =>
+      newCards.indexOf(a.id) - newCards.indexOf(b.id)
+    );
+    setAllSpots(prevState => ({
+      ...prevState,
+      [currGroupId]: {
+        ...prevState[currGroupId] || {},  
+        [newDay]: reorderedCards,
+      },
+    }));
+  }, [newCards]);
 
   return (
     <div className="bg-neutral-200 w-full">
