@@ -1,14 +1,20 @@
+'use client';
 import React from 'react';
-import { Grid, Paper, Button, Box, useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia,CardActions, IconButton, AvatarGroup ,Avatar, avatarColors} from '@mui/material';
-
+import { Grid,  Button, Box, Typography, Avatar} from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 
 function BillPanel(){
+    const router = useRouter();
+
     const setDividerStyles = {
         marginTop: `0!important`,
       };
 
-
+    const handleClick = () => {
+        setLoading(true);
+        //router.push('/bill/page.js');
+    }
 return(
     <main>
         <Box >
@@ -22,7 +28,7 @@ return(
                     <div className="pr-5">
                         <Typography variant="body1" sx={{ fontSize: '20px'}}>Hi, Belle</Typography>
                     </div>
-                        <Button variant="contained" className="w-21" onClick sx={{ bgcolor: '#EB684E' }}>+  新增花費</Button>
+                        <Button variant="contained" onClick={handleClick} sx={{ bgcolor: '#EB684E' }}>+  新增花費</Button>
                 
                 </Box>
                 </Grid>

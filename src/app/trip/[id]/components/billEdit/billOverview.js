@@ -1,10 +1,13 @@
-
+import React from 'react';
+//import { BrowserRouter, Route, Link } from 'react-router-dom';
 import BillPanel from "./billPanel";
 import MyBill from "./mybill";
 import BillCard from "./billCard";
+
 // import { getNewMember } from '@/services/getNewMember';
 
-export function BillPlan() {
+export function BillOverview() {
+
   
 
   return (
@@ -25,5 +28,5 @@ export function BillPlan() {
     </div>
   );
 }
-export default BillPlan;
+export default BillOverview;
 
