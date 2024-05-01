@@ -27,7 +27,10 @@ export const getSpots = async (req, res) => {
         .status(404)
         .json({ message: "Cannot found data by given groupId/day." });
     } */
-
+    // const result = {
+    //   spots:spots,
+    //   tran
+    // }
     return res.status(200).json(spots);
   } catch (error) {
     return res.status(500).json({ message: error.message });

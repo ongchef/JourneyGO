@@ -109,6 +109,7 @@ export const findPlace = async(query) => {
 
 export const getRoute = async(groupId,day,transType) => {
     const spots = await getOneDayLonLat(groupId,day)
+    console.log(spots)
     const client = new Client({})
     const lonLatStr = spots.map((spot)=>{
         return spot.lat+","+spot.lon
@@ -136,13 +137,25 @@ export const getRoute = async(groupId,day,transType) => {
             }
             else{
                 const routes = response.data.routes[0].legs.map((route,index)=>{
-                    return {
-                        distance: route.distance.value,
-                        duration: route.duration.value,
-                        travel_mode: transType,
-                        dep_id: spotIdList[index],
-                        arr_id:spotIdList[index+1]
+                    if(Object.keys(route).length === 0){
+                        return {
+                            distance: 0,
+                            duration: 0,
+                            travel_mode: '',
+                            dep_id: spotIdList[index],
+                            arr_id: spotIdList[index+1]
+                        }
                     }
+                    else{
+                        return {
+                            distance: route.distance.value,
+                            duration: route.duration.value,
+                            travel_mode: transType,
+                            dep_id: spotIdList[index],
+                            arr_id: spotIdList[index+1]
+                        }
+                    }
+                    
                 })
                 return {routes: routes,
                     spotIdList: spotIdList}
