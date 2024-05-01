@@ -277,7 +277,7 @@ export const createBill = async (req, res) => {
   const { bill_name, date, time, payer_id, participant, amount } = req.body;
   //console.log(bill_name, date, time, payer_id, participant, amount);
   try {
-    const newBill = await createBillModel(bill_name, groupId, date, time, payer_id, amount);
+    const newBill = await createBillModel(bill_name, groupId, date, time, payer_id, amount, "open");
     //console.log(newBill);
     const share_amount = -amount / (participant.length +1)
     const payer_amount = amount + share_amount
@@ -325,6 +325,24 @@ export const getBillDetail = async (req, res) => {
     }
 
     return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const writeBill = async (req, res) => {
+  const { groupId } = req.params;
+  const { date, time, creditor_id, debtor_id, amount } = req.body;
+  //console.log(bill_name, date, time, payer_id, participant, amount);
+  try {
+    const newBill = await createBillModel("write off", groupId, date, time, payer_id, amount, "closed"); // 
+    console.log(newBill);
+    
+    const payer_bill = createShareBills(newBill.bill_id, creditor_id, -amount)
+    const payee_bill = createShareBills(newBill.bill_id, debtor_id, amount)
+
+    return res.status(201).json({ message: "update bill succeed"});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

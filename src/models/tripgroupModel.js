@@ -114,7 +114,7 @@ export const getBillsByGroupId = (groupId) => {
     LEFT JOIN 
       user_account u ON sb.u_id = u.user_id
     WHERE 
-      b.g_id = $1
+      b.g_id = $1 and b.status = 'open'
     GROUP BY
       b.description, b.date, b.time, u2.user_name, b.amount  
     ORDER BY 
@@ -163,13 +163,13 @@ export const getUndoneBillsByGroupId = (groupId) => {
   );
 };
 
-export const createBillModel = (bill_name, groupId, date, time, payer_id, amount) => {
+export const createBillModel = (bill_name, groupId, date, time, payer_id, amount, status) => {
   //console.log("start to create bill");
   return db.one(
     `INSERT INTO bill (g_id, payer_id, description, amount, date, time, status)
-    VALUES ($1, $2, $3, $4, $5, $6, 'open')
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
     RETURNING bill_id`,
-    [groupId, payer_id, bill_name, amount, date, time]
+    [groupId, payer_id, bill_name, amount, date, time, status]
   );
 };
 
@@ -228,3 +228,4 @@ export const getBillsByBillId = (billId) => {
     [billId]
   );
 };
+
