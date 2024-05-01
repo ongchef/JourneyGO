@@ -10,7 +10,8 @@ import {
   getBillResult,
   createBill,
   updateBill,
-  getBillDetail
+  getBillDetail,
+  writeBill
 } from "../controllers/tripgroup.js";
 import {
   getSpots,
@@ -39,6 +40,7 @@ router.get("/:groupId/transactionResult", getBillResult);
 router.post("/:groupId/transaction", createBill);
 router.put("/:groupId/transaction/:transactionId", updateBill);
 router.get("/:groupId/transaction/:transactionId", getBillDetail);
+router.post("/:groupId/transaction/writeoff", writeBill);
 // For test
 // router.get("/getDate/:groupId",getDate)
 export default router;
