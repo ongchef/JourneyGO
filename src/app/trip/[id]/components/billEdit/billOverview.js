@@ -4,29 +4,39 @@ import BillPanel from "./billPanel";
 import MyBill from "./mybill";
 import BillCard from "./billCard";
 
-// import { getNewMember } from '@/services/getNewMember';
+
 
 export function BillOverview() {
 
-  
-
   return (
-    <div  style={{paddingLeft:'20px'}}>
-        <div className="flex gap-5 items-center">
+    <div  style={{display:'flex', paddingLeft:'40px', flexDirection:'column'}}>
+      <div style={{position: 'sticky', top: 100,}}>
+      <div style={{ display: 'flex',  overflowY: 'auto'}}>
+          <div>
             <BillPanel />
+          
+            <div style={{paddingLeft:'20px'}}>
+            {/* <div style={{paddingTop:'20px', position: 'fixed', top: '50px', bottom: '50px', width: '100%', overflowY: 'auto' }}> */}
+                <MyBill />
+            </div>
         </div>
-    
-    <div>
-        <div style={{paddingTop:'20px'}}>
-          <MyBill />
         </div>
-  
-      <div style={{paddingTop:'20px'}}>
-        <BillCard />
+      </div>
+      <div style={{ flex:'1', overflowY:'auto' , paddingTop: '20px', zIndex:'1'}}>
+        <div style={{ paddingBottom: '35px' }}>
+            <div style={{display:'flex' ,flexDirection:'column', gap: '20px',marginRight:'60px'}}>
+                <BillCard />
+                <BillCard />
+                <BillCard />
+                <BillCard />
+                <BillCard />
+            </div>
+        </div>
       </div>
     </div>
-    </div>
+    
   );
 }
 export default BillOverview;
 
+//position:'sticky'

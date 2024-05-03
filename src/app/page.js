@@ -51,6 +51,7 @@ export default function Home() {
     };
   }, []);
 
+  
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };

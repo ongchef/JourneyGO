@@ -14,27 +14,32 @@ function BillList(){
     const cardStyles ={
         flex:1,
         display: 'flex',
+        width:'500px',
+        height:'140px',
         flexDirection: 'row',
         alignItems: 'center',
-        padding: '10px',
-        margin: '10px',
+        padding: '30px',
+        margin: '20px',
+        marginTop: '30px',
         borderRadius: '10px',
+        gap:'40px',
         boxShadow: '0 0 10px 0 rgba(0,0,0,0.2)',
         cursor: 'pointer',
     };
 
     const amountStyles = {
         display: 'flex',
-        justifyContent: 'flex-end',
-        marginRight: '10px',
+        //marginRight: '10px',
         fontWeight: 'bold', 
+        justifyContent: 'flex-end',
         color: '#EB684E'
+        
     };
 
     const avatarStyles = { 
         display: 'flex',
-        justifyContent: 'flex-end',
-        marginRight: '10px',
+        //justifyContent: 'flex-end',
+        //marginRight: '10px',
     };
 
 
@@ -82,7 +87,7 @@ function BillList(){
                         </CardContent>
                     </div>
                     <div>
-                        <CardContent sx={cardContentStyles}>
+                        <CardContent style={{flexDirection:'row', justifyContent:'flex-end'}}>
                         <Typography variant="h6" component="div" sx={amountStyles} >
                             $100
                         </Typography>

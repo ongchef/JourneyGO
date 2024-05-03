@@ -47,14 +47,14 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
   const handleSave = async () => {
     try {
-      console.log("Group Name: "+groupName);
-      console.log("Start Date: "+startDate);
-      console.log("End Date: "+endDate);
-      console.log("Country: "+country);
-      console.log("Invitee Email: "+inviteeEmail);
+      // console.log("Group Name: "+groupName);
+      // console.log("Start Date: "+startDate);
+      // console.log("End Date: "+endDate);
+      // console.log("Country: "+country);
+      // console.log("Invitee Email: "+inviteeEmail);
 
       const tripGroupData = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail);
-      console.log('Trip group created:', tripGroupData);
+      // console.log('Trip group created:', tripGroupData);
 
       if (!tripGroupData) {
         setStatusMessage('新增行程失敗!');

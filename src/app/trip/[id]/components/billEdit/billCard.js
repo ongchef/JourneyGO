@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Paper, Button, Box, useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia,CardActions, IconButton, AvatarGroup ,Avatar, avatarColors} from '@mui/material';
+import { Paper, Button, Box, useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia,CardActions, IconButton, AvatarGroup ,Avatar, avatarColors, Dialog} from '@mui/material';
 import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from '@mui/icons-material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
@@ -8,48 +8,42 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 function BillCard(){
 
     const theme = useTheme();
-    // Determine the square size based on theme or fixed value
-    const squareSize = theme.spacing(20); 
-    
-    const mediaStyles = {
-        width: squareSize,
-        height: squareSize,
-        padding: theme.spacing(2),
-        backgroundSize: 'cover',
-    };
-
-    const cardStyles = {
-        
+  
+    const cardStyles = { 
         flexDirection: 'column',
-        p: 3,
+        p: 2,
         borderRadius: '10px' ,
         display: 'flex',
         alignItems: 'center',
-        width: '500px', 
+        width: '500px',
+         
     }
 
     const cardContentStyles = {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        gap:'50px',
-        paddingBottom: `${theme.spacing(1)} !important`,
-        paddingTop: `${theme.spacing(1)} !important`,
+        gap:'70px',
+        
     };
 
     const avatarStyles = {
-        width: theme.spacing(4),
+        width: theme.spacing(3),
         height: theme.spacing(4),
         marginLeft: 'auto',
     };
 
-    const cardActionsStyles = {
-        paddingTop: theme.spacing(1),
-        paddingBottom: '0 !important',
-        paddingLeft: '0 !important', 
-        marginLeft: `${theme.spacing(-1)} !important`,
-        marginTop: 'auto', // This will push the CardActions to the bottom
-    };
+    // const cardActionsStyles = {
+    //     paddingTop: theme.spacing(1),
+    //     paddingBottom: '0 !important',
+    //     paddingLeft: '0 !important', 
+    //     marginLeft: `${theme.spacing(-1)} !important`,
+    //     marginTop: 'auto', // This will push the CardActions to the bottom
+    // };
+
+    const handleClick = () => {
+        //console.log('clicked');
+    }
 
 
 
@@ -70,7 +64,7 @@ function BillCard(){
                             <Typography variant="h6" component="div" style={{ fontWeight: 'bold' }}>$600</Typography>
                         </div>
                         <div >
-                            <Button variant="contained" style={{ backgroundColor: '#EB684E' }}>核銷</Button>
+                            <Button variant="contained" style={{ backgroundColor: '#EB684E' }} onClick={handleClick}>核銷</Button>
                         </div>
                     </CardContent>
                 </div>
@@ -82,6 +76,12 @@ function BillCard(){
                         </IconButton>
                     </CardActions> */}
             </Card>
+
+            <Dialog>
+                <Paper>
+                    <Typography variant="h6" component="div" style={{ fontWeight: 'bold' }}>Details</Typography>
+                </Paper>
+            </Dialog>
         </div>
     )
 }

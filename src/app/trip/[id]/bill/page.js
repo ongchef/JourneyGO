@@ -2,11 +2,8 @@
 import React, { useState } from 'react';
 import { jsx, css } from '@emotion/react';
 import { Grid, Paper, Button, InputLabel, TextField, Typography, FormControl, Select, MenuItem} from '@mui/material';
-import DatePicker from './components/Datepicker';
-import TimePicker from './components/Timepicker';
 
-import Picker from './components/Picker';
-
+import Picker from '../components/billEdit/Picker';
 
 
 
@@ -45,7 +42,6 @@ const NewBill = () => {
         
     };
 
-
     const handleSubmit = (e) => {
         e.preventDefault();
      
@@ -64,8 +60,6 @@ const NewBill = () => {
     <Grid container spacing={4} style={{ marginTop: 9, marginLeft: 8, marginRight: 8 }}>
         {/* Left */}
         <Grid item xs={6}>
-            <DatePicker />
-            <TimePicker />
             <Picker />
         </Grid>
 
