@@ -6,7 +6,7 @@ import {
   deleteSpotBySpotId,
   getLocationBySpotId,
 } from "../models/spotModel.js";
-import { saveTransportation } from "../models/transportationModel.js";
+import { getTransByGroupIdDay, saveTransportation } from "../models/transportationModel.js";
 import { getTripGroupMember } from "../models/tripgroupModel.js";
 import { findNearby, findPlace, getRoute } from "../services/map.js";
 
@@ -27,11 +27,12 @@ export const getSpots = async (req, res) => {
         .status(404)
         .json({ message: "Cannot found data by given groupId/day." });
     } */
-    // const result = {
-    //   spots:spots,
-    //   tran
-    // }
-    return res.status(200).json(spots);
+    const routes = await getTransByGroupIdDay(groupId,day)
+    const result = {
+      spots: spots,
+      transportation: routes
+    }
+    return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
