@@ -1,8 +1,6 @@
 import React from 'react';
 import { Paper, Button, Box, useTheme, Typography} from '@mui/material';
 
-
-
 function MyBill(){
 
 return(

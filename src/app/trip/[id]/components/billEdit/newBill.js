@@ -16,6 +16,13 @@ const NewBill = ({ open, onClose}) => {
     const [creationStatusOpen, setCreationStatusOpen] = useState(false);
     const [statusMessage, setStatusMessage] = useState('');
 
+    const DialogStyles = {
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    };
 
     const handleBillNameChange = (e) => {
         setBillName(e.target.value);
@@ -62,7 +69,7 @@ const NewBill = ({ open, onClose}) => {
 
     return (
         <div>
-            <Dialog open={open} onClose={onClose} fullWidth>
+            <Dialog open={open} onClose={onClose} sx={DialogStyles}>
                 <DialogTitle>
                     <div style={{ display: 'flex', alignItems: 'center'}}>
                     <img src="/money.png" alt="money" style={{ width: 55, height: 55, cursor: 'pointer' }} />
@@ -75,13 +82,13 @@ const NewBill = ({ open, onClose}) => {
                 <DialogContent>
                 <Grid container spacing={4} fullWidth>
                     {/* Left */}
-                    <Grid item xs={6} fullWidth>
+                    <Grid item xs={12} md={8}>
                         <Picker/>
                     </Grid>
 
                     {/* Right */}
-                    <Grid item xs={6}>
-                        <Grid container spacing={4} direction="column">
+                    <Grid item xs={12} md={4} style={{display: 'flex', flexDirection: 'column', justifyContent: 'flex-start'}}>
+                        <Grid container spacing={2} direction="column">
                             <Grid item>
                                 <InputLabel htmlFor="add-products">品項</InputLabel>
                                 <TextField label="" fullWidth onChange={handleBillNameChange} style={{marginTop: 6}} />

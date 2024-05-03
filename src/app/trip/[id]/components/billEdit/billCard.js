@@ -1,12 +1,12 @@
 import React from 'react';
+import { useState } from 'react';
+import { Paper, Button, Box, useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia,CardActions, IconButton, AvatarGroup ,Avatar, avatarColors, Dialog, DialogContent} from '@mui/material';
 
-import { Paper, Button, Box, useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia,CardActions, IconButton, AvatarGroup ,Avatar, avatarColors, Dialog} from '@mui/material';
-import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from '@mui/icons-material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 function BillCard(){
-
+    const [creationStatusOpen, setCreationStatusOpen] = useState(false);
     const theme = useTheme();
   
     const cardStyles = { 
@@ -30,26 +30,37 @@ function BillCard(){
     const avatarStyles = {
         width: theme.spacing(3),
         height: theme.spacing(4),
-        marginLeft: 'auto',
+        marginLeft: '40px',
     };
 
-    // const cardActionsStyles = {
-    //     paddingTop: theme.spacing(1),
-    //     paddingBottom: '0 !important',
-    //     paddingLeft: '0 !important', 
-    //     marginLeft: `${theme.spacing(-1)} !important`,
-    //     marginTop: 'auto', // This will push the CardActions to the bottom
-    // };
-
-    const handleClick = () => {
-        //console.log('clicked');
+    const dialogContentStyles = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        
     }
 
+    const boxStyles ={
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        fontSize: '20px',
+        height: '100%',
+        gap: '20px',
+    }
 
+    const handleClick = () => {
+        setCreationStatusOpen(true);
+    }
+
+    const handleCreationStatusDialogClose = () => {
+        setCreationStatusOpen(false)
+        //window.location.reload();
+      }
 
     return(
         <div className="flex flex-col h-full items-center">
-            {/* <Card className="flex justify-start my-10 mr-10 hover:bg-gray-200"></Card> */}
             <Card sx={cardStyles}>
                 <div >
                     <CardContent sx={cardContentStyles}>
@@ -68,8 +79,6 @@ function BillCard(){
                         </div>
                     </CardContent>
                 </div>
-                 
-                   
                     {/* <CardActions sx={cardActionsStyles} disableSpacing>
                         <IconButton aria-label="" size="small">
                             
@@ -77,10 +86,21 @@ function BillCard(){
                     </CardActions> */}
             </Card>
 
-            <Dialog>
-                <Paper>
-                    <Typography variant="h6" component="div" style={{ fontWeight: 'bold' }}>Details</Typography>
-                </Paper>
+            <Dialog open={creationStatusOpen} onClose={handleCreationStatusDialogClose} fullWidth maxWidth="sm">
+                <DialogContent sx={dialogContentStyles}>
+                    <Box sx={boxStyles}>
+                        您確定要核銷嗎？
+                        <div>
+                        <Button onClick={handleCreationStatusDialogClose}>
+                            確定
+                        </Button>
+                        <Button onClick={handleCreationStatusDialogClose}>
+                            取消
+                        </Button>
+                        </div>
+
+                    </Box>
+                </DialogContent>
             </Dialog>
         </div>
     )
