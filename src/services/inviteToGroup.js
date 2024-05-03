@@ -11,7 +11,7 @@ export async function inviteToGroup(Token, inviteeEmail, groupId) {
     };
 
     console.log('inviteToGroup Request body:', requestBody);
-    console.log('inviteToGroup Token:', Token);
+    // console.log('inviteToGroup Token:', Token);
     try {
       const response = await fetch(url, {
         method: 'POST',
