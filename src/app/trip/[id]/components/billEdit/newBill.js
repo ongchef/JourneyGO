@@ -17,11 +17,10 @@ const NewBill = ({ open, onClose}) => {
     const [statusMessage, setStatusMessage] = useState('');
 
     const DialogStyles = {
-        display: 'flex',
-        width: '100%',
-        height: '100%',
+        fullWidth: true,
         justifyContent: 'center',
         alignItems: 'center',
+        width:'100%',
     };
 
     const handleBillNameChange = (e) => {
@@ -69,7 +68,7 @@ const NewBill = ({ open, onClose}) => {
 
     return (
         <div>
-            <Dialog open={open} onClose={onClose} sx={DialogStyles}>
+            <Dialog open={open} onClose={onClose} sx={DialogStyles} maxWidth="md" fullWidth>
                 <DialogTitle>
                     <div style={{ display: 'flex', alignItems: 'center'}}>
                     <img src="/money.png" alt="money" style={{ width: 55, height: 55, cursor: 'pointer' }} />
@@ -79,10 +78,10 @@ const NewBill = ({ open, onClose}) => {
                     </div>
                 </DialogTitle>
 
-                <DialogContent>
-                <Grid container spacing={4} fullWidth>
+                <DialogContent style={{gap: 10}}>
+                <Grid container spacing={0} fullWidth style={{justifyContent: 'center', gap:100}}>
                     {/* Left */}
-                    <Grid item xs={12} md={8}>
+                    <Grid item xs={8} md={4}>
                         <Picker/>
                     </Grid>
 
