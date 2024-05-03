@@ -148,8 +148,8 @@ export const getRoute = async(groupId,day,transType) => {
                     }
                     else{
                         return {
-                            distance: route.distance.value,
-                            duration: route.duration.value,
+                            distance: route.distance.text,
+                            duration: route.duration.text,
                             travel_mode: transType,
                             dep_id: spotIdList[index],
                             arr_id: spotIdList[index+1]
