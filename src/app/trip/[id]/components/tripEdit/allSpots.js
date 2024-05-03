@@ -38,7 +38,6 @@ export default function AllSpots({day}) {
       // console.log("socket is connected");
     }
   
-    // update allSpots when server_spot_change
     socket.on("server_spot_change", data => {
       const { day, spot_sequence } = data;
       // console.log("server_spot_change", data);
@@ -48,7 +47,7 @@ export default function AllSpots({day}) {
     enterRoom();
   }, []);
 
-  // 
+  // update allSpots when server_spot_change 
   useEffect(() => {
     const prevCards = allSpots?.[currGroupId]?.[newDay];
     const reorderedCards = prevCards?.sort((a, b) =>

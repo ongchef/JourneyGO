@@ -42,7 +42,7 @@ export const DataProvider = ({children}) => {
   const [refetch, setRefetch] = useState(0);
 
   // store all transportations
-  const [allTrans, setAllTrans] = useState({}); // {groupId: {day: trans}}
+  const [allTrans, setAllTrans] = useState({}); // {groupId: {day: [OPTION, [TIME_SEQUENCES]]}}
 
   return (
     <DataContext.Provider value={{allGroups, setAllGroups, allSpots, setAllSpots, currGroupId, currDay, setCurrGroupId, setCurrDay, Token, setRefetch, refetch, isLoad, setIsLoad, allTrans, setAllTrans}}>
