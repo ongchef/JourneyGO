@@ -115,7 +115,7 @@ export const getBillsByGroupId = (groupId) => {
     LEFT JOIN 
         user_account u ON sb.u_id = u.user_id
     WHERE 
-        b.g_id = 14 and b.status = 'open'
+        b.g_id = $1 and b.status = 'open'
     GROUP BY
         b.bill_id, b.description, b.date, b.time, u2.user_name, b.amount  
     ORDER BY 
