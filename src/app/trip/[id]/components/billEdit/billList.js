@@ -5,7 +5,7 @@ import { Button, Box, useTheme, Typography, Card, CardContent, AvatarGroup, Avat
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function BillList({ transactionResult }) {
-    const [creationStatusOpen, setCreationStatusOpen] = useState(false);
+    const [writeOffStatusOpen, setWriteOffStatusOpen] = useState(false);
     const theme = useTheme();
 
     const cardStyles = {
@@ -46,12 +46,12 @@ function BillList({ transactionResult }) {
         gap: "20px",
     };
 
-    const handleClick = () => {
-        setCreationStatusOpen(true);
+    const handleWriteOffBtnClick = () => {
+        setWriteOffStatusOpen(true);
     };
 
     const handleCreationStatusDialogClose = () => {
-        setCreationStatusOpen(false);
+        setWriteOffStatusOpen(false);
         //window.location.reload();
     };
 
@@ -79,7 +79,7 @@ function BillList({ transactionResult }) {
                             </Typography>
                         </div>
                         <div>
-                            <Button variant="contained" style={{ backgroundColor: "#EB684E" }} onClick={handleClick}>
+                            <Button variant="contained" style={{ backgroundColor: "#EB684E" }} onClick={handleWriteOffBtnClick}>
                                 核銷
                             </Button>
                         </div>
@@ -92,7 +92,7 @@ function BillList({ transactionResult }) {
                     </CardActions> */}
             </Card>
 
-            <Dialog open={creationStatusOpen} onClose={handleCreationStatusDialogClose} fullWidth maxWidth="sm">
+            <Dialog open={writeOffStatusOpen} onClose={handleCreationStatusDialogClose} fullWidth maxWidth="sm">
                 <DialogContent sx={dialogContentStyles}>
                     <Box sx={boxStyles}>
                         您確定要核銷嗎？

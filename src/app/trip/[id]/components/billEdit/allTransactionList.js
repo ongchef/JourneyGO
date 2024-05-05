@@ -4,7 +4,7 @@ import NewBill from "./newBill";
 import { DataContext } from "@/app/components/dataContext";
 import { getAllTransactions } from "@/services/getAllTransactions";
 
-import { Box, useTheme, Typography, Card, CardContent, AvatarGroup, Avatar, colors, Tooltip } from "@mui/material";
+import { Typography, Card, CardContent, AvatarGroup, Avatar, colors, Tooltip } from "@mui/material";
 import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
 
 const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
@@ -103,65 +103,71 @@ const AllTransactionList = ({ group_id }) => {
 
             <div style={{ paddingLeft: "30px" }}>
                 {/* <Card className='flex justify-start my-10 mr-10 hover:bg-gray-200' onClick={handleClick}> */}
-                {transactionList.map((data, index) => (
-                <Card key={index} sx={cardStyles} onClick={() => handleDialogOpen(data)}>
-                    <div className="flex" style={{ marginLeft: "20px" }}>
-                        <Tooltip title={data.payer_name}>
-                            <Avatar>{data.payer_name[0].toUpperCase()}</Avatar>
-                        </Tooltip>
-                    </div>
-                    <div>
-                        <CardContent sx={cardContentStyles}>
-                            <div style={{ justifyContent: "flex-start" }}>
-                                <Typography variant="h6" component="div" style={{ fontWeight: "bold" }}>
-                                    {data.bill_name}
-                                </Typography>
-                                {/* <Stack direction="row" spacing={2}>
+                {transactionList.length === 0 ? (
+                    <Typography variant="h6">
+                        尚無交易記錄
+                    </Typography>
+                ) : (
+                    transactionList.map((data, index) => (
+                        <Card key={index} sx={cardStyles} onClick={() => handleDialogOpen(data)}>
+                            <div className="flex" style={{ marginLeft: "20px" }}>
+                                <Tooltip title={data.payer_name}>
+                                    <Avatar>{data.payer_name[0].toUpperCase()}</Avatar>
+                                </Tooltip>
+                            </div>
+                            <div>
+                                <CardContent sx={cardContentStyles}>
+                                    <div style={{ justifyContent: "flex-start" }}>
+                                        <Typography variant="h6" component="div" style={{ fontWeight: "bold" }}>
+                                            {data.bill_name}
+                                        </Typography>
+                                        {/* <Stack direction="row" spacing={2}>
                                 <Chip label="Eat" size="small" />
                                 <Chip label={bill.status} size="small" color="primary" />
                                 </Stack> */}
 
-                                <Typography variant="h11" component="div">
-                                    {data.date}, {data.time}
-                                </Typography>
+                                        <Typography variant="h11" component="div">
+                                            {data.date}, {data.time}
+                                        </Typography>
 
-                                <Typography variant="h8" component="div">
-                                    <span style={{ fontWeight: "bold" }}>{data.payer_name}</span> paid for
-                                </Typography>
-                            </div>
+                                        <Typography variant="h8" component="div">
+                                            <span style={{ fontWeight: "bold" }}>{data.payer_name}</span> paid for
+                                        </Typography>
+                                    </div>
 
-                            {/* <CardActions sx={cardActionsStyles} disableSpacing>
+                                    {/* <CardActions sx={cardActionsStyles} disableSpacing>
                                     <IconButton aria-label="" size="small">
                                             
                                     </IconButton>
                             </CardActions> */}
-                        </CardContent>
-                    </div>
-                    <div>
-                        <CardContent style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                            <Typography variant="h6" component="div" sx={amountStyles}>
-                                $ {data.amount}
-                            </Typography>
-
-                            <div>
-                                <AvatarGroup sx={{ avatarStyles }} max={3}>
-                                    {data.participants.map((name, index) => (
-                                        <Tooltip title={name} key={index}>
-                                            <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
-                                                {name[0].toUpperCase()}
-                                            </Avatar>
-                                        </Tooltip>
-                                    ))}
-                                </AvatarGroup>
+                                </CardContent>
                             </div>
-                        </CardContent>
-                    </div>
-                </Card>
-                ))}
+                            <div>
+                                <CardContent style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+                                    <Typography variant="h6" component="div" sx={amountStyles}>
+                                        $ {data.amount}
+                                    </Typography>
+
+                                    <div>
+                                        <AvatarGroup sx={{ avatarStyles }} max={3}>
+                                            {data.participants.map((name, index) => (
+                                                <Tooltip title={name} key={index}>
+                                                    <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
+                                                        {name[0].toUpperCase()}
+                                                    </Avatar>
+                                                </Tooltip>
+                                            ))}
+                                        </AvatarGroup>
+                                    </div>
+                                </CardContent>
+                            </div>
+                        </Card>
+                    ))
+                )}
             </div>
 
             <NewBill open={isDialogOpen} onClose={handleDialogClose} group_id={group_id} editMode={true} transactionData={selectedTransaction} />
         </div>
     );
-}
+};
 export default memo(AllTransactionList);

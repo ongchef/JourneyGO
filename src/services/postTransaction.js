@@ -17,26 +17,26 @@ export async function postTransaction(Token, group_id, bill_name, amount, payer_
 
     try {
         console.log('postTransaction requestBody:', requestBody);
-        return "success"
-        // const res = await fetch(url, {
-        // method: 'POST',
-        // headers: {
-        //     'Content-Type': 'application/json',
-        //     'Authorization': `${bearer_token}`,
-        // },
-        // body: JSON.stringify(requestBody),
-        // });
-        // if (res.ok) {
-        //     const data = await res.json();
-        //     const status = res.status;
-        //     console.log('postTransaction Status:', group_id, status);
-        //     console.log('postTransaction data:', data);
+        // return "success"
+        const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${bearer_token}`,
+        },
+        body: JSON.stringify(requestBody),
+        });
+        if (res.ok) {
+            const data = await res.json();
+            const status = res.status;
+            console.log('postTransaction Status:', group_id, status);
+            console.log('postTransaction data:', data);
 
-        //     return data;
-        // }else {
-        //     console.error('postTransaction Error:', res.status, res.statusText);
-        //     return undefined;
-        // }
+            return data;
+        }else {
+            console.error('postTransaction Error:', res.status, res.statusText);
+            return undefined;
+        }
     } catch (error) {
         console.error('Error:', error);
         return undefined;
