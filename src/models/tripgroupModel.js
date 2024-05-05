@@ -93,32 +93,33 @@ export const getTripGroupDays = (groupId) => {
     `SELECT end_date-start_date as date FROM trip_groups
     WHERE group_id = $1;`,
     [groupId]
-  )
-}
+  );
+};
 
 export const getBillsByGroupId = (groupId) => {
   return db.manyOrNone(
     `SELECT 
-      b.description AS bill_name, 
-      b.date,
-      b.time,
-      u2.user_name as payer_name, 
-      b.amount, 
-      ARRAY_AGG(u.user_name) AS participants
+        b.bill_id,
+        b.description AS bill_name, 
+        b.date,
+        b.time,
+        u2.user_name as payer_name, 
+        b.amount, 
+        ARRAY_AGG(u.user_name) AS participants
     FROM 
-      bill b
+        bill b
     JOIN 
-      user_account u2 ON b.payer_id = u2.user_id
+        user_account u2 ON b.payer_id = u2.user_id
     LEFT JOIN 
-      share_bill sb ON b.bill_id = sb.b_id
+        share_bill sb ON b.bill_id = sb.b_id
     LEFT JOIN 
-      user_account u ON sb.u_id = u.user_id
+        user_account u ON sb.u_id = u.user_id
     WHERE 
-      b.g_id = $1 and b.status = 'open'
+        b.g_id = 14 and b.status = 'open'
     GROUP BY
-      b.description, b.date, b.time, u2.user_name, b.amount  
+        b.bill_id, b.description, b.date, b.time, u2.user_name, b.amount  
     ORDER BY 
-      b.date, b.time;
+        b.date, b.time;
     `,
     [groupId]
   );
@@ -163,7 +164,15 @@ export const getUndoneBillsByGroupId = (groupId) => {
   );
 };
 
-export const createBillModel = (bill_name, groupId, date, time, payer_id, amount, status) => {
+export const createBillModel = (
+  bill_name,
+  groupId,
+  date,
+  time,
+  payer_id,
+  amount,
+  status
+) => {
   //console.log("start to create bill");
   return db.one(
     `INSERT INTO bill (g_id, payer_id, description, amount, date, time, status)
@@ -182,7 +191,14 @@ export const createShareBills = (b_id, u_id, amount) => {
   );
 };
 
-export const updateBillModel = (transactionId, bill_name, date, time, payer_id, amount) => {
+export const updateBillModel = (
+  transactionId,
+  bill_name,
+  date,
+  time,
+  payer_id,
+  amount
+) => {
   //console.log("start to update bill");
   return db.none(
     `UPDATE bill 
@@ -228,4 +244,3 @@ export const getBillsByBillId = (billId) => {
     [billId]
   );
 };
-
