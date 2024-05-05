@@ -119,7 +119,7 @@ export const getBillsByGroupId = (groupId) => {
     GROUP BY
         b.bill_id, b.description, b.date, b.time, u2.user_name, b.amount  
     ORDER BY 
-        b.date, b.time;
+      b.date DESC, b.time DESC;
     `,
     [groupId]
   );
@@ -239,7 +239,7 @@ export const getBillsByBillId = (billId) => {
     GROUP BY
       b.description, b.date, b.time, u2.user_name, b.amount  
     ORDER BY 
-      b.date, b.time;
+      b.date DESC, b.time DESC;;
     `,
     [billId]
   );
