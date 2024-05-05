@@ -14,9 +14,10 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
     const { Token } = useContext(DataContext);
 
     const [groupMembers, setGroupMembers] = useState([]);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [groupMembersId, setGroupMembersId] = useState([]);
+    // const [isSubmitting, setIsSubmitting] = useState(false);
     // using in edit mode
-    const [initialState, setInitialState] = useState({}); 
+    const [initialState, setInitialState] = useState({});
 
     const [billName, setBillName] = useState("");
     const [billNameError, setBillNameError] = useState("");
@@ -27,9 +28,11 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
     const [billTime, setBillTime] = useState(dayjs(billDateTime).format("HH:mm"));
 
     const [payer, setPayer] = useState("");
+    const [payerId, setPayerId] = useState("");
     const [payerError, setPayerError] = useState("");
 
     const [participants, setParticipants] = useState([]);
+    const [participantsId, setParticipantsId] = useState([]);
     const [participantsError, setParticipantsError] = useState("");
 
     const [amount, setAmount] = useState("");
@@ -44,6 +47,7 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
                 const data = await getTripGroupOverview(Token, group_id);
                 if (data && data.length !== 0) {
                     setGroupMembers(data.user_names);
+                    setGroupMembersId(data.user_ids);
                 } else {
                     console.error("No group members found");
                 }
@@ -60,17 +64,19 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
             setBillName(transactionData.bill_name);
             setAmount(transactionData.amount);
             setPayer(transactionData.payer_name);
+            setPayerId(groupMembersId[groupMembers.indexOf(transactionData.payer_name)]);
             setParticipants(transactionData.participants);
+            setParticipantsId(transactionData.participants.map((participant) => groupMembersId[groupMembers.indexOf(participant)]));
             setBillDateTime(dayjs(`${transactionData.date} ${transactionData.time}`));
             setBillDate(dayjs(`${transactionData.date} ${transactionData.time}`).format("YYYY-MM-DD"));
             setBillTime(dayjs(`${transactionData.date} ${transactionData.time}`).format("HH:mm"));
-    
+
             // Store the initial state
             setInitialState({
                 billName: transactionData.bill_name,
                 amount: transactionData.amount,
-                payer: transactionData.payer_name,
-                participants: transactionData.participants,
+                payerId: payerId,
+                participantsId: participantsId,
                 billDate: dayjs(`${transactionData.date} ${transactionData.time}`).format("YYYY-MM-DD"),
                 billTime: dayjs(`${transactionData.date} ${transactionData.time}`).format("HH:mm"),
             });
@@ -80,8 +86,7 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
     // post transaction
     const postTransactionData = async () => {
         try {
-            console.log("postTransactionData participants:", participants);
-            let data = await postTransaction(Token, group_id, billName, amount, payer, participants, billDate, billTime);
+            let data = await postTransaction(Token, group_id, billName, amount, payerId, participantsId, billDate, billTime);
 
             if (data && data.length !== 0) {
                 setStatusMessage("新增成功");
@@ -103,18 +108,18 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
             let dataToSend = {
                 bill_name: billName !== initialState.billName ? billName : undefined,
                 amount: amount !== initialState.amount ? amount : undefined,
-                payer_id: payer !== initialState.payer ? payer : undefined,
-                participants: participants !== initialState.participants ? participants : undefined,
+                payer_id: payerId !== initialState.payerId ? payerId : undefined,
+                participant: participantsId !== initialState.participantsId ? participantsId : undefined,
                 date: billDate !== initialState.billDate ? billDate : undefined,
                 time: billTime !== initialState.billTime ? billTime : undefined,
             };
-    
+
             // Remove undefined fields
             dataToSend = Object.fromEntries(Object.entries(dataToSend).filter(([_, v]) => v !== undefined));
-    
+
             console.log("putTransactionData dataToSend:", dataToSend);
             let data = await putTransaction(Token, group_id, dataToSend);
-    
+
             if (data && data.length !== 0) {
                 setStatusMessage("修改成功");
                 setCreationStatusOpen(true);
@@ -159,12 +164,14 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
     };
 
     const handlePayerChange = (e) => {
+        setPayerId(groupMembersId[groupMembers.indexOf(e.target.value)]);
         handleChange(setPayer, setPayerError, e.target.value, "請選擇付款人");
     };
 
     const handleParticipantsChange = (e) => {
         const selectedMembers = Array.isArray(e.target.value) ? e.target.value : [e.target.value];
         setParticipants(selectedMembers);
+        setParticipantsId(selectedMembers.map((member) => groupMembersId[groupMembers.indexOf(member)]));
         if (selectedMembers.length === 0) {
             setParticipantsError("請選擇參與者");
         } else {
@@ -174,56 +181,50 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
 
     const validateForm = () => {
         let isValid = true;
-    
+
         if (billName === "") {
-            console.log('billName is empty');
+            console.log("billName is empty");
             setBillNameError("請輸入品項名稱");
             isValid = false;
         }
         if (payer === "") {
-            console.log('payer is empty');
+            console.log("payer is empty");
             setPayerError("請選擇付款人");
             isValid = false;
         }
         if (participants.length === 0) {
-            console.log('participants is empty');
+            console.log("participants is empty");
             setParticipantsError("請選擇參與者");
             isValid = false;
         }
         if (amount === "" || isNaN(amount)) {
-            console.log('amount is empty or not a number');
+            console.log("amount is empty or not a number");
             setAmountError("請輸入正確金額");
             isValid = false;
         }
         if (billDate === "" || billTime === "") {
-            console.log('billDate or billTime is empty');
+            console.log("billDate or billTime is empty");
             setBillDateTimeError("請選擇日期");
             isValid = false;
         }
-    
+
         return isValid;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         e.stopPropagation();
-    
-        if (!isSubmitting) {
-            setIsSubmitting(true);
-    
-            try {
-                if (editMode) {
-                    console.log('edit mode');
-                    await putTransactionData();
-                } else {
-                    console.log('add mode');
-                    await postTransactionData();
-                }
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsSubmitting(false);
+
+        if (validateForm()) {
+            if (editMode) {
+                // console.log('edit mode');
+                await putTransactionData();
+            } else {
+                // console.log('add mode');
+                await postTransactionData();
             }
+        } else {
+            console.log("Form validation failed");
         }
     };
     const handleCancel = () => {

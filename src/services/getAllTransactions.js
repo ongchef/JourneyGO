@@ -4,7 +4,7 @@
 export async function getAllTransactions(Token, group_id) {
     const url = `${process.env.BASE_URL}/api/tripgroup/${group_id}/transaction`;
     const bearer_token = `Bearer ${Token}`;
-    // console.log('url:', url);
+    console.log('getAllTransactions url:', url);
 
     try {
         

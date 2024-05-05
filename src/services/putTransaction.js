@@ -6,8 +6,6 @@ export async function putTransaction(Token, group_id, dataToSend) {
     const bearer_token = `Bearer ${Token}`;
     // console.log('url:', url);
 
-    dataToSend.payer_id = 36; //joey
-    dataToSend.participant = [36, 37]; //joey, beanie
 
     try {
         console.log('putTransaction requestBody:', dataToSend);

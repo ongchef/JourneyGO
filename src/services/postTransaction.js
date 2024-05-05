@@ -10,8 +10,8 @@ export async function postTransaction(Token, group_id, bill_name, amount, payer_
         bill_name: bill_name,
         date: date,
         time: time,
-        payer_id: 36, //joey
-        participant: [36, 37], //joey, beanie
+        payer_id: payer_id, 
+        participant: participants,
         amount: Number(amount),
     };
 

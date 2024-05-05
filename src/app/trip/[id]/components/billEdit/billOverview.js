@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import { memo } from "react";
 import BillPanel from "./billPanel";
 import MyBill from "./mybill";
 import BillList from "./billList";
@@ -7,8 +7,7 @@ import { getTransactionResult } from "@/services/getTransactionResult";
 
 import { useState, useContext, useEffect } from 'react';
 
-export function BillOverview({ group_id }) {
-
+const BillOverview = ({ group_id }) => {
   const [userBalance, setUserBalance] = useState(0);
   const [transactionResult, setTransactionResult] = useState([]);
 
@@ -16,7 +15,7 @@ export function BillOverview({ group_id }) {
 
   useEffect(() => {
     fetchTransactions();
-  }, [Token]); 
+  }, []); 
   
 
     async function fetchTransactions() {
@@ -59,4 +58,4 @@ export function BillOverview({ group_id }) {
         </div>
     );
 }
-export default BillOverview;
+export default memo(BillOverview);

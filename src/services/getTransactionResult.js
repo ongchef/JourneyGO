@@ -18,16 +18,16 @@ export async function getTransactionResult(Token, group_id) {
         if (res.ok) {
             const data = await res.json();
             const status = res.status;
-            console.log('getGroupTransaction Status:', group_id, status);
+            console.log('getTransactionResult Status:', group_id, status);
             
             return data;
         }else if (res.status === 404) {
             // no overview data by given groupId
-            console.log('Group Transaction not found:', res.status);
+            console.log('Group transaction result not found:', res.status);
             return null;
         }
         else {
-            console.error('getGroupTransaction Error:', res.status, res.statusText);
+            console.error('getTransactionResult Error:', res.status, res.statusText);
             return undefined;
         }
     } catch (error) {
