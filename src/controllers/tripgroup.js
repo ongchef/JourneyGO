@@ -250,7 +250,7 @@ export const getBillResult = async (req, res) => {
       });
     });
 
-    // console.log({ balance, transactions: result });
+    //console.log({ balance, transactions: result });
     const user_name = await getuserNamebyClerkId(userClerkId)
     //console.log(user_name);
     const user_balance = -balance[user_name[0].user_name]
@@ -336,7 +336,7 @@ export const writeBill = async (req, res) => {
   const { date, time, creditor_id, debtor_id, amount } = req.body;
   //console.log(bill_name, date, time, payer_id, participant, amount);
   try {
-    const newBill = await createBillModel("write off", groupId, date, time, payer_id, amount, "closed"); // 
+    const newBill = await createBillModel("write off", groupId, date, time, debtor_id, amount, "closed"); // 
     console.log(newBill);
     
     const payer_bill = createShareBills(newBill.bill_id, creditor_id, -amount)
