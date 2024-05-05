@@ -1,109 +1,111 @@
-import React from 'react';
+import React from "react";
+import { useState } from "react";
+import { Button, Box, useTheme, Typography, Card, CardContent, AvatarGroup, Avatar, Dialog, DialogContent, Tooltip } from "@mui/material";
 
-import { Box, useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia,CardActions, IconButton, AvatarGroup ,Avatar, avatarColors} from '@mui/material';
-import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from '@mui/icons-material';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
+function BillList({ transactionResult }) {
+    const [creationStatusOpen, setCreationStatusOpen] = useState(false);
+    const theme = useTheme();
 
-function BillList(){
+    const cardStyles = {
+        flexDirection: "column",
+        p: 2,
+        borderRadius: "10px",
+        display: "flex",
+        alignItems: "center",
+        width: "500px",
+    };
 
     const cardContentStyles = {
-        flex:1,
-        marginLeft: '20px',
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "flex-start",
+        gap: "70px",
     };
 
-    const cardStyles ={
-        flex:1,
-        display: 'flex',
-        width:'500px',
-        height:'140px',
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: '30px',
-        margin: '20px',
-        marginTop: '30px',
-        borderRadius: '10px',
-        gap:'40px',
-        boxShadow: '0 0 10px 0 rgba(0,0,0,0.2)',
-        cursor: 'pointer',
+    const avatarStyles = {
+        width: theme.spacing(3),
+        height: theme.spacing(4),
+        marginLeft: "40px",
     };
 
-    const amountStyles = {
-        display: 'flex',
-        //marginRight: '10px',
-        fontWeight: 'bold', 
-        justifyContent: 'flex-end',
-        color: '#EB684E'
-        
+    const dialogContentStyles = {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
     };
 
-    const avatarStyles = { 
-        display: 'flex',
-        //justifyContent: 'flex-end',
-        //marginRight: '10px',
+    const boxStyles = {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        fontSize: "20px",
+        height: "100%",
+        gap: "20px",
     };
-
 
     const handleClick = () => {
-        //console.log('clicked');
-    }
+        setCreationStatusOpen(true);
+    };
 
+    const handleCreationStatusDialogClose = () => {
+        setCreationStatusOpen(false);
+        //window.location.reload();
+    };
 
     return (
-        <div>
-            <div style={{ paddingLeft: '30px' }}>
-                <Typography variant='h6' style={{ fontWeight: 'bold' }}>Transactions</Typography>
-            </div>
-            <div style={{ paddingLeft: '30px' }}>
-                {/* <Card className='flex justify-start my-10 mr-10 hover:bg-gray-200' onClick={handleClick}> */}
-                <Card sx={cardStyles} onClick={handleClick}>
-                    <div className='flex' style={{marginLeft: '20px' }}>
-                        <Avatar alt="User 1" src="/path/to/avatar1.jpg" />
-                    </div>
-                    <div>
-                        <CardContent sx={cardContentStyles}>
-                            <div style={{ justifyContent: 'flex-start' }}>
-                                <Typography variant="h6" component="div" style={{ fontWeight: 'bold' }}>
-                                    Snack
-                                </Typography>
-                                {/* <Stack direction="row" spacing={2}>
-                                <Chip label="Eat" size="small" />
-                                <Chip label={bill.status} size="small" color="primary" />
-                                </Stack> */}
-
-                                <Typography variant="h11" component="div">
-                                    2024/03/31, 10:00
-                                </Typography>
-
-                                <Typography variant="h8" component="div">
-                                    <span style={{ fontWeight: 'bold' }}>Worky</span> paid for
-                                </Typography>
-                            </div>
-
-                            {/* <CardActions sx={cardActionsStyles} disableSpacing>
-                                    <IconButton aria-label="" size="small">
-                                            
-                                    </IconButton>
-                            </CardActions> */}
-                        </CardContent>
-                    </div>
-                    <div>
-                        <CardContent style={{flexDirection:'row', justifyContent:'flex-end'}}>
-                        <Typography variant="h6" component="div" sx={amountStyles} >
-                            $100
-                        </Typography>
-
+        transactionResult && transactionResult.map((data, index) => (
+        <div key={index} className="flex flex-col h-full items-center">
+            <Card sx={cardStyles}>
+                <div>
+                    <CardContent sx={cardContentStyles}>
                         <div>
-                            <AvatarGroup sx={{ avatarStyles }}>
-                                <Avatar alt="User 1" src="/path/to/avatar1.jpg" />
-                                <Avatar alt="User 2" src="/path/to/avatar1.jpg" />
+                            <AvatarGroup sx={avatarStyles}>
+                                <Tooltip title={data.payer}>
+                                    <Avatar> {data.payer[0].toUpperCase()} </Avatar>
+                                </Tooltip>
+                                <ArrowForwardIcon fontSize="large" style={{ color: "#2EB3D0" }} />
+                                <Tooltip title={data.payee}>
+                                    <Avatar> {data.payee[0].toUpperCase()} </Avatar>
+                                </Tooltip>
                             </AvatarGroup>
                         </div>
-                        </CardContent>
-                    </div>
+                        <div>
+                            <Typography variant="h6" component="div" style={{ fontWeight: "bold", width: "6vw" }}>
+                                {/* fix the width of the box (6vw) */}
+                                $ {data.amount}
+                            </Typography>
+                        </div>
+                        <div>
+                            <Button variant="contained" style={{ backgroundColor: "#EB684E" }} onClick={handleClick}>
+                                核銷
+                            </Button>
+                        </div>
+                    </CardContent>
+                </div>
+                {/* <CardActions sx={cardActionsStyles} disableSpacing>
+                        <IconButton aria-label="" size="small">
+                            
+                        </IconButton>
+                    </CardActions> */}
+            </Card>
 
-                </Card>
-            </div>
+            <Dialog open={creationStatusOpen} onClose={handleCreationStatusDialogClose} fullWidth maxWidth="sm">
+                <DialogContent sx={dialogContentStyles}>
+                    <Box sx={boxStyles}>
+                        您確定要核銷嗎？
+                        <div>
+                            <Button onClick={handleCreationStatusDialogClose}>確定</Button>
+                            <Button onClick={handleCreationStatusDialogClose}>取消</Button>
+                        </div>
+                    </Box>
+                </DialogContent>
+            </Dialog>
         </div>
+        ))
     );
+
 }
 export default BillList;

@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 import TabPanel from './components/tripEdit/tabPanel';
 import RoomIcon from '@mui/icons-material/Room';
 import DescriptionIcon from '@mui/icons-material/Description';
-import BillList from './components/billEdit/billList';
+import AllTransactionList from './components/billEdit/allTransactionList';
 import BillOverview from './components/billEdit/billOverview';
 
 function tabProps(index) {
@@ -95,10 +95,10 @@ export default function Trip({params}) {
           {!isLoad && <Loading />}
             {isLoad && <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
               <div className='lg:w-1/2 w-full'>
-              <BillOverview/>
+              <BillOverview group_id={currGroupId}/>
               </div>
               <div className='lg:w-1/2 w-full'>
-              <BillList/>
+              <AllTransactionList group_id={currGroupId}/>
               </div>
             </div>}
         </TabPanel>
