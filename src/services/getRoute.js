@@ -24,10 +24,7 @@ export async function getRoute(Token, groupId, day, transOption) {
       console.log("getRoute status", res.status);
       const data = await res.json();
       const durations = data?.routes?.map(({ duration }) => duration);
-      const convertDurations = durations.map((duration) => {
-        return Math.floor(duration/60);
-      });
-      return convertDurations;
+      return durations;
     } else {
       console.error(`getRoute error`, res.status, res.statusText);
       return undefined;

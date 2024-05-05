@@ -96,7 +96,7 @@ export default function DndContainer({day, spotChange}) {
                     <TrainIcon className='text-center'/> 
                   }
                   <Typography variant='body2' className='text-center'>
-                    {allTrans?.[currGroupId]?.[currDay][0]}{allTrans?.[currGroupId]?.[currDay][1][index]}分鐘
+                    {allTrans?.[currGroupId]?.[currDay][0]} {allTrans?.[currGroupId]?.[currDay][1][index]}
                   </Typography>
                 </div>
               }
