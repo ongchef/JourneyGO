@@ -10,14 +10,15 @@ import { useState, useContext, useEffect, use } from "react";
 import dayjs from "dayjs";
 import { Dialog, DialogContent, Typography, DialogTitle, Button, Grid, InputLabel, TextField, Select, Box, FormControl, MenuItem } from "@mui/material";
 
-const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = null }) => {
+const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, transactionData = null }) => {
     const { Token } = useContext(DataContext);
 
     const [groupMembers, setGroupMembers] = useState([]);
     const [groupMembersId, setGroupMembersId] = useState([]);
-    // const [isSubmitting, setIsSubmitting] = useState(false);
-    // using in edit mode
-    const [initialState, setInitialState] = useState({});
+    const [participantsGroupMembers, setParticipantsGroupMembers] = useState([]);
+    const [participantsGroupMembersId, setParticipantsGroupMembersId] = useState([]);
+
+    const [billId, setBillId] = useState("");
 
     const [billName, setBillName] = useState("");
     const [billNameError, setBillNameError] = useState("");
@@ -48,6 +49,8 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
                 if (data && data.length !== 0) {
                     setGroupMembers(data.user_names);
                     setGroupMembersId(data.user_ids);
+                    setParticipantsGroupMembers(data.user_names);
+                    setParticipantsGroupMembersId(data.user_ids);
                 } else {
                     console.error("No group members found");
                 }
@@ -61,25 +64,22 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
     // use in edit mode, set the initial transaction data
     useEffect(() => {
         if (editMode && transactionData !== null) {
+            // transactionData: {bill_id, bill_name, date, time, payer_name, amount, participants}
+            setBillId(transactionData.bill_id);
             setBillName(transactionData.bill_name);
             setAmount(transactionData.amount);
+
             setPayer(transactionData.payer_name);
             setPayerId(groupMembersId[groupMembers.indexOf(transactionData.payer_name)]);
-            setParticipants(transactionData.participants);
-            setParticipantsId(transactionData.participants.map((participant) => groupMembersId[groupMembers.indexOf(participant)]));
+            setParticipantsGroupMembers(groupMembers.filter((member) => member !== transactionData.payer_name));
+
+            setParticipantsGroupMembersId(groupMembersId.filter((memberId) => memberId !== groupMembersId[groupMembers.indexOf(transactionData.payer_name)]));
+            setParticipants(transactionData.participants.filter((participant) => participant !== transactionData.payer_name));
+            setParticipantsId(transactionData.participants.map((participant) => participantsGroupMembersId[participantsGroupMembers.indexOf(participant)]));
+
             setBillDateTime(dayjs(`${transactionData.date} ${transactionData.time}`));
             setBillDate(dayjs(`${transactionData.date} ${transactionData.time}`).format("YYYY-MM-DD"));
             setBillTime(dayjs(`${transactionData.date} ${transactionData.time}`).format("HH:mm"));
-
-            // Store the initial state
-            setInitialState({
-                billName: transactionData.bill_name,
-                amount: transactionData.amount,
-                payerId: payerId,
-                participantsId: participantsId,
-                billDate: dayjs(`${transactionData.date} ${transactionData.time}`).format("YYYY-MM-DD"),
-                billTime: dayjs(`${transactionData.date} ${transactionData.time}`).format("HH:mm"),
-            });
         }
     }, [editMode, transactionData]);
 
@@ -106,19 +106,16 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
     const putTransactionData = async () => {
         try {
             let dataToSend = {
-                bill_name: billName !== initialState.billName ? billName : undefined,
-                amount: amount !== initialState.amount ? amount : undefined,
-                payer_id: payerId !== initialState.payerId ? payerId : undefined,
-                participant: participantsId !== initialState.participantsId ? participantsId : undefined,
-                date: billDate !== initialState.billDate ? billDate : undefined,
-                time: billTime !== initialState.billTime ? billTime : undefined,
+                bill_name: billName,
+                amount: Number(amount),
+                payer_id: payerId,
+                participant: participantsId,
+                date: billDate,
+                time: billTime,
             };
 
-            // Remove undefined fields
-            dataToSend = Object.fromEntries(Object.entries(dataToSend).filter(([_, v]) => v !== undefined));
-
             console.log("putTransactionData dataToSend:", dataToSend);
-            let data = await putTransaction(Token, group_id, dataToSend);
+            let data = await putTransaction(Token, group_id, billId, dataToSend);
 
             if (data && data.length !== 0) {
                 setStatusMessage("修改成功");
@@ -166,17 +163,26 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
     const handlePayerChange = (e) => {
         setPayerId(groupMembersId[groupMembers.indexOf(e.target.value)]);
         handleChange(setPayer, setPayerError, e.target.value, "請選擇付款人");
+        
+        if (participantsGroupMembers.includes(e.target.value)) {
+            // reload the value of groupMembers in participants select (exclude the payer)
+            const selectedMembers = participantsGroupMembers.filter((member) => member !== e.target.value);
+            setParticipantsGroupMembers(selectedMembers);
+        }
     };
 
     const handleParticipantsChange = (e) => {
+        console.log("[handleParticipantsChange] e.target.value:", e.target.value);
         const selectedMembers = Array.isArray(e.target.value) ? e.target.value : [e.target.value];
-        setParticipants(selectedMembers);
-        setParticipantsId(selectedMembers.map((member) => groupMembersId[groupMembers.indexOf(member)]));
+
         if (selectedMembers.length === 0) {
             setParticipantsError("請選擇參與者");
         } else {
             setParticipantsError("");
+            setParticipants(selectedMembers);
         }
+        setParticipants(selectedMembers);
+        setParticipantsId(selectedMembers.map((member) => participantsGroupMembersId[participantsGroupMembers.indexOf(member)]));
     };
 
     const validateForm = () => {
@@ -232,13 +238,15 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
         setBillName("");
         setPayer("");
         setParticipants([]);
+        setParticipantsGroupMembers(groupMembers);
+        setParticipantsGroupMembersId(groupMembersId);
         setAmount("");
         onClose();
     };
 
     const handleCreationStatusDialogClose = () => {
         setCreationStatusOpen(false);
-        window.location.reload();
+        reloadTabPanel();
     };
 
     const DialogStyles = {
@@ -306,8 +314,8 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
                                                 id: "member-payer-select",
                                             }}
                                             error={!!payerError}>
-                                            {groupMembers.map((member) => (
-                                                <MenuItem key={member} value={member}>
+                                            {groupMembers.map((member, index) => (
+                                                <MenuItem key={index} value={member}>
                                                     {member}
                                                 </MenuItem>
                                             ))}
@@ -326,8 +334,8 @@ const NewBill = ({ open, onClose, group_id, editMode = false, transactionData = 
                                                 id: "member-paid-select",
                                             }}
                                             error={!!participantsError}>
-                                            {groupMembers.map((member) => (
-                                                <MenuItem key={member} value={member}>
+                                            {participantsGroupMembers.map((member, index) => (
+                                                <MenuItem key={index} value={member}>
                                                     {member}
                                                 </MenuItem>
                                             ))}

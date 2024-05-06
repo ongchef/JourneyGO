@@ -1,10 +1,17 @@
 
 'use server';
 
-export async function putTransaction(Token, group_id, dataToSend) {
-    const url = `${process.env.BASE_URL}/api/tripgroup/${group_id}/transaction`;
+export async function putTransaction(Token, group_id, bill_id, dataToSend) {
+    const url = `${process.env.BASE_URL}/api/tripgroup/${group_id}/transaction/${bill_id}`;
     const bearer_token = `Bearer ${Token}`;
-    // console.log('url:', url);
+    console.log('putTransaction url:', url);
+
+    // delete payer from participants
+    if (dataToSend.participant.includes(dataToSend.payer_id)) {
+        const index = dataToSend.participant.indexOf(dataToSend.payer_id);
+        dataToSend.participant.splice(index, 1);
+        console.log("[putTransaction]: complete delete payer from participants");
+    }
 
 
     try {
