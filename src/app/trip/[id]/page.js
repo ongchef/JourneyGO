@@ -28,6 +28,7 @@ export default function Trip({params}) {
   const [value, setValue] = useState(0);
   const [groupInfo, setGroupInfo] = useState({}); 
   const [isLoad, setIsLoad] = useState(false);
+  const [reloadTab, setReloadTab] = useState(false);
 
   useEffect(() => {
     const groupId = String(params.id);
@@ -52,6 +53,10 @@ export default function Trip({params}) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const reloadTabPanel = () => {
+    setReloadTab(prevState => !prevState);
   };
 
   
@@ -91,14 +96,14 @@ export default function Trip({params}) {
           </div>}
         </TabPanel>
 
-        <TabPanel value={value} index={1}>
+        <TabPanel value={value} index={1} key={reloadTab}>
           {!isLoad && <Loading />}
             {isLoad && <div className='flex lg:flex-row flex-col lg:gap-0 gap-5'>
               <div className='lg:w-1/2 w-full'>
-              <BillOverview group_id={currGroupId}/>
+              <BillOverview group_id={currGroupId} reloadTabPanel={reloadTabPanel} />
               </div>
               <div className='lg:w-1/2 w-full'>
-              <AllTransactionList group_id={currGroupId}/>
+              <AllTransactionList group_id={currGroupId} reloadTabPanel={reloadTabPanel}/>
               </div>
             </div>}
         </TabPanel>

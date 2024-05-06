@@ -26,7 +26,6 @@ function picker ({ billDateTime, billDateTimeError, handleBillDateTimeChange }) 
                     <DateTimePicker
                         sx={datetimepickerStyles}
                         value={billDateTime}
-                        maxDateTime={dayjs()} // set the maxDateTime to the current dateTime
                         onChange={(newValue) => {
                             handleBillDateTimeChange(newValue);
                             // console.log("billDateTime:", newValue);

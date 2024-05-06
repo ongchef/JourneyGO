@@ -9,7 +9,7 @@ import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from "@mui/icons
 
 const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
 
-const AllTransactionList = ({ group_id }) => {
+const AllTransactionList = ({ group_id, reloadTabPanel }) => {
     const { Token } = useContext(DataContext);
 
     const [transactionList, setTransactionList] = useState([]);
@@ -150,7 +150,7 @@ const AllTransactionList = ({ group_id }) => {
 
                                     <div>
                                         <AvatarGroup sx={{ avatarStyles }} max={3}>
-                                            {data.participants.map((name, index) => (
+                                            {data && data.participants.map((name, index) => (
                                                 <Tooltip title={name} key={index}>
                                                     <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
                                                         {name[0].toUpperCase()}
@@ -166,8 +166,8 @@ const AllTransactionList = ({ group_id }) => {
                 )}
             </div>
 
-            <NewBill open={isDialogOpen} onClose={handleDialogClose} group_id={group_id} editMode={true} transactionData={selectedTransaction} />
+            <NewBill open={isDialogOpen} onClose={handleDialogClose} group_id={group_id} editMode={true} transactionData={selectedTransaction} reloadTabPanel={reloadTabPanel} />
         </div>
     );
 };
-export default memo(AllTransactionList);
+export default AllTransactionList;
