@@ -6,15 +6,22 @@ import FaceIcon from '@mui/icons-material/Face';
 import Button from '@mui/material/Button';
 import DayPanel from './dayPanel';
 import NewMemberDialog from '/src/app/components/newMember';
+import QuitGroupDialog from "/src/app/components/QuitGroupDialog";
 // import { getNewMember } from '@/services/getNewMember';
 
 export default function TripPlan({groupInfo}) {
   const [openDialog, setOpenDialog] = useState(false);
+  const [openQuitDialog, setOpenQuitDialog] = useState(false)
 
   const handleAddMemberClick = async(inviteeID) => {
     // const result = await getNewMember(inviteeID, groupId);
     setOpenDialog(true);
   };
+
+  const handleQuitGroupClick = async() => {
+    setOpenQuitDialog(true);
+  };
+
   const handleSaveNewMember = (email) => {
     console.log("Saving new member with email :", email);
   }
@@ -32,7 +39,7 @@ export default function TripPlan({groupInfo}) {
               return (<FaceIcon className="scale-150 p-0" key={index}/>);
             })}
             <Button variant="contained" className="w-24" onClick={handleAddMemberClick}>新增成員</Button>
-            <Button variant="outlined">退出</Button>
+            <Button variant="outlined" onClick={handleQuitGroupClick}>退出</Button>
           </div>
         </div>
       </div>
@@ -40,6 +47,7 @@ export default function TripPlan({groupInfo}) {
         <DayPanel days={groupInfo?.days} />
       </div>
       <NewMemberDialog open={openDialog} onClose={() => setOpenDialog(false)} onSave={handleSaveNewMember} />
+      <QuitGroupDialog open={openQuitDialog} onClose={() => setOpenQuitDialog(false)}/>
     </div>
   );
 }
