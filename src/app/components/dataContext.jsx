@@ -8,7 +8,7 @@ export const DataContext = createContext();
 export const DataProvider = ({children}) => {
   const [currGroupId, setCurrGroupId] = useState();
   const [currDay, setCurrDay] = useState();
-  const [Token, setToken] = useState("");
+  const [Token, setToken] = useState(undefined);
   const [userId, setUserId] = useState();
   const [isLoad, setIsLoad] = useState(false);
 

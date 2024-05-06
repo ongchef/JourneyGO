@@ -70,8 +70,12 @@ export default function Home() {
   // console.log('Token from DataContext:' + Token);
 
   useEffect(() => {
-    fetchAllGroups();
-  }, [Token, tripOverview, key]);
+    console.log(Token)
+    if(Token!==undefined){
+      fetchAllGroups();
+      console.log("render")
+    }
+  }, [Token, key]);
 
   async function fetchAllGroups() {
     try {
