@@ -146,7 +146,7 @@ export const getGroupMemberName = (groupId) => {
 export const getUndoneBillsByGroupId = (groupId) => {
   return db.manyOrNone(
     `SELECT 
-      b.g_id, b.bill_id, u2.user_name as payer_name, u.user_name, sb.amount
+      b.g_id, b.bill_id, u2.user_name as payer_name, u2.user_id as payer_id, u.user_name, u.user_id as payee_id, sb.amount
     FROM 
       bill b
     JOIN
