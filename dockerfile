@@ -7,6 +7,6 @@ COPY . .
 RUN yarn install;
 RUN npm install;
 
-RUN echo "${DB}"
+RUN echo "DB = $DB"
 
 CMD ["yarn", "start"]
