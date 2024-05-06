@@ -4,8 +4,9 @@ import NewBill from "./newBill";
 import { DataContext } from "@/app/components/dataContext";
 import { getAllTransactions } from "@/services/getAllTransactions";
 
-import { Typography, Card, CardContent, AvatarGroup, Avatar, colors, Tooltip } from "@mui/material";
+import { Box, Typography, Card, CardContent, AvatarGroup, Avatar, colors, Tooltip } from "@mui/material";
 import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
+import { styled } from "@mui/system";
 
 const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
 
@@ -49,6 +50,25 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
             console.error("Error fetching all transaction list result:", error);
         }
     }
+
+    const StyledCard = styled(Card)(({ theme }) => ({
+        display: "flex",
+        width: "80%",
+        height: "8.75rem",
+        flexDirection: "row",
+        alignItems: "center",
+        padding: "1.25rem",
+        margin: "1.25rem",
+        marginTop: "1.875rem",
+        borderRadius: "0.625rem",
+        gap: "1.875rem",
+        boxShadow: "0 0 0.625rem 0 rgba(0,0,0,0.2)",
+        cursor: "pointer",
+        [theme.breakpoints.down("sm")]: {
+            flexDirection: "column",
+            height: "auto",
+        },
+    }));
 
     const cardContentStyles = {
         flex: 1,
@@ -94,77 +114,57 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
     avatarColors.push(lightBlue[700]);
 
     return (
-        <div>
-            <div style={{ paddingLeft: "30px" }}>
-                <Typography variant="h6" style={{ fontWeight: "bold" }}>
-                    Transactions
-                </Typography>
-            </div>
+        <div className="px-8">
+            <Typography variant="h6" className="font-bold">
+                花費紀錄
+            </Typography>
 
-            <div style={{ paddingLeft: "30px" }}>
-                {/* <Card className='flex justify-start my-10 mr-10 hover:bg-gray-200' onClick={handleClick}> */}
-                {transactionList.length === 0 ? (
-                    <Typography variant="h6">
-                        尚無交易記錄
-                    </Typography>
-                ) : (
-                    transactionList.map((data, index) => (
-                        <Card key={index} sx={cardStyles} onClick={() => handleDialogOpen(data)}>
-                            <div className="flex" style={{ marginLeft: "20px" }}>
-                                <Tooltip title={data.payer_name}>
-                                    <Avatar>{data.payer_name[0].toUpperCase()}</Avatar>
-                                </Tooltip>
-                            </div>
-                            <div>
-                                <CardContent sx={cardContentStyles}>
-                                    <div style={{ justifyContent: "flex-start" }}>
-                                        <Typography variant="h6" component="div" style={{ fontWeight: "bold" }}>
-                                            {data.bill_name}
-                                        </Typography>
-                                        {/* <Stack direction="row" spacing={2}>
-                                <Chip label="Eat" size="small" />
-                                <Chip label={bill.status} size="small" color="primary" />
-                                </Stack> */}
+            {transactionList.length === 0 ? (
+                <Typography variant="h6">尚無交易記錄</Typography>
+            ) : (
+                transactionList.map((data, index) => (
+                    <StyledCard key={index} onClick={() => handleDialogOpen(data)}>
+                        <Box className="flex ml-5">
+                            <Tooltip title={data.payer_name}>
+                                <Avatar>{data.payer_name[0].toUpperCase()}</Avatar>
+                            </Tooltip>
+                        </Box>
+                        <CardContent className="flex ml-10">
+                            <Box className="justify-start">
+                                <Typography variant="h6" component="div" className="font-bold">
+                                    {data.bill_name}
+                                </Typography>
 
-                                        <Typography variant="h11" component="div">
-                                            {data.date}, {data.time}
-                                        </Typography>
+                                <Typography variant="h11" component="div">
+                                    {data.date}, {data.time}
+                                </Typography>
 
-                                        <Typography variant="h8" component="div">
-                                            <span style={{ fontWeight: "bold" }}>{data.payer_name}</span> paid for
-                                        </Typography>
-                                    </div>
+                                <Typography variant="h8" component="div">
+                                    <span className="font-bold">{data.payer_name}</span> 支付
+                                </Typography>
+                            </Box>
+                        </CardContent>
+                        <Box className="flex flex-row justify-end">
+                            <CardContent>
+                                <Typography variant="h6" component="div" sx={{ fontWeight: "bold", justifyContent: "flex-end", color: "#EB684E" }}>
+                                    $ {data.amount}
+                                </Typography>
 
-                                    {/* <CardActions sx={cardActionsStyles} disableSpacing>
-                                    <IconButton aria-label="" size="small">
-                                            
-                                    </IconButton>
-                            </CardActions> */}
-                                </CardContent>
-                            </div>
-                            <div>
-                                <CardContent style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-                                    <Typography variant="h6" component="div" sx={amountStyles}>
-                                        $ {data.amount}
-                                    </Typography>
-
-                                    <div>
-                                        <AvatarGroup sx={{ avatarStyles }} max={3}>
-                                            {data && data.participants.map((name, index) => (
-                                                <Tooltip title={name} key={index}>
-                                                    <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
-                                                        {name[0].toUpperCase()}
-                                                    </Avatar>
-                                                </Tooltip>
-                                            ))}
-                                        </AvatarGroup>
-                                    </div>
-                                </CardContent>
-                            </div>
-                        </Card>
-                    ))
-                )}
-            </div>
+                                <AvatarGroup max={3}>
+                                    {data &&
+                                        data.participants.map((name, index) => (
+                                            <Tooltip title={name} key={index}>
+                                                <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
+                                                    {name[0].toUpperCase()}
+                                                </Avatar>
+                                            </Tooltip>
+                                        ))}
+                                </AvatarGroup>
+                            </CardContent>
+                        </Box>
+                    </StyledCard>
+                ))
+            )}
 
             <NewBill open={isDialogOpen} onClose={handleDialogClose} group_id={group_id} editMode={true} transactionData={selectedTransaction} reloadTabPanel={reloadTabPanel} />
         </div>

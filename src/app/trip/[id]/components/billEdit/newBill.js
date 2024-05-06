@@ -6,7 +6,7 @@ import { DataContext } from "@/app/components/dataContext";
 import { getTripGroupOverview } from "@/services/getTripGroupOverview";
 import Picker from "./Picker";
 
-import { useState, useContext, useEffect, use } from "react";
+import { useState, useContext, useEffect } from "react";
 import dayjs from "dayjs";
 import { Dialog, DialogContent, Typography, DialogTitle, Button, Grid, InputLabel, TextField, Select, Box, FormControl, MenuItem } from "@mui/material";
 

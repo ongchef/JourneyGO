@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import NewBill from "./newBill";
 
-function BillPanel({ group_id }) {
+function BillPanel({ group_id, reloadTabPanel }) {
     const router = useRouter();
 
     const [openDialog, setOpenDialog] = useState(false);
@@ -49,7 +49,7 @@ function BillPanel({ group_id }) {
                     </Grid>
                 </Grid>
             </Box>
-            <NewBill open={openDialog} onClose={handleCloseDialog} group_id={group_id} />
+            <NewBill open={openDialog} onClose={handleCloseDialog} group_id={group_id} reloadTabPanel={reloadTabPanel}  />
         </main>
     );
 }

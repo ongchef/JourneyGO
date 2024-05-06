@@ -10,7 +10,7 @@ function MyBill({userBalance}) {
                         elevation={3}
                         sx={{ p: 8, borderRadius: 2, textAlign: "center", width: "500px", bgcolor: "#2EB3D0" }}>
                         <Typography variant="body1" sx={{ fontSize: "25px", fontWeight: "bold" }}>
-                            Your Balance
+                            我的餘額
                         </Typography>
                         <Typography variant="h6" sx={{ fontSize: "25px", fontWeight: "bold" }}>
                             ${userBalance}
