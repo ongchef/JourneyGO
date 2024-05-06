@@ -1,18 +1,24 @@
 'use client';
 
 import React, { useState, useContext } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
+
 // import {getInvitation} from '@/services/getInvitation';
 import { inviteToGroup } from '@/services/inviteToGroup';
 import { DataContext } from '@/app/components/dataContext';
+import { getToken } from '@/utils/getToken';
+
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel } from '@mui/material';
 
 const newMemberDialog = ({ open, onClose}) => {
 
-  const [inviteeEmail, setInviteeEmail] = useState('');
-  const { Token, allGroups } = useContext(DataContext);
+  // const { Token, allGroups } = useContext(DataContext);
+  const { allGroups } = useContext(DataContext);
+  const Token = getToken();
 
+  const [inviteeEmail, setInviteeEmail] = useState('');
+  
   const [groupId, setGroupId] = useState(allGroups.group_id);
-  // console.log('Token from newMemberDialog:' + Token);
+  
   
  
   const handleChange = (event) => {

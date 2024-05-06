@@ -1,7 +1,8 @@
 'use client';
 import "./globals.css";
 import { getTripGroups } from '@/services/getTripGroups';
-import { DataContext } from '@/app/components/dataContext';
+// import { DataContext } from '@/app/components/dataContext';
+import { getToken } from '@/utils/getToken';
 import SelectedContent from './components/SelectedContent';
 import TripList from './components/TripList';
 import NewJourneyDialog from './components/newJourney';
@@ -66,7 +67,9 @@ export default function Home() {
     marginTop: `3rem !important`,
   };
 
-  const { Token } = useContext(DataContext);
+  // const { Token } = useContext(DataContext);
+  const Token = getToken();
+
   // console.log('Token from DataContext:' + Token);
 
   useEffect(() => {

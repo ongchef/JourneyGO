@@ -1,7 +1,8 @@
 import { useState, useContext, useEffect, memo } from "react";
 
 import NewBill from "./newBill";
-import { DataContext } from "@/app/components/dataContext";
+// import { DataContext } from "@/app/components/dataContext";
+import { getToken } from '@/utils/getToken';
 import { getAllTransactions } from "@/services/getAllTransactions";
 
 import { Box, Typography, Card, CardContent, AvatarGroup, Avatar, colors, Tooltip } from "@mui/material";
@@ -11,7 +12,8 @@ import { styled } from "@mui/system";
 const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
 
 const AllTransactionList = ({ group_id, reloadTabPanel }) => {
-    const { Token } = useContext(DataContext);
+    // const { Token } = useContext(DataContext);
+    const Token = getToken();
 
     const [transactionList, setTransactionList] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);

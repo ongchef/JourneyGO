@@ -3,12 +3,16 @@ import "../globals.css";
 import { useContext } from 'react';
 import { getTripGroupOverview } from '@/services/getTripGroupOverview';
 import { DataContext } from '@/app/components/dataContext';
+import { getToken } from '@/utils/getToken';
+
 import { useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia, CardActions, IconButton } from '@mui/material';
 import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from '@mui/icons-material';
 
 
 function TripList({ data, tabValue, setTripOverview }) {
-    const { Token, setAllGroups } = useContext(DataContext);
+    // const { Token, setAllGroups } = useContext(DataContext);
+    const { setAllGroups } = useContext(DataContext);
+    const Token = getToken();
 
     const handleClick = (group_id) => {
         async function fetch() {

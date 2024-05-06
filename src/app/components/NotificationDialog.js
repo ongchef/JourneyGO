@@ -1,27 +1,22 @@
 'use client';
 
 import React , { useEffect, useState, useContext } from 'react';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton'; 
-import InputLabel from '@mui/material/InputLabel';
-import { DataContext } from '@/app/components/dataContext';
+import { Dialog, DialogTitle, DialogContent, Button, Grid, Box, IconButton, InputLabel } from '@mui/material';
 
-import {inviteToGroup} from '@/services/inviteToGroup';
-import {updateInvitationStatus} from '@/services/updateInvitationStatus';
+// import { DataContext } from '@/app/components/dataContext';
+import { getToken } from '@/utils/getToken';
+import { inviteToGroup } from '@/services/inviteToGroup';
+import { updateInvitationStatus } from '@/services/updateInvitationStatus';
 
 
 
 const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvitations, setReload}) => {
-  const { Token } = useContext(DataContext);
+  // const { Token } = useContext(DataContext);
+  const Token = getToken();
+
   const [invitationStatusOpen, setInvitationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
 
-  // console.log('Token from Notification:' + Token);
 
 
       //accept invitation

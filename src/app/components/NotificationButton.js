@@ -1,16 +1,21 @@
 'use client';
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import IconButton from '@mui/material/IconButton';
-import { DataContext } from '@/app/components/dataContext';
+// import { DataContext } from '@/app/components/dataContext';
+import { getToken } from '@/utils/getToken';
 import { getInvitation } from '@/services/getInvitation';
 import NotificationDialog from './NotificationDialog';
 
 //
 const NotificationButton = ({}) => {
+
+  // const { Token } = useContext(DataContext);
+  const Token = getToken();
+
+
   const [invitations, setInvitations] = useState([]); // 邀请
   const [dialogOpen, setDialogOpen] = useState(false); // open dialog or not
   // const [loading, setLoading] = useState(false);
-  const { Token } = useContext(DataContext);
   const [reload, setReload] = useState(false); 
 
   // open dialog when button is clicked

@@ -2,7 +2,8 @@
 
 import { postTransaction } from "@/services/postTransaction";
 import { putTransaction } from "@/services/putTransaction";
-import { DataContext } from "@/app/components/dataContext";
+// import { DataContext } from "@/app/components/dataContext";
+import { getToken } from '@/utils/getToken';
 import { getTripGroupOverview } from "@/services/getTripGroupOverview";
 import Picker from "./Picker";
 
@@ -11,7 +12,8 @@ import dayjs from "dayjs";
 import { Dialog, DialogContent, Typography, DialogTitle, Button, Grid, InputLabel, TextField, Select, Box, FormControl, MenuItem } from "@mui/material";
 
 const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, transactionData = null }) => {
-    const { Token } = useContext(DataContext);
+    // const { Token } = useContext(DataContext);
+    const Token = getToken();
 
     const [groupMembers, setGroupMembers] = useState([]);
     const [groupMembersId, setGroupMembersId] = useState([]);

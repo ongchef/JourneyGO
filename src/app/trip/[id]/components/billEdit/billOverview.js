@@ -2,17 +2,19 @@ import { memo } from "react";
 import BillPanel from "./billPanel";
 import MyBill from "./mybill";
 import BillList from "./billList";
-import { DataContext } from "@/app/components/dataContext";
+// import { DataContext } from "@/app/components/dataContext";
+import { getToken } from '@/utils/getToken';
+
 import { getTransactionResult } from "@/services/getTransactionResult";
 
 import { useState, useContext, useEffect } from "react";
-import { PropaneSharp } from "@mui/icons-material";
 
 const BillOverview = ({ group_id, reloadTabPanel }) => {
     const [userBalance, setUserBalance] = useState(0);
     const [transactionResult, setTransactionResult] = useState([]);
 
-    const { Token } = useContext(DataContext);
+    // const { Token } = useContext(DataContext);
+    const Token = getToken();
 
     useEffect(() => {
         fetchTransactions();

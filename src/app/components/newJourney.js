@@ -4,17 +4,20 @@ import React, { useState, useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper, Box } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DataContext } from '@/app/components/dataContext';
+// import { DataContext } from '@/app/components/dataContext';
+import { getToken } from '@/utils/getToken';
 
 import { createTripGroup } from '@/services/createTripGroup';
 
 const NewJourneyDialog = ({ open, onClose}) => {
+  // const { Token } = useContext(DataContext);
+  const Token = getToken();
+
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [groupName, setGroupName] = useState('');
   const [country, setCountry] = useState("臺灣");
   const [inviteeEmail, setCompanionEmail] = useState('');
-  const { Token } = useContext(DataContext);
   const [creationStatusOpen, setCreationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   
