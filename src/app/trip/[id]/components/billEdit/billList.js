@@ -2,16 +2,19 @@ import { useState, useContext } from "react";
 import dayjs from "dayjs";
 
 import { postWriteOffBill } from "@/services/postWriteOffBill";
-import { DataContext } from "@/app/components/dataContext";
+// import { DataContext } from "@/app/components/dataContext";
+import { getToken } from "@/utils/getToken";
 
 import { Button, Box, useTheme, Typography, Card, CardContent, AvatarGroup, Avatar, Dialog, DialogContent, Tooltip } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function BillList({ group_id, transactionResult, reloadTabPanel }) {
+    // const { Token } = useContext(DataContext);
+    const Token = getToken();
+    
     const [writeOffStatusOpen, setWriteOffStatusOpen] = useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(null);
     const theme = useTheme();
-
-    const { Token } = useContext(DataContext);
 
     const cardStyles = {
         flexDirection: "column",
@@ -51,7 +54,8 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
         gap: "20px",
     };
 
-    const handleWriteOffBtnClick = () => {
+    const handleWriteOffBtnClick = (index) => {
+        setSelectedIndex(index);
         setWriteOffStatusOpen(true);
     };
 
@@ -60,12 +64,13 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
         reloadTabPanel();
     };
 
-    const handleSubmit = (data) => {
-        console.log("submit write off");
+    const handleSubmit = () => {
+        const data = transactionResult[selectedIndex];
         const now = dayjs();
         const date = now.format("YYYY-MM-DD");
         const time = now.format("HH:mm");
         // postWriteOffBill(Token, group_id, date, time, debtor_id, creditor_id, amount);
+        console.log("handleSubmit data:", data);
 
         let response = postWriteOffBill(Token, group_id, date, time, data.payee_id, data.payer_id, data.amount);
         console.log("postWriteOffBill response:", response);
@@ -96,7 +101,7 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
                                 </Typography>
                             </div>
                             <div>
-                                <Button variant="contained" style={{ backgroundColor: "#EB684E" }} onClick={handleWriteOffBtnClick}>
+                                <Button variant="contained" style={{ backgroundColor: "#EB684E" }}  onClick={() => handleWriteOffBtnClick(index)}>
                                     核銷
                                 </Button>
                             </div>
@@ -114,7 +119,7 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
                         <Box sx={boxStyles}>
                             您確定要核銷嗎？
                             <div>
-                                <Button onClick={() => handleSubmit(data)}>確定</Button>
+                                <Button onClick={handleSubmit}>確定</Button>
                                 <Button onClick={handleCreationStatusDialogClose}>取消</Button>
                             </div>
                         </Box>
