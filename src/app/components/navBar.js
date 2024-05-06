@@ -28,7 +28,7 @@ const NavBar = ({ children }) => {
                 </Typography>
 
                 <NotificationButton/>
-                <Typography variant="body2" component="a" sx={{ marginLeft: 2, marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' }}>我的旅程</Typography>
+                <Typography variant="body2" component="a" sx={{ marginLeft: 2, marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' }} onClick={handleClick}>我的旅程</Typography>
                 <Typography variant="body2" component="a" sx={{ marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer', border: '1.5px solid ', borderRadius: '4px', padding: '4px 8px' }}>個人資料</Typography>
             </Toolbar>
         </AppBar>
