@@ -32,7 +32,7 @@ export async function getRoute(Token, groupId, day, transOption) {
       return undefined;
     }
   } catch (error) {
-    console.error(`getRoute error`, res.status, res.statusText);
+    console.error(error);
       return undefined;
   }
 }

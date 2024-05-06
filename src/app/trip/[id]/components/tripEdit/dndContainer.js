@@ -91,14 +91,14 @@ export default function DndContainer({day, spotChange}) {
               {index !== cards.length - 1 &&  // not the last card
                 <div className='flex flex-row items-center justify-start gap-2 my-2 ml-5'>
                   <MoreVertIcon className='scale-125 mr-3'/>
-                  {(allTrans?.[currGroupId]?.[currDay][0] === '汽車') &&
+                  {(allTrans?.[currGroupId]?.[currDay]?.[0] === '汽車') &&
                     <DirectionsCarIcon className='text-center'/> 
                   }
-                  {(allTrans?.[currGroupId]?.[currDay][0] === '大眾運輸') &&
+                  {(allTrans?.[currGroupId]?.[currDay]?.[0] === '大眾運輸') &&
                     <TrainIcon className='text-center'/> 
                   }
                   <Typography variant='body2' className='text-center'>
-                    {allTrans?.[currGroupId]?.[currDay][0]} {allTrans?.[currGroupId]?.[currDay]?.[1]?.[index]}
+                    {allTrans?.[currGroupId]?.[currDay]?.[0]} {allTrans?.[currGroupId]?.[currDay]?.[1]?.[index]}
                   </Typography>
                 </div>
               }

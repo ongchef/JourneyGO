@@ -18,5 +18,4 @@ export const getUserId = () => {
     console.error("No session found" );
     return null;
   }
-  
 }

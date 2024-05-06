@@ -31,13 +31,13 @@ export default function SelectTransport() {
         },
       };
     });
-    console.log("allTrans", allTrans);
+    // console.log("allTrans", allTrans);
   }
 
   useEffect(() => {
     if (!currGroupId || !currDay) return;
     const Token = getToken();
-    console.log("update trans", Token);
+    // console.log("update trans", Token);
     if (allTrans?.[currGroupId] && allTrans?.[currGroupId]?.[currDay]) {
       setValue(allTrans?.[currGroupId]?.[currDay][0]);
       updateTrans(allTrans?.[currGroupId]?.[currDay][0], Token);

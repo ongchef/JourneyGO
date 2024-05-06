@@ -6,16 +6,20 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-
+import Button from '@mui/material/Button';
 import NotificationButton from "./NotificationButton";
-
+import { useClerk } from "@clerk/clerk-react";
 
 const NavBar = ({ children }) => {
-
+  const { signOut } = useClerk();
   const router = useRouter();
 
   const handleClick =  () => {
     window.location.href = '/';
+  };
+
+  const handleLogout = () => {
+    signOut(() => router.push("/"))
   };
 
   return (
@@ -30,6 +34,7 @@ const NavBar = ({ children }) => {
                 <NotificationButton/>
                 <Typography variant="body2" component="a" sx={{ marginLeft: 2, marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' }} onClick={handleClick}>我的旅程</Typography>
                 <Typography variant="body2" component="a" sx={{ marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer', border: '1.5px solid ', borderRadius: '4px', padding: '4px 8px' }}>個人資料</Typography>
+                <Button variant="outlined" sx={{ marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer', border: '1.5px solid ', borderRadius: '4px', padding: '2px' }} onClick={handleLogout}>登出</Button>
             </Toolbar>
         </AppBar>
     </Box>
