@@ -8,17 +8,18 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { getToken } from '@/utils/getToken';
 
 export default function SelectTransport() {
-  const {allTrans, setAllTrans, currGroupId, currDay, Token, allSpots} = useContext(DataContext);
+  const {allTrans, setAllTrans, currGroupId, currDay, allSpots} = useContext(DataContext);
   const [value, setValue] = useState("大眾運輸"); // default value
 
-  async function updateTrans(transOption) {
+  async function updateTrans(transOption, Token) {
     if (allSpots?.[currGroupId]?.[currDay] === undefined) return;
     const res = await getRoute(Token, currGroupId, currDay, transOption);
-    if (res === undefined) {
-      window.location.reload(true);
-    }
+    // if (res === undefined) {
+    //   window.location.reload(true);
+    // }
     setAllTrans((prev) => {
       let updatedDay = prev?.[currGroupId]?.[currDay] || [];
       updatedDay = [transOption, res];  
@@ -30,22 +31,26 @@ export default function SelectTransport() {
         },
       };
     });
+    console.log("allTrans", allTrans);
   }
 
   useEffect(() => {
     if (!currGroupId || !currDay) return;
+    const Token = getToken();
+    console.log("update trans", Token);
     if (allTrans?.[currGroupId] && allTrans?.[currGroupId]?.[currDay]) {
       setValue(allTrans?.[currGroupId]?.[currDay][0]);
-      updateTrans(allTrans?.[currGroupId]?.[currDay][0]);
+      updateTrans(allTrans?.[currGroupId]?.[currDay][0], Token);
     } else {
-      updateTrans(value); // default value
+      updateTrans(value, Token); // default value
     }
   }, [currGroupId, currDay, allSpots]);
 
   const handleChange = (event) => {
     setValue(event.target.value);
     if (!currGroupId || !currDay) return;
-    updateTrans(event.target.value);
+    const Token = getToken();
+    updateTrans(event.target.value, Token);
   };
 
   return (

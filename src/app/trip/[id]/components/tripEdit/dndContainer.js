@@ -10,9 +10,10 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import TrainIcon from '@mui/icons-material/Train';
+import { getToken } from '@/utils/getToken';
 
 export default function DndContainer({day, spotChange}) {
-  const {allSpots, setAllSpots, currGroupId, currDay, setCurrDay, Token, refetch, allTrans} = useContext(DataContext);
+  const {allSpots, setAllSpots, currGroupId, currDay, setCurrDay, refetch, allTrans} = useContext(DataContext);
   const [updateCards, setUpdateCards] = useState([])
   const [cards, setCards] = useState([]);
 
@@ -22,7 +23,7 @@ export default function DndContainer({day, spotChange}) {
 
   // fetch spots
   useEffect(() => {                             
-    const fetchSpots = async () => {
+    async function fetchSpots(Token) {
       if (currGroupId===undefined || currDay===undefined) return;  
       try {
         const res = await getSpots(Token, currGroupId, currDay);
@@ -45,7 +46,8 @@ export default function DndContainer({day, spotChange}) {
         console.error(e);
       }
     };
-    fetchSpots();
+    const Token = getToken();
+    fetchSpots(Token);
   }, [currGroupId, currDay, refetch]);
 
   useEffect(() => {
@@ -96,7 +98,7 @@ export default function DndContainer({day, spotChange}) {
                     <TrainIcon className='text-center'/> 
                   }
                   <Typography variant='body2' className='text-center'>
-                    {allTrans?.[currGroupId]?.[currDay][0]} {allTrans?.[currGroupId]?.[currDay][1][index]}
+                    {allTrans?.[currGroupId]?.[currDay][0]} {allTrans?.[currGroupId]?.[currDay]?.[1]?.[index]}
                   </Typography>
                 </div>
               }

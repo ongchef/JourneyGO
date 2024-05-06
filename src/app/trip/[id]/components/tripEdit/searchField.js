@@ -9,10 +9,11 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import { getToken } from '@/utils/getToken';
 
 export default function SearchField({ setSearchRes, checked }) {
   const [searchText, setSearchText] = useState('');
-  const { Token, currGroupId, currDay, allSpots } = useContext(DataContext);
+  const { currGroupId, currDay, allSpots } = useContext(DataContext);
 
   const handleInputChange = (event) => {
     setSearchText(event.target.value);
@@ -26,7 +27,7 @@ export default function SearchField({ setSearchRes, checked }) {
   }
 
   const handleClick = () => {
-    async function search() {
+    async function search(Token) {
       try {
         if (checked==true) {
           if (currGroupId === undefined || currDay === undefined) return;
@@ -34,14 +35,16 @@ export default function SearchField({ setSearchRes, checked }) {
           if (last) {
             const res = await getSurrounding(Token, searchText, last);
             if (res === undefined) {
-              window.location.reload(true);
+              // window.location.reload(true);
+              setSearchRes([]);
             }
             setSearchRes(res);
           }
         } else {
           const res = await getSearch(Token, searchText);
           if (res === undefined) {
-            window.location.reload(true);
+            // window.location.reload(true);
+            setSearchRes([]);
           }
           setSearchRes(res);
         }
@@ -49,7 +52,8 @@ export default function SearchField({ setSearchRes, checked }) {
         console.log("search", error)
       }
     };
-    search();
+    const Token = getToken();
+    search(Token);
   };
 
   return (

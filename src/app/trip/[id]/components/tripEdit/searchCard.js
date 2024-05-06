@@ -8,14 +8,15 @@ import Image from 'next/image';
 import Typography from '@mui/material/Typography';
 import StarIcon from '@mui/icons-material/Star';
 import Button from '@mui/material/Button';
+import { getToken } from '@/utils/getToken';
 
 export default function SearchCard({title, location, rating, lng, lat, photo}) {
-  const { allSpots, currGroupId, currDay, Token, setRefetch } = useContext(DataContext);
+  const { allSpots, currGroupId, currDay, setRefetch } = useContext(DataContext);
   const router = useRouter();
   const pathname = usePathname();
 
   const handleClick = () => {
-    async function post() {
+    async function post(Token) {
       let spotIds;
       if (allSpots?.[currGroupId]?.[currDay]?.length) {
         spotIds = allSpots?.[currGroupId]?.[currDay]?.length;
@@ -41,7 +42,8 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
         console.log("post", error)
       }
     }
-    post();
+    const Token = getToken();
+    post(Token);
   };
 
   return (

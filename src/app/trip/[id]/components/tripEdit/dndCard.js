@@ -8,11 +8,12 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import CommentIcon from '@mui/icons-material/Comment';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
+import { getToken } from '@/utils/getToken';
 
 const ItemTypes = {CARD: 'card',}
 
 export const DndCard = ({ id, index, title, location, moveCard }) => {
-  const { Token, currGroupId, currDay, setAllSpots, setRefetch } = useContext(DataContext);
+  const { currGroupId, currDay, setAllSpots, setRefetch } = useContext(DataContext);
 
   // Drag and Drop
   const ref = useRef(null)
@@ -62,7 +63,7 @@ export const DndCard = ({ id, index, title, location, moveCard }) => {
   
   // Delete spot
   const handleClick = () => {
-    async function del() {
+    async function del(Token) {
       try {
         const status = await deleteSpots(Token, currGroupId, currDay, id);
         if (status === 204 || status === 200) {  
@@ -82,7 +83,8 @@ export const DndCard = ({ id, index, title, location, moveCard }) => {
         console.error(e);
       }
     };
-    del();
+    const Token = getToken();
+    del(Token);
   }
 
   return (

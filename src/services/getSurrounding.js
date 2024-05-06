@@ -17,7 +17,7 @@ export async function getSurrounding(Token, query, spotId) {
     if(res.ok) {
       const data = await res.json();
       const formattedData = data?.map((spot) => {
-          const photoRef = spot?.photos[0]?.photo_reference;
+          const photoRef = spot?.photos?.[0]?.photo_reference;
           let photoUrl = "";
           if (photoRef) {
             photoUrl = `${process.env.GOOGLE_MAP_PLACE_URL}/photo?photo_reference=${photoRef}&maxwidth=100&key=${process.env.GOOGLE_MAP_API_KEY}`;

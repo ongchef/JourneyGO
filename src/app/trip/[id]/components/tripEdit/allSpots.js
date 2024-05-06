@@ -6,9 +6,10 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import DndContainer from './dndContainer';
 import { io } from 'socket.io-client';
+import { getToken } from '@/utils/getToken';
 
 export default function AllSpots({day}) {
-  const {allSpots, setAllSpots, currGroupId, Token} = useContext(DataContext);
+  const {allSpots, setAllSpots, currGroupId} = useContext(DataContext);
   const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
   const [newDay, setNewDay] = useState();       //store day from socket
 
@@ -25,7 +26,7 @@ export default function AllSpots({day}) {
   }
 
   useEffect(() => {
-    function enterRoom() {
+    function enterRoom(Token) {
       // check if socket is already connected
       if (socket.connected) {
         console.log("socket is already connected");
@@ -44,7 +45,8 @@ export default function AllSpots({day}) {
       setNewCards(spot_sequence);
       setNewDay(day);
     })
-    enterRoom();
+    const Token = getToken();
+    enterRoom(Token);
   }, []);
 
   // update allSpots when server_spot_change 

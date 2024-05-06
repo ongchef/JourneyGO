@@ -15,6 +15,7 @@ import RoomIcon from '@mui/icons-material/Room';
 import DescriptionIcon from '@mui/icons-material/Description';
 import AllTransactionList from './components/billEdit/allTransactionList';
 import BillOverview from './components/billEdit/billOverview';
+import { getToken } from '@/utils/getToken';
 
 function tabProps(index) {
   return {
@@ -24,7 +25,7 @@ function tabProps(index) {
 }
 
 export default function Trip({params}) {
-  const {currGroupId, setCurrGroupId, Token} = useContext(DataContext);
+  const {currGroupId, setCurrGroupId} = useContext(DataContext);
   const [value, setValue] = useState(0);
   const [groupInfo, setGroupInfo] = useState({}); 
   const [isLoad, setIsLoad] = useState(false);
@@ -36,7 +37,7 @@ export default function Trip({params}) {
   }, []);
 
   useEffect(() => {
-    async function getGroup() {
+    async function getGroup(Token) {
       if (currGroupId === undefined) {
         return;
       } else {
@@ -48,7 +49,8 @@ export default function Trip({params}) {
         }
       };
     }
-    getGroup();
+    const Token = getToken();
+    getGroup(Token);
   }, [currGroupId]);
 
   const handleChange = (event, newValue) => {
