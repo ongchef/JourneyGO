@@ -1,4 +1,4 @@
-FROM node:17
+FROM node:18
 
 WORKDIR /
 
@@ -18,9 +18,6 @@ ENV MAP_API_KEY="AIzaSyB2tLbNMQjOOND77CUnDgWottYd9RCm_O4"
 ENV WEBHOOK_SECRET_ADD="whsec_vvBNCOWozTR/Vqlj6/m7Do71ZoMmy8xd"
 ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_aW1tZW5zZS1zYWlsZmlzaC00Ni5jbGVyay5hY2NvdW50cy5kZXYk"
 ENV CLERK_SECRET_KEY="sk_test_NKFcfAjahnwcr8KQGwLsT33g2hxN7k7rUIzV3TDxWZ"
-
-RUN echo "PORT = $PORT"
-RUN echo "HOST = $HOST"
 
 CMD ["yarn", "start"]
 
