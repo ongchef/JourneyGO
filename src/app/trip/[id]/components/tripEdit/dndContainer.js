@@ -87,6 +87,7 @@ export default function DndContainer({day, spotChange}) {
                 title={card?.title}
                 location={card?.location}
                 moveCard={moveCard}
+                spotChange={spotChange}
               />
               {index !== cards.length - 1 &&  // not the last card
                 <div className='flex flex-row items-center justify-start gap-2 my-2 ml-5'>

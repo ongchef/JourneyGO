@@ -9,7 +9,7 @@ import { io } from 'socket.io-client';
 import { getToken } from '@/utils/getToken';
 
 export default function AllSpots({day}) {
-  const {allSpots, setAllSpots, currGroupId} = useContext(DataContext);
+  const {allSpots, setAllSpots, currGroupId, setRefetch} = useContext(DataContext);
   const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
   const [newDay, setNewDay] = useState();       //store day from socket
 
@@ -51,17 +51,26 @@ export default function AllSpots({day}) {
 
   // update allSpots when server_spot_change 
   useEffect(() => {
-    const prevCards = allSpots?.[currGroupId]?.[newDay];
-    const reorderedCards = prevCards?.sort((a, b) =>
-      newCards.indexOf(a.id) - newCards.indexOf(b.id)
-    );
-    setAllSpots(prevState => ({
-      ...prevState,
-      [currGroupId]: {
-        ...prevState[currGroupId] || {},  
-        [newDay]: reorderedCards,
-      },
-    }));
+    try{
+      if (newCards.length !== allSpots?.[currGroupId]?.[newDay]) {
+        setRefetch(prev => prev + 1);
+      }
+      const prevCards = allSpots?.[currGroupId]?.[newDay];
+      const reorderedCards = prevCards?.sort((a, b) =>
+        newCards.indexOf(a.id) - newCards.indexOf(b.id)
+      );
+      setAllSpots(prevState => ({
+        ...prevState,
+        [currGroupId]: {
+          ...prevState[currGroupId] || {},  
+          [newDay]: reorderedCards,
+        },
+      }));
+    }
+    catch (e) {
+      setRefetch(prev => prev + 1);
+      console.log("error", e);
+    }
   }, [newCards]);
 
   return (

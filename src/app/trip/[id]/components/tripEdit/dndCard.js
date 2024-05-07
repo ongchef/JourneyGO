@@ -12,7 +12,7 @@ import { getToken } from '@/utils/getToken';
 
 const ItemTypes = {CARD: 'card',}
 
-export const DndCard = ({ id, index, title, location, moveCard }) => {
+export const DndCard = ({ id, index, title, location, moveCard, spotChange }) => {
   const { currGroupId, currDay, setAllSpots, setRefetch } = useContext(DataContext);
 
   // Drag and Drop
@@ -69,6 +69,7 @@ export const DndCard = ({ id, index, title, location, moveCard }) => {
         if (status === 204 || status === 200) {  
           setAllSpots(prevState => {  // delete spot from allSpots
             const newSpots = prevState?.[currGroupId]?.[currDay]?.filter(spot => spot?.id !== id);
+            spotChange(currDay, newSpots);  // socket
             return {
               ...prevState,
               [currGroupId]: {
