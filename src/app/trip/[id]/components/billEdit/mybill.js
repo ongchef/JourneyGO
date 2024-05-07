@@ -1,7 +1,12 @@
-import React from "react";
+import { useEffect } from "react";
 import { Paper, Button, Box, useTheme, Typography } from "@mui/material";
 
 function MyBill({userBalance}) {
+
+    useEffect(() => {
+        console.log('userBalance updated:', userBalance);
+    }, [userBalance]);
+
     return (
         <div className="flex flex-col h-full items-center">
             <Box>
@@ -13,7 +18,7 @@ function MyBill({userBalance}) {
                             我的餘額
                         </Typography>
                         <Typography variant="h6" sx={{ fontSize: "25px", fontWeight: "bold" }}>
-                            ${userBalance}
+                            $ {userBalance === null ? '0' : userBalance}
                         </Typography>
                     </Paper>
                 </div>
