@@ -12,16 +12,12 @@ export const getTransByGroupIdDay = async(groupId,day) => {
 
 export const saveTransportation = async(transList) => {
     await db.none(`DELETE FROM transportation where dep_id = ANY($1) or arr_id = ANY($1)`,[transList.spotIdList])
-    try{
-        db.tx(t=>{
-            const insert_queries = transList.routes.map((trans)=>{
-                return t.none(`INSERT INTO transportation (dep_id,arr_id,trans_type,trans_time) values ($1,$2,$3,$4) `
-                ,[trans.dep_id,trans.arr_id,trans.travel_mode,trans.duration])
-            })
-            t.batch(insert_queries)
+    await db.tx(t=>{
+        const insert_queries = transList.routes.map((trans)=>{
+            return t.none(`INSERT INTO transportation (dep_id,arr_id,trans_type,trans_time) values ($1,$2,$3,$4) `
+            ,[trans.dep_id,trans.arr_id,trans.travel_mode,trans.duration])
         })
-    }
-    catch(err){
-        console.log(err)
-    }
+        t.batch(insert_queries).catch((err)=>console.log(err))
+    })
+    
 }
