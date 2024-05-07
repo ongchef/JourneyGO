@@ -19,6 +19,7 @@ import {
   getuserIdbyClerkId,
   getInviteeIdByEmail,
   getuserNamebyClerkId,
+  getuserIdbyName,
 } from "../models/userModel.js";
 
 export const createInvitation = async (req, res) => {
@@ -212,7 +213,7 @@ export const getBillResult = async (req, res) => {
         });
       });
     }
-    // console.log(transactionsDict);
+    //console.log(transactionsDict);
 
     // 初始化每个人的总收入和总支出
     const totalReceived = {};
@@ -243,14 +244,19 @@ export const getBillResult = async (req, res) => {
     //console.log("balance", balance);
     const result = [];
 
-    Object.keys(transactionsDict).forEach(payer => {
-      Object.keys(transactionsDict[payer]).forEach(payee => {
+    for (const payer of Object.keys(transactionsDict)) {
+      for (const payee of Object.keys(transactionsDict[payer])) {
         const amount = transactionsDict[payer][payee];
-        result.push({ payer, payee, amount });
-      });
-    });
+        let payer_id = await getuserIdbyName(payer);
+        let payee_id = await getuserIdbyName(payee);
+        payer_id = payer_id[0].user_id
+        payee_id = payee_id[0].user_id
+        //console.log("ids", payer_id, payee_id);
+        result.push({ payer, payee, amount, payer_id, payee_id });
+      }
+    }
 
-    // console.log({ balance, transactions: result });
+    //console.log({ balance, transactions: result });
     const user_name = await getuserNamebyClerkId(userClerkId)
     //console.log(user_name);
     const user_balance = -balance[user_name[0].user_name]
@@ -336,7 +342,7 @@ export const writeBill = async (req, res) => {
   const { date, time, creditor_id, debtor_id, amount } = req.body;
   //console.log(bill_name, date, time, payer_id, participant, amount);
   try {
-    const newBill = await createBillModel("write off", groupId, date, time, payer_id, amount, "closed"); // 
+    const newBill = await createBillModel("write off", groupId, date, time, debtor_id, amount, "closed"); // 
     console.log(newBill);
     
     const payer_bill = createShareBills(newBill.bill_id, creditor_id, -amount)
