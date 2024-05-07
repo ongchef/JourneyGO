@@ -29,7 +29,7 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
 
           // await inviteToGroup(Token, invitation.inviter_name, invitation.invitee_name, invitation.group_name);
           
-          setPendingInvitations(pendingInvitations.filter((inv) => inv.id !== invitation.id));
+          setPendingInvitations(pendingInvitations?.filter((inv) => inv.id !== invitation.id));
           setStatusMessage('已接受邀請');
           setInvitationStatusOpen(true);
           setAcceptInvitation(true);
@@ -44,7 +44,7 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
       const handleDecline = async (invitation) => {
         try {
           await updateInvitationStatus(Token, invitation.invitation_id, 'rejected');
-          setPendingInvitations(pendingInvitations.filter((inv) => inv.id !== invitation.id));
+          setPendingInvitations(pendingInvitations?.filter((inv) => inv.id !== invitation.id));
 
           setStatusMessage('已拒絕邀請');
           setInvitationStatusOpen(true);
@@ -65,7 +65,8 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
       const handleInvitationStatusDialogClose = () => {
         setInvitationStatusOpen(false)
         if (acceptInvitation) {
-          window.location.reload();
+          // back to home page
+          window.location.href = '/';
         }else {
           handleCancel();
         }
