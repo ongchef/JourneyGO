@@ -17,8 +17,8 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
 
     const [groupMembers, setGroupMembers] = useState([]);
     const [groupMembersId, setGroupMembersId] = useState([]);
-    const [participantsGroupMembers, setParticipantsGroupMembers] = useState([]);
-    const [participantsGroupMembersId, setParticipantsGroupMembersId] = useState([]);
+    // const [participantsGroupMembers, setParticipantsGroupMembers] = useState([]);
+    // const [participantsGroupMembersId, setParticipantsGroupMembersId] = useState([]);
 
     const [billId, setBillId] = useState("");
 
@@ -51,8 +51,8 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                 if (data && data.length !== 0) {
                     setGroupMembers(data.user_names);
                     setGroupMembersId(data.user_ids);
-                    setParticipantsGroupMembers(data.user_names);
-                    setParticipantsGroupMembersId(data.user_ids);
+                    // setParticipantsGroupMembers(data.user_names);
+                    // setParticipantsGroupMembersId(data.user_ids);
                 } else {
                     console.error("No group members found");
                 }
@@ -73,11 +73,13 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
 
             setPayer(transactionData.payer_name);
             setPayerId(groupMembersId[groupMembers.indexOf(transactionData.payer_name)]);
-            setParticipantsGroupMembers(groupMembers.filter((member) => member !== transactionData.payer_name));
+            // setParticipantsGroupMembers(groupMembers.filter((member) => member !== transactionData.payer_name));
+            // setParticipantsGroupMembersId(groupMembersId.filter((memberId) => memberId !== groupMembersId[groupMembers.indexOf(transactionData.payer_name)]));
 
-            setParticipantsGroupMembersId(groupMembersId.filter((memberId) => memberId !== groupMembersId[groupMembers.indexOf(transactionData.payer_name)]));
-            setParticipants(transactionData.participants.filter((participant) => participant !== transactionData.payer_name));
-            setParticipantsId(transactionData.participants.map((participant) => participantsGroupMembersId[participantsGroupMembers.indexOf(participant)]));
+            // setParticipants(transactionData.participants.filter((participant) => participant !== transactionData.payer_name));
+            // setParticipantsId(transactionData.participants.map((participant) => participantsGroupMembersId[participantsGroupMembers.indexOf(participant)]));
+            setParticipants(transactionData.participants);
+            setParticipantsId(transactionData.participants.map((participant) => groupMembersId[groupMembers.indexOf(participant)]));
 
             setBillDateTime(dayjs(`${transactionData.date} ${transactionData.time}`));
             setBillDate(dayjs(`${transactionData.date} ${transactionData.time}`).format("YYYY-MM-DD"));
@@ -166,16 +168,15 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
         setPayerId(groupMembersId[groupMembers.indexOf(e.target.value)]);
         handleChange(setPayer, setPayerError, e.target.value, "請選擇付款人");
         
-        if (participantsGroupMembers.includes(e.target.value)) {
-            // reload the value of groupMembers in participants select (exclude the payer)
-            // setParticipantsGroupMembers(groupMembers);
-            const selectedMembers = groupMembers.filter((member) => member !== e.target.value);
-            setParticipantsGroupMembers(selectedMembers);
-        }
+        // if (participantsGroupMembers.includes(e.target.value)) {
+        //     const selectedMembers = groupMembers.filter((member) => member !== e.target.value);
+        //     const selectedMembersId = groupMembersId.filter((memberId) => memberId !== groupMembersId[groupMembers.indexOf(e.target.value)]);
+        //     setParticipantsGroupMembers(selectedMembers);
+        //     setParticipantsGroupMembersId(selectedMembersId);            
+        // }
     };
 
     const handleParticipantsChange = (e) => {
-        console.log("[handleParticipantsChange] e.target.value:", e.target.value);
         const selectedMembers = Array.isArray(e.target.value) ? e.target.value : [e.target.value];
 
         if (selectedMembers.length === 0) {
@@ -184,8 +185,13 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
             setParticipantsError("");
             setParticipants(selectedMembers);
         }
+        // setParticipants(selectedMembers);
+        // setParticipantsId(selectedMembers.map((member) => participantsGroupMembersId[participantsGroupMembers.indexOf(member)]));
+        // console.log("[handleParticipantsChange] selectedMembers:", selectedMembers);
+        // console.log("[handleParticipantsChange] participantsId:", participantsId);
         setParticipants(selectedMembers);
-        setParticipantsId(selectedMembers.map((member) => participantsGroupMembersId[participantsGroupMembers.indexOf(member)]));
+        setParticipantsId(selectedMembers.map((member) => groupMembersId[groupMembers.indexOf(member)]));
+
     };
 
     const validateForm = () => {
@@ -226,10 +232,8 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
 
         if (validateForm()) {
             if (editMode) {
-                // console.log('edit mode');
                 await putTransactionData();
             } else {
-                // console.log('add mode');
                 await postTransactionData();
             }
         } else {
@@ -241,8 +245,9 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
         setBillName("");
         setPayer("");
         setParticipants([]);
-        setParticipantsGroupMembers(groupMembers);
-        setParticipantsGroupMembersId(groupMembersId);
+        setParticipantsId([]);
+        // setParticipantsGroupMembers(groupMembers);
+        // setParticipantsGroupMembersId(groupMembersId);
         setAmount("");
         onClose();
     };
@@ -337,7 +342,12 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                                                 id: "member-paid-select",
                                             }}
                                             error={!!participantsError}>
-                                            {participantsGroupMembers.map((member, index) => (
+                                            {/* {participantsGroupMembers.map((member, index) => (
+                                                <MenuItem key={index} value={member}>
+                                                    {member}
+                                                </MenuItem>
+                                            ))} */}
+                                            {groupMembers.map((member, index) => (
                                                 <MenuItem key={index} value={member}>
                                                     {member}
                                                 </MenuItem>
