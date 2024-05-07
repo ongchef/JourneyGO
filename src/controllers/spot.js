@@ -184,7 +184,9 @@ export const constructRoute = async (req, res) => {
     if("available_travel_modes" in result){
       return res.status(205).json({available_travel_modes:result.available_travel_modes})
     }
-    await saveTransportation(result)
+    await saveTransportation(result).catch((err)=>{
+      console.log(err)
+    })
     console.log(result)
     return res.status(200).json(result);
   } catch (error) {
