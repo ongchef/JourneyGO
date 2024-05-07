@@ -2,7 +2,7 @@ import { useState, useContext, useEffect, memo } from "react";
 
 import NewBill from "./newBill";
 // import { DataContext } from "@/app/components/dataContext";
-import { getToken } from '@/utils/getToken';
+import { getToken } from "@/utils/getToken";
 import { getAllTransactions } from "@/services/getAllTransactions";
 
 import { Box, Typography, Card, CardContent, AvatarGroup, Avatar, colors, Tooltip } from "@mui/material";
@@ -59,23 +59,17 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
         height: "8.75rem",
         flexDirection: "row",
         alignItems: "center",
-        padding: "1.25rem",
         margin: "1.25rem",
         marginTop: "1.875rem",
         borderRadius: "0.625rem",
-        gap: "1.875rem",
+        gap: "1.8rem",
         boxShadow: "0 0 0.625rem 0 rgba(0,0,0,0.2)",
         cursor: "pointer",
-        [theme.breakpoints.down("sm")]: {
+        [theme.breakpoints.down("md")]: {
             flexDirection: "column",
             height: "auto",
         },
     }));
-
-    const cardContentStyles = {
-        flex: 1,
-        marginLeft: "10px",
-    };
 
     const cardStyles = {
         flex: 1,
@@ -126,12 +120,12 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
             ) : (
                 transactionList.map((data, index) => (
                     <StyledCard key={index} onClick={() => handleDialogOpen(data)}>
-                        <Box className="flex ml-5">
+                        <Box className="flex ml-5 p-5">
                             <Tooltip title={data.payer_name}>
                                 <Avatar>{data.payer_name[0].toUpperCase()}</Avatar>
                             </Tooltip>
                         </Box>
-                        <CardContent className="flex ml-10">
+                        <CardContent className="flex ml-5 overflow-hidden whitespace-nowrap flex-shrink" style={{ maxWidth: "12rem" }}>
                             <Box className="justify-start">
                                 <Typography variant="h6" component="div" className="font-bold">
                                     {data.bill_name}
@@ -146,9 +140,9 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
                                 </Typography>
                             </Box>
                         </CardContent>
-                        <Box className="flex flex-row justify-end">
+                        <Box className="flex flex-row justify-end p-5 overflow-hidden" sx={{ marginLeft: "auto" }}>
                             <CardContent>
-                                <Typography variant="h6" component="div" sx={{ fontWeight: "bold", justifyContent: "flex-end", color: "#EB684E" }}>
+                                <Typography variant="h6" component="div" sx={{ fontWeight: "bold", textAlign: "right", color: "#EB684E" }}>
                                     $ {data.amount}
                                 </Typography>
 

@@ -96,7 +96,7 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
                                 </AvatarGroup>
                             </div>
                             <div>
-                                <Typography variant="h6" component="div" style={{ fontWeight: "bold", width: "6vw" }}>
+                                <Typography variant="h6" component="div" style={{ fontWeight: "bold"}}>
                                     {/* fix the width of the box (6vw) */}$ {data.amount}
                                 </Typography>
                             </div>
