@@ -168,7 +168,8 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
         
         if (participantsGroupMembers.includes(e.target.value)) {
             // reload the value of groupMembers in participants select (exclude the payer)
-            const selectedMembers = participantsGroupMembers.filter((member) => member !== e.target.value);
+            // setParticipantsGroupMembers(groupMembers);
+            const selectedMembers = groupMembers.filter((member) => member !== e.target.value);
             setParticipantsGroupMembers(selectedMembers);
         }
     };
@@ -350,7 +351,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
 
                     <div style={{ textAlign: "center", marginTop: 20 }}>
                         <Button onClick={handleSubmit} variant="contained" color="primary" style={{ marginRight: 10 }}>
-                            新增
+                            {editMode ? "修改" : "新增"}
                         </Button>
                         <Button onClick={handleCancel} variant="contained" color="primary">
                             取消
