@@ -26,12 +26,14 @@ export async function inviteToGroup(Token, inviteeEmail, groupId) {
         // return data;
         if (!response.ok) {
           console.error('Failed to invite to group:', response.statusText);
-          return null;
+          return false;
+        }else {
+          return true;
         }
         console.log(`Invitation sent to ${inviteeEmail} successfully`);
       }catch (error) {
         console.error('Error:', error);
-        return null;
+        return false;
       }
   }
   

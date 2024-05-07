@@ -56,10 +56,10 @@ const NewJourneyDialog = ({ open, onClose}) => {
       // console.log("Country: "+country);
       // console.log("Invitee Email: "+inviteeEmail);
 
-      const tripGroupData = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail);
-      // console.log('Trip group created:', tripGroupData);
+      const responseStatus = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail);
+      // console.log('Trip group created:', responseStatus);
 
-      if (!tripGroupData) {
+      if (!responseStatus) {
         setStatusMessage('新增行程失敗!');
         setCreationStatusOpen(true);
         return;

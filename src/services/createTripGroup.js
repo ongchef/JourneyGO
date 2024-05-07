@@ -34,16 +34,19 @@ export async function createTripGroup(Token, groupName, startDate, endDate, coun
       });
       
       console.log('createTripGroup Response:', response);
+
       if (!response.ok) {
         // const data = await response.json();
         // console.log('Group:', data);
         // return data; 
         console.error('Failed to create trip group:', response.statusText);
-        return null;
+        return false
+      }else {
+        return true;
       }
     } catch (error) {
       console.error('Error creating trip group:', error);
-      return null;
+      return false;
     }
   };
 
