@@ -115,7 +115,7 @@ export const getRoute = async(groupId,day,transType) => {
         return spot.lat+","+spot.lon
     })
     const spotIdList = spots.map((spot)=>spot.spot_id)
-    if(lonLatStr.length>0){
+    if(lonLatStr.length>1){
         const args = {
             params: {
                 key: process.env.MAP_API_KEY,

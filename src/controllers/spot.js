@@ -178,7 +178,7 @@ export const constructRoute = async (req, res) => {
     const result = await getRoute(groupId,day,transType);
 
     if(result === undefined){
-      return res.status(400).json({message:"No Spot"})
+      return res.status(400).json({message:"Unable to plan routes."})
     }
 
     if("available_travel_modes" in result){
