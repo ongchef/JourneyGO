@@ -58,7 +58,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
                         <Box className="flex items-center mt-2">
                             <AvatarGroup max={5} spacing={-20}>
                                 {data?.user_names.map((name, index) => (
-                                    <Tooltip title={name}>
+                                    <Tooltip title={name} key={index}>
                                         <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
                                             {name[0].toUpperCase()}
                                         </Avatar>

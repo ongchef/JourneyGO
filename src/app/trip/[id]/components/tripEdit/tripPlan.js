@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-// import FaceIcon from "@mui/icons-material/Face";
 import { Typography, Tooltip, Avatar, AvatarGroup, Button } from "@mui/material";
 
 import DayPanel from "./dayPanel";
@@ -40,7 +39,7 @@ export default function TripPlan({ groupInfo }) {
                         <AvatarGroup max={5} spacing={-10}>
                             {groupInfo?.user_names?.map((user, index) => {
                                 return (
-                                    <Tooltip title={user}>
+                                    <Tooltip title={user} key={index}>
                                         <Avatar key={index}>{user[0].toUpperCase()}</Avatar>
                                     </Tooltip>
                                 );

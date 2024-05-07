@@ -13,7 +13,7 @@ export default function AllSpots({day}) {
   const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
   const [newDay, setNewDay] = useState();       //store day from socket
 
-  const socket = io("http://localhost:3000"); //cannot access environment variable on client side
+  const socket = io(process.env.NEXT_PUBLIC_BASE_URL);
 
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);

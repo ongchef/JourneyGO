@@ -75,7 +75,7 @@ const Map = () => {
             position: { lat: position.lat, lng: position.lng },
           });
           const infoWindow = new google.maps.InfoWindow({
-            content: position.title,
+            content: position?.title,
           });
 
           marker.addListener('click', () => {
