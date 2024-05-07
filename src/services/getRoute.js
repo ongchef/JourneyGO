@@ -11,7 +11,7 @@ export async function getRoute(Token, groupId, day, transOption) {
   const bearer_token = `Bearer ${Token}`;
 
   console.log("getRoute url", url);
-  console.log("getRoute bearer_token", bearer_token);
+  // console.log("getRoute bearer_token", bearer_token);
   try {
     console.log("getRoute params", groupId, day, transOption);
     const res = await fetch(url, {
