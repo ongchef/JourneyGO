@@ -19,7 +19,7 @@ const NotificationButton = ({}) => {
   const [reload, setReload] = useState(false); 
 
   // open dialog when button is clicked
-  //關掉Dialog放在NotificationDialog.js處理
+  // 關掉Dialog放在NotificationDialog.js處理
   const handleButtonClick = () => { 
     setDialogOpen(true);
   }

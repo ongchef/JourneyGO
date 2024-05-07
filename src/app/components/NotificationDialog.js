@@ -16,6 +16,7 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
 
   const [invitationStatusOpen, setInvitationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
+  const [acceptInvitation, setAcceptInvitation] = useState(false);
 
 
 
@@ -31,6 +32,7 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
           setPendingInvitations(pendingInvitations.filter((inv) => inv.id !== invitation.id));
           setStatusMessage('已接受邀請');
           setInvitationStatusOpen(true);
+          setAcceptInvitation(true);
         
         } catch (error) {
           console.error('Error accepting invitation:', error);
@@ -62,7 +64,11 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
 
       const handleInvitationStatusDialogClose = () => {
         setInvitationStatusOpen(false)
-        handleCancel();
+        if (acceptInvitation) {
+          window.location.reload();
+        }else {
+          handleCancel();
+        }
       }
 
   return (
