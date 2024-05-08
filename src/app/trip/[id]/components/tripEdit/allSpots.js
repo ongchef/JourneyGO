@@ -45,18 +45,15 @@ export default function AllSpots({day}) {
       // console.log("socket is connected");
     }
   
+    socket.on("server_spot_change", data => {
+      const { day, spot_sequence } = data;
+      // console.log("server_spot_change", data);
+      setNewCards(spot_sequence);
+      setNewDay(day);
+    })
     const Token = getToken();
     enterRoom(Token);
   }, []);
-
-    useEffect(()=>{
-      socket.on("server_spot_change", data => {
-        const { day, spot_sequence } = data;
-        // console.log("server_spot_change", data);
-        setNewCards(spot_sequence);
-        setNewDay(day);
-      })
-    },[newCards])
 
   // update allSpots when server_spot_change 
   useEffect(() => {
