@@ -20,7 +20,7 @@ const NavBar = ({ children }) => {
   };
 
   const handleProfile = () => {
-    router.push('/profile');
+    // router.push('/profile');
   }
 
   const handleLogout = () => {
