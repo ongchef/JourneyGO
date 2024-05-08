@@ -18,8 +18,10 @@ export const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*",
+    method: ["GET", "POST"],
     credentials: true,
   },
+  allowEIO3: true
 });
 
 const port = process.env.PORT || 3001;
