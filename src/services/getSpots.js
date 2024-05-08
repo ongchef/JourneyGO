@@ -15,8 +15,8 @@ export async function getSpots(Token, groupId, day) {
       cache: 'no-cache',
     });
     if(res.ok) {
-      console.log("getSpots status", res.status);
       const data = await res.json();
+      console.log("getSpots status", res.status);
       const formattedData = data["spots"]?.map((spot) => {
         return {
           id: spot?.spot_id,

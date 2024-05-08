@@ -9,7 +9,7 @@ import { io } from 'socket.io-client';
 import { getToken } from '@/utils/getToken';
 
 export default function AllSpots({day}) {
-  const {allSpots, setAllSpots, currGroupId, setRefetch} = useContext(DataContext);
+  const {allSpots, setAllSpots, currGroupId, setRefetch, newSpot} = useContext(DataContext);
   const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
   const [newDay, setNewDay] = useState();       //store day from socket
 
@@ -44,34 +44,44 @@ export default function AllSpots({day}) {
       });
       // console.log("socket is connected");
     }
-  
+    const Token = getToken();
+    enterRoom(Token);
+
     socket.on("server_spot_change", data => {
+      // setRefetch(prev => prev + 1); // future plan
       const { day, spot_sequence } = data;
       // console.log("server_spot_change", data);
       setNewCards(spot_sequence);
       setNewDay(day);
     })
-    const Token = getToken();
-    enterRoom(Token);
   }, []);
+
+  // trigger socket when posting new spot
+  useEffect(() => {
+    if (allSpots?.[currGroupId]?.[day]){
+      spotChange(day, newSpot);
+    }
+  }, [newSpot])
 
   // update allSpots when server_spot_change 
   useEffect(() => {
     try{
-      if (newCards.length !== allSpots?.[currGroupId]?.[newDay]) {
-        setRefetch(prev => prev + 1);
-      }
-      const prevCards = allSpots?.[currGroupId]?.[newDay];
-      const reorderedCards = prevCards?.sort((a, b) =>
-        newCards.indexOf(a.id) - newCards.indexOf(b.id)
-      );
-      setAllSpots(prevState => ({
-        ...prevState,
-        [currGroupId]: {
-          ...prevState[currGroupId] || {},  
-          [newDay]: reorderedCards,
-        },
-      }));
+      setRefetch(prev => prev + 1);
+      // if (newCards?.length !== allSpots?.[currGroupId]?.[newDay]) {
+      //   setRefetch(prev => prev + 1);
+      //   return;
+      // }
+      // const prevCards = allSpots?.[currGroupId]?.[newDay];
+      // const reorderedCards = prevCards?.sort((a, b) =>
+      //   newCards.indexOf(a.id) - newCards.indexOf(b.id)
+      // );
+      // setAllSpots(prevState => ({
+      //   ...prevState,
+      //   [currGroupId]: {
+      //     ...prevState[currGroupId] || {},  
+      //     [newDay]: reorderedCards,
+      //   },
+      // }));
     }
     catch (e) {
       setRefetch(prev => prev + 1);

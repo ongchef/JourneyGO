@@ -16,10 +16,18 @@ export async function postSpots(Token, groupId, day, spot_data) {
       body: JSON.stringify(spot_data),
     });
     if(res.ok) {
-      const data = await res.json();
+      const spot = await res.json();
       const status = res.status;
-      console.log("postSpots", status, data);
-      return status;  
+      const formattedData = {
+        id: spot?.spot_id,
+        title: spot?.spot_name,
+        location: spot?.location,
+        lng: spot?.lon,
+        lat: spot?.lat,
+      }
+
+      console.log("postSpots", status, formattedData);
+      return {status: status, formattedData: formattedData};  
     } 
     else {
       console.log("postSpots error", res.status, res.statusText);
