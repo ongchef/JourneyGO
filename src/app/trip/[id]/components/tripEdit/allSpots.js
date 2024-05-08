@@ -58,10 +58,10 @@ export default function AllSpots({day}) {
       socket.on("server_spot_change", handleServerSpotChange)
       function enterRoom(Token) {
         // check if socket is already connected
-        if (socket.connected) {
+        /* if (socket.connected) {
           console.log("socket is already connected");
           return;
-        }
+        } */
         console.log("enter_room_func");
         socket.emit("enter_room", {
           groupId: currGroupId,  //int
