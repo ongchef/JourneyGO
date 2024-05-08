@@ -31,6 +31,13 @@ export default function AllSpots({day}) {
       spot_sequence: spot_sequence,
     });
   }
+
+  useEffect(()=>{
+    socket.on('keep-alive', (data) => {
+      console.log('Keep-alive message received at', data.time);
+    });
+  },[])
+
   useEffect(() => {
     function enterRoom(Token) {
       // check if socket is already connected
