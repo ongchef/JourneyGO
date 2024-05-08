@@ -27,7 +27,7 @@ export default function AllSpots({day}) {
   }
 
   useEffect(()=>{
-    const socket = io(process.env.NEXT_PUBLIC_BASE_URL,
+    const newSocket = io(process.env.NEXT_PUBLIC_BASE_URL,
       {
         transports:['websocket'],
         reconnection: true,
@@ -35,20 +35,17 @@ export default function AllSpots({day}) {
         reconnectionDelay:1000,
         reconnectionDelayMax:6000,
       });
-    setSocket(socket)
-    socket.on('keep-alive', (data) => {
+    setSocket(newSocket)
+    newSocket.on('keep-alive', (data) => {
       console.log('Keep-alive message received at', data.time);
     });
-  },[])
-
-  useEffect(()=>{
     function enterRoom(Token) {
       // check if socket is already connected
-      if (socket.connected) {
+      if (newSocket.connected) {
         console.log("socket is already connected");
         return;
       }
-      socket.emit("enter_room", {
+      newSocket.emit("enter_room", {
         groupId: currGroupId,  //int
         jwt: Token,
       });
@@ -57,7 +54,7 @@ export default function AllSpots({day}) {
     const Token = getToken();
     enterRoom(Token);
   },[])
-  
+
   useEffect(()=>{
     const handleServerSpotChange = data => {
       // setRefetch(prev => prev + 1); // future plan
