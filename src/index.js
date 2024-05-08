@@ -9,7 +9,9 @@ import db from "./models/db_connection.js";
 import { app } from "./app.js";
 
 import { updateSpotBySpotId } from "./models/spotModel.js";
-import { setInterval } from "core-js";
+import pkg from "core-js";
+
+const { setInterval } = pkg;
 
 dotenv.config();
 const require = createRequire(import.meta.url);
@@ -37,9 +39,9 @@ setInterval(() => {
   const time = new Date();
   io.emit('keep-alive', { 
     time: time
-  }, 30000);
+  });
   console.log(`keep-alive emit at ${time}`);
-})
+}, 15000);
 
 io.on("connection", (socket) => {
 
