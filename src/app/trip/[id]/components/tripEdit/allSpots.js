@@ -39,21 +39,8 @@ export default function AllSpots({day}) {
     newSocket.on('keep-alive', (data) => {
       console.log(`${newSocket.id} Keep-alive message received at`, data.time);
     });
-    function enterRoom(Token) {
-      // check if socket is already connected
-      if (newSocket.connected) {
-        console.log("socket is already connected");
-        return;
-      }
-      newSocket.emit("enter_room", {
-        groupId: currGroupId,  //int
-        jwt: Token,
-      });
-      // console.log("socket is connected");
-    }
-    const Token = getToken();
-    enterRoom(Token);
   },[])
+
 
   useEffect(()=>{
     const handleServerSpotChange = data => {
@@ -65,6 +52,20 @@ export default function AllSpots({day}) {
     }
     if(socket){
       socket.on("server_spot_change", handleServerSpotChange)
+      function enterRoom(Token) {
+        // check if socket is already connected
+        if (newSocket.connected) {
+          console.log("socket is already connected");
+          return;
+        }
+        newSocket.emit("enter_room", {
+          groupId: currGroupId,  //int
+          jwt: Token,
+        });
+        // console.log("socket is connected");
+      }
+      const Token = getToken();
+      enterRoom(Token);
     }
     
     return () => {
