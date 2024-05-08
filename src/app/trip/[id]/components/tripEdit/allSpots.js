@@ -12,7 +12,7 @@ export default function AllSpots({day}) {
   const {allSpots, setAllSpots, currGroupId, setRefetch, newSpot} = useContext(DataContext);
   const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
   const [newDay, setNewDay] = useState();       //store day from socket
-  const [socket, setSocket] = useState(null)
+  const [socket, setSocket] = useState({id:null})
   
 
   const spotChange = (_day, updateCards) => {
@@ -75,7 +75,7 @@ export default function AllSpots({day}) {
         socket.off("server_spot_change", handleServerSpotChange);
       }
     }
-  },[socket])
+  },[socket.id])
   
 
   // trigger socket when posting new spot
