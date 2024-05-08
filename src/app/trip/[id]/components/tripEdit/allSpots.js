@@ -13,13 +13,13 @@ export default function AllSpots({day}) {
   const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
   const [newDay, setNewDay] = useState();       //store day from socket
   const [socket, setSocket] = useState(null)
-  //const [socketId, setSocketId] = useState(0)
+  const [socketId, setSocketId] = useState(0)
   
 
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
     console.log(`${socket.id} client_spot_change`);
-    //setSocketId(socket.id)
+    setSocketId(socket.id)
     // console.log("spotChange", _day, spot_sequence);
     socket.emit("client_spot_change", {
       groupId: currGroupId,
@@ -40,7 +40,7 @@ export default function AllSpots({day}) {
     setSocket(newSocket)
     newSocket.on('keep-alive', (data) => {
       console.log(`${newSocket.id} Keep-alive message received at`, data.time);
-      //setSocketId(newSocket.id)
+      setSocketId(newSocket.id)
     });
   },[])
 
@@ -78,7 +78,7 @@ export default function AllSpots({day}) {
         socket.off("server_spot_change", handleServerSpotChange);
       }
     }
-  },[socket])
+  },[socketId])
   
 
   // trigger socket when posting new spot
