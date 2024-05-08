@@ -37,7 +37,7 @@ export default function AllSpots({day}) {
       });
     setSocket(newSocket)
     newSocket.on('keep-alive', (data) => {
-      console.log('Keep-alive message received at', data.time);
+      console.log(`${newSocket.id} Keep-alive message received at`, data.time);
     });
     function enterRoom(Token) {
       // check if socket is already connected
@@ -67,9 +67,11 @@ export default function AllSpots({day}) {
       socket.on("server_spot_change", handleServerSpotChange)
     }
     
-    /* return () => {
-      socket.off("server_spot_change", handleServerSpotChange);
-    } */
+    return () => {
+      if(socket){
+        socket.off("server_spot_change", handleServerSpotChange);
+      }
+    }
   },[socket])
   
 
