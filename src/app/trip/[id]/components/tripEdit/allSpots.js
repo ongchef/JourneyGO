@@ -17,7 +17,7 @@ export default function AllSpots({day}) {
 
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
-    console.log("spotChange", _day, spot_sequence);
+    // console.log("spotChange", _day, spot_sequence);
     socket.emit("client_spot_change", {
       groupId: currGroupId,
       day: _day,
@@ -38,40 +38,44 @@ export default function AllSpots({day}) {
       });
       // console.log("socket is connected");
     }
-  
+    const Token = getToken();
+    enterRoom(Token);
+
     socket.on("server_spot_change", data => {
+      // setRefetch(prev => prev + 1); // future plan
       const { day, spot_sequence } = data;
       // console.log("server_spot_change", data);
       setNewCards(spot_sequence);
       setNewDay(day);
     })
-    const Token = getToken();
-    enterRoom(Token);
   }, []);
 
   // trigger socket when posting new spot
   useEffect(() => {
-    spotChange(day, newSpot);
+    if (allSpots?.[currGroupId]?.[day]){
+      spotChange(day, newSpot);
+    }
   }, [newSpot])
 
   // update allSpots when server_spot_change 
   useEffect(() => {
     try{
-      if (newCards?.length !== allSpots?.[currGroupId]?.[newDay]) {
-        setRefetch(prev => prev + 1);
-        return;
-      }
-      const prevCards = allSpots?.[currGroupId]?.[newDay];
-      const reorderedCards = prevCards?.sort((a, b) =>
-        newCards.indexOf(a.id) - newCards.indexOf(b.id)
-      );
-      setAllSpots(prevState => ({
-        ...prevState,
-        [currGroupId]: {
-          ...prevState[currGroupId] || {},  
-          [newDay]: reorderedCards,
-        },
-      }));
+      setRefetch(prev => prev + 1);
+      // if (newCards?.length !== allSpots?.[currGroupId]?.[newDay]) {
+      //   setRefetch(prev => prev + 1);
+      //   return;
+      // }
+      // const prevCards = allSpots?.[currGroupId]?.[newDay];
+      // const reorderedCards = prevCards?.sort((a, b) =>
+      //   newCards.indexOf(a.id) - newCards.indexOf(b.id)
+      // );
+      // setAllSpots(prevState => ({
+      //   ...prevState,
+      //   [currGroupId]: {
+      //     ...prevState[currGroupId] || {},  
+      //     [newDay]: reorderedCards,
+      //   },
+      // }));
     }
     catch (e) {
       setRefetch(prev => prev + 1);

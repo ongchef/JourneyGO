@@ -28,6 +28,7 @@ export default function DndContainer({day, spotChange}) {
       try {
         const res = await getSpots(Token, currGroupId, currDay);
         if (res !== undefined && res.length !== 0 ) {
+          // console.log("set all spots day", currDay, res);
           setAllSpots((prevState) => {
             const updatedState = {
               ...prevState,
@@ -71,6 +72,7 @@ export default function DndContainer({day, spotChange}) {
         [day]: updatedCards,
       },
     }));
+    // TODO: call spotChange if postSpots succeed
     spotChange(day, updatedCards); //socket
   });
 

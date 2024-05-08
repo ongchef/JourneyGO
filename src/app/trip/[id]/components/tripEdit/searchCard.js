@@ -33,12 +33,12 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
       }
       try {
         const res = await postSpots(Token, currGroupId, currDay, data);
-        console.log("post data", res);
+        // console.log("post data", res);
         const spotData = res?.formattedData;
         const status = res?.status;
         if (status === 201 || status === 200) {
-          setNewSpot([...allSpots?.[currGroupId]?.[currDay], spotData])
-          // setRefetch((prev) => prev + 1);
+          setNewSpot([...(allSpots?.[currGroupId]?.[currDay] ?? []), spotData]);
+          setRefetch((prev) => prev + 1);
         } else {
           router.push(pathname, undefined, { scroll: false });
         }
@@ -52,7 +52,7 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
 
   return (
     <div className='flex flex-row'>
-      <Image src={photo} alt='place_photo' width={100} height={100} className='object-cover aspect-square'/>
+      {photo && <Image src={photo} alt='place_photo' width={100} height={100} className='object-cover aspect-square'/>}
       <div className='flex flex-row shadow-lg w-full justify-between'>
         <div className='flex flex-col p-3'>
           <Typography variant='h6'>{title}</Typography>

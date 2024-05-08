@@ -2,6 +2,7 @@
 
 import { useState, useContext, useEffect } from 'react';
 import { DataContext } from '@/app/components/dataContext';
+import { updateRoute } from '@/services/updateRoute';
 import { getRoute } from '@/services/getRoute';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -11,15 +12,12 @@ import FormLabel from '@mui/material/FormLabel';
 import { getToken } from '@/utils/getToken';
 
 export default function SelectTransport() {
-  const {allTrans, setAllTrans, currGroupId, currDay, allSpots} = useContext(DataContext);
+  const {allTrans, setAllTrans, currGroupId, currDay, allSpots, setNewSpot} = useContext(DataContext);
   const [value, setValue] = useState("大眾運輸"); // default value
 
   async function updateTrans(transOption, Token) {
     if (allSpots?.[currGroupId]?.[currDay] === undefined) return;
-    const res = await getRoute(Token, currGroupId, currDay, transOption);
-    // if (res === undefined) {
-    //   window.location.reload(true);
-    // }
+    const res = await updateRoute(Token, currGroupId, currDay, transOption);
     setAllTrans((prev) => {
       let updatedDay = prev?.[currGroupId]?.[currDay] || [];
       updatedDay = [transOption, res];  
@@ -34,23 +32,49 @@ export default function SelectTransport() {
     // console.log("allTrans", allTrans);
   }
 
+  async function getTrans(Token) {
+    if (allSpots?.[currGroupId]?.[currDay] === undefined) return;
+    const {durations, status, option} = await getRoute(Token, currGroupId, currDay);
+    if (status !== 200) {
+      updateTrans(value, Token); // if no route data
+      return;
+    }
+    if (durations !== undefined){
+      let newValue = "";
+      if(option === "TRANSIT") {
+        newValue = "大眾運輸";
+      } else if (option === "DRIVING") {
+        newValue = "汽車";
+      }
+      setValue(newValue);
+      setAllTrans((prev) => {
+        const updatedDay = [newValue, durations];  
+        return {
+          ...prev,
+          [currGroupId]: {
+            ...prev[currGroupId] || {},
+            [currDay]: updatedDay,
+          },
+        };
+      });
+    }
+  }
+
+  // get transportation data
   useEffect(() => {
     if (!currGroupId || !currDay) return;
     const Token = getToken();
-    // console.log("update trans", Token);
-    if (allTrans?.[currGroupId] && allTrans?.[currGroupId]?.[currDay]) {
-      setValue(allTrans?.[currGroupId]?.[currDay][0]);
-      updateTrans(allTrans?.[currGroupId]?.[currDay][0], Token);
-    } else {
-      updateTrans(value, Token); // default value
-    }
+    getTrans(Token);
   }, [currGroupId, currDay, allSpots]);
 
+  //update transportation data
   const handleChange = (event) => {
     setValue(event.target.value);
     if (!currGroupId || !currDay) return;
     const Token = getToken();
     updateTrans(event.target.value, Token);
+    const spotSequence = allSpots?.[currGroupId]?.[currDay];
+    setNewSpot(spotSequence);
   };
 
   return (

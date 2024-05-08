@@ -14,7 +14,7 @@ export async function putSpots(Token, groupId, day, updateCards_sequnce) {
         'Content-Type': 'application/json',
         'Authorization': `${bearer_token}`,
       },
-      body: JSON.stringify(updateCards_sequnce),
+      body: JSON.stringify(updateCards_sequnce),  // array of spot id
     });
     if(res) {
       const data = await res.json();
