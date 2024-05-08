@@ -35,7 +35,9 @@ io.on("connection", (socket) => {
 
   socket.on("enter_room", (data) => {
     socket.join(data.groupId);
-    console.log(`${socket.id} (jwt: ${data.jwt}) enters ${data.groupId} successfully.`);
+    console.log(
+      `${socket.id} (jwt: ${data.jwt}) enters ${data.groupId} successfully.`
+    );
   });
 
   // Receive client spot seq change
@@ -46,7 +48,7 @@ io.on("connection", (socket) => {
     });
     // Call API update DB rows
     var cnt = 0;
-    data.spot_sequence.forEach(async (element) => {
+    data.spot_sequence?.forEach(async (element) => {
       updateSpotBySpotId(element, Number(data.day) + 1, cnt);
       cnt += 1;
     });
