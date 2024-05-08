@@ -63,12 +63,14 @@ export default function AllSpots({day}) {
       setNewCards(spot_sequence);
       setNewDay(day);
     }
-    socket.on("server_spot_change", handleServerSpotChange)
-
-    return () => {
-      socket.off("server_spot_change", handleServerSpotChange);
+    if(socket){
+      socket.on("server_spot_change", handleServerSpotChange)
     }
-  },[])
+    
+    /* return () => {
+      socket.off("server_spot_change", handleServerSpotChange);
+    } */
+  },[socket])
   
 
   // trigger socket when posting new spot
