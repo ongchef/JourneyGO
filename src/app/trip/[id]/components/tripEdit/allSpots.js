@@ -24,6 +24,7 @@ export default function AllSpots({day}) {
 
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
+    console.log(`${socket.id} client_spot_change`);
     // console.log("spotChange", _day, spot_sequence);
     socket.emit("client_spot_change", {
       groupId: currGroupId,
@@ -54,14 +55,20 @@ export default function AllSpots({day}) {
     const Token = getToken();
     enterRoom(Token);
 
-    socket.on("server_spot_change", data => {
+    const handleServerSpotChange = data => {
       // setRefetch(prev => prev + 1); // future plan
       const { day, spot_sequence } = data;
-      // console.log("server_spot_change", data);
+      console.log(`${socket.id} server_spot_change`);
       setNewCards(spot_sequence);
       setNewDay(day);
-    })
-  }, []);
+    }
+
+    socket.on("server_spot_change", handleServerSpotChange)
+
+    return () => {
+      socket.off("server_spot_change", handleServerSpotChange);
+    }
+  }, [socket, newSpot, newCards]);
 
   // trigger socket when posting new spot
   useEffect(() => {
