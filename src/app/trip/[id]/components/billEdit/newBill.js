@@ -90,6 +90,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
     // post transaction
     const postTransactionData = async () => {
         try {
+            const Token = getToken();
             let data = await postTransaction(Token, group_id, billName, amount, payerId, participantsId, billDate, billTime);
 
             if (data && data.length !== 0) {
@@ -119,6 +120,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
             };
 
             console.log("putTransactionData dataToSend:", dataToSend);
+            const Token = getToken();
             let data = await putTransaction(Token, group_id, billId, dataToSend);
 
             if (data && data.length !== 0) {
