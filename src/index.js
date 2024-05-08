@@ -16,7 +16,8 @@ const swaggerDocument = require("../swagger0413.json");
 
 export const server = createServer(app);
 const io = new Server(server, {
-  pingInterval: 10000,
+  pingInterval: 3000,
+  pingTimeout: 5000,
   cors: {
     origin: "*",
     method: ["GET", "POST"],
