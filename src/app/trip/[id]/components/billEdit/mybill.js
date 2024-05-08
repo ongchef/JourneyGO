@@ -4,7 +4,7 @@ import { Paper, Button, Box, useTheme, Typography } from "@mui/material";
 function MyBill({userBalance}) {
 
     useEffect(() => {
-        console.log('userBalance updated:', userBalance);
+        console.log('[render] userBalance updated:', userBalance);
     }, [userBalance]);
 
     return (

@@ -9,13 +9,13 @@ import { useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia, CardAc
 import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
 
 function TripList({ data, tabValue, setTripOverview }) {
-    // const { Token, setAllGroups } = useContext(DataContext);
-    const { setAllGroups } = useContext(DataContext);
-    const Token = getToken();
+    
+    const { setAllGroups } = useContext(DataContext)
 
     const handleClick = (group_id) => {
         async function fetch() {
             try {
+                const Token = getToken();
                 const data = await getTripGroupOverview(Token, group_id);
                 // console.log('Trip group overview:', data);
                 if (data && data.length !== 0) {

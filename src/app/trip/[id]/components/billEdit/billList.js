@@ -9,8 +9,6 @@ import { Button, Box, useTheme, Typography, Card, CardContent, AvatarGroup, Avat
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function BillList({ group_id, transactionResult, reloadTabPanel }) {
-    // const { Token } = useContext(DataContext);
-    const Token = getToken();
     
     const [writeOffStatusOpen, setWriteOffStatusOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(null);
@@ -69,9 +67,11 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
         const now = dayjs();
         const date = now.format("YYYY-MM-DD");
         const time = now.format("HH:mm");
-        // postWriteOffBill(Token, group_id, date, time, debtor_id, creditor_id, amount);
+        
         console.log("handleSubmit data:", data);
 
+        const Token = getToken();
+        // postWriteOffBill(Token, group_id, date, time, debtor_id, creditor_id, amount);
         let response = postWriteOffBill(Token, group_id, date, time, data.payee_id, data.payer_id, data.amount);
         console.log("postWriteOffBill response:", response);
         reloadTabPanel();

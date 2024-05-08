@@ -10,14 +10,12 @@ import { getToken } from "@/utils/getToken";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel, Box } from "@mui/material";
 
 const newMemberDialog = ({ open, onClose }) => {
-    // const { Token, allGroups } = useContext(DataContext);
     const { allGroups } = useContext(DataContext);
-    const Token = getToken();
 
     const [inviteeEmail, setInviteeEmail] = useState("");
     const [groupId, setGroupId] = useState(allGroups.group_id);
     const [creationStatusOpen, setCreationStatusOpen] = useState(false);
-    const [statusMessage, setStatusMessage] = useState('');
+    const [statusMessage, setStatusMessage] = useState("");
 
     const handleChange = (event) => {
         setInviteeEmail(event.target.value);
@@ -25,31 +23,29 @@ const newMemberDialog = ({ open, onClose }) => {
 
     const handleSave = async () => {
         try {
-            // console.log("Invitee Email: "+inviteeEmail);
-            // console.log("group_id: " + groupId);
-
+            const Token = getToken();
             const responseStatus = await inviteToGroup(Token, inviteeEmail, groupId);
-            
+
             if (!responseStatus) {
-              setStatusMessage('新增成員失敗!');
-              setCreationStatusOpen(true);
-              return;
+                setStatusMessage("新增成員失敗!");
+                setCreationStatusOpen(true);
+                return;
             }
-            setStatusMessage('已新增成員');
+            setStatusMessage("已新增成員");
             setCreationStatusOpen(true);
 
             onClose();
         } catch (error) {
             console.error("Error fetching invitations:", error);
-            setStatusMessage('新增成員失敗!');
-            setCreationStatusOpen(true); 
+            setStatusMessage("新增成員失敗!");
+            setCreationStatusOpen(true);
         }
     };
 
     const handleCreationStatusDialogClose = () => {
-      setCreationStatusOpen(false)
-      window.location.reload();
-    }
+        setCreationStatusOpen(false);
+        window.location.reload();
+    };
 
     const handleCancel = () => {
         setInviteeEmail("");

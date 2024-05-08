@@ -11,8 +11,6 @@ import { updateInvitationStatus } from '@/services/updateInvitationStatus';
 
 
 const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvitations, setReload}) => {
-  // const { Token } = useContext(DataContext);
-  const Token = getToken();
 
   const [invitationStatusOpen, setInvitationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
@@ -24,10 +22,9 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
       const handleAccept = async (invitation) => {
         try {
           console.log("invitation " + invitation)
+          const Token = getToken();
           await updateInvitationStatus(Token, invitation.invitation_id, 'accepted');
           // console.log("Invitation status:" + invitation.status)
-
-          // await inviteToGroup(Token, invitation.inviter_name, invitation.invitee_name, invitation.group_name);
           
           setPendingInvitations(pendingInvitations?.filter((inv) => inv.id !== invitation.id));
           setStatusMessage('已接受邀請');
@@ -43,6 +40,7 @@ const NotificationDialog = ({open, onClose, pendingInvitations, setPendingInvita
 
       const handleDecline = async (invitation) => {
         try {
+          const Token = getToken();
           await updateInvitationStatus(Token, invitation.invitation_id, 'rejected');
           setPendingInvitations(pendingInvitations?.filter((inv) => inv.id !== invitation.id));
 

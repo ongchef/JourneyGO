@@ -10,8 +10,6 @@ import { getToken } from '@/utils/getToken';
 import { createTripGroup } from '@/services/createTripGroup';
 
 const NewJourneyDialog = ({ open, onClose}) => {
-  // const { Token } = useContext(DataContext);
-  const Token = getToken();
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -21,7 +19,6 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const [creationStatusOpen, setCreationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   
- // console.log('Token from newJourney:' + Token); 
 
   const handleDateChange = (dates) => {
     const [start, end] = dates;
@@ -50,12 +47,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
   const handleSave = async () => {
     try {
-      // console.log("Group Name: "+groupName);
-      // console.log("Start Date: "+startDate);
-      // console.log("End Date: "+endDate);
-      // console.log("Country: "+country);
-      // console.log("Invitee Email: "+inviteeEmail);
-
+      const Token = getToken();
       const responseStatus = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail);
       // console.log('Trip group created:', responseStatus);
 

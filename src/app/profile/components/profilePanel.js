@@ -1,13 +1,14 @@
 'use client';
 import React, { useState, useEffect, useContext } from 'react';
 import { DataContext } from '@/app/components/dataContext';
+import { getToken } from '@/utils/getToken';
 import { Button,InputLabel, TextField,Box,} from "@mui/material";
 
 
 const ProfilePanel = ({}) => {
- 
+
   // const [loading, setLoading] = useState(false);
-  //const { Token } = useContext(DataContext);
+    const token = getToken();
     const [reload, setReload] = useState(false);
     const [profile, setProfile] = useState({}); 
     const [profileData, setProfileData] = useState({});
@@ -18,27 +19,27 @@ const ProfilePanel = ({}) => {
 
     
     const handleNameChange = (e) => {
-      //setProfileData({...profileData, name: e.target.value});
+      setProfileData({...profileData, name: e.target.value});
     }
 
     const handleEmailChange = (e) => {
-      //setProfileData({...profileData, email: e.target.value});
+      setProfileData({...profileData, email: e.target.value});
     }
 
     const handlePhoneChange = (e) => {
-      //setProfileData({...profileData, phone: e.target.value});
+      setProfileData({...profileData, phone: e.target.value});
     }
 
     const handlePasswordChange = (e) => {
-      //setProfileData({...profileData, password: e.target.value});
+      setProfileData({...profileData, password: e.target.value});
     }
 
     const handleUpdateButtonClick = () => {
-      //console.log(profileData);
+      console.log(profileData);
     }
 
     const handleResetButtonClick = () => {
-      //setProfileData(profile);
+      setProfileData(profile);
     }
 
 

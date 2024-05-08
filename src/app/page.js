@@ -52,35 +52,14 @@ export default function Home() {
     };
   }, []);
 
-  
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-  const handleTabChange = (event, newValue) => {
-    setTabValue(newValue);
-  };
-
-  const setDividerStyles = {
-    marginTop: `3rem !important`,
-  };
-
-  // const { Token } = useContext(DataContext);
-  const Token = getToken();
-
-  // console.log('Token from DataContext:' + Token);
-
   useEffect(() => {
-    // console.log(Token)
-    if(Token!==undefined){
-      fetchAllGroups();
-      console.log("render")
-    }
-  }, [Token, key]);
+    const Token = getToken();
+    fetchAllGroups(Token);
+    console.log("render homepage")
+    
+  }, []);
 
-  async function fetchAllGroups() {
+  async function fetchAllGroups(Token) {
     try {
       const data = await getTripGroups(Token);
       // console.log('Trip groups:', data);
@@ -102,8 +81,22 @@ export default function Home() {
       console.error('Error fetching all groups:', error);
     }
   }
-  // console.log("user's trip groups:");
-  // console.log(tripGroups);
+
+  
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
+  const setDividerStyles = {
+    marginTop: `3rem !important`,
+  };
+
 
   if (loading) {
     return <LoadingIndicator />;
@@ -137,7 +130,7 @@ export default function Home() {
         </Grid>
       </Box>
 
-      <NewJourneyDialog open={openDialog} onClose={handleCloseDialog} token={Token} />
+      <NewJourneyDialog open={openDialog} onClose={handleCloseDialog} />
     
   </main>
 );

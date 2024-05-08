@@ -12,8 +12,6 @@ import { styled } from "@mui/system";
 const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
 
 const AllTransactionList = ({ group_id, reloadTabPanel }) => {
-    // const { Token } = useContext(DataContext);
-    const Token = getToken();
 
     const [transactionList, setTransactionList] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -30,11 +28,13 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
     };
 
     useEffect(() => {
+        console.log("render allTransactionList");
         fetchTransactionList();
     }, []);
 
     async function fetchTransactionList() {
         try {
+            const Token = getToken();
             const data = await getAllTransactions(Token, group_id);
             console.log("all transaction result:", data);
             if (data && data.length !== 0) {

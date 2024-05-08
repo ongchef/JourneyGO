@@ -12,8 +12,6 @@ import dayjs from "dayjs";
 import { Dialog, DialogContent, Typography, DialogTitle, Button, Grid, InputLabel, TextField, Select, Box, FormControl, MenuItem } from "@mui/material";
 
 const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, transactionData = null }) => {
-    // const { Token } = useContext(DataContext);
-    const Token = getToken();
 
     const [groupMembers, setGroupMembers] = useState([]);
     const [groupMembersId, setGroupMembersId] = useState([]);
@@ -45,8 +43,10 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
     const [statusMessage, setStatusMessage] = useState("");
 
     useEffect(() => {
+        console.log("render newBill");
         async function fetch() {
             try {
+                const Token = getToken();
                 const data = await getTripGroupOverview(Token, group_id);
                 if (data && data.length !== 0) {
                     setGroupMembers(data.user_names);
@@ -61,7 +61,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
             }
         }
         fetch();
-    }, [Token]);
+    }, []);
 
     // use in edit mode, set the initial transaction data
     useEffect(() => {

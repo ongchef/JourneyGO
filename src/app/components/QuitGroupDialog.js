@@ -13,8 +13,7 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, I
 const quitGroupDialog = ({ open, onClose}) => {
 
   // const { Token, allGroups } = useContext(DataContext);
-  const { allGroups } = useContext(DataContext);
-  const Token = getToken();
+  const { allGroups } = useContext(DataContext)
 
   const [groupId, setGroupId] = useState(allGroups.group_id);
   
@@ -23,7 +22,8 @@ const quitGroupDialog = ({ open, onClose}) => {
   const handleSave = async() => {
     try {
       console.log("group_id: "+groupId);
-   
+      
+      const Token = getToken();
       const valid = await quitGroup(Token, groupId);
       onClose();
       console.log(valid)
