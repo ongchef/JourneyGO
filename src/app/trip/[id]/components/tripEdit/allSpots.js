@@ -13,7 +13,14 @@ export default function AllSpots({day}) {
   const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
   const [newDay, setNewDay] = useState();       //store day from socket
 
-  const socket = io(process.env.NEXT_PUBLIC_BASE_URL,{transports:['websocket']});
+  const socket = io(process.env.NEXT_PUBLIC_BASE_URL,
+    {
+      transports:['websocket'],
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay:1000,
+      reconnectionDelayMax:5000
+    });
 
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
@@ -24,7 +31,6 @@ export default function AllSpots({day}) {
       spot_sequence: spot_sequence,
     });
   }
-
   useEffect(() => {
     function enterRoom(Token) {
       // check if socket is already connected
