@@ -9,7 +9,7 @@ import { io } from 'socket.io-client';
 import { getToken } from '@/utils/getToken';
 
 export default function AllSpots({day}) {
-  const {allSpots, setAllSpots, currGroupId, setRefetch} = useContext(DataContext);
+  const {allSpots, setAllSpots, currGroupId, setRefetch, newSpot} = useContext(DataContext);
   const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
   const [newDay, setNewDay] = useState();       //store day from socket
 
@@ -17,7 +17,7 @@ export default function AllSpots({day}) {
 
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
-    // console.log("spotChange", _day, spot_sequence);
+    console.log("spotChange", _day, spot_sequence);
     socket.emit("client_spot_change", {
       groupId: currGroupId,
       day: _day,
@@ -49,11 +49,17 @@ export default function AllSpots({day}) {
     enterRoom(Token);
   }, []);
 
+  // trigger socket when posting new spot
+  useEffect(() => {
+    spotChange(day, newSpot);
+  }, [newSpot])
+
   // update allSpots when server_spot_change 
   useEffect(() => {
     try{
-      if (newCards.length !== allSpots?.[currGroupId]?.[newDay]) {
+      if (newCards?.length !== allSpots?.[currGroupId]?.[newDay]) {
         setRefetch(prev => prev + 1);
+        return;
       }
       const prevCards = allSpots?.[currGroupId]?.[newDay];
       const reorderedCards = prevCards?.sort((a, b) =>

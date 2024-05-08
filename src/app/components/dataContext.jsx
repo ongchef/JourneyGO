@@ -1,15 +1,12 @@
 'use client';
-import { createContext, useState, useEffect, useRef, useCallback } from 'react';
-import { getSpots } from '@/services/getSpots';
+import { createContext, useState, useEffect } from 'react';
 import { getToken } from '@/utils/getToken';
-import { getUserId } from '@/utils/getToken';
 
 export const DataContext = createContext();
 export const DataProvider = ({children}) => {
   const [currGroupId, setCurrGroupId] = useState();
   const [currDay, setCurrDay] = useState();
   const [Token, setToken] = useState(undefined);
-  const [userId, setUserId] = useState();
   const [isLoad, setIsLoad] = useState(false);
 
 
@@ -19,15 +16,6 @@ export const DataProvider = ({children}) => {
       const token = getToken();
       if (!token) return;
       setToken(token);
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
-  useEffect(() => {
-    try {
-      const user_id = getUserId();
-      if (!user_id) return;
-      setUserId(user_id);
     } catch (e) {
       console.error(e);
     }
@@ -44,8 +32,29 @@ export const DataProvider = ({children}) => {
   // store all transportations
   const [allTrans, setAllTrans] = useState({}); // {groupId: {day: [OPTION, [TIME_SEQUENCES]]}}
 
+  // store new spot data
+  const [newSpot, setNewSpot] = useState();
+
   return (
-    <DataContext.Provider value={{allGroups, setAllGroups, allSpots, setAllSpots, currGroupId, currDay, setCurrGroupId, setCurrDay, Token, setRefetch, refetch, isLoad, setIsLoad, allTrans, setAllTrans}}>
+    <DataContext.Provider value={{
+        allGroups, 
+        setAllGroups, 
+        allSpots, 
+        setAllSpots, 
+        currGroupId, 
+        currDay, 
+        setCurrGroupId, 
+        setCurrDay, 
+        Token, 
+        setRefetch, 
+        refetch, 
+        isLoad, 
+        setIsLoad, 
+        allTrans, 
+        setAllTrans, 
+        newSpot, 
+        setNewSpot
+      }}>
       {children} 
     </DataContext.Provider>
   )
