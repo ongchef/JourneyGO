@@ -9,6 +9,7 @@ import db from "./models/db_connection.js";
 import { app } from "./app.js";
 
 import { updateSpotBySpotId } from "./models/spotModel.js";
+import { setInterval } from "core-js";
 
 dotenv.config();
 const require = createRequire(import.meta.url);
@@ -32,10 +33,21 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 /*=====================  SOCKET  =====================*/
 
+setInterval(() => {
+  const time = new Date();
+  io.emit('keep-alive', { 
+    time: time
+  }, 30000);
+  console.log(`keep-alive emit at ${time}`);
+})
+
 io.on("connection", (socket) => {
+
   // New user has connected
   console.log(`${socket.id} connected`);
 
+
+  // User enter room
   socket.on("enter_room", (data) => {
     socket.join(data.groupId);
     console.log(
@@ -49,6 +61,9 @@ io.on("connection", (socket) => {
       day: data.day,
       spot_sequence: data.spot_sequence,
     });
+
+    console.log(`tripgroup(${data.groupId}) spot change`)
+
     // Call API update DB rows
     var cnt = 0;
     data.spot_sequence?.forEach(async (element) => {
@@ -56,7 +71,6 @@ io.on("connection", (socket) => {
       cnt += 1;
     });
   });
-
 });
 
 /*=====================  SERVER START  =====================*/
