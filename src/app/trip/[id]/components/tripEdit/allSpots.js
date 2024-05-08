@@ -30,10 +30,10 @@ export default function AllSpots({day}) {
     const newSocket = io(process.env.NEXT_PUBLIC_BASE_URL,
       {
         transports:['websocket'],
-        reconnection: true,
+        /* reconnection: true,
         reconnectionAttempts: Infinity,
         reconnectionDelay:1000,
-        reconnectionDelayMax:6000,
+        reconnectionDelayMax:6000, */
       });
     setSocket(newSocket)
     newSocket.on('keep-alive', (data) => {
