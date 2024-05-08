@@ -38,6 +38,7 @@ export default function AllSpots({day}) {
       console.log('Keep-alive message received at', data.time);
     });
   },[])
+
   useEffect(()=>{
     function enterRoom(Token) {
       // check if socket is already connected
@@ -53,8 +54,8 @@ export default function AllSpots({day}) {
     }
     const Token = getToken();
     enterRoom(Token);
-
   },[])
+  
   useEffect(()=>{
     const handleServerSpotChange = data => {
       // setRefetch(prev => prev + 1); // future plan
@@ -65,9 +66,9 @@ export default function AllSpots({day}) {
     }
     socket.on("server_spot_change", handleServerSpotChange)
 
-    /* return () => {
+    return () => {
       socket.off("server_spot_change", handleServerSpotChange);
-    } */
+    }
   },[])
   
 
