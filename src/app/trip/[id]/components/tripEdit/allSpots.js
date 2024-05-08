@@ -12,17 +12,10 @@ export default function AllSpots({day}) {
   const {allSpots, setAllSpots, currGroupId, setRefetch, newSpot} = useContext(DataContext);
   const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
   const [newDay, setNewDay] = useState();       //store day from socket
+  const [socket, setSocket] = useState(null)
+  
 
-  const socket = io(process.env.NEXT_PUBLIC_BASE_URL,
-    {
-      transports:['websocket'],
-      reconnection: true,
-      reconnectionAttempts: Infinity,
-      reconnectionDelay:1000,
-      reconnectionDelayMax:6000,
-    });
-
-  const spotChange = (socket,_day, updateCards) => {
+  const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
     console.log(`${socket.id} client_spot_change`);
     // console.log("spotChange", _day, spot_sequence);
@@ -34,6 +27,15 @@ export default function AllSpots({day}) {
   }
 
   useEffect(()=>{
+    const socket = io(process.env.NEXT_PUBLIC_BASE_URL,
+      {
+        transports:['websocket'],
+        reconnection: true,
+        reconnectionAttempts: Infinity,
+        reconnectionDelay:1000,
+        reconnectionDelayMax:6000,
+      });
+    setSocket(socket)
     socket.on('keep-alive', (data) => {
       console.log('Keep-alive message received at', data.time);
     });
@@ -75,7 +77,7 @@ export default function AllSpots({day}) {
   // trigger socket when posting new spot
   useEffect(() => {
     if (allSpots?.[currGroupId]?.[day]){
-      spotChange(socket,day, newSpot);
+      spotChange(day, newSpot);
     }
   }, [newCards])
 
