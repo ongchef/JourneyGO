@@ -43,6 +43,7 @@ export default function AllSpots({day}) {
 
 
   useEffect(()=>{
+    console.log("enter_effect");
     const handleServerSpotChange = data => {
       // setRefetch(prev => prev + 1); // future plan
       const { day, spot_sequence } = data;
@@ -58,6 +59,7 @@ export default function AllSpots({day}) {
           console.log("socket is already connected");
           return;
         }
+        console.log("enter_room_func");
         socket.emit("enter_room", {
           groupId: currGroupId,  //int
           jwt: Token,
