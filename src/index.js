@@ -20,6 +20,7 @@ const io = new Server(server, {
     origin: "*",
     method: ["GET", "POST"],
     credentials: true,
+    transports: ['websocket', 'polling']
   },
   allowEIO3: true
 });
