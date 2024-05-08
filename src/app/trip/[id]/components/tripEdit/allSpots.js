@@ -22,7 +22,7 @@ export default function AllSpots({day}) {
       reconnectionDelayMax:6000,
     });
 
-  const spotChange = (_day, updateCards) => {
+  const spotChange = (socket,_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
     console.log(`${socket.id} client_spot_change`);
     // console.log("spotChange", _day, spot_sequence);
@@ -75,9 +75,9 @@ export default function AllSpots({day}) {
   // trigger socket when posting new spot
   useEffect(() => {
     if (allSpots?.[currGroupId]?.[day]){
-      spotChange(day, newSpot);
+      spotChange(socket,day, newSpot);
     }
-  }, [newSpot,newCards])
+  }, [newCards])
 
   // update allSpots when server_spot_change 
   useEffect(() => {
