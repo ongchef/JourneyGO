@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import { getToken } from '@/utils/getToken';
 
 export default function SearchCard({title, location, rating, lng, lat, photo}) {
-  const { allSpots, currGroupId, currDay, setRefetch } = useContext(DataContext);
+  const { allSpots, currGroupId, currDay, setRefetch, setNewSpot } = useContext(DataContext);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -32,9 +32,13 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
         sequence: spotIds, 
       }
       try {
-        const status = await postSpots(Token, currGroupId, currDay, data);
+        const res = await postSpots(Token, currGroupId, currDay, data);
+        console.log("post data", res);
+        const spotData = res?.formattedData;
+        const status = res?.status;
         if (status === 201 || status === 200) {
-          setRefetch((prev) => prev + 1);
+          setNewSpot([...allSpots?.[currGroupId]?.[currDay], spotData])
+          // setRefetch((prev) => prev + 1);
         } else {
           router.push(pathname, undefined, { scroll: false });
         }
