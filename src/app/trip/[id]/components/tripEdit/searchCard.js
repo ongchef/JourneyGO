@@ -38,7 +38,7 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
         const status = res?.status;
         if (status === 201 || status === 200) {
           setNewSpot([...(allSpots?.[currGroupId]?.[currDay] ?? []), spotData]);
-          setRefetch((prev) => prev + 1);
+          // setRefetch((prev) => prev + 1);
         } else {
           router.push(pathname, undefined, { scroll: false });
         }

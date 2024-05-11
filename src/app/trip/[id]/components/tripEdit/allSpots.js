@@ -10,18 +10,17 @@ import { getToken } from '@/utils/getToken';
 
 export default function AllSpots({day}) {
   const {allSpots, setAllSpots, currGroupId, setRefetch, newSpot} = useContext(DataContext);
-  const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
-  const [newDay, setNewDay] = useState();       //store day from socket
+  // const [newCards, setNewCards] = useState([]); //store spot_sequence from socket
+  // const [newDay, setNewDay] = useState();       //store day from socket
   const [socket, setSocket] = useState(null)
   const [socketId, setSocketId] = useState(0)
   
 
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
-    console.log(`${socket.id} client_spot_change`);
-    setSocketId(socket.id)
-    // console.log("spotChange", _day, spot_sequence);
-    socket.emit("client_spot_change", {
+    console.log(`${socket?.id} client_spot_change`);
+    setSocketId(socket?.id)
+    socket?.emit("client_spot_change", {
       groupId: currGroupId,
       day: _day,
       spot_sequence: spot_sequence,
@@ -39,20 +38,18 @@ export default function AllSpots({day}) {
       });
     setSocket(newSocket)
     newSocket.on('keep-alive', (data) => {
-      console.log(`${newSocket.id} Keep-alive message received at`, data.time);
+      // console.log(`${newSocket.id} Keep-alive message received at`, data.time);
       setSocketId(newSocket.id)
     });
   },[])
 
 
   useEffect(()=>{
-    console.log("enter_effect");
+    // console.log("enter_effect");
     const handleServerSpotChange = data => {
-      // setRefetch(prev => prev + 1); // future plan
       const { day, spot_sequence } = data;
-      console.log(`${socket.id} server_spot_change`);
-      setNewCards(spot_sequence);
-      setNewDay(day);
+      console.log(`${socket.id} server_spot_change ${day} ${spot_sequence}`);
+      setRefetch(prev => prev + 1);
     }
     if(socket){
       socket.on("server_spot_change", handleServerSpotChange)
@@ -62,7 +59,7 @@ export default function AllSpots({day}) {
           console.log("socket is already connected");
           return;
         } */
-        console.log("enter_room_func");
+        // console.log("enter_room_func");
         socket.emit("enter_room", {
           groupId: currGroupId,  //int
           jwt: Token,
@@ -86,33 +83,18 @@ export default function AllSpots({day}) {
     if (allSpots?.[currGroupId]?.[day]){
       spotChange(day, newSpot);
     }
-  }, [newCards])
+  }, [newSpot])
 
   // update allSpots when server_spot_change 
-  useEffect(() => {
-    try{
-      setRefetch(prev => prev + 1);
-      // if (newCards?.length !== allSpots?.[currGroupId]?.[newDay]) {
-      //   setRefetch(prev => prev + 1);
-      //   return;
-      // }
-      // const prevCards = allSpots?.[currGroupId]?.[newDay];
-      // const reorderedCards = prevCards?.sort((a, b) =>
-      //   newCards.indexOf(a.id) - newCards.indexOf(b.id)
-      // );
-      // setAllSpots(prevState => ({
-      //   ...prevState,
-      //   [currGroupId]: {
-      //     ...prevState[currGroupId] || {},  
-      //     [newDay]: reorderedCards,
-      //   },
-      // }));
-    }
-    catch (e) {
-      setRefetch(prev => prev + 1);
-      console.log("error", e);
-    }
-  }, [newCards]);
+  // useEffect(() => {
+  //   try{
+  //     setRefetch(prev => prev + 1);
+  //   }
+  //   catch (e) {
+  //     setRefetch(prev => prev + 1);
+  //     console.log("error", e);
+  //   }
+  // }, [newCards]);
 
   return (
     <div className="bg-neutral-200 w-full">

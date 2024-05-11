@@ -13,7 +13,7 @@ import TrainIcon from '@mui/icons-material/Train';
 import { getToken } from '@/utils/getToken';
 
 export default function DndContainer({day, spotChange}) {
-  const {allSpots, setAllSpots, currGroupId, currDay, setCurrDay, refetch, allTrans} = useContext(DataContext);
+  const {allSpots, setAllSpots, currGroupId, currDay, setCurrDay, refetch, allTrans, setAllTrans} = useContext(DataContext);
   const [updateCards, setUpdateCards] = useState([])
   const [cards, setCards] = useState([]);
 
@@ -26,9 +26,10 @@ export default function DndContainer({day, spotChange}) {
     async function fetchSpots(Token) {
       if (currGroupId===undefined || currDay===undefined) return;  
       try {
-        const res = await getSpots(Token, currGroupId, currDay);
+        console.log("fetch");
+        const {res, durations, status, option} = await getSpots(Token, currGroupId, currDay);
+        if (status !== 200) { return; }
         if (res !== undefined && res.length !== 0 ) {
-          // console.log("set all spots day", currDay, res);
           setAllSpots((prevState) => {
             const updatedState = {
               ...prevState,
@@ -40,9 +41,25 @@ export default function DndContainer({day, spotChange}) {
             return updatedState;
           });
         } 
-        // else {
-        //   window.location.reload(true);
-        // }
+        // update transportation
+        if (durations !== undefined && durations.length > 0){
+          let newValue = "";
+          if(option === "TRANSIT") {
+            newValue = "大眾運輸";
+          } else if (option === "DRIVING") {
+            newValue = "汽車";
+          }
+          const updatedDay = [newValue, durations];  
+          setAllTrans((prev) => {
+            return {
+              ...prev,
+              [currGroupId]: {
+                ...prev[currGroupId] || {},
+                [currDay]: updatedDay,
+              },
+            };
+          });
+        }
       } catch (e) {
         console.error(e);
       }
@@ -51,6 +68,7 @@ export default function DndContainer({day, spotChange}) {
     fetchSpots(Token);
   }, [currGroupId, currDay, refetch]);
 
+  // update current cards
   useEffect(() => {
     const cards_data = allSpots?.[currGroupId]?.[day];
       setCards(cards_data);
@@ -72,14 +90,13 @@ export default function DndContainer({day, spotChange}) {
         [day]: updatedCards,
       },
     }));
-    // TODO: call spotChange if postSpots succeed
     spotChange(day, updatedCards); //socket
   });
 
   return (
     <>
       <div className='flex flex-col gap-2 lg:p-5 p-3'>
-        <SelectTransport />
+        <SelectTransport spotChange={spotChange} />
         {cards?.map((card, index) => {  
           return (
             <div key={card?.id}>

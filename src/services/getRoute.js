@@ -18,7 +18,7 @@ export async function getRoute(Token, groupId, day) {
     if(res.ok) {
       console.log("getRoute status", res.status);
       const data = await res.json();
-      const durations = data?.map(({ trans_time }) => trans_time);
+      const durations = data?.map((trans) => trans?.trans_time);
       const option = data?.[0]?.["trans_type"];
       return {durations: durations, status: res.status, option: option};
     } else {
