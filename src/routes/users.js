@@ -5,6 +5,7 @@ import {
   createGroup,
   getInvitation,
   putInvitation,
+  updateUserInfo,
 } from "../controllers/users.js";
 import bodyParser from "body-parser";
 import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
@@ -16,6 +17,11 @@ router.post(
   "/register",
   bodyParser.raw({ type: "application/json" }),
   registerUser
+);
+router.post(
+  "/updateUserInfo",
+  bodyParser.raw({ type: "application/json" }),
+  updateUserInfo
 );
 
 router.get("/trip-groups", ClerkExpressWithAuth(), getUserInfo, getGroup);

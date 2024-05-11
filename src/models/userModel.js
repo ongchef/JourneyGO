@@ -13,6 +13,17 @@ export const addNewUser = ({ userID, userEmail, userName, status }) => {
   return db.query(query, values);
 };
 
+export const updateUser = ({ userID, userEmail, userName, status }) => {
+  const query = `
+      UPDATE user_account
+      SET status = $1, user_name = $2, email = $3
+      WHERE clerk_user_id = $4
+      RETURNING *;
+    `;
+  const values = [status, userName, userEmail, userID];
+  return db.query(query, values);
+};
+
 export const getuserIdbyClerkId = (clerkId) => {
   return db.query(
     `
