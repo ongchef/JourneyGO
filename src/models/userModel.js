@@ -122,7 +122,7 @@ export const createGroupModel = (
 };
 
 export const getInviteeIdByEmail = (email) => {
-  return db.oneOrNone(`SELECT user_id FROM user_account WHERE email = $1`, [
+  return db.oneOrNone(`SELECT user_id, user_name FROM user_account WHERE email = $1`, [
     email,
   ]);
 };

@@ -32,16 +32,24 @@ export const createInvitation = async (req, res) => {
     let inviterId = await getuserIdbyClerkId(clerkId);
     console.log(inviterId);
     inviterId = inviterId[0].user_id;
-    let inviteeId = await getInviteeIdByEmail(inviteeEmail);
-    inviteeId = inviteeId.user_id
+    
+    // 获取每个邮箱对应的用户ID
+    const inviteeNames = [];
+    for (const email of inviteeEmail) {
+      const invitee = await getInviteeIdByEmail(email);
+      console.log("invitee name", invitee);
+      if (!invitee) {
+        continue
+      }
+      inviteeNames.push(invitee.user_name);
+      const newInvitation = await createInvitationModel(
+        inviterId,
+        invitee.user_id,
+        groupId
+      );
+    }
 
-    const newInvitation = await createInvitationModel(
-      inviterId,
-      inviteeId,
-      groupId
-    );
-
-    return res.status(201).json(newInvitation);
+    return res.status(201).json(inviteeNames);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
