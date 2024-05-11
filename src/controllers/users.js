@@ -218,18 +218,23 @@ export const createGroup = async (req, res) => {
     );
     console.log("newGroup", newGroup);
     console.log("?");
-    let inviteeId = await getInviteeIdByEmail(inviteeEmail);
-    if (inviteeId) {
-      inviteeId = inviteeId.user_id;
-      console.log("inviteeeee", inviteeId);
+
+    const inviteeNames = [];
+    for (const email of inviteeEmail) {
+      const invitee = await getInviteeIdByEmail(email);
+      console.log("invitee name", invitee);
+      if (!invitee) {
+        continue
+      }
+      inviteeNames.push(invitee.user_name);
       const newInvitation = await createInvitationModel(
         userId,
-        inviteeId,
+        invitee.user_id,
         newGroup
       );
     }
 
-    return res.status(201).json(newGroup);
+    return res.status(201).json({newGroup, inviteeNames});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
