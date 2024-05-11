@@ -6,9 +6,13 @@ import {
   deleteSpotBySpotId,
   getLocationBySpotId,
 } from "../models/spotModel.js";
-import { getTransByGroupIdDay, saveTransportation } from "../models/transportationModel.js";
+import {
+  getTransByGroupIdDay,
+  saveTransportation,
+} from "../models/transportationModel.js";
 import { getTripGroupMember } from "../models/tripgroupModel.js";
 import { findNearby, findPlace, getRoute } from "../services/map.js";
+import { getSpotRecommend } from "../services/yelp.js";
 
 export const getSpots = async (req, res) => {
   const { groupId, day } = req.params;
@@ -27,11 +31,11 @@ export const getSpots = async (req, res) => {
         .status(404)
         .json({ message: "Cannot found data by given groupId/day." });
     } */
-    const routes = await getTransByGroupIdDay(groupId,day)
+    const routes = await getTransByGroupIdDay(groupId, day);
     const result = {
       spots: spots,
-      transportation: routes
-    }
+      transportation: routes,
+    };
     return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -136,11 +140,11 @@ export const searchNearby = async (req, res) => {
   const { query, spotId } = req.params;
 
   try {
-    const loc = await getLocationBySpotId(spotId)
-    if(!loc){
-      return res.status(404).json({message: "No nearby"})
+    const loc = await getLocationBySpotId(spotId);
+    if (!loc) {
+      return res.status(404).json({ message: "No nearby" });
     }
-    const { lon, lat } = loc
+    const { lon, lat } = loc;
     const spots = await findNearby(query, lon, lat);
 
     // no spot found
@@ -169,27 +173,39 @@ export const searchPlace = async (req, res) => {
   }
 };
 
-
-
 export const constructRoute = async (req, res) => {
-  const { groupId,day,transType } = req.params;
-  console.log(groupId)
+  const { groupId, day, transType } = req.params;
+  console.log(groupId);
   try {
-    const result = await getRoute(groupId,day,transType);
+    const result = await getRoute(groupId, day, transType);
 
-    if(result === undefined){
-      return res.status(400).json({message:"Unable to plan routes."})
+    if (result === undefined) {
+      return res.status(400).json({ message: "Unable to plan routes." });
     }
 
-    if("available_travel_modes" in result){
-      return res.status(205).json({available_travel_modes:result.available_travel_modes})
+    if ("available_travel_modes" in result) {
+      return res
+        .status(205)
+        .json({ available_travel_modes: result.available_travel_modes });
     }
-    await saveTransportation(result)
-    console.log(result)
+    await saveTransportation(result);
+    console.log(result);
     return res.status(200).json(result);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-
+export const recommendSpot = async (req, res) => {
+  const { latitude, longitude, category, page } = req.params;
+  try {
+    const spots = await getSpotRecommend(category, latitude, longitude, page);
+    // no spot found
+    if (spots.length === 0) {
+      return res.status(404).json({ message: "Cannot found any spot." });
+    }
+    return res.status(200).json(spots);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

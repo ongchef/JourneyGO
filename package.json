@@ -25,7 +25,8 @@
     "socket.io": "^4.7.5",
     "svix": "^1.21.0",
     "swagger-autogen": "^2.23.7",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "yelp-fusion": "^3.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.5",
