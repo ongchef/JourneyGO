@@ -201,11 +201,13 @@ export const recommendSpot = async (req, res) => {
   try {
     const spots = await getSpotRecommend(category, latitude, longitude, page);
     // no spot found
-    if (spots.length === 0) {
-      return res.status(404).json({ message: "Cannot found any spot." });
+    if (spots.statusCode !== 200) {
+      throw spots;
     }
+    console.log("success");
     return res.status(200).json(spots);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    console.log(error);
+    return res.status(error.statusCode).json({ message: error.response.body });
   }
 };
