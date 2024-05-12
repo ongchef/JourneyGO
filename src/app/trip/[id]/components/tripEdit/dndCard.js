@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useContext } from 'react';
+import { useRef, useContext, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { deleteSpots } from '@/services/deleteSpots';
 import { DataContext } from '@/app/components/dataContext';
@@ -9,11 +9,18 @@ import CommentIcon from '@mui/icons-material/Comment';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 import { getToken } from '@/utils/getToken';
+import CommentDialog from './commentDialog';
+
 
 const ItemTypes = {CARD: 'card',}
 
 export const DndCard = ({ id, index, title, location, moveCard, spotChange }) => {
   const { currGroupId, currDay, setAllSpots, setRefetch } = useContext(DataContext);
+  const [openDialog, setOpenDialog] = useState(false); 
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  }
 
   // Drag and Drop
   const ref = useRef(null)
@@ -88,17 +95,25 @@ export const DndCard = ({ id, index, title, location, moveCard, spotChange }) =>
     del(Token);
   }
 
+  const handleCommentClick = () => {
+    console.log('comment');
+    setOpenDialog(true);
+  }
+
   return (
+    <main>
     <div ref={ref} data-handler-id={handlerId} className='shadow bg-white p-3 rounded-md'>
       <div className='flex justify-between'>
         <Typography variant='inherit'>{title}</Typography>
         <div className='flex gap-2'>
-          <CommentIcon />
+          <CommentIcon onClick={handleCommentClick}/>
           <ThumbUpOffAltIcon />
           <Button variant='outlined' onClick={handleClick}>刪除</Button>
         </div>
       </div>
       <Typography variant='caption'>{location}</Typography>
     </div>
+    <CommentDialog open={openDialog} onClose={handleCloseDialog} />
+    </main>
   )
 }
