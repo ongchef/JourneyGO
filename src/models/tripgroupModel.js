@@ -246,8 +246,20 @@ export const getBillsByBillId = (billId) => {
 };
 
 
-export const checkShareCode = (share_code) => {
+export const checkShareCode = (shareCode) => {
   return db.manyOrNone(
-    `SELECT * FROM trip_groups WHERE share_code = $1`,[share_code]
+    `SELECT * FROM trip_groups WHERE share_code = $1`,[shareCode]
+  )
+}
+
+export const getGroupByShareCode = (shareCode) => {
+  return db.one(
+    `SELECT * FROM trip_groups WHERE share_code = $1`,[shareCode]
+  )
+}
+
+export const getCountriesByGroupId = (groupId) => {
+  return db.manyOrNone(
+    `SELECT * FROM group_country WHERE g_id = $1`, [groupId]
   )
 }

@@ -14,6 +14,7 @@ import usersRouter from "./routes/users.js";
 import spotRouter from "./routes/spot.js";
 import countryRounter from "./routes/country.js";
 import transportationRouter from './routes/transportation.js'
+import shareGroupRouter from './routes/sharegroup.js'
 
 import db from "./models/db_connection.js";
 
@@ -43,7 +44,7 @@ app.use(
 app.get("/", (req, res) => {
   console.log();
   res.send("Hello World!");
-});
+})
 
 app.use(
   "/api/tripgroup/",
@@ -56,3 +57,4 @@ app.use(
 app.use("/api/spots/", ClerkExpressWithAuth(), getUserInfo, spotRouter);
 app.use("/api/countries/", ClerkExpressWithAuth(), getUserInfo, countryRounter);
 app.use("/api/transportation/",ClerkExpressRequireAuth(),getUserInfo, transportationRouter)
+app.use("/api/share/",ClerkExpressRequireAuth(),getUserInfo, shareGroupRouter)

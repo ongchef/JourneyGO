@@ -59,3 +59,9 @@ export const getOneDayLonLat = (groupId, day) => {
     [groupId,day]
   )
 }
+
+export const getSpotByGroupId = (groupId) => {
+  return db.manyOrNone(
+    `SELECT * FROM spot WHERE g_id = $1`,[groupId]
+  )
+}
