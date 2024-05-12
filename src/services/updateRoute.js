@@ -25,7 +25,7 @@ export async function updateRoute(Token, groupId, day, transOption) {
       const data = await res.json();
       const durations = data?.routes?.map((trans) => trans?.duration);
       const option = data?.routes?.[0]?.["travel_mode"];
-      console.log("updateRoute data", durations, option);
+      // console.log("updateRoute data", durations, option);
       return {durations: durations, status: res.status, option: option};
     } else {
       console.error(`updateRoute error`, res.status, res.statusText);

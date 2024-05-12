@@ -29,7 +29,7 @@ export async function getSpots(Token, groupId, day) {
       });
       const durations = data?.["transportation"]?.map((trans) => trans?.["trans_time"]);
       const option = data?.["transportation"]?.[0]?.["trans_type"];
-      console.log("getSpots data", durations, option);
+      // console.log("getSpots data", durations, option);
       return {res: formattedData, durations: durations, status: res.status, option: option};
     } else {
       console.error(`getSpots error`, res.status, res.statusText);

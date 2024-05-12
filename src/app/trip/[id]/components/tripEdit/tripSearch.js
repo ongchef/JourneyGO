@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import TabPanel from './tabPanel';
 import GoogleMap from './googleMap';
 import SearchPanel from './searchPanel';
+import RecommendPanel from './recommendPanel';
 
 function tabProps(index) {
   return {
@@ -65,7 +66,7 @@ export default function TripSearch() {
             <SearchPanel />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <div className='mx-4'>recommend</div>
+            <RecommendPanel />
           </TabPanel>
         </Box>
       </Box>
