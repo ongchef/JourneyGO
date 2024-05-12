@@ -45,7 +45,7 @@ export const getShareCode = async(req, res) => {
     const {group_id} = req.params
     try{
         const {share_code} = await getShareCodeByGroupId(group_id)
-        return res.status(200).json(share_code)
+        return res.status(200).json({ share_code:share_code })
     }
     catch(error){
         return res.status(500).json({ message: error.message })
