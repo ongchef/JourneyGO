@@ -244,3 +244,10 @@ export const getBillsByBillId = (billId) => {
     [billId]
   );
 };
+
+
+export const checkShareCode = (share_code) => {
+  return db.manyOrNone(
+    `SELECT * FROM trip_groups WHERE share_code = $1`,[share_code]
+  )
+}

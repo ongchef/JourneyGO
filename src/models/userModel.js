@@ -1,4 +1,5 @@
 import db from "./db_connection.js";
+import { checkShareCode } from "./tripgroupModel.js";
 
 // Register a new user
 export const addNewUser = ({ userID, userEmail, userName, status }) => {
@@ -73,6 +74,16 @@ export const createGroupModel = (
   return new Promise((resolve, reject) => {
     console.log("endDate", endDate);
     db.tx(async (t) => {
+      // var share_code = ''
+      // const uid = new ShortUniqueId({length: 16})
+      // while(true){
+      //   share_code = uid.rnd()
+      //   const duplicate = await checkShareCode(share_code)
+      //   if(duplicate.length === 0){
+      //     break
+      //   }
+      // }
+      // console.log("share code",share_code)
       const groupCountries = [];
 
       // Step 1: Get country_ids for each country_name
@@ -89,8 +100,8 @@ export const createGroupModel = (
       }
       // Step 2: Insert group into trip_groups table
       const { group_id: groupId } = await t.one(
-        `INSERT INTO trip_groups (group_name, start_date, end_date, status)VALUES 
-        ($1, $2, $3, 'Incoming')
+        `INSERT INTO trip_groups (group_name, start_date, end_date, status, share_code)VALUES 
+        ($1, $2, $3, 'Incoming', gen_random_uuid())
          RETURNING group_id`,
         [groupName, startDate, endDate]
       );
