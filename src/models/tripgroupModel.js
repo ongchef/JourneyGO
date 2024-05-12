@@ -260,7 +260,13 @@ export const getGroupByShareCode = (shareCode) => {
 
 export const getCountriesByGroupId = (groupId) => {
   return db.manyOrNone(
-    `SELECT country_name from country where country_id in
+    `SELECT country_name FROM country where country_id in
     (SELECT c_id FROM group_country WHERE g_id = $1)`, [groupId]
+  )
+}
+
+export const getShareCodeByGroupId = (groupId) => {
+  return db.one(
+    `SELECT share_code FROM trip_groups WHERE group_id = $1`, [groupId]
   )
 }

@@ -1,5 +1,5 @@
 import { createSpotByGroupId, getSpotByGroupId } from "../models/spotModel.js"
-import { getCountriesByGroupId, getGroupByShareCode } from "../models/tripgroupModel.js"
+import { getCountriesByGroupId, getGroupByShareCode, getShareCodeByGroupId } from "../models/tripgroupModel.js"
 import { createGroupModel, getuserIdbyClerkId } from "../models/userModel.js";
 
 export const copyGroup = async(req, res) => {
@@ -36,7 +36,18 @@ export const copyGroup = async(req, res) => {
         return res.status(201).json({newGroupId});
     }
     catch(error){
-        console.log(error)
+        return res.status(500).json({ message: error.message })
     }
     
+}
+
+export const getShareCode = async(req, res) => {
+    const {group_id} = req.params
+    try{
+        const {share_code} = await getShareCodeByGroupId(group_id)
+        return res.status(200).json(share_code)
+    }
+    catch(error){
+        return res.status(500).json({ message: error.message })
+    }
 }
