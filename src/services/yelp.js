@@ -15,7 +15,7 @@ export const getSpotRecommend = async (category, latitude, longitude, page) => {
       offset: (page - 1) * 10,
     })
     .then((response) => {
-      return response.jsonBody;
+      return response;
     })
     .catch((e) => {
       return e;

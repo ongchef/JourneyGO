@@ -199,15 +199,19 @@ export const constructRoute = async (req, res) => {
 export const recommendSpot = async (req, res) => {
   const { latitude, longitude, category, page } = req.params;
   try {
-    const spots = await getSpotRecommend(category, latitude, longitude, page);
+    const response = await getSpotRecommend(
+      category,
+      latitude,
+      longitude,
+      page
+    );
     // no spot found
-    if (spots.statusCode !== 200) {
-      throw spots;
+    if (response.statusCode !== 200) {
+      throw response;
     }
     console.log("success");
-    return res.status(200).json(spots);
+    return res.status(200).json(response.jsonBody);
   } catch (error) {
-    console.log(error);
     return res.status(error.statusCode).json({ message: error.response.body });
   }
 };
