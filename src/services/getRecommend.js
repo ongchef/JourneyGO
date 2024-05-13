@@ -5,7 +5,7 @@ export async function getRecommend(Token, lat, lng, category, page) {
   const bearer_token = `Bearer ${Token}`;
 
   try {
-    console.log("getRecommend params", category, page, lat, lng);
+    console.log("getRecommend params", category, page);
     const res = await fetch(url, {
       method: 'GET',
       headers: {
@@ -15,43 +15,55 @@ export async function getRecommend(Token, lat, lng, category, page) {
       cache: 'no-cache',
     });
 
-    const formattedData = data?.["businesses"]?.map((spot) => {
-      return {
-        title: spot?.alias,
-        location: (spot?.location?.address1 + ", " + spot?.location?.city + ", " + spot?.location?.state),
-        description: "",
-        lng: spot?.coordinates?.longitude,
-        lat: spot?.coordinates?.latitude,
-        img: spot?.image_url,
-        rating: spot?.rating,
-        review_count: spot?.review_count,
-      }
-    });
-    return formattedData;
+    // const formattedData = data?.["businesses"]?.map((spot) => {
+    //   return {
+    //     title: spot?.name,
+    //     location: (spot?.location?.address1 + ", " + spot?.location?.city + ", " + spot?.location?.state),
+    //     description: "",
+    //     lng: spot?.coordinates?.longitude,
+    //     lat: spot?.coordinates?.latitude,
+    //     img: spot?.image_url,
+    //     rating: spot?.rating,
+    //     review_count: spot?.review_count,
+    //     categories: spot?.categories?.map((category) => category?.title),
+    //     price: spot?.price,
+    //     phone: spot?.display_phone,
+    //     is_closed: spot?.is_closed,
+    //   }
+    // });
+    // return formattedData;
 
-    // if(res.ok) {
-    //   const data = await res.json();
-    //   console.log("getRecommend status", res.status);
-    //   const formattedData = data?.["businesses"]?.map((spot) => {
-    //     return {
-    //       title: spot?.alias,
-    //       location: (spot?.location?.address1 + ", " + spot?.location?.city + ", " + spot?.location?.state),
-    //       description: "",
-    //       lng: spot?.coordinates?.longitude,
-    //       lat: spot?.coordinates?.latitude,
-    //     }
-    //   });
-    //   return {res: formattedData, status: res.status};
-    // } else {
-    //   console.error(`getRecommend error`, res.status, res.statusText);
-    //   return undefined;
-    // }
+    if(res.ok) {
+      const data = await res.json();
+      console.log("getRecommend status", res.status);
+      const formattedData = data?.["businesses"]?.map((spot) => {
+        return {
+          title: spot?.name,
+          location: (spot?.location?.address1 + ", " + spot?.location?.city + ", " + spot?.location?.state),
+          description: "",
+          lng: spot?.coordinates?.longitude,
+          lat: spot?.coordinates?.latitude,
+          img: spot?.image_url,
+          rating: spot?.rating,
+          review_count: spot?.review_count,
+          categories: spot?.categories?.map((category) => category?.title),
+          price: spot?.price,
+          phone: spot?.display_phone,
+          is_closed: spot?.is_closed,
+        }
+      });
+      return {res: formattedData, status: res.status};
+    } else {
+      console.error(`getRecommend error`, res.status, res.statusText);
+      return undefined;
+    }
   } catch (error) {
     console.error(error);
     return undefined;
   }
 }
 
+/*
 const data = 
 {
   "businesses": [
@@ -280,3 +292,4 @@ const data =
     }
   }
 }
+*/

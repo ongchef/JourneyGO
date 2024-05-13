@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogTitle, DialogContent,DialogActions,Divider,Container, Button, TextField, Grid, Box, IconButton, InputLabel, Typography } from '@mui/material';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Avatar } from 'antd';
+import { Avatar } from '@mui/material';
 
 const CommentDialog = ({ open, onClose, onSubmit}) => {
   const [comment, setComment] = useState('');

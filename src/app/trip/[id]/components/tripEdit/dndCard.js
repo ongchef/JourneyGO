@@ -85,7 +85,7 @@ export const DndCard = ({ id, index, title, location, moveCard, spotChange }) =>
               },
             };
           });
-          // setRefetch((prev) => prev + 1);  // refetch
+          setRefetch((prev) => prev + 1);  // refetch
         }
       } catch (e) {
         console.error(e);

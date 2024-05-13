@@ -17,6 +17,7 @@
     "@mui/material": "^5.15.15",
     "@mui/material-nextjs": "^5.15.11",
     "@mui/x-date-pickers": "^7.3.1",
+    "antd": "^5.17.0",
     "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",
     "immutability-helper": "^3.1.1",

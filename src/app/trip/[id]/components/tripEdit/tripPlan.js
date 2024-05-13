@@ -33,7 +33,7 @@ export default function TripPlan({ groupInfo }) {
                         <h2 className="lg:text-xl text-base">
                             {groupInfo?.start_date} ~ {groupInfo?.end_date}
                         </h2>
-                        <Button variant="contained">編輯</Button>
+                        <Button variant="text">編輯</Button>
                     </div>
                     <div className="flex gap-5 items-center">
                         <AvatarGroup max={5} spacing={-10}>
