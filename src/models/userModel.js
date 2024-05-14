@@ -172,3 +172,13 @@ export const updateInvitation = (invitationId, status) => {
     }
   });
 };
+
+export const updateUserImageFilename = (clerkId, image) => {
+  return db.one(
+    `update user_account
+    set image = $2
+    where clerk_user_id = $1
+    RETURNING *;
+    `, [clerkId, image]
+  );
+}

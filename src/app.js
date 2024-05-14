@@ -1,12 +1,12 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-
-import getUserInfo from "./middlewares/userInfo.js";
 import {
   ClerkExpressWithAuth,
   ClerkExpressRequireAuth,
 } from "@clerk/clerk-sdk-node";
+
+import getUserInfo from "./middlewares/userInfo.js";
 
 import tripgroupRouter from "./routes/tripgroup.js";
 import tripRouter from "./routes/trip.js";
@@ -46,14 +46,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 })
 
-app.use(
-  "/api/tripgroup/",
-  ClerkExpressWithAuth(),
-  getUserInfo,
-  tripgroupRouter
-);
-
-// app.use("/api/trip/", ClerkExpressWithAuth(), getUserInfo, tripRouter);
+app.use("/api/tripgroup/", ClerkExpressWithAuth(), getUserInfo, tripgroupRouter);
 app.use("/api/spots/", ClerkExpressWithAuth(), getUserInfo, spotRouter);
 app.use("/api/countries/", ClerkExpressWithAuth(), getUserInfo, countryRounter);
 app.use("/api/transportation/",ClerkExpressRequireAuth(),getUserInfo, transportationRouter)
