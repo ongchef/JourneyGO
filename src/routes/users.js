@@ -6,10 +6,12 @@ import {
   getInvitation,
   putInvitation,
   updateUserInfo,
+  getUserProfile,
 } from "../controllers/users.js";
 import bodyParser from "body-parser";
 import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
 import getUserInfo from "../middlewares/userInfo.js";
+import { get } from "http";
 
 const router = express.Router();
 
@@ -20,9 +22,13 @@ router.post(
 );
 router.post(
   "/updateUserInfo",
-  bodyParser.raw({ type: "application/json" }),
+  ClerkExpressWithAuth(),
+  getUserInfo,
+  express.json(),
   updateUserInfo
 );
+
+router.get("/userProfile", ClerkExpressWithAuth(), getUserInfo, getUserProfile);
 
 router.get("/trip-groups", ClerkExpressWithAuth(), getUserInfo, getGroup);
 router.post(
