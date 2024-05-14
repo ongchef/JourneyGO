@@ -10,13 +10,47 @@ import { getToken } from "@/utils/getToken";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, InputLabel, Box } from "@mui/material";
 
 const newMemberDialog = ({ open, onClose }) => {
-    const { allGroups } = useContext(DataContext);
+    const { allGroups, currentLang } = useContext(DataContext);
 
     const [inviteeEmail, setInviteeEmail] = useState("");
     const [groupId, setGroupId] = useState(allGroups.group_id);
     const [creationStatusOpen, setCreationStatusOpen] = useState(false);
     const [statusMessage, setStatusMessage] = useState("");
 
+    const translate = (key) => {
+        const translations = {
+            enterNewMembersEmail: {
+                zh: "輸入新成員電子郵件",
+                en: "Enter new member email",
+            },
+            email: {
+                zh: "電子郵件",
+                en: "email",
+            },
+            cancel: {
+                zh: "取消",
+                en: "Cancel",
+            },
+            add: {
+                zh: "加入",
+                en: "Add",
+            },
+            accept: {
+                zh: "確認",
+                en: "Accept",
+            },
+            added: {
+                zh: "已新增成員",
+                en: "New member added",
+            },
+            addFailed: {
+                zh: "新增成員失敗!",
+                en: "Failed to add new member!"
+            },
+        };
+        return translations[key][currentLang];
+    };
+    
     const handleChange = (event) => {
         setInviteeEmail(event.target.value);
     };
@@ -55,14 +89,14 @@ const newMemberDialog = ({ open, onClose }) => {
     return (
         <div>
             <Dialog open={open} onClose={onClose} fullWidth>
-                <DialogTitle>輸入新成員電子郵件</DialogTitle>
+                <DialogTitle>{translate('enterNewMembersEmail')}</DialogTitle>
                 <DialogContent>
                     <InputLabel htmlFor="email"></InputLabel>
                     <TextField
                         autoFocus
                         margin="dense"
                         id="email"
-                        label="電子郵件"
+                        label={translate('email')}
                         type="email"
                         fullWidth
                         // value={email}
@@ -71,10 +105,10 @@ const newMemberDialog = ({ open, onClose }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCancel} color="primary">
-                        取消
+                        {translate('cancel')}
                     </Button>
                     <Button onClick={handleSave} color="primary">
-                        加入
+                        {translate('add')}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -83,7 +117,7 @@ const newMemberDialog = ({ open, onClose }) => {
                 <DialogContent>
                     {statusMessage}
                     <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", height: "100%" }}>
-                        <Button onClick={handleCreationStatusDialogClose}>確定</Button>
+                        <Button onClick={handleCreationStatusDialogClose}>{translate('accept')}</Button>
                     </Box>
                 </DialogContent>
             </Dialog>

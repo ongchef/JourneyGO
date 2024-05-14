@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Typography, Tooltip, Avatar, AvatarGroup, Button } from "@mui/material";
+import { DataContext } from "@/app/components/dataContext";
 
 import DayPanel from "./dayPanel";
 import NewMemberDialog from "/src/app/components/newMember";
@@ -9,8 +10,28 @@ import QuitGroupDialog from "/src/app/components/QuitGroupDialog";
 // import { getNewMember } from '@/services/getNewMember';
 
 export default function TripPlan({ groupInfo }) {
+    const { currentLang } = useContext(DataContext);
+
     const [openDialog, setOpenDialog] = useState(false);
     const [openQuitDialog, setOpenQuitDialog] = useState(false);
+
+    const translate = (key) => {
+        const translations = {
+            edit: {
+                zh: "編輯",
+                en: "Edit",
+            },
+            addMember: {
+                zh: "新增成員",
+                en: "Add Member",
+            },
+            quitGroup: {
+                zh: "退出群組",
+                en: "Quit Group",
+            },
+        };
+        return translations[key][currentLang];
+    };
 
     const handleAddMemberClick = async (inviteeID) => {
         // const result = await getNewMember(inviteeID, groupId);
@@ -33,7 +54,7 @@ export default function TripPlan({ groupInfo }) {
                         <h2 className="lg:text-xl text-base">
                             {groupInfo?.start_date} ~ {groupInfo?.end_date}
                         </h2>
-                        <Button variant="text">編輯</Button>
+                        <Button variant="text">{translate('edit')}</Button>
                     </div>
                     <div className="flex gap-5 items-center">
                         <AvatarGroup max={5} spacing={-10}>
@@ -45,11 +66,11 @@ export default function TripPlan({ groupInfo }) {
                                 );
                             })}
                         </AvatarGroup>
-                        <Button variant="contained" className="w-24" onClick={handleAddMemberClick}>
-                            新增成員
+                        <Button variant="contained" onClick={handleAddMemberClick}>
+                            {translate('addMember')}
                         </Button>
                         <Button variant="outlined" onClick={handleQuitGroupClick}>
-                            退出群組
+                            {translate('quitGroup')}
                         </Button>
                     </div>
                 </div>

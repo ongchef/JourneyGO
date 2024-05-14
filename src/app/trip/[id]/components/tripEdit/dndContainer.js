@@ -13,9 +13,57 @@ import TrainIcon from '@mui/icons-material/Train';
 import { getToken } from '@/utils/getToken';
 
 export default function DndContainer({day, spotChange}) {
-  const {allSpots, setAllSpots, currGroupId, currDay, setCurrDay, refetch, allTrans, setAllTrans} = useContext(DataContext);
+  const {allSpots, setAllSpots, currGroupId, currDay, setCurrDay, refetch, allTrans, setAllTrans, currentLang} = useContext(DataContext);
   const [updateCards, setUpdateCards] = useState([])
   const [cards, setCards] = useState([]);
+
+  const translate = (key) => {
+    const translations = {
+        public: {
+            zh: "大眾運輸",
+            en: "Public Transport",
+        },
+        drive: {
+            zh: "汽車",
+            en: "Drive",
+        },
+        accept: {
+            zh: "確認",
+            en: "Accept",
+        },
+        cancel: {
+            zh: "取消",
+            en: "Cancel",
+        },
+        分鐘: {
+            zh: "分鐘",
+            en: "minutes",
+        },
+        小時: {
+            zh: "小時",
+            en: "hour",
+        },
+        無: {
+            zh: "(無)",
+            en: "(None)",
+        },
+    };
+
+    // Check if the key is a time string
+    if (/\d/.test(key)) {
+        const parts = key.split(" ");
+        const translatedParts = parts.map((part) => {
+            // If the part is numeric, return it as is
+            if (/\d/.test(part)) {
+                return part;
+            }
+            // Otherwise, translate it
+            return translations[part][currentLang];
+        });
+        return translatedParts.join(" ");
+    }
+    return translations[key][currentLang];
+};
 
   useEffect(() => {
     setCurrDay(day);
@@ -118,7 +166,8 @@ export default function DndContainer({day, spotChange}) {
                     <TrainIcon className='text-center'/> 
                   }
                   <Typography variant='body2' className='text-center'>
-                    {allTrans?.[currGroupId]?.[currDay]?.[0]} {allTrans?.[currGroupId]?.[currDay]?.[1]?.[index] || "(無)"}
+                    {/* {allTrans?.[currGroupId]?.[currDay]?.[0]} {allTrans?.[currGroupId]?.[currDay]?.[1]?.[index] || "(無)"} */}
+                    {allTrans?.[currGroupId]?.[currDay]?.[0] === '汽車'? translate('drive'):translate('public')} {translate(allTrans?.[currGroupId]?.[currDay]?.[1]?.[index] || "無")}
                   </Typography>
                 </div>
               }

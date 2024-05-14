@@ -4,9 +4,22 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import StarIcon from '@mui/icons-material/Star';
 import RecommendDialog from './recommendDialog';
+import { DataContext } from '@/app/components/dataContext.jsx';
 
 
 export default function RecommendCard({recommend}) {
+  const { currentLang } = useContext(DataContext);
+
+  const translate = (key) => {
+    const translations = {
+        reviews: {
+            zh: "則評論",
+            en: "reviews",
+        },
+    };
+    return translations[key][currentLang];
+  };
+
   return (
     <div>
       <Card sx={{ boxShadow: 3 }} className='p-5 flex flex-col lg:gap-3 gap-2'>
@@ -17,7 +30,7 @@ export default function RecommendCard({recommend}) {
             <div className='text-base'>{recommend?.rating}</div>
             <StarIcon />
           </div>
-          <div className='text-base'>{recommend?.review_count}則評論</div>
+          <div className='text-base'>{recommend?.review_count}{translate('reviews')}</div>
         </div>
         <CardMedia
           component="img"

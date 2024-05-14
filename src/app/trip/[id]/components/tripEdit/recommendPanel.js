@@ -12,7 +12,37 @@ export default function RecommendPanel() {
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("restaurant");
   const [recommends, setRecommends] = useState([]);
-  const { allSpots, currGroupId, currDay } = useContext(DataContext);
+  const { allSpots, currGroupId, currDay, currentLang } = useContext(DataContext);
+
+  const translate = (key) => {
+    const translations = {
+      restaurants: {
+        zh: "餐廳",
+        en: "Restaurants",
+      },
+      hotels: {
+        zh: "旅館",
+        en: "Hotels",
+      },
+      arts: {
+        zh: "藝文",
+        en: "Arts",
+      },
+      shopping: {
+        zh: "購物",
+        en: "Shopping",
+      },
+      coffee: {
+        zh: "咖啡店",
+        en: "Coffee",
+      },
+      active: {
+        zh: "戶外活動",
+        en: "Active",
+      },
+    };
+    return translations[key][currentLang];
+  }
 
   const fetchData = async (Token, lat, lng) => {
     const {res, status} = await getRecommend(Token, lat, lng, category, page);
@@ -35,12 +65,12 @@ export default function RecommendPanel() {
   };
 
   const categories = [
-    ["restaurants", "餐廳"],
-    ["hotels", "旅館"],
-    ["arts", "藝文"],
-    ["shopping", "購物"],
-    ["coffee", "咖啡店"],
-    ["active", "戶外活動"],
+    ["restaurants", translate("restaurants")],
+    ["hotels", translate("hotels")],
+    ["arts", translate("arts")],
+    ["shopping", translate("shopping")],
+    ["coffee", translate("coffee")],
+    ["active", translate("active")],
   ];
 
   return (

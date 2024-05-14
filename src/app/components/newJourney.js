@@ -4,12 +4,14 @@ import React, { useState, useContext } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper, Box } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-// import { DataContext } from '@/app/components/dataContext';
+import { DataContext } from '@/app/components/dataContext';
 import { getToken } from '@/utils/getToken';
 
 import { createTripGroup } from '@/services/createTripGroup';
 
 const NewJourneyDialog = ({ open, onClose}) => {
+
+  const { currentLang } = useContext(DataContext);
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -19,6 +21,63 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const [creationStatusOpen, setCreationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   
+  const translate = (key) => {
+    const translations = {
+        notification: {
+            zh: "通知",
+            en: "Notifications",
+        },
+        invitesYou: {
+            zh: "邀請您加入",
+            en: "invites you to join",
+        },
+        accept: {
+            zh: "確認",
+            en: "Accept",
+        },
+        cancel: {
+            zh: "取消",
+            en: "Cancel",
+        },
+        added: {
+          zh: "已新增行程",
+          en: "New journey added"
+        },
+        rejected: {
+          zh: "已拒絕邀請",
+          en: "Invitation rejected"
+        },
+        addTripFailed: {
+          zh: "新增行程失敗!",
+          en: "Failed to add new trip!"
+        },
+        newJourney: {
+          zh: '新增旅程',
+          en: 'New Journey'
+        },
+        tripName: {
+          zh: '行程名稱',
+          en: 'Trip Name'
+        },
+        selectCountry: {
+          zh: '選擇國家',
+          en: 'Select Country'
+        },
+        addMember: {
+          zh: '新增旅伴',
+          en: 'Add Companion'
+        },
+        tripTime: {
+          zh: '旅程時間',
+          en: 'Duration'
+        },
+        save: {
+          zh: '儲存',
+          en: 'Save'
+        },
+    };
+    return translations[key][currentLang];
+};
 
   const handleDateChange = (dates) => {
     const [start, end] = dates;
@@ -52,18 +111,18 @@ const NewJourneyDialog = ({ open, onClose}) => {
       // console.log('Trip group created:', responseStatus);
 
       if (!responseStatus) {
-        setStatusMessage('新增行程失敗!');
+        setStatusMessage(translate('addTripFailed'));
         setCreationStatusOpen(true);
         return;
       }
-      setStatusMessage('已新增行程');
+      setStatusMessage(translate('added'));
       setCreationStatusOpen(true);
 
       // onClose();
       // window.location.reload();
     } catch (error) {
       console.error('Error creating trip group:', error);
-      setStatusMessage('新增行程失敗!');
+      setStatusMessage(translate('addTripFailed'));
       setCreationStatusOpen(true);
     }
   };
@@ -77,14 +136,14 @@ const NewJourneyDialog = ({ open, onClose}) => {
   return (
   <div>
     <Dialog open={open} onClose={onClose} fullWidth>
-      <DialogTitle>新增行程</DialogTitle>
+      <DialogTitle>{translate('newJourney')}</DialogTitle>
       <DialogContent>
         <Grid container spacing={4} alignItems="center">
           <Grid item>
-            <InputLabel htmlFor="trip-name">行程名稱</InputLabel>
+            <InputLabel htmlFor="trip-name">{translate('tripName')}</InputLabel>
           </Grid>
           <Grid item xs>
-            <TextField label="行程名稱" fullWidth 
+            <TextField label={translate('tripName')} fullWidth 
               onChange={handleGroupNameChange}
             />
           </Grid>
@@ -92,7 +151,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
         <Grid container spacing={4} alignItems="center">
           <Grid item>
-            <InputLabel htmlFor="trip-location">選擇國家</InputLabel>
+            <InputLabel htmlFor="trip-location">{translate('selectCountry')}</InputLabel>
           </Grid>
           <Grid item xs>
             <TextField fullWidth defaultValue="臺灣"></TextField>
@@ -108,7 +167,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
         <Grid container spacing={4} alignItems="center">
           <Grid item>
-            <InputLabel htmlFor="add-companion">新增旅伴</InputLabel>
+            <InputLabel htmlFor="add-companion">{translate('addMember')}</InputLabel>
           </Grid>
           <Grid item xs>
             <TextField label="email" fullWidth 
@@ -119,7 +178,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
         <Grid container spacing={4} alignItems="center">
           <Grid item>
-            <InputLabel htmlFor="trip-time">旅程時間</InputLabel>
+            <InputLabel htmlFor="trip-time">{translate('tripTime')}</InputLabel>
           </Grid>
           <Grid item xs sx={{ minWidth: 200 }}>
             <Paper variant="outlined" sx={{ borderRadius: '5px', padding: '15px' }}>
@@ -141,8 +200,8 @@ const NewJourneyDialog = ({ open, onClose}) => {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel}>取消</Button>
-        <Button onClick={handleSave} variant="contained" color="primary">儲存</Button>
+        <Button onClick={handleCancel}>{translate('cancel')}</Button>
+        <Button onClick={handleSave} variant="contained" color="primary">{translate('save')}</Button>
       </DialogActions>
     </Dialog>
 
@@ -151,7 +210,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
         {statusMessage}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', height: '100%'}}>
           <Button onClick={handleCreationStatusDialogClose}>
-            確定
+            {translate('save')}
           </Button>
         </Box>
       </DialogContent>

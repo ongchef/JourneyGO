@@ -12,8 +12,22 @@ import { getToken } from '@/utils/getToken';
 
 
 export default function SelectTransport({spotChange}) {
-  const {allTrans, setAllTrans, currGroupId, currDay, allSpots, setRefetch, newSpot} = useContext(DataContext);
+  const {allTrans, setAllTrans, currGroupId, currDay, allSpots, setRefetch, newSpot, currentLang } = useContext(DataContext);
   const [value, setValue] = useState("大眾運輸"); // default value
+
+  const translate = (key) => {
+    const translations = {
+      public: {
+        zh: "大眾運輸",
+        en: "Public Transport",
+      },
+      drive: {
+        zh: "汽車",
+        en: "Drive",
+      },
+    };
+    return translations[key][currentLang];
+  };
 
   async function updateTrans(transOption, Token) {
     if (allSpots?.[currGroupId]?.[currDay] === undefined) return;
@@ -68,8 +82,8 @@ export default function SelectTransport({spotChange}) {
           value={value}
           onChange={handleChange}
         >
-          <FormControlLabel value="大眾運輸" control={<Radio />} label="大眾運輸" />
-          <FormControlLabel value="汽車" control={<Radio />} label="汽車" />
+          <FormControlLabel value="大眾運輸" control={<Radio />} label={translate('public')} />
+          <FormControlLabel value="汽車" control={<Radio />} label={translate('drive')} />
         </RadioGroup>
       </FormControl>
     </div>

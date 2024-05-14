@@ -9,8 +9,7 @@ import { useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia, CardAc
 import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
 
 function TripList({ data, tabValue, setTripOverview }) {
-    
-    const { setAllGroups } = useContext(DataContext)
+    const { setAllGroups, currentLang } = useContext(DataContext);
 
     const handleClick = (group_id) => {
         async function fetch() {
@@ -29,6 +28,28 @@ function TripList({ data, tabValue, setTripOverview }) {
             }
         }
         fetch();
+    };
+
+    const translate = (key) => {
+        const translations = {
+            days: {
+                zh: "天",
+                en: "Days",
+            },
+            incoming: {
+                zh: '即將來臨',
+                en: 'Incoming'
+            },
+            finished: {
+                zh: '已完成',
+                en: 'Finished'
+            },
+            Notrips: {
+                zh: '目前還沒有行程喔！',
+                en: 'No Journeys yet!'
+            }
+        };
+        return translations[key][currentLang];
     };
 
     const theme = useTheme();
@@ -62,8 +83,8 @@ function TripList({ data, tabValue, setTripOverview }) {
         // if data is undefined, return empty div
         !data || data.length === 0 ? (
             <Typography variant="h5" component="div" className="p-5">
-                    目前還沒有行程喔！
-                </Typography>
+                {translate("Notrips")}
+            </Typography>
         ) : (
             data
                 .filter((trip) => tabValue === "All" || tabValue.includes(trip.status))
@@ -75,7 +96,7 @@ function TripList({ data, tabValue, setTripOverview }) {
                                 <CardContent sx={cardContentStyles}>
                                     <Stack direction="row" spacing={2}>
                                         <Chip label="place" size="small" />
-                                        <Chip label={trip.status} size="small" color="primary" />
+                                        <Chip label={translate(trip.status.toLowerCase())} size="small" color="primary" />
                                     </Stack>
                                     <div className="pt-1">
                                         <Typography variant="h6" component="div">
@@ -89,7 +110,7 @@ function TripList({ data, tabValue, setTripOverview }) {
                             </IconButton> */}
                                         <IconButton aria-label="duration" size="small">
                                             <DateRangeIcon />
-                                            <span className="ml-1 text-sm">{trip.duration} days</span>
+                                            <span className="ml-1 text-sm">{trip.duration} {translate('days')}</span>
                                         </IconButton>
                                     </CardActions>
                                 </CardContent>

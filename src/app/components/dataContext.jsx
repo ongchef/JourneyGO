@@ -35,6 +35,9 @@ export const DataProvider = ({children}) => {
   // store new spot data
   const [newSpot, setNewSpot] = useState();
 
+  // store current language
+  const [currentLang, setCurrentLang] = useState('zh');
+
   return (
     <DataContext.Provider value={{
         allGroups, 
@@ -53,7 +56,9 @@ export const DataProvider = ({children}) => {
         allTrans, 
         setAllTrans, 
         newSpot, 
-        setNewSpot
+        setNewSpot,
+        currentLang,
+        setCurrentLang
       }}>
       {children} 
     </DataContext.Provider>

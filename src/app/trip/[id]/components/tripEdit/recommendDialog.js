@@ -14,7 +14,49 @@ import { postSpots } from '@/services/postSpots';
 
 export default function RecommendDialog({recommend}) {
   const [open, setOpen] = useState(false);
-  const {allSpots, currGroupId, currDay, setNewSpot} = useContext(DataContext);
+  const {allSpots, currGroupId, currDay, setNewSpot, currentLang} = useContext(DataContext);
+
+  const translate = (key) => {
+    const translations = {
+      viewMore: {
+        zh: '查看更多',
+        en: 'View More'
+      },
+      spotInfo: {
+        zh: '景點資訊',
+        en: 'Spot Information'
+      },
+      open: {
+        zh: '營業中',
+        en: 'Open'
+      },
+      noneBusiness: {
+        zh: '非營業時間',
+        en: 'Non-business Hours'
+      },
+      price: {
+        zh: '價位：',
+        en: 'Price: '
+      },
+      na: {
+        zh: '未提供',
+        en: 'N/A'
+      },
+      reviews: {
+        zh: '則評論',
+        en: 'reviews'
+      },
+      addSpot: {
+        zh: '新增景點',
+        en: 'Add Spot'
+      },
+      back: {
+        zh: '返回',
+        en: 'Back'
+      },
+    }
+    return translations[key][currentLang];
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -71,7 +113,7 @@ export default function RecommendDialog({recommend}) {
               <div id="alert-dialog-description" className='flex flex-col gap-2'>
                 {recommend?.location}
                 {recommend?.phone}
-                {recommend?.is_closed ? <div className='font-bold text-rose-600'>非營業時間</div> : <div className='font-bold text-green-700'>營業中</div>}
+                {recommend?.is_closed ? <div className='font-bold text-rose-600'>{translate('noneBusiness')}</div> : <div className='font-bold text-green-700'>{translate('open')}</div>}
                 <div className='flex flex-row gap-1'>
                   {recommend?.categories?.map((category, index) => (
                     <div key={index} className='bg-slate-200 p-1'>{category}</div>
@@ -83,16 +125,16 @@ export default function RecommendDialog({recommend}) {
                     {recommend?.rating}
                     <StarIcon />
                   </div>
-                  {recommend?.review_count}則評論
+                  {recommend?.review_count} {translate('reviews')}
                 </div>
-                價位：{recommend?.price || "未提供"}
+                {translate('price')}{recommend?.price || translate('na')}
               </div>
               <img src={recommend?.img} alt='place_photo' width={240} className='object-cover aspect-square'/>
             </div>
           </DialogContent>
           <DialogActions>
-            <Button variant="outlined" onClick={handleClose}>返回</Button>
-            <Button variant='contained' onClick={handlePost} autoFocus>新增景點</Button>
+            <Button variant="outlined" onClick={handleClose}>{translate('back')}</Button>
+            <Button variant='contained' onClick={handlePost} autoFocus>{translate('addSpot')}</Button>
           </DialogActions>
         </Dialog>
     </>

@@ -1,30 +1,55 @@
 'use client';
 import React, { useEffect, useState, useContext } from 'react';
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { IconButton } from '@mui/material';
 import NotificationButton from "./NotificationButton";
+import TranslateIcon from '@mui/icons-material/Translate';
 import { useClerk } from "@clerk/clerk-react";
+import { DataContext } from '@/app/components/dataContext';
+
 
 const NavBar = ({ children }) => {
   const { signOut } = useClerk();
   const router = useRouter();
-  
+  const { currentLang, setCurrentLang } = useContext(DataContext);
 
-  const handleClick =  () => {
+  const translate = (key) => {
+    const translations = {
+      'myJourney': {
+        'zh': '我的旅程',
+        'en': 'My Journey'
+      },
+      'myProfile': {
+        'zh': '個人檔案',
+        'en': 'My Profile'
+      },
+      'logout': {
+        'zh': '登出',
+        'en': 'Log out'
+      },
+    };
+    return translations[key][currentLang];
+  };
+
+  const handleClick = () => {
     window.location.href = '/';
   };
 
   const handleProfile = () => {
-    // router.push('/profile');
-  }
+    router.push('/profile');
+  };
 
   const handleLogout = () => {
     signOut(() => router.push("/"))
+  };
+
+  const switchLanguage = () => {
+    setCurrentLang(currentLang === 'en' ? 'zh' : 'en');
   };
 
   return (
@@ -35,15 +60,14 @@ const NavBar = ({ children }) => {
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1, cursor: 'pointer' }} onClick={handleClick}>
                   Journey<span style={{ color: '#0D5160' }}>Go</span>
                 </Typography>
-
                 <NotificationButton/>
-                <Typography variant="body2" component="a" sx={{ marginLeft: 2, marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' }} onClick={handleClick}>我的旅程</Typography>
-                <Button variant="outlined" sx={{ marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer', border: '1.5px solid ', borderRadius: '4px', padding: '4px 8px' }} onClick={handleProfile}>個人資料</Button>
-                <Button variant="outlined" sx={{ marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer', border: '1.5px solid ', borderRadius: '4px', padding: '2px' }} onClick={handleLogout}>登出</Button>
+                <Typography component="a" sx={{ marginLeft: 3, marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' }} onClick={handleClick}>{translate('myJourney')}</Typography>
+                <Typography component="a" sx={{ marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' }} onClick={handleClick}>{translate('myProfile')}</Typography>
+                <Button variant="outlined" sx={{ marginRight: 2, color: 'inherit', textDecoration: 'none', cursor: 'pointer', border: '1.5px solid '}} className="px-1 py-1" onClick={handleLogout}>{translate('logout')}</Button>
+                <IconButton aria-label="Change Language" size="large"sx={{ marginRight: 2, color: 'inherit', cursor: 'pointer'}} onClick={switchLanguage}><TranslateIcon /></IconButton>
             </Toolbar>
         </AppBar>
     </Box>
-      
   );
 }
 

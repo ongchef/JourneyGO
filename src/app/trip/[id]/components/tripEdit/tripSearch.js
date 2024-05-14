@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -9,6 +9,7 @@ import TabPanel from './tabPanel';
 import GoogleMap from './googleMap';
 import SearchPanel from './searchPanel';
 import RecommendPanel from './recommendPanel';
+import { DataContext } from '@/app/components/dataContext';
 
 function tabProps(index) {
   return {
@@ -19,6 +20,26 @@ function tabProps(index) {
 
 export default function TripSearch() {
   const [value, setValue] = useState(0);
+
+  const { currentLang } = useContext(DataContext);
+
+  const translate = (key) => {
+    const translations = {
+      map: {
+        zh: "地圖",
+        en: "Map",
+      },
+      search: {
+        zh: "搜尋",
+        en: "Search",
+      },
+      recommend: {
+        zh: "推薦",
+        en: "Recommend",
+      },
+    };
+    return translations[key][currentLang];
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -33,7 +54,7 @@ export default function TripSearch() {
               sx={{height: '1rem', minHeight: '1rem'}}
               label={
                 <div>
-                  <Typography variant='p'>地圖</Typography>
+                  <Typography variant='p'>{translate('map')}</Typography>
                 </div>
               } 
               {...tabProps(0)}   
@@ -42,7 +63,7 @@ export default function TripSearch() {
               sx={{height: '1rem', minHeight: '1rem'}}
               label={
                 <div>
-                  <Typography variant='p'>搜尋</Typography>
+                  <Typography variant='p'>{translate('search')}</Typography>
                 </div>
               }
               {...tabProps(1)} 
@@ -51,7 +72,7 @@ export default function TripSearch() {
               sx={{height: '1rem', minHeight: '1rem'}}
               label={
                 <div>
-                  <Typography variant='p'>推薦</Typography>
+                  <Typography variant='p'>{translate('recommend')}</Typography>
                 </div>
               }
               {...tabProps(2)} 

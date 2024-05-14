@@ -13,11 +13,31 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, I
 const quitGroupDialog = ({ open, onClose}) => {
 
   // const { Token, allGroups } = useContext(DataContext);
-  const { allGroups } = useContext(DataContext)
+  const { allGroups, currentLang } = useContext(DataContext)
 
   const [groupId, setGroupId] = useState(allGroups.group_id);
   
- 
+  const translate = (key) => {
+    const translations = {
+      warning: {
+        zh: '警告',
+        en: 'Warning'
+      },
+      WantToQuit: {
+        zh: '確認要退出小組嗎？',
+        en: 'Are you sure you want to quit the group?'
+      },
+      cancel: {
+        zh: "取消",
+        en: "Cancel",
+      },
+      quit: {
+        zh: "退出",
+        en: "Quit",
+      }
+    };
+    return translations[key][currentLang];
+  };
 
   const handleSave = async() => {
     try {
@@ -44,16 +64,16 @@ const quitGroupDialog = ({ open, onClose}) => {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
-      <DialogTitle>警告</DialogTitle>
+      <DialogTitle>{translate('warning')}</DialogTitle>
       <DialogContent>
-        確認要退出小組嗎？
+        {translate('WantToQuit')}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCancel} color="primary">
-          取消
+          {translate('cancel')}
         </Button>
         <Button onClick={handleSave} color="primary">
-          退出
+          {translate('quit')}
         </Button>
       </DialogActions>
     </Dialog>

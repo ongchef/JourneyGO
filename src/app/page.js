@@ -1,7 +1,7 @@
 'use client';
 import "./globals.css";
 import { getTripGroups } from '@/services/getTripGroups';
-// import { DataContext } from '@/app/components/dataContext';
+import { DataContext } from '@/app/components/dataContext';
 import { getToken } from '@/utils/getToken';
 import SelectedContent from './components/SelectedContent';
 import TripList from './components/TripList';
@@ -10,7 +10,6 @@ import NewJourneyDialog from './components/newJourney';
 import { useContext, useState, useEffect } from 'react';
 import { CircularProgress, Box, Typography, Tabs, Tab, Grid, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-
 
 function LoadingIndicator() {
   return (
@@ -21,6 +20,9 @@ function LoadingIndicator() {
 }
 
 export default function Home() {
+
+  // const { t } = useTranslation('common');
+  const { currentLang, setCurrentLang } = useContext(DataContext);
 
   const [tabValue, setTabValue] = useState('All');
   const [openDialog, setOpenDialog] = useState(false); 
@@ -35,6 +37,31 @@ export default function Home() {
     finished: ['finished', 'Finished'],
   };
   
+  const translate = (key) => {
+    const translations = {
+      'myJourney': {
+        'zh': '我的旅程',
+        'en': 'My Journeys'
+      },
+      'newJourney': {
+        'zh': '新增旅程',
+        'en': 'New Journey'
+      },
+      'all': {
+        'zh': '全部',
+        'en': 'All'
+      },
+      'incoming': {
+        'zh': '即將來臨',
+        'en': 'Incoming'
+      },
+      'finished': {
+        'zh': '已完成',
+        'en': 'Finished'
+      },
+    };
+    return translations[key][currentLang];
+  };
 
   useEffect(() => {
     return () => {
@@ -62,10 +89,6 @@ export default function Home() {
   async function fetchAllGroups(Token) {
     try {
       const data = await getTripGroups(Token);
-      // console.log('Trip groups:', data);
-      // calculate the duration of each trip group
-      // console.log("data after getTripGroups:");
-      // console.log(data);
 
       if (Array.isArray(data)) {
         data.forEach(trip => {
@@ -110,17 +133,17 @@ export default function Home() {
 
             <Box className="flex items-center p-2 m-3">
                 <Typography variant="h4" component="div" className="pr-5">
-                  我的旅程
+                  {translate('myJourney')}
                 </Typography>
                 <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={handleOpenDialog}>
-                  新增行程
+                  {translate('newJourney')}
                 </Button>
             </Box>
               
             <Tabs value={tabValue} onChange={handleTabChange} aria-label="trip tabs" className="">
-              <Tab label="All" value="All"/>
-              <Tab label="Incoming" value={tabValues.incoming}/>
-              <Tab label="Finished" value={tabValues.finished}/>
+              <Tab label={translate('all')} value="All"/>
+              <Tab label={translate('incoming')} value={tabValues.incoming}/>
+              <Tab label={translate('finished')} value={tabValues.finished}/>
             </Tabs>
 
             <TripList data={tripGroups} tabValue={tabValue} setTripOverview={setTripOverview}/>

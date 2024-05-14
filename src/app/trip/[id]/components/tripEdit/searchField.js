@@ -13,7 +13,17 @@ import { getToken } from '@/utils/getToken';
 
 export default function SearchField({ setSearchRes, checked }) {
   const [searchText, setSearchText] = useState('');
-  const { currGroupId, currDay, allSpots } = useContext(DataContext);
+  const { currGroupId, currDay, allSpots, currentLang } = useContext(DataContext);
+
+  const translate = (key) => {
+    const translations = {
+      search: {
+        zh: "搜尋景點",
+        en: "Search Spots",
+      },
+    };
+    return translations[key][currentLang];
+  };
 
   const handleInputChange = (event) => {
     setSearchText(event.target.value);
@@ -64,7 +74,7 @@ export default function SearchField({ setSearchRes, checked }) {
         </IconButton>
         <InputBase
           sx={{ ml: 1, flex: 1 }}
-          placeholder="搜尋景點"
+          placeholder={translate('search')}
           inputProps={{ 'aria-label': 'search google maps' }}
           value={searchText}
           onChange={handleInputChange}

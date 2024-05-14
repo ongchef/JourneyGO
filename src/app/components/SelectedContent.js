@@ -1,7 +1,8 @@
 "use client";
 import "../globals.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
+import { DataContext } from '@/app/components/dataContext';
 
 import { Grid, Box, Typography, AvatarGroup, Avatar, CardMedia, Button, IconButton, colors, Tooltip } from "@mui/material";
 import { ArrowBackIos as ArrowBackIosIcon, ArrowForwardRounded as ArrowForwardRoundedIcon } from "@mui/icons-material";
@@ -13,11 +14,34 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
 
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const { currentLang } = useContext(DataContext);
 
     const handleClick = () => {
         setLoading(true);
         router.push(`/trip/${data?.group_id}`);
         // setLoading(false);
+    };
+
+    const translate = (key) => {
+        const translations = {
+            overview: {
+                zh: "旅程概覽",
+                en: "Journey Overview",
+            },
+            myPartners: {
+                zh: '我的旅伴',
+                en: 'My Partners'
+            },
+            duration: {
+                zh: '旅程時間',
+                en: 'Duration'
+            },
+            viewDetails: {
+                zh: '查看詳細資訊',
+                en: 'View Details'
+            }
+        };
+        return translations[key][currentLang];
     };
 
     const avatarColors = [];
@@ -39,7 +63,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
                         <ArrowBackIosIcon />
                     </IconButton>
                     <Typography variant="h4" component="div" className="pl-2 pr-5">
-                        旅程概覽
+                        {translate('overview')}
                     </Typography>
                 </Box>
 
@@ -53,7 +77,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
 
                     <Box className="pt-10">
                         <Typography variant="h5" component="div">
-                            我的旅伴
+                            {translate('myPartners')}
                         </Typography>
                         <Box className="flex items-center mt-2">
                             <AvatarGroup max={5} spacing={-20}>
@@ -70,7 +94,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
 
                     <Box className="pt-10">
                         <Typography variant="h5" component="div">
-                            旅程時間
+                            {translate('duration')}
                         </Typography>
                         <Box className="flex items-center mt-2">
                             <Typography variant="h4" component="div" sx={{ color: cyan[700] }}>
@@ -81,7 +105,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
 
                     <Box className="flex justify-end items-end">
                         <Button variant="text" size="large" endIcon={<ArrowForwardRoundedIcon />} sx={{ fontSize: "1.5rem" }} onClick={handleClick}>
-                            查看詳細資訊
+                            {translate('viewDetails')}
                         </Button>
                     </Box>
                 </Box>

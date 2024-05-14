@@ -15,12 +15,22 @@ import CommentDialog from './commentDialog';
 const ItemTypes = {CARD: 'card',}
 
 export const DndCard = ({ id, index, title, location, moveCard, spotChange }) => {
-  const { currGroupId, currDay, setAllSpots, setRefetch } = useContext(DataContext);
+  const { currGroupId, currDay, setAllSpots, setRefetch, currentLang } = useContext(DataContext);
   const [openDialog, setOpenDialog] = useState(false); 
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
   }
+
+  const translate = (key) => {
+    const translations = {
+        delete: {
+            zh: "刪除",
+            en: "Delete",
+        },
+    };
+    return translations[key][currentLang];
+  };
 
   // Drag and Drop
   const ref = useRef(null)
@@ -108,7 +118,7 @@ export const DndCard = ({ id, index, title, location, moveCard, spotChange }) =>
         <div className='flex gap-2'>
           <CommentIcon onClick={handleCommentClick}/>
           <ThumbUpOffAltIcon />
-          <Button variant='outlined' onClick={handleClick}>刪除</Button>
+          <Button variant='outlined' onClick={handleClick}>{translate('delete')}</Button>
         </div>
       </div>
       <Typography variant='caption'>{location}</Typography>

@@ -11,9 +11,19 @@ import Button from '@mui/material/Button';
 import { getToken } from '@/utils/getToken';
 
 export default function SearchCard({title, location, rating, lng, lat, photo}) {
-  const { allSpots, currGroupId, currDay, setRefetch, setNewSpot } = useContext(DataContext);
+  const { allSpots, currGroupId, currDay, setRefetch, setNewSpot, currentLang } = useContext(DataContext);
   const router = useRouter();
   const pathname = usePathname();
+
+  const translate = (key) => {
+    const translations = {
+        add: {
+            zh: "新增",
+            en: "Add",
+        },
+    };
+    return translations[key][currentLang];
+};
 
   const handleClick = () => {
     async function post(Token) {
@@ -63,7 +73,7 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
             <Typography variant='body2'>{rating}/5</Typography>
             <StarIcon />
           </div>
-          <Button variant='contained' onClick={handleClick}>新增</Button>
+          <Button variant='contained' onClick={handleClick}>{translate('add')}</Button>
         </div>
       </div>
     </div>

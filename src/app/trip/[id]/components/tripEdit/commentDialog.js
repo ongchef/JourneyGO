@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Dialog, DialogTitle, DialogContent,DialogActions,Divider,Container, Button, TextField, Grid, Box, IconButton, InputLabel, Typography } from '@mui/material';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Avatar } from '@mui/material';
+import { DataContext } from "@/app/components/dataContext";
 
 const CommentDialog = ({ open, onClose, onSubmit}) => {
+  const { setAllGroups, currentLang } = useContext(DataContext);
+
   const [comment, setComment] = useState('');
   const [messages, setMessages] = useState([]);
   const [name, setName] = useState('');
+
+  const translate = (key) => {
+    const translations = {
+        submit: {
+            zh: "送出",
+            en: "Submit",
+        },
+        comment: {
+            zh: '發表...',
+            en: 'Comment...'
+        },
+      }
+    return translations[key][currentLang];
+};
+
   
 
   const handleClose = () => {
@@ -118,7 +136,7 @@ const CommentDialog = ({ open, onClose, onSubmit}) => {
               <div>
                   <TextField
                     id="name"
-                    label="發表..."
+                    label={translate("comment")}
                     fullWidth
                     value={name}
                     onChange={handleCommentChange}
@@ -126,7 +144,7 @@ const CommentDialog = ({ open, onClose, onSubmit}) => {
               </div>
               <div>
                   <Button onClick={handleSubmit} variant="contained" color="primary">
-                    送出
+                    {translate("submit")}
                   </Button>
               </div>
             </div>
