@@ -1,4 +1,3 @@
-// controllers/userController.js
 import {
   addNewUser,
   updateUser,
@@ -8,10 +7,12 @@ import {
   getInviteeIdByEmail,
   getInvitationByUserId,
   updateInvitation,
+  updateUserImageFilename
 } from "../models/userModel.js";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 
 import { createInvitationModel } from "../models/tripgroupModel.js";
+import { uploadPhoto } from "../services/image.js";
 
 import { Webhook } from "svix";
 import bodyParser from "body-parser";
@@ -253,5 +254,24 @@ export const putInvitation = async (req, res) => {
     return res.status(201).json(updInvitation);
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const postImage = async (req, res) => {
+  const file  = req.file;
+  const clerkId = req.userID;
+
+  // If no file
+  if (!file){
+    return res.status(400).json({ message: "No file"});
+  }
+
+  // Try upload
+  try{
+    const img_result = await uploadPhoto(file);
+    const user_result = await updateUserImageFilename(clerkId, img_result.filename);
+    return res.status(200).json({ url: img_result.url});
+  } catch (error){
+    return res.status(500).json({ message: error.message});
   }
 };

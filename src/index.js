@@ -1,11 +1,9 @@
 import dotenv from "dotenv";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import axios from "axios";
 import swaggerUi from "swagger-ui-express";
 import { createRequire } from "module";
 
-import db from "./models/db_connection.js";
 import { app } from "./app.js";
 
 import { updateSpotBySpotId } from "./models/spotModel.js";
@@ -40,7 +38,6 @@ setInterval(() => {
   io.emit('keep-alive', { 
     time: time
   });
-  console.log(`keep-alive emit at ${time}`);
 }, 15000);
 
 io.on("connection", (socket) => {
