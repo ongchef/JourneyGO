@@ -22,8 +22,24 @@ function tabProps(index) {
 }
 
 export default function Profile({}) {
+    const { currentLang } = useContext(DataContext);
+
     const [value, setValue] = useState(0);
     const [isLoad, setIsLoad] = useState(true);
+
+    const translate = (key) => {
+        const translations = {
+            profile: {
+                zh: "個人帳戶",
+                en: "Profile",
+            },
+            accountSecurity: {
+                zh: "帳戶安全",
+                en: "Account Security",
+            },
+        };
+        return translations[key][currentLang];
+    }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -38,7 +54,7 @@ export default function Profile({}) {
                             label={
                                 <div className="flex flex-row items-center gap-3">
                                     <RoomIcon className="scale-125" />
-                                    <Typography variant="p">個人帳戶</Typography>
+                                    <Typography variant="p">{translate("profile")}</Typography>
                                 </div>
                             }
                             {...tabProps(0)}
@@ -47,7 +63,7 @@ export default function Profile({}) {
                             label={
                                 <div className="flex flex-row items-center gap-3">
                                     <DescriptionIcon className="scale-125" />
-                                    <Typography variant="p">帳戶安全</Typography>
+                                    <Typography variant="p">{translate("accountSecurity")}</Typography>
                                 </div>
                             }
                             {...tabProps(1)}

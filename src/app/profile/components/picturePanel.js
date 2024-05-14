@@ -6,10 +6,25 @@ import {Avatar, InputLabel, Input} from "@mui/material";
 
 
 const PicturePanel = ({avatarUrl}) => {
- 
+    const { currentLang } = useContext(DataContext);
+
     const [reload, setReload] = useState(false);
     const [profile, setProfile] = useState({});
     const [newAvatarUrl, setNewAvatarUrl] = useState(null); 
+
+    const translate = (key) => {
+        const translations = {
+            myPhoto: {
+                zh: "我的照片",
+                en: "My Photo",
+            },
+            upload: {
+                zh: "上傳",
+                en: "Upload",
+            },
+        };
+        return translations[key][currentLang];
+    }
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -31,8 +46,8 @@ const PicturePanel = ({avatarUrl}) => {
         <Avatar alt="User Avatar" src={newAvatarUrl||avatarUrl} sx={{ width: 200, height: 200 }}/>
       </div>
       <div className='mt-5'>
-        <InputLabel htmlFor="avatar-upload" className='mx-auto' >我的照片</InputLabel>
-        <label htmlFor="avatar-upload" className='cursor-pointer'>上傳</label>
+        <InputLabel htmlFor="avatar-upload" className='mx-auto' >{translate('myPhoto')}</InputLabel>
+        <label htmlFor="avatar-upload" className='cursor-pointer'>{translate('upload')}</label>
         <Input
           id="avatar-upload"
           type='file'

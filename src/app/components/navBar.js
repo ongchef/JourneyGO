@@ -37,7 +37,7 @@ const NavBar = ({ children }) => {
   };
 
   const handleClick = () => {
-    window.location.href = '/';
+    router.push('/');
   };
 
   const handleProfile = () => {
@@ -62,7 +62,7 @@ const NavBar = ({ children }) => {
                 </Typography>
                 <NotificationButton/>
                 <Typography component="a" sx={{ marginLeft: 3, marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' }} onClick={handleClick}>{translate('myJourney')}</Typography>
-                <Typography component="a" sx={{ marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' }} onClick={handleClick}>{translate('myProfile')}</Typography>
+                <Typography component="a" sx={{ marginRight: 3, color: 'inherit', textDecoration: 'none', cursor: 'pointer' }} onClick={handleProfile}>{translate('myProfile')}</Typography>
                 <Button variant="outlined" sx={{ marginRight: 2, color: 'inherit', textDecoration: 'none', cursor: 'pointer', border: '1.5px solid '}} className="px-1 py-1" onClick={handleLogout}>{translate('logout')}</Button>
                 <IconButton aria-label="Change Language" size="large"sx={{ marginRight: 2, color: 'inherit', cursor: 'pointer'}} onClick={switchLanguage}><TranslateIcon /></IconButton>
             </Toolbar>
