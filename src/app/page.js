@@ -21,7 +21,6 @@ function LoadingIndicator() {
 
 export default function Home() {
 
-  // const { t } = useTranslation('common');
   const { currentLang, setCurrentLang } = useContext(DataContext);
 
   const [tabValue, setTabValue] = useState('All');

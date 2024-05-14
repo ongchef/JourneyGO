@@ -1,18 +1,42 @@
 import { useState, useContext } from "react";
 import dayjs from "dayjs";
+import { DataContext } from "@/app/components/dataContext";
 
 import { postWriteOffBill } from "@/services/postWriteOffBill";
-// import { DataContext } from "@/app/components/dataContext";
 import { getToken } from "@/utils/getToken";
 
 import { Button, Box, useTheme, Typography, Card, CardContent, AvatarGroup, Avatar, Dialog, DialogContent, Tooltip } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function BillList({ group_id, transactionResult, reloadTabPanel }) {
+
+    const { currentLang, setCurrentLang } = useContext(DataContext);
     
     const [writeOffStatusOpen, setWriteOffStatusOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(null);
     const theme = useTheme();
+
+    const translate = (key) => {
+        const translations = {
+            writeOff: {
+                zh: "核銷",
+                en: "Write Off",
+            },
+            ask: {
+                zh: "您確定要核銷嗎？",
+                en: "Are you sure to write off?",
+            },
+            confirm: {
+                zh: "確定",
+                en: "Confirm",
+            },
+            cancel: {
+                zh: "取消",
+                en: "Cancel",
+            },
+        }
+        return translations[key][currentLang];
+    }
 
     const cardStyles = {
         flexDirection: "column",
@@ -102,7 +126,7 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
                             </div>
                             <div>
                                 <Button variant="contained" style={{ backgroundColor: "#EB684E" }}  onClick={() => handleWriteOffBtnClick(index)}>
-                                    核銷
+                                    {translate("writeOff")}
                                 </Button>
                             </div>
                         </CardContent>
@@ -117,10 +141,10 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
                 <Dialog open={writeOffStatusOpen} onClose={handleCreationStatusDialogClose} fullWidth maxWidth="sm">
                     <DialogContent sx={dialogContentStyles}>
                         <Box sx={boxStyles}>
-                            您確定要核銷嗎？
+                            {translate("ask")}
                             <div>
-                                <Button onClick={handleSubmit}>確定</Button>
-                                <Button onClick={handleCreationStatusDialogClose}>取消</Button>
+                                <Button onClick={handleSubmit}>{translate('confirm')}</Button>
+                                <Button onClick={handleCreationStatusDialogClose}>{translate('cancel')}</Button>
                             </div>
                         </Box>
                     </DialogContent>

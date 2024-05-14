@@ -2,7 +2,7 @@
 
 import { postTransaction } from "@/services/postTransaction";
 import { putTransaction } from "@/services/putTransaction";
-// import { DataContext } from "@/app/components/dataContext";
+import { DataContext } from "@/app/components/dataContext";
 import { getToken } from '@/utils/getToken';
 import { getTripGroupOverview } from "@/services/getTripGroupOverview";
 import Picker from "./Picker";
@@ -12,6 +12,8 @@ import dayjs from "dayjs";
 import { Dialog, DialogContent, Typography, DialogTitle, Button, Grid, InputLabel, TextField, Select, Box, FormControl, MenuItem } from "@mui/material";
 
 const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, transactionData = null }) => {
+
+    const { currentLang } = useContext(DataContext);
 
     const [groupMembers, setGroupMembers] = useState([]);
     const [groupMembersId, setGroupMembersId] = useState([]);
@@ -41,6 +43,88 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
 
     const [creationStatusOpen, setCreationStatusOpen] = useState(false);
     const [statusMessage, setStatusMessage] = useState("");
+    
+    const translate = (key) => {
+        const translations = {
+            newBill: {
+                zh: "新增花費",
+                en: "New Bill",
+            },
+            editBill: {
+                zh: "編輯花費",
+                en: "Edit Bill",
+            },
+            item: {
+                zh: "品項",
+                en: "Item",
+            },
+            amount: {
+                zh: "金額",
+                en: "Amount",
+            },
+            payer: {
+                zh: "付款人",
+                en: "Payer",
+            },
+            participants: {
+                zh: "參與者",
+                en: "Participants",
+            },
+            time: {
+                zh: "時間",
+                en: "Time",
+            },
+            edit: {
+                zh: "修改",
+                en: "Edit",
+            },
+            submit: {
+                zh: "新增",
+                en: "Submit",
+            },
+            cancel: {
+                zh: "取消",
+                en: "Cancel",
+            },
+            addSuccess: {
+                zh: "新增成功",
+                en: "Success",
+            },
+            addFail: {
+                zh: "新增失敗",
+                en: "Fail",
+            },
+            editSucess: {
+                zh: "修改成功",
+                en: "Success",
+            },
+            editFail: {
+                zh: "修改失敗",
+                en: "Fail",
+            },
+            fillItemName: {
+                zh: "請輸入品項名稱",
+                en: "Please fill in the item name",
+            },
+            fillAmount: {
+                zh: "請輸入正確金額",
+                en: "Please fill in the correct amount",
+            },
+            selectPayer: {
+                zh: "請選擇付款人",
+                en: "Please select a payer",
+            },
+            selectParticipants: {
+                zh: "請選擇參與者",
+                en: "Please select at least one participant",
+            },
+            selectDate: {
+                zh: "請選擇日期",
+                en: "Please select a date",
+            },
+        };
+        return translations[key][currentLang];
+    };
 
     useEffect(() => {
         console.log("render newBill");
@@ -94,15 +178,15 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
             let data = await postTransaction(Token, group_id, billName, amount, payerId, participantsId, billDate, billTime);
 
             if (data && data.length !== 0) {
-                setStatusMessage("新增成功");
+                setStatusMessage(translate("addSuccess"));
                 setCreationStatusOpen(true);
             } else {
-                setStatusMessage("新增失敗");
+                setStatusMessage(translate("addFail"));
                 setCreationStatusOpen(true);
             }
         } catch (error) {
             console.error("Error posting transaction:", error);
-            setStatusMessage("新增失敗");
+            setStatusMessage(translate("addFail"));
             setCreationStatusOpen(true);
         }
     };
@@ -124,15 +208,15 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
             let data = await putTransaction(Token, group_id, billId, dataToSend);
 
             if (data && data.length !== 0) {
-                setStatusMessage("修改成功");
+                setStatusMessage(translate("editSucess"));
                 setCreationStatusOpen(true);
             } else {
-                setStatusMessage("修改失敗");
+                setStatusMessage(translate("editFail"));
                 setCreationStatusOpen(true);
             }
         } catch (error) {
             console.error("Error putting transaction:", error);
-            setStatusMessage("修改失敗");
+            setStatusMessage(translate("editFail"));
             setCreationStatusOpen(true);
         }
     };
@@ -152,23 +236,23 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
         setBillTime(dayjs(billDateTime).format("HH:mm"));
 
         if (date === null) {
-            setBillDateTimeError("請選擇日期");
+            setBillDateTimeError(translate("selectDate"));
         } else {
             setBillDateTimeError("");
         }
     };
 
     const handleBillNameChange = (e) => {
-        handleChange(setBillName, setBillNameError, e.target.value, "請輸入品項名稱");
+        handleChange(setBillName, setBillNameError, e.target.value, translate("fillItemName"));
     };
 
     const handleBillAmountChange = (e) => {
-        handleChange(setAmount, setAmountError, e.target.value, "請輸入正確金額");
+        handleChange(setAmount, setAmountError, e.target.value, translate("fillAmount"));
     };
 
     const handlePayerChange = (e) => {
         setPayerId(groupMembersId[groupMembers.indexOf(e.target.value)]);
-        handleChange(setPayer, setPayerError, e.target.value, "請選擇付款人");
+        handleChange(setPayer, setPayerError, e.target.value, translate("selectPayer"));
         
         // if (participantsGroupMembers.includes(e.target.value)) {
         //     const selectedMembers = groupMembers.filter((member) => member !== e.target.value);
@@ -182,7 +266,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
         const selectedMembers = Array.isArray(e.target.value) ? e.target.value : [e.target.value];
 
         if (selectedMembers.length === 0) {
-            setParticipantsError("請選擇參與者");
+            setParticipantsError(translate("selectParticipants"));
         } else {
             setParticipantsError("");
             setParticipants(selectedMembers);
@@ -201,27 +285,27 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
 
         if (billName === "") {
             console.log("billName is empty");
-            setBillNameError("請輸入品項名稱");
+            setBillNameError(translate("fillItemName"));
             isValid = false;
         }
         if (payer === "") {
             console.log("payer is empty");
-            setPayerError("請選擇付款人");
+            setPayerError(translate("selectPayer"));
             isValid = false;
         }
         if (participants.length === 0) {
             console.log("participants is empty");
-            setParticipantsError("請選擇參與者");
+            setParticipantsError(translate("selectParticipants"));
             isValid = false;
         }
         if (amount === "" || isNaN(amount)) {
             console.log("amount is empty or not a number");
-            setAmountError("請輸入正確金額");
+            setAmountError(translate("fillAmount"));
             isValid = false;
         }
         if (billDate === "" || billTime === "") {
             console.log("billDate or billTime is empty");
-            setBillDateTimeError("請選擇日期");
+            setBillDateTimeError(translate("selectDate"));
             isValid = false;
         }
 
@@ -272,7 +356,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                 <DialogTitle>
                     <div style={{ display: "flex", alignItems: "center" }}>
                         <img src="/money.png" alt="money" style={{ width: 55, height: 55 }} />
-                        <Typography variant="h5">{editMode ? "編輯花費" : "新增花費"}</Typography>
+                        <Typography variant="h5">{editMode ? translate('editBill') : translate('newBill')}</Typography>
                     </div>
                 </DialogTitle>
 
@@ -287,11 +371,11 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                         <Grid item xs={12} md={4} style={{ display: "flex", flexDirection: "column", justifyContent: "flex-start" }}>
                             <Grid container spacing={2} direction="column">
                                 <Grid item>
-                                    <InputLabel htmlFor="add-products">品項</InputLabel>
+                                    <InputLabel htmlFor="add-products">{translate("item")}</InputLabel>
                                     <TextField label="" fullWidth onChange={handleBillNameChange} style={{ marginTop: 6 }} error={!!billNameError} helperText={billNameError} value={billName} />
                                 </Grid>
                                 <Grid item>
-                                    <InputLabel htmlFor="amount">金額</InputLabel>
+                                    <InputLabel htmlFor="amount">{translate("amount")}</InputLabel>
                                     <Grid container spacing={0} alignItems="center" style={{ marginTop: 6 }}>
                                         {/* <Grid item>
                                             <FormControl fullWidth>
@@ -314,7 +398,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                                     </Grid>
                                 </Grid>
                                 <Grid item>
-                                    <InputLabel htmlFor="paid-by-who">誰付錢</InputLabel>
+                                    <InputLabel htmlFor="paid-by-who">{translate("payer")}</InputLabel>
                                     <FormControl fullWidth style={{ marginTop: 6 }}>
                                         <Select
                                             value={payer}
@@ -333,7 +417,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                                     </FormControl>
                                 </Grid>
                                 <Grid item>
-                                    <InputLabel htmlFor="paid-for-who">參與者</InputLabel>
+                                    <InputLabel htmlFor="paid-for-who">{translate("participants")}</InputLabel>
                                     <FormControl fullWidth style={{ marginTop: 6 }}>
                                         <Select
                                             multiple
@@ -363,10 +447,10 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
 
                     <div style={{ textAlign: "center", marginTop: 20 }}>
                         <Button onClick={handleSubmit} variant="contained" color="primary" style={{ marginRight: 10 }}>
-                            {editMode ? "修改" : "新增"}
+                            {editMode ? translate("edit") : translate("submit")}
                         </Button>
                         <Button onClick={handleCancel} variant="contained" color="primary">
-                            取消
+                            {translate("cancel")}
                         </Button>
                     </div>
                 </DialogContent>
@@ -376,7 +460,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                 <DialogContent>
                     {statusMessage}
                     <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", height: "100%" }}>
-                        <Button onClick={handleCreationStatusDialogClose}>確定</Button>
+                        <Button onClick={handleCreationStatusDialogClose}>{translate("cancel")}</Button>
                     </Box>
                 </DialogContent>
             </Dialog>

@@ -1,7 +1,7 @@
-import { useState, useContext, useEffect, memo } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import NewBill from "./newBill";
-// import { DataContext } from "@/app/components/dataContext";
+import { DataContext } from "@/app/components/dataContext";
 import { getToken } from "@/utils/getToken";
 import { getAllTransactions } from "@/services/getAllTransactions";
 
@@ -13,9 +13,29 @@ const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
 
 const AllTransactionList = ({ group_id, reloadTabPanel }) => {
 
+    const { currentLang, setCurrentLang } = useContext(DataContext);
+
     const [transactionList, setTransactionList] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
+
+    const translate = (key) => {
+        const translations = {
+            records: {
+                zh: "花費紀錄",
+                en: "Transaction Records",
+            },
+            noData: {
+                zh: "尚無交易記錄",
+                en: "No transaction data found in this group",
+            },
+            paidFor: {
+                zh: "支付",
+                en: "paid for",
+            },
+        }
+        return translations[key][currentLang];
+    };
 
     const handleDialogOpen = (data) => {
         // wrap up the data and pass it to the dialog
@@ -112,11 +132,11 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
     return (
         <div className="px-8">
             <Typography variant="h6" className="font-bold">
-                花費紀錄
+                {translate("records")}
             </Typography>
 
             {transactionList.length === 0 ? (
-                <Typography variant="h6">尚無交易記錄</Typography>
+                <Typography variant="h6">{translate('noData')}</Typography>
             ) : (
                 transactionList.map((data, index) => (
                     <StyledCard key={index} onClick={() => handleDialogOpen(data)}>
@@ -125,7 +145,7 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
                                 <Avatar>{data.payer_name[0].toUpperCase()}</Avatar>
                             </Tooltip>
                         </Box>
-                        <CardContent className="flex ml-5 overflow-hidden whitespace-nowrap flex-shrink" style={{ maxWidth: "12rem" }}>
+                        <CardContent className="flex overflow-hidden whitespace-nowrap flex-shrink" style={{ maxWidth: "12rem" }}>
                             <Box className="justify-start">
                                 <Typography variant="h6" component="div" className="font-bold">
                                     {data.bill_name}
@@ -136,7 +156,7 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
                                 </Typography>
 
                                 <Typography variant="h8" component="div">
-                                    <span className="font-bold">{data.payer_name}</span> 支付
+                                    <span className="font-bold">{data.payer_name}</span> {translate("paidFor")}
                                 </Typography>
                             </Box>
                         </CardContent>

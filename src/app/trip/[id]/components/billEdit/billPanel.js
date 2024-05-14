@@ -1,14 +1,31 @@
 "use client";
-import React from "react";
+import React, {useContext} from "react";
 import { Grid, Button, Box, Typography, Avatar } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { DataContext } from "@/app/components/dataContext";
 import NewBill from "./newBill";
 
 function BillPanel({ group_id, reloadTabPanel }) {
+
+    const { currentLang, setCurrentLang } = useContext(DataContext);
     const router = useRouter();
 
     const [openDialog, setOpenDialog] = useState(false);
+
+    const translate = (key) => {
+        const translations = {
+            hello: {
+                zh: "你好!",
+                en: "Hello!",
+            },
+            addBill: {
+                zh: "+ 新增花費",
+                en: "+ Add Bill",
+            },
+        };
+        return translations[key][currentLang];
+    }
 
     const setDividerStyles = {
         marginTop: `0!important`,
@@ -39,11 +56,11 @@ function BillPanel({ group_id, reloadTabPanel }) {
                             </div>
                             <div className="pr-5">
                                 <Typography variant="body1" sx={{ fontSize: "20px" }}>
-                                    Hello!
+                                    {translate("hello")}
                                 </Typography>
                             </div>
                             <Button variant="contained" onClick={handleOpenDialog} sx={{ bgcolor: "#EB684E" }}>
-                                + 新增花費
+                                {translate("addBill")}
                             </Button>
                         </Box>
                     </Grid>
