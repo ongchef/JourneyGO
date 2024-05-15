@@ -15,6 +15,8 @@ import {
   deleteShareBillModel,
   getBillsByBillId,
   getCommentsBySpotId,
+  createCommentModel,
+  deleteCommentModel,
 } from "../models/tripgroupModel.js";
 import {
   getuserIdbyClerkId,
@@ -370,8 +372,8 @@ export const getComments = async (req, res) => {
     //console.log(data);
     if (data.length === 0) {
       return res
-        .status(404)
-        .json({ message: "Cannot find comments by given spotId." });
+        .status(200)
+        .json([]);
     }
 
     return res.status(200).json(data);
@@ -381,29 +383,32 @@ export const getComments = async (req, res) => {
 };
 
 
-// export const createComment = async (req, res) => {
-//   const { spotId } = req.params;
-//   const { comment_text, date, time } = req.body;
-//   console.log(comment_text, date, time);
-//   try {
-//     const newComment = await createCommentModel(comment_text, date, time, spotId); // 
-//     console.log(newComment);
+export const createComment = async (req, res) => {
+  const { spotId } = req.params;
+  const { comment_text, date, time } = req.body;
+  const userClerkId = req.userID;
+  console.log(comment_text, date, time);
+  try {
+    let user_id = await getuserIdbyClerkId(userClerkId)
+    user_id = user_id[0].user_id
+    console.log(user_id);
+    const newComment = await createCommentModel(user_id, comment_text, date, time, spotId);
+    console.log(newComment);
 
-//     return res.status(201).json({ message: "create Comment Success"});
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message });
-//   }
-// };
+    return res.status(201).json({ message: "create Comment Success"});
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
 
-// export const deleteComment = async (req, res) => {
-//   const { spotId, commentId } = req.params;
-//   console.log(spotId, commentId);
-//   try {
-//     const deleteComment = await deleteCommentModel(spotId, commentId); // 
-//     console.log(deleteComment);
+export const deleteComment = async (req, res) => {
+  const { spotId, commentId } = req.params;
+  console.log(spotId, commentId);
+  try {
+    const deleteComment = await deleteCommentModel(spotId, commentId);
 
-//     return res.status(201).json({ message: "delete Comment Success"});
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message });
-//   }
-// };
+    return res.status(200).json({ message: "delete Comment Success"});
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

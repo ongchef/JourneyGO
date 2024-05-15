@@ -273,11 +273,28 @@ export const getShareCodeByGroupId = (groupId) => {
 
 export const getCommentsBySpotId = (spotId) => {
   return db.manyOrNone(
-    `SELECT u.user_name AS inviter_name, tg.group_name AS group_name, i.invitation_id, i.status
-    FROM invitation i
-    JOIN user_account u ON i.inviter = u.user_id
-    JOIN trip_groups tg ON i.g_id = tg.group_id
-    WHERE i.invitee = $1`,
+    `SELECT *
+    FROM comment 
+    WHERE spot_id = $1
+    ORDER BY date DESC, time DESC`,
     [spotId]
+  );
+};
+
+export const createCommentModel = (user_id, comment_text, date, time, spotId) => {
+  //console.log("start to create share bill");
+  return db.none(
+    `INSERT INTO comment (spot_id, advisor_id, content, date, time)
+    VALUES ($1, $2, $3, $4)`,
+    [spotId, user_id, comment_text, date]
+  );
+};
+
+export const deleteCommentModel = (spotId, commentId) => {
+  //console.log("start to delete comment");
+  return db.none(
+    `DELETE FROM comment
+    WHERE spot_id = $1 AND comment_id = $2`,
+    [spotId, commentId]
   );
 };

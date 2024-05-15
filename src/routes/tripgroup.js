@@ -13,8 +13,8 @@ import {
   getBillDetail,
   writeBill,
   getComments,
-  // createComment,
-  // deleteComment
+  createComment,
+  deleteComment,
 } from "../controllers/tripgroup.js";
 import {
   getSpots,
@@ -47,8 +47,8 @@ router.post("/:groupId/transaction/writeoff", writeBill);
 
 //comment
 router.get("/:spotId/comments", getComments);
-// router.post("/:spotId/comment", createComment);
-// router.delete("/:spotId/comment/:commentId", deleteComment)
+router.post("/:spotId/comment", createComment);
+router.delete("/:spotId/comment/:commentId", deleteComment)
 // For test
 // router.get("/getDate/:groupId",getDate)
 export default router;
