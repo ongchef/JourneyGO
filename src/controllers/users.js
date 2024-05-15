@@ -109,8 +109,6 @@ export const updateUserInfo = async function (req, res) {
   const origuserEmail = req.email;
   const filename = req.filename;
 
-  console.log(filename)
-
   try {
     // update clerk user info (can only update user name for now)
     const updatedUser = await clerkClient.users.updateUser(userID, {

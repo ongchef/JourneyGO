@@ -15,13 +15,20 @@ export const addNewUser = ({ userID, userEmail, userName, status }) => {
 };
 
 export const updateUser = ({ userID, userEmail, userName, status, filename, phone}) => {
-  const query = `
+  let query = `
       UPDATE user_account
-      SET status = $1, user_name = $2, email = $3, image = $5, phone = $6
-      WHERE clerk_user_id = $4
-      RETURNING *;
+      SET status = $1, user_name = $2, email = $3, phone = $4
     `;
-  const values = [status, userName, userEmail, userID, filename, phone];
+  const values = [status, userName, userEmail, phone];
+
+  if (filename !== null){
+    query += `, image = $5`;
+    values.push(filename);
+  }
+
+  query += `WHERE clerk_user_id = $${values.length + 1} RETURNING *;`
+  values.push(userID)
+
   return db.query(query, values);
 };
 

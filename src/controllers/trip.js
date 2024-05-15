@@ -31,7 +31,7 @@ export const createGroup = async (req, res) => {
   const clerkId = req.userID;
   const filename = req.filename;
 
-  const { groupName, country, invitee, startDate, endDate } = req.body;
+  const { groupName, country, invitee, startDate, endDate} = req.body;
   try {
     const userId = await getuserIdbyClerkId(clerkId);
     console.log(userId);

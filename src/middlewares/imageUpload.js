@@ -12,9 +12,11 @@ const bucket = storage.bucket('journeygo_photo');
 
 export default function uploadImage (req, res, next){
     const file  = req.file;
+
     // If no file
     if (!file){
-        return res.status(400).json({ message: "No file"});
+        req.filename = null;
+        return next();
     }
     
     const newFilename = `${crypto.randomUUID()}-${file.originalname}`;
