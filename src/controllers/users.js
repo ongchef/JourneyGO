@@ -146,6 +146,9 @@ export const getGroup = async (req, res) => {
     console.log(userId);
     userId = userId[0].user_id;
     console.log(userId);
+    const currentDate = new Date().toISOString().slice(0, 10);
+    console.log(currentDate); // 输出当前日期（YYYY-MM-DD 格式）
+
     const data = await getGroupByUserId(userId);
     if (data.length === 0) {
       return res.status(200).json([]);

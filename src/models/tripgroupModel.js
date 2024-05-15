@@ -285,8 +285,8 @@ export const createCommentModel = (user_id, comment_text, date, time, spotId) =>
   //console.log("start to create share bill");
   return db.none(
     `INSERT INTO comment (spot_id, advisor_id, content, date, time)
-    VALUES ($1, $2, $3, $4)`,
-    [spotId, user_id, comment_text, date]
+    VALUES ($1, $2, $3, $4, $5)`,
+    [spotId, user_id, comment_text, date, time]
   );
 };
 
