@@ -1,6 +1,7 @@
 import {
   addNewUser,
   updateUser,
+  getUser,
   getuserIdbyClerkId,
   getGroupByUserId,
   createGroupModel,
@@ -8,6 +9,9 @@ import {
   getInvitationByUserId,
   updateInvitation,
 } from "../models/userModel.js";
+import {
+  updateGroupStatus
+} from "../models/tripgroupModel.js"
 import { clerkClient } from "@clerk/clerk-sdk-node";
 
 import { createInvitationModel } from "../models/tripgroupModel.js";
@@ -93,10 +97,10 @@ export const getUserProfile = async function (req, res) {
   //console.log(req);
 
   try {
-    const email = req.email;
-    const userName = req.userName;
-    return res.status(200).json({ userName, email });
+    const userProfile = await getUser({ userID: req.userID });
+    return res.status(200).json({ userProfile });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Fetch User Profile Error" });
   }
 };
@@ -108,7 +112,7 @@ export const updateUserInfo = async function (req, res) {
   const origuserName = req.userName;
   const origuserEmail = req.email;
   const filename = req.filename;
-
+  
   try {
     // update clerk user info (can only update user name for now)
     const updatedUser = await clerkClient.users.updateUser(userID, {
@@ -142,17 +146,27 @@ export const getGroup = async (req, res) => {
   const clerkId = req.userID;
   try {
     let userId = await getuserIdbyClerkId(clerkId);
-    console.log(userId);
+    //console.log(userId);
     userId = userId[0].user_id;
-    console.log(userId);
+    //console.log(userId);
     const currentDate = new Date().toISOString().slice(0, 10);
-    console.log(currentDate); // 输出当前日期（YYYY-MM-DD 格式）
+    //console.log(currentDate); // 输出当前日期（YYYY-MM-DD 格式）
 
     const data = await getGroupByUserId(userId);
+    //console.log(data);
+    for (const group of data) {
+      const endDate = new Date(group.end_date);
+      const currentDate = new Date();
+      
+      if (currentDate > endDate) {
+        // 当前时间晚于结束时间，将状态更新为 'finished'
+        group.status = 'finished';
+        const updateStatus = await updateGroupStatus(group.group_id, 'finished')
+      }
+    }
     if (data.length === 0) {
       return res.status(200).json([]);
     }
-
     return res.status(200).json(data);
   } catch (error) {
     return res.status(500).json({ message: error.message });

@@ -25,7 +25,7 @@ router.post(
 );
 
 router.post(
-  "/updateUserInfo",
+  "/userProfile",
   ClerkExpressWithAuth(),
   getUserInfo,
   express.json(),
