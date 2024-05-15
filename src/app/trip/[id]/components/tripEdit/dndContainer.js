@@ -74,7 +74,6 @@ export default function DndContainer({day, spotChange}) {
     async function fetchSpots(Token) {
       if (currGroupId===undefined || currDay===undefined) return;  
       try {
-        console.log("fetch");
         const {res, durations, status, option} = await getSpots(Token, currGroupId, currDay);
         if (status !== 200) { return; }
         if (res !== undefined && res.length !== 0 ) {

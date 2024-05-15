@@ -115,9 +115,8 @@ export const DndCard = ({ id, index, title, location, moveCard, spotChange }) =>
     <div ref={ref} data-handler-id={handlerId} className='shadow bg-white p-3 rounded-md'>
       <div className='flex justify-between'>
         <Typography variant='inherit'>{title}</Typography>
-        <div className='flex gap-2'>
+        <div className='flex gap-2 items-center'>
           <CommentIcon onClick={handleCommentClick}/>
-          <ThumbUpOffAltIcon />
           <Button variant='outlined' onClick={handleClick}>{translate('delete')}</Button>
         </div>
       </div>
