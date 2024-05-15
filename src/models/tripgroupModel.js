@@ -270,3 +270,14 @@ export const getShareCodeByGroupId = (groupId) => {
     `SELECT share_code FROM trip_groups WHERE group_id = $1`, [groupId]
   )
 }
+
+export const getCommentsBySpotId = (spotId) => {
+  return db.manyOrNone(
+    `SELECT u.user_name AS inviter_name, tg.group_name AS group_name, i.invitation_id, i.status
+    FROM invitation i
+    JOIN user_account u ON i.inviter = u.user_id
+    JOIN trip_groups tg ON i.g_id = tg.group_id
+    WHERE i.invitee = $1`,
+    [spotId]
+  );
+};
