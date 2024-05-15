@@ -7,15 +7,12 @@ import {
   getInviteeIdByEmail,
   getInvitationByUserId,
   updateInvitation,
-  updateUserImageFilename
 } from "../models/userModel.js";
 import { clerkClient } from "@clerk/clerk-sdk-node";
 
 import { createInvitationModel } from "../models/tripgroupModel.js";
-import { uploadPhoto } from "../services/image.js";
 
 import { Webhook } from "svix";
-import bodyParser from "body-parser";
 
 export const registerUser = async function (req, res) {
   // Check if the 'Signing Secret' from the Clerk Dashboard was correctly provided
@@ -103,15 +100,17 @@ export const getUserProfile = async function (req, res) {
     return res.status(500).json({ message: "Fetch User Profile Error" });
   }
 };
+
 export const updateUserInfo = async function (req, res) {
   const userID = req.userID;
   // get updated user info from frontend
-  const { userName, userEmail } = req.body;
+  const { userName, userEmail, userPhone } = req.body;
   const origuserName = req.userName;
   const origuserEmail = req.email;
-  //console.log(userName, email);
-  console.log(userName, userEmail);
-  console.log(origuserEmail, origuserName);
+  const filename = req.filename;
+
+  console.log(filename)
+
   try {
     // update clerk user info (can only update user name for now)
     const updatedUser = await clerkClient.users.updateUser(userID, {
@@ -129,6 +128,8 @@ export const updateUserInfo = async function (req, res) {
       userEmail: origuserEmail,
       userName: userName,
       status: "Active",
+      filename: filename,
+      phone: userPhone,
     });
     return res
       .status(200)
@@ -254,24 +255,5 @@ export const putInvitation = async (req, res) => {
     return res.status(201).json(updInvitation);
   } catch (error) {
     return res.status(500).json({ message: error.message });
-  }
-};
-
-export const postImage = async (req, res) => {
-  const file  = req.file;
-  const clerkId = req.userID;
-
-  // If no file
-  if (!file){
-    return res.status(400).json({ message: "No file"});
-  }
-
-  // Try upload
-  try{
-    const img_result = await uploadPhoto(file);
-    const user_result = await updateUserImageFilename(clerkId, img_result.filename);
-    return res.status(200).json({ url: img_result.url});
-  } catch (error){
-    return res.status(500).json({ message: error.message});
   }
 };
