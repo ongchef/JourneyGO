@@ -29,6 +29,7 @@ export const getGroup = async (req, res) => {
 //add country
 export const createGroup = async (req, res) => {
   const clerkId = req.userID;
+  const filename = req.filename;
 
   const { groupName, country, invitee, startDate, endDate } = req.body;
   try {
@@ -39,7 +40,8 @@ export const createGroup = async (req, res) => {
       country,
       groupName,
       startDate,
-      endDate
+      endDate,
+      filename
     );
 
     const inviteeIds = [];

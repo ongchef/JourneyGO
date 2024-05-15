@@ -3,6 +3,7 @@ import multer from "multer";
 import bodyParser from "body-parser";
 
 import getUserInfo from "../middlewares/userInfo.js";
+import uploadImage from "../middlewares/imageUpload.js";
 import {
   registerUser,
   getGroup,
@@ -11,10 +12,8 @@ import {
   putInvitation,
   updateUserInfo,
   getUserProfile,
-  postImage,
 } from "../controllers/users.js";
 import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
-import { get } from "http";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -24,16 +23,18 @@ router.post(
   bodyParser.raw({ type: "application/json" }),
   registerUser
 );
+
 router.post(
-  "/updateUserInfo",
+  "/userProfile",
   ClerkExpressWithAuth(),
   getUserInfo,
   express.json(),
+  upload.single("image"),
+  uploadImage,
   updateUserInfo
 );
 
 router.get("/userProfile", ClerkExpressWithAuth(), getUserInfo, getUserProfile);
-
 router.get("/trip-groups", ClerkExpressWithAuth(), getUserInfo, getGroup);
 router.post(
   "/trip-groups",
@@ -49,15 +50,6 @@ router.put(
   getUserInfo,
   express.json(),
   putInvitation
-);
-
-router.post(
-  "/images",
-  ClerkExpressWithAuth(),
-  getUserInfo,
-  express.json(),
-  upload.single("photo"),
-  postImage
 );
 
 export default router;

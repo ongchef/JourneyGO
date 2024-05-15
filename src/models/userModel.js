@@ -14,14 +14,31 @@ export const addNewUser = ({ userID, userEmail, userName, status }) => {
   return db.query(query, values);
 };
 
-export const updateUser = ({ userID, userEmail, userName, status }) => {
+export const updateUser = ({
+  userID,
+  userEmail,
+  userName,
+  status,
+  filename,
+  phone,
+}) => {
   const query = `
       UPDATE user_account
-      SET status = $1, user_name = $2, email = $3
+      SET status = $1, user_name = $2, email = $3, image = $5, phone = $6
       WHERE clerk_user_id = $4
       RETURNING *;
     `;
-  const values = [status, userName, userEmail, userID];
+  const values = [status, userName, userEmail, userID, filename, phone];
+  return db.query(query, values);
+};
+
+export const getUser = ({ userID }) => {
+  console.log(userID);
+  const query = `
+      SELECT * FROM user_account
+      WHERE clerk_user_id = $1;
+    `;
+  const values = [userID];
   return db.query(query, values);
 };
 
@@ -173,13 +190,3 @@ export const updateInvitation = (invitationId, status) => {
     }
   });
 };
-
-export const updateUserImageFilename = (clerkId, image) => {
-  return db.one(
-    `update user_account
-    set image = $2
-    where clerk_user_id = $1
-    RETURNING *;
-    `, [clerkId, image]
-  );
-}

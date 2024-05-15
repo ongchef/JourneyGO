@@ -18,7 +18,7 @@ export const getGroupByUserId = (userId) => {
 };
 
 
-export const createGroupModel = (userId, groupName, countries, startDate, endDate) => {
+export const createGroupModel = (userId, groupName, countries, startDate, endDate, filename) => {
   return new Promise((resolve, reject) => {
     db.tx(async (t) => {
       const groupCountries = [];
@@ -38,10 +38,10 @@ export const createGroupModel = (userId, groupName, countries, startDate, endDat
 
       // Step 2: Insert group into trip_groups table
       const { group_id: groupId } = await t.one(
-        `INSERT INTO trip_groups (group_name, start_date, end_date, status)
-         VALUES ($1, $2, $3, 'Incoming')
+        `INSERT INTO trip_groups (group_name, start_date, end_date, status, image)
+         VALUES ($1, $2, $3, 'Incoming', $4)
          RETURNING group_id`,
-        [groupName, startDate, endDate]
+        [groupName, startDate, endDate, filename]
       );
 
       // Step 3: Insert into group_country table for each country_id
