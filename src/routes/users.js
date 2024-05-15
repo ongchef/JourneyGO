@@ -3,7 +3,7 @@ import multer from "multer";
 import bodyParser from "body-parser";
 
 import getUserInfo from "../middlewares/userInfo.js";
-import uploadPhoto from "../middlewares/imageUpload.js";
+import uploadImage from "../middlewares/imageUpload.js";
 import {
   registerUser,
   getGroup,
@@ -29,8 +29,8 @@ router.post(
   ClerkExpressWithAuth(),
   getUserInfo,
   express.json(),
-  upload.single("photo"),
-  uploadPhoto,
+  upload.single("image"),
+  uploadImage,
   updateUserInfo
 );
 

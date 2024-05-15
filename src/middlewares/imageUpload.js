@@ -10,7 +10,7 @@ const storage = new Storage({
 });
 const bucket = storage.bucket('journeygo_photo');
 
-export default function uploadPhoto (req, res, next){
+export default function uploadImage (req, res, next){
     const file  = req.file;
     // If no file
     if (!file){
