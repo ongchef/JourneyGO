@@ -8,7 +8,6 @@ import RecommendCard from './recommendCard';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { act } from 'react';
 
 
 export default function RecommendPanel() {
