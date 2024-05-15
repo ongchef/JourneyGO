@@ -1,6 +1,7 @@
 import {
   addNewUser,
   updateUser,
+  getUser,
   getuserIdbyClerkId,
   getGroupByUserId,
   createGroupModel,
@@ -93,10 +94,10 @@ export const getUserProfile = async function (req, res) {
   //console.log(req);
 
   try {
-    const email = req.email;
-    const userName = req.userName;
-    return res.status(200).json({ userName, email });
+    const userProfile = await getUser({ userID: req.userID });
+    return res.status(200).json({ userProfile });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Fetch User Profile Error" });
   }
 };
@@ -109,7 +110,7 @@ export const updateUserInfo = async function (req, res) {
   const origuserEmail = req.email;
   const filename = req.filename;
 
-  console.log(filename)
+  console.log(filename);
 
   try {
     // update clerk user info (can only update user name for now)
