@@ -107,9 +107,9 @@ export default function RecommendDialog({recommend}) {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title" sx={{fontSize: {lg: 24, xs: 18}}}>{recommend?.title}</DialogTitle>
+          <DialogTitle id="alert-dialog-title" sx={{fontSize: {lg: 24, xs: 20}}}>{recommend?.title}</DialogTitle>
           <DialogContent>
-            <div className='flex lg:flex-row flex-col gap-4'>
+            <div className='flex lg:flex-row flex-col lg:gap-4 gap-3'>
               <div id="alert-dialog-description" className='flex flex-col gap-2'>
                 {recommend?.location}
                 {recommend?.phone}
@@ -129,7 +129,9 @@ export default function RecommendDialog({recommend}) {
                 </div>
                 {translate('price')}{recommend?.price || translate('na')}
               </div>
-              <img src={recommend?.img} alt='place_photo' width={240} className='object-cover aspect-square'/>
+              <div className='w-full flex justify-center'>
+                <img src={recommend?.img} alt='place_photo' width={240} className='object-cover aspect-square shadow-md shadow-neutral-400' />
+              </div>
             </div>
           </DialogContent>
           <DialogActions>
