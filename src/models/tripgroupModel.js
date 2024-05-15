@@ -298,3 +298,16 @@ export const deleteCommentModel = (spotId, commentId) => {
     [spotId, commentId]
   );
 };
+
+export const updateGroupStatus = (
+  group_id,
+  status
+) => {
+  //console.log("start to update bill");
+  return db.none(
+    `UPDATE trip_groups 
+    SET status = $1
+    WHERE group_id = $2`,
+    [status, group_id]
+  );
+};
