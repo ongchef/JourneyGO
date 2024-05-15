@@ -25,11 +25,25 @@ function tabProps(index) {
 }
 
 export default function Trip({params}) {
-  const {currGroupId, setCurrGroupId} = useContext(DataContext);
+  const {currGroupId, setCurrGroupId, currentLang} = useContext(DataContext);
   const [value, setValue] = useState(0);
   const [groupInfo, setGroupInfo] = useState({}); 
   const [isLoad, setIsLoad] = useState(false);
   const [reloadTab, setReloadTab] = useState(false);
+
+  const translate = (key) => {
+    const translations = {
+        tripPlan: {
+            zh: "景點規劃",
+            en: "Trip Plan",
+        },
+        bill: {
+            zh: "分帳",
+            en: "Bill",
+        },
+    };
+    return translations[key][currentLang];
+  }
 
   useEffect(() => {
     const groupId = String(params.id);
@@ -72,7 +86,7 @@ export default function Trip({params}) {
             label={
               <div className='flex flex-row items-center gap-3'>
                 <RoomIcon className='scale-125'/>
-                <Typography variant='p'>景點規劃</Typography>
+                <Typography variant='p'>{translate('tripPlan')}</Typography>
               </div>
             } 
             {...tabProps(0)}   
@@ -81,7 +95,7 @@ export default function Trip({params}) {
             label={
               <div className='flex flex-row items-center gap-3'>
                 <DescriptionIcon className='scale-125'/>
-                <Typography variant='p'>分帳</Typography>
+                <Typography variant='p'>{translate('bill')}</Typography>
               </div>
             }
             {...tabProps(1)} 

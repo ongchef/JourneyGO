@@ -46,8 +46,8 @@ const PicturePanel = ({avatarUrl}) => {
         <Avatar alt="User Avatar" src={newAvatarUrl||avatarUrl} sx={{ width: 200, height: 200 }}/>
       </div>
       <div className='mt-5'>
-        <InputLabel htmlFor="avatar-upload" className='mx-auto' >{translate('myPhoto')}</InputLabel>
-        <label htmlFor="avatar-upload" className='cursor-pointer'>{translate('upload')}</label>
+        {/* <InputLabel htmlFor="avatar-upload" className='mx-auto' >{translate('myPhoto')}</InputLabel> */}
+        <label htmlFor="avatar-upload" className='cursor-pointer' hidden="hidden">{translate('upload')}</label>
         <Input
           id="avatar-upload"
           type='file'

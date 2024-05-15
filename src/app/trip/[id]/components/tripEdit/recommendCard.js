@@ -5,6 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import StarIcon from '@mui/icons-material/Star';
 import RecommendDialog from './recommendDialog';
 import { DataContext } from '@/app/components/dataContext.jsx';
+import { useContext } from 'react';
 
 
 export default function RecommendCard({recommend}) {
