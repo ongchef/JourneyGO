@@ -48,7 +48,7 @@ export default function Profile({}) {
     return (
         <main>
             <Box sx={{ width: "100%" }}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                {/* <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                     <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                         <Tab
                             label={
@@ -69,7 +69,7 @@ export default function Profile({}) {
                             {...tabProps(1)}
                         />
                     </Tabs>
-                </Box>
+                </Box> */}
                 <Box>
                     <h1 className="lg:text-3xl text-2xl m-[1rem]"></h1>
                     {/* <TabPanel value={value} index={0}>
