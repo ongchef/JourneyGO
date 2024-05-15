@@ -133,9 +133,10 @@ export const createGroupModel = (
 };
 
 export const getInviteeIdByEmail = (email) => {
-  return db.oneOrNone(`SELECT user_id, user_name FROM user_account WHERE email = $1`, [
-    email,
-  ]);
+  return db.oneOrNone(
+    `SELECT user_id, user_name FROM user_account WHERE email = $1`,
+    [email]
+  );
 };
 
 export const getInvitationByUserId = (userId) => {
@@ -172,3 +173,13 @@ export const updateInvitation = (invitationId, status) => {
     }
   });
 };
+
+export const updateUserImageFilename = (clerkId, image) => {
+  return db.one(
+    `update user_account
+    set image = $2
+    where clerk_user_id = $1
+    RETURNING *;
+    `, [clerkId, image]
+  );
+}

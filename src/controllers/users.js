@@ -1,4 +1,3 @@
-// controllers/userController.js
 import {
   addNewUser,
   updateUser,
@@ -8,8 +7,12 @@ import {
   getInviteeIdByEmail,
   getInvitationByUserId,
   updateInvitation,
+  updateUserImageFilename
 } from "../models/userModel.js";
+import { clerkClient } from "@clerk/clerk-sdk-node";
+
 import { createInvitationModel } from "../models/tripgroupModel.js";
+import { uploadPhoto } from "../services/image.js";
 
 import { Webhook } from "svix";
 import bodyParser from "body-parser";
@@ -89,78 +92,50 @@ export const registerUser = async function (req, res) {
   }
 };
 
+export const getUserProfile = async function (req, res) {
+  //console.log(req);
+
+  try {
+    const email = req.email;
+    const userName = req.userName;
+    return res.status(200).json({ userName, email });
+  } catch (error) {
+    return res.status(500).json({ message: "Fetch User Profile Error" });
+  }
+};
 export const updateUserInfo = async function (req, res) {
-  // Check if the 'Signing Secret' from the Clerk Dashboard was correctly provided
-  const WEBHOOK_SECRET_UPDATE = process.env.WEBHOOK_SECRET_UPDATE;
-  console.log(WEBHOOK_SECRET_UPDATE);
-  if (!WEBHOOK_SECRET_UPDATE) {
-    throw new Error("You need a WEBHOOK_SECRET in your .env");
-  }
-
-  // Grab the headers and body
-  const headers = req.headers;
-  const payload = req.body;
-  console.log(payload);
-  console.log(headers);
-  // Get the Svix headers for verification
-  const svix_id = headers["svix-id"];
-  const svix_timestamp = headers["svix-timestamp"];
-  const svix_signature = headers["svix-signature"];
-
-  // If there are missing Svix headers, error out
-  if (!svix_id || !svix_timestamp || !svix_signature) {
-    return new Response("Error occured -- no svix headers", {
-      status: 400,
-    });
-  }
-
-  // Initiate Svix
-  const wh = new Webhook(WEBHOOK_SECRET_UPDATE);
-
-  let evt;
-
-  // Attempt to verify the incoming webhook
-  // If successful, the payload will be available from 'evt'
-  // If the verification fails, error out and  return error code
+  const userID = req.userID;
+  // get updated user info from frontend
+  const { userName, userEmail } = req.body;
+  const origuserName = req.userName;
+  const origuserEmail = req.email;
+  //console.log(userName, email);
+  console.log(userName, userEmail);
+  console.log(origuserEmail, origuserName);
   try {
-    evt = wh.verify(payload, {
-      "svix-id": svix_id,
-      "svix-timestamp": svix_timestamp,
-      "svix-signature": svix_signature,
+    // update clerk user info (can only update user name for now)
+    const updatedUser = await clerkClient.users.updateUser(userID, {
+      username: userName,
     });
-  } catch (err) {
-    // Console log and return error
-    console.log("Webhook failed to verify. Error:", err.message);
-    return res.status(400).json({
-      success: false,
-      message: err.message,
-    });
+  } catch (error) {
+    return res
+      .status(error.status)
+      .json({ success: false, message: error.errors[0].message });
   }
-
-  // Grab the ID and TYPE of the Webhook
-  const { id } = evt.data;
-  const eventType = evt.type;
-
-  console.log(`Webhook with an ID of ${id} and type of ${eventType}`);
-  // Console log the full payload to view
-  console.log("Webhook body:", evt.data);
-
-  const email = evt.data.email_addresses[0].email_address;
-  const username = evt.data.username;
-  const userid = evt.data.id;
   try {
-    updateUser({
-      userID: userid,
-      userEmail: email,
-      userName: username,
+    // update database user info
+    const returned = await updateUser({
+      userID: userID,
+      userEmail: origuserEmail,
+      userName: userName,
       status: "Active",
     });
-    res.status(200).json({
-      success: true,
-      message: "User successfully registered",
-    });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    return res
+      .status(200)
+      .json({ success: true, message: "Update User Info Success", returned });
+  } catch (error) {
+    // rollback clerk user info for consistency?
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -224,7 +199,7 @@ export const createGroup = async (req, res) => {
       const invitee = await getInviteeIdByEmail(email);
       console.log("invitee name", invitee);
       if (!invitee) {
-        continue
+        continue;
       }
       inviteeNames.push(invitee.user_name);
       const newInvitation = await createInvitationModel(
@@ -234,7 +209,7 @@ export const createGroup = async (req, res) => {
       );
     }
 
-    return res.status(201).json({newGroup, inviteeNames});
+    return res.status(201).json({ newGroup, inviteeNames });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -279,5 +254,24 @@ export const putInvitation = async (req, res) => {
     return res.status(201).json(updInvitation);
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const postImage = async (req, res) => {
+  const file  = req.file;
+  const clerkId = req.userID;
+
+  // If no file
+  if (!file){
+    return res.status(400).json({ message: "No file"});
+  }
+
+  // Try upload
+  try{
+    const img_result = await uploadPhoto(file);
+    const user_result = await updateUserImageFilename(clerkId, img_result.filename);
+    return res.status(200).json({ url: img_result.url});
+  } catch (error){
+    return res.status(500).json({ message: error.message});
   }
 };
