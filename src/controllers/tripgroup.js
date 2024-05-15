@@ -14,6 +14,9 @@ import {
   updateBillModel,
   deleteShareBillModel,
   getBillsByBillId,
+  getCommentsBySpotId,
+  createCommentModel,
+  deleteCommentModel,
 } from "../models/tripgroupModel.js";
 import {
   getuserIdbyClerkId,
@@ -33,7 +36,6 @@ export const createInvitation = async (req, res) => {
     console.log(inviterId);
     inviterId = inviterId[0].user_id;
     
-    // 获取每个邮箱对应的用户ID
     const inviteeNames = [];
     for (const email of inviteeEmail) {
       const invitee = await getInviteeIdByEmail(email);
@@ -357,6 +359,55 @@ export const writeBill = async (req, res) => {
     const payee_bill = createShareBills(newBill.bill_id, debtor_id, amount)
 
     return res.status(201).json({ message: "update bill succeed"});
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getComments = async (req, res) => {
+  const { spotId } = req.params;
+  //console.log(groupId, transactionId);
+  try {
+    const data = await getCommentsBySpotId(spotId);
+    //console.log(data);
+    if (data.length === 0) {
+      return res
+        .status(200)
+        .json([]);
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+
+export const createComment = async (req, res) => {
+  const { spotId } = req.params;
+  const { comment_text, date, time } = req.body;
+  const userClerkId = req.userID;
+  console.log(comment_text, date, time);
+  try {
+    let user_id = await getuserIdbyClerkId(userClerkId)
+    user_id = user_id[0].user_id
+    console.log(user_id);
+    const newComment = await createCommentModel(user_id, comment_text, date, time, spotId);
+    console.log(newComment);
+
+    return res.status(201).json({ message: "create Comment Success"});
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const deleteComment = async (req, res) => {
+  const { spotId, commentId } = req.params;
+  console.log(spotId, commentId);
+  try {
+    const deleteComment = await deleteCommentModel(spotId, commentId);
+
+    return res.status(200).json({ message: "delete Comment Success"});
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
