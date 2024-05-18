@@ -15,13 +15,20 @@ const Map = () => {
 
   // Array of marker positions with titles
   useEffect(() => {
-    setMarkerPositions(allSpots?.[currGroupId]?.[currDay]?.map((spot) => {
-      return {
-        lng: Number(spot?.lng),
-        lat: Number(spot?.lat),
-        title: spot?.title,
-      };
-    }));
+    const setMarker = async (allSpots, currGroupId, currDay) => {
+      setMarkerPositions(allSpots?.[currGroupId]?.[currDay]?.map((spot) => {
+        return {
+          lng: Number(spot?.lng),
+          lat: Number(spot?.lat),
+          title: spot?.title,
+        };
+      }));
+    };
+    // wait for 0.5 second
+    const timer = setTimeout(() => {
+      setMarker(allSpots, currGroupId, currDay);
+    }, 500);
+    return () => clearTimeout(timer);
   }, [allSpots, currGroupId, currDay]);
 
   useEffect(() => {
@@ -36,8 +43,8 @@ const Map = () => {
         const rendererOptions = {
           polylineOptions: {
             strokeColor: 'blue',
-            strokeOpacity: 0.5,
-            strokeWeight: 3
+            strokeOpacity: 0.6,
+            strokeWeight: 4
           }
         };
         const directionsRenderer = new google.maps.DirectionsRenderer(rendererOptions);
@@ -86,10 +93,10 @@ const Map = () => {
         console.error('Error initializing Google Maps:', error);
       }
     };
-
-    initMap();
+    if (markerPositions?.length > 0){
+      initMap();
+    }
   }, [markerPositions]);
-
   return <div ref={mapRef} className='h-[calc(70vh_-_3rem)] mt-[1rem]'/>;
 };
 

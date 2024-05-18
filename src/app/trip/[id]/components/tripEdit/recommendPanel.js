@@ -8,13 +8,16 @@ import RecommendCard from './recommendCard';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 export default function RecommendPanel() {
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("restaurant");
   const [recommends, setRecommends] = useState([]);
+  const [isLast, setIsLast] = useState(false);
   const { allSpots, currGroupId, currDay, currentLang } = useContext(DataContext);
+  const reference = useRef(null);
 
   const translate = (key) => {
     const translations = {
@@ -55,25 +58,49 @@ export default function RecommendPanel() {
   }
 
   const fetchData = async (Token, lat, lng) => {
-    setRecommends([]);
     const {res, status} = await getRecommend(Token, lat, lng, category, page);
-    setRecommends(res);
+    if (status === 200) {
+      if (res?.length === 0) {
+        setIsLast(true);
+      } else {
+        setRecommends((prevRecommends) => [...prevRecommends, ...res]);
+      }
+    }
   };
+
+  const handleClick = (buttonValue) => {
+    setRecommends([]);
+    setIsLast(false);
+    setPage(1);
+    setCategory(buttonValue); 
+  };
+
+   // infinite scroll
+   useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && !isLast) {
+        setPage((prevPage) => prevPage + 1);
+      }
+    }, { threshold: 1 });
+    if (reference.current && !isLast) {
+      observer.observe(reference.current);
+    }
+    return () => {
+      if (reference.current) {
+        observer.unobserve(reference.current);
+      }
+    }
+  }, [reference, isLast]);
 
   useEffect(() => {
     if (allSpots?.[currGroupId]?.[currDay] !== undefined) {
       const Token = getToken();
-
       // extract last spot's lat and lng
       const lat = allSpots?.[currGroupId]?.[currDay].slice(-1)[0]?.['lat'];
       const lng = allSpots?.[currGroupId]?.[currDay].slice(-1)[0]?.['lng'];
       fetchData(Token, lat, lng);
     }
   }, [page, category, currGroupId, currDay]);
-
-  const handleClick = (buttonValue) => {
-    setCategory(buttonValue);
-  };
 
   const categories = [
     ["restaurants", translate("restaurants")],
@@ -100,6 +127,9 @@ export default function RecommendPanel() {
           <RecommendCard key={index} recommend={recommend} />
         ))}
       </div>
+      <div ref={reference} className="w-full text-center">
+        {!isLast && <CircularProgress />}
+      </div> 
     </div>
   );
 }

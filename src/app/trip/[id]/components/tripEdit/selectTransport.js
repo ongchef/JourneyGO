@@ -31,7 +31,10 @@ export default function SelectTransport({spotChange}) {
 
   async function updateTrans(transOption, Token) {
     if (allSpots?.[currGroupId]?.[currDay] === undefined) return;
-    const {durations, status, option} = await updateRoute(Token, currGroupId, currDay, transOption);
+    const res = await updateRoute(Token, currGroupId, currDay, transOption);
+    const durations = res?.durations;
+    const option = res?.option;
+    const status = res?.status;
     if (status !== 200) {
       return;
     }
@@ -56,7 +59,9 @@ export default function SelectTransport({spotChange}) {
           spotChange(currDay, newSpot);
         }
       }
-    update();
+    if (newSpot) {
+      update();
+    }
   }, [newSpot])
 
   //update transportation when new option is selected

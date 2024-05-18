@@ -111,8 +111,8 @@ export default function RecommendDialog({recommend}) {
           <DialogContent>
             <div className='flex lg:flex-row flex-col lg:gap-4 gap-3'>
               <div id="alert-dialog-description" className='flex flex-col gap-2'>
-                {recommend?.location}
-                {recommend?.phone}
+                <div>{recommend?.location}</div>
+                <div>{recommend?.phone}</div>
                 {recommend?.is_closed ? <div className='font-bold text-rose-600'>{translate('noneBusiness')}</div> : <div className='font-bold text-green-700'>{translate('open')}</div>}
                 <div className='flex flex-row gap-1'>
                   {recommend?.categories?.map((category, index) => (

@@ -6,7 +6,6 @@ import CardMedia from '@mui/material/CardMedia';
 import StarIcon from '@mui/icons-material/Star';
 import RecommendDialog from './recommendDialog';
 import { DataContext } from '@/app/components/dataContext.jsx';
-import { useContext } from 'react';
 
 
 export default function RecommendCard({recommend}) {
@@ -25,7 +24,7 @@ export default function RecommendCard({recommend}) {
   return (
     <div>
       <Card sx={{ boxShadow: 3 }} className='p-5 flex flex-col lg:gap-3 gap-3'>
-        <div className='lg:h-[6rem] h-[7rem]'>
+        <div className='h-[7rem]'>
           <div className='lg:text-xl text-lg'>{recommend?.title}</div>
           <div className='text-sm'>{recommend?.location}</div>
           <div className='flex flex-row text-neutral-500 gap-2'>
