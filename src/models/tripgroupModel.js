@@ -273,10 +273,11 @@ export const getShareCodeByGroupId = (groupId) => {
 
 export const getCommentsBySpotId = (spotId) => {
   return db.manyOrNone(
-    `SELECT *
-    FROM comment 
+    `SELECT c.*, u.user_name as advisor_name
+    FROM comment c
+    JOIN user_account u on u.user_id = c.advisor_id
     WHERE spot_id = $1
-    ORDER BY date DESC, time DESC`,
+    ORDER BY date, time`,
     [spotId]
   );
 };
