@@ -1,157 +1,190 @@
-import React, { useState, useContext } from 'react';
-import { Dialog, DialogTitle, DialogContent,DialogActions,Divider,Container, Button, TextField, Grid, Box, IconButton, InputLabel, Typography } from '@mui/material';
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Avatar } from '@mui/material';
+import React, { useState, useContext, useEffect } from "react";
+import { formatISO, format } from "date-fns";
+import { getComments } from "@/services/getComments";
+import { postComment } from "@/services/postComment";
+import { deleteComment } from "@/services/deleteComment";
 import { DataContext } from "@/app/components/dataContext";
+import { getToken } from "@/utils/getToken";
 
-const CommentDialog = ({ open, onClose, onSubmit}) => {
-  const { setAllGroups, currentLang } = useContext(DataContext);
+import { Dialog, DialogTitle, DialogContent, Container, Button, TextField, Box, IconButton, Typography, Avatar, Tooltip, useMediaQuery, useTheme } from "@mui/material";
+import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
 
-  const [comment, setComment] = useState('');
-  const [messages, setMessages] = useState([]);
-  const [name, setName] = useState('');
+const CommentDialog = ({ open, onClose, spotId }) => {
+  const { currentLang } = useContext(DataContext);
+
+  const [comment, setComment] = useState("");
+  const [commentList, setCommentList] = useState([]);
+  const [commentCnt, setCommentCnt] = useState(0);
+  const [hoveredComment, setHoveredComment] = useState(null);
+  const [key, setKey] = useState(0);
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  async function fetchComments() {
+    try {
+      const Token = getToken();
+      const data = await getComments(Token, spotId);
+      console.log("comments result:", data);
+      if (data && data.length !== 0) {
+        setCommentList(data);
+        setCommentCnt(data.length);
+      } else {
+        console.error("No comment data found by given spotId ", spotId);
+      }
+    } catch (error) {
+      console.error("Error fetching all comments result:", error);
+    }
+  }
 
   const translate = (key) => {
     const translations = {
-        submit: {
-            zh: "送出",
-            en: "Submit",
-        },
-        comment: {
-            zh: '發表...',
-            en: 'Comment...'
-        },
-      }
+      submit: {
+        zh: "送出",
+        en: "Submit",
+      },
+      comment: {
+        zh: "發表...",
+        en: "Comment...",
+      },
+    };
     return translations[key][currentLang];
-};
-
-  
+  };
 
   const handleClose = () => {
     //setNewMessage('');
     onClose();
   };
 
-  const handleSubmit = () => {
-    if (comment !== '') {
-      setMessages([...messages, {name: 'Beannie', message: comment}]);
-      setComment('');
+  const handleSubmit = async () => {
+    if (comment !== "") {
+      // Post the comment
+      async function postNewComment() {
+        try {
+          const Token = getToken();
+          const currentDate = formatISO(new Date()).split("T")[0];
+          const currentTime = format(new Date(), "HH:mm");
+          // console.log("currentDate:", currentDate);
+          // console.log("currentTime:", currentTime);
+          const postStatus = await postComment(Token, spotId, comment, currentDate, currentTime);
+          console.log("post comment result:", postStatus);
+          if (postStatus) {
+            fetchComments();
+            setComment("");
+          }
+        } catch (error) {
+          console.error("Error posting comment result:", error);
+        }
+      }
+      await postNewComment();
+      setKey((prev) => prev + 1);
     }
-  }
+  };
 
   const handleCommentChange = (e) => {
     setComment(e.target.value);
-  }
+  };
+
+  const handleDelete = (commentId) => {
+    // Delete the comment with the given ID
+    console.log("delete comment with ID: ", commentId);
+    async function deleteCommentById() {
+      try {
+        const Token = getToken();
+        const deleteStatus = await deleteComment(Token, spotId, commentId);
+        console.log("delete comment result:", deleteStatus);
+
+        if (deleteStatus === 200) {
+          // refetch comments and rerender
+          fetchComments();
+        }
+      } catch (error) {
+        console.error("Error deleting comment result:", error);
+      }
+    }
+    deleteCommentById();
+  };
+
+  useEffect(() => {
+    console.log("render comment dialog for spotId: ", spotId);
+    fetchComments();
+  }, []);
 
   return (
-    <Dialog open={open} onClose={handleClose} >
-      <DialogTitle>留言板</DialogTitle>
+    <Dialog open={open} onClose={handleClose} maxWidth={fullScreen ? "xs" : "sm"} fullWidth>
+      <DialogTitle>
+          留言板 ({commentCnt})
+      </DialogTitle>
       <DialogContent dividers>
-          <Box sx={{ position: 'absolute', top: 0, right: 0 }}>
-            <IconButton onClick={handleClose}>
-            <img src="/close.png" alt="close" style={{ width: '30px', height: '30px' }}/>
-            </IconButton>
-          </Box>
+        <Box sx={{ position: "absolute", top: 0, right: 0 }}>
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
 
-          {/* Create a comment board to show the comments */}
-          {/* <Container maxWidth="sm" className='space-y-4'>
-            {messages.map((message, index) => (
-              <div key={index} className="flex flex-row items-center space-x-4">
-                <div>
-                  <Avatar src="/avatar.png" alt="avatar" style={{ width: '50px', height: '50px' }}/>
-                </div>
-                <div>
-                  <Typography variant="body1">{message.name}</Typography>
-                  <Typography variant="body2">{message.message}</Typography>
-                </div>
+        <Container maxWidth="sm" className="space-y-2" style={{ height: "300px", overflowY: "auto" }}>
+          {commentList.map((message) => (
+            <div
+              key={message.comment_id}
+              className={`flex flex-row items-center justify-between space-x-4 ${hoveredComment === message.comment_id ? "bg-gray-200" : ""}`}
+              onMouseEnter={() => setHoveredComment(message.comment_id)}
+              onMouseLeave={() => setHoveredComment(null)}>
+              <div className="flex flex-row items-center space-x-2">
+                <Avatar>{message.advisor_id}</Avatar>
+                <Typography variant="body2" color="text.secondary">
+                  {" "}
+                  {message.advisor_id}{" "}
+                </Typography>
+                <Typography> {message.content} </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {" "}
+                  {message.date.split("T")[0]} {message.time.split(":").slice(0, 2).join(":")}{" "}
+                </Typography>
               </div>
-            ))}
-          </Container> */}
-          <Container maxWidth="sm" className='space-y-2' style={{ height: '300px', overflowY: 'auto' }}>
-            <div class="flex flex-row items-center space-x-4" >
-              <div>
-                <Avatar src="/avatar.png" alt="avatar" style={{ width: '50px', height: '50px' }}/>
-              </div>
-              <div>
-                  {/* <Typography>Beanie</Typography> */}
-                  <Typography>Hihihi!</Typography>
-              </div>
+
+              {hoveredComment === message.comment_id && (
+                <IconButton onClick={() => handleDelete(message.comment_id)}>
+                  <DeleteIcon />
+                </IconButton>
+              )}
             </div>
+          ))}
 
-            <div class="flex flex-row items-center space-x-4" >
+          {/* <div className="flex flex-row items-center space-x-4">
               <div>
-                <Avatar src="/avatar.png" alt="avatar" style={{ width: '50px', height: '50px' }}/>
+                  <Box className="flex flex-row items-center space-x-2">
+                      <Avatar>A</Avatar>
+                      <Typography variant="body2" color="text.secondary">
+                          Abbie
+                      </Typography>
+                  </Box>
               </div>
               <div>
-                  <Typography>這個要不要改第二天去</Typography>
+                  <Typography>
+                      這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                  </Typography>
               </div>
+          </div> */}
+        </Container>
+
+        <Container maxWidth="sm" className="space-y-4">
+          <div className="flex flex-row items-center space-x-4">
+            <div>
+              <Tooltip title="Bobby">
+                <Avatar>B</Avatar>
+              </Tooltip>
             </div>
-
-            <div class="flex flex-row items-center space-x-4" >
-              <div>
-                <Avatar src="/avatar.png" alt="avatar" style={{ width: '50px', height: '50px' }}/>
-              </div>
-              <div>
-                  <Typography>但這樣比較順吧</Typography>
-              </div>
+            <div className="grow">
+              <TextField key={key} label={translate("comment")} value={comment} onChange={handleCommentChange} fullWidth />
             </div>
-
-            <div class="flex flex-row items-center space-x-4" >
-              <div>
-                <Avatar src="/avatar.png" alt="avatar" style={{ width: '50px', height: '50px' }}/>
-              </div>
-              <div>
-                  <Typography>這感覺好無聊</Typography>
-              </div>
+            <div>
+              <Button onClick={handleSubmit} variant="contained" color="primary">
+                {translate("submit")}
+              </Button>
             </div>
-
-            <div class="flex flex-row items-center space-x-4" >
-              <div>
-                <Avatar src="/avatar.png" alt="avatar" style={{ width: '50px', height: '50px' }}/>
-              </div>
-              <div>
-                  <Typography>不知道</Typography>
-              </div>
-            </div>
-
-            <div class="flex flex-row items-center space-x-4" >
-              <div>
-                <Avatar src="/avatar.png" alt="avatar" style={{ width: '50px', height: '50px' }}/>
-              </div>
-              <div>
-                  <Typography>所以要ㄇ</Typography>
-              </div>
-            </div>
-
-          </Container>
-
-
-
-          
-          <Container maxWidth="sm" className='space-y-4' >
-            <div class="flex flex-row items-center space-x-4" >
-              <div>
-                <Avatar src="/avatar.png" alt="avatar" style={{ width: '50px', height: '50px' }}/>
-              </div>
-              <div>
-                  <TextField
-                    id="name"
-                    label={translate("comment")}
-                    fullWidth
-                    value={name}
-                    onChange={handleCommentChange}
-                  />
-              </div>
-              <div>
-                  <Button onClick={handleSubmit} variant="contained" color="primary">
-                    {translate("submit")}
-                  </Button>
-              </div>
-            </div>
-    
-      </Container>
+          </div>
+        </Container>
       </DialogContent>
-      
     </Dialog>
   );
 };

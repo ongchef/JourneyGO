@@ -106,7 +106,7 @@ export const DndCard = ({ id, index, title, location, moveCard, spotChange }) =>
   }
 
   const handleCommentClick = () => {
-    console.log('comment');
+    // console.log('comment');
     setOpenDialog(true);
   }
 
@@ -122,7 +122,7 @@ export const DndCard = ({ id, index, title, location, moveCard, spotChange }) =>
       </div>
       <Typography variant='caption'>{location}</Typography>
     </div>
-    <CommentDialog open={openDialog} onClose={handleCloseDialog} />
+    <CommentDialog open={openDialog} spotId={id} onClose={handleCloseDialog} />
     </main>
   )
 }
