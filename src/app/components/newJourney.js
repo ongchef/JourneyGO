@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useContext } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper, Box } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper, Box, Input } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { DataContext } from '@/app/components/dataContext';
@@ -20,6 +20,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const [inviteeEmail, setCompanionEmail] = useState('');
   const [creationStatusOpen, setCreationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
+  const [image, setImage] = useState(null);
   
   const translate = (key) => {
     const translations = {
@@ -71,6 +72,14 @@ const NewJourneyDialog = ({ open, onClose}) => {
           zh: '旅程時間',
           en: 'Duration'
         },
+        addPicture: {
+          zh: '新增圖片',
+          en: 'Add Picture'
+        },
+        upload: {
+          zh: "上傳",
+          en: "Upload",
+      },
         save: {
           zh: '儲存',
           en: 'Save'
@@ -95,6 +104,19 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
   const handleInviteeEmailChange = (event) => {
     setCompanionEmail(event.target.value);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if(file) {
+        const reader = new FileReader();
+        
+        reader.onload = () => {
+          setImage(reader.result);
+          console.log(reader.result);
+        }
+        reader.readAsDataURL(file);
+    }
   };
 
 
@@ -196,6 +218,23 @@ const NewJourneyDialog = ({ open, onClose}) => {
                 }}
               />
             </Paper>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={4} alignItems="center">
+          <Grid item>
+            <InputLabel htmlFor="add-companion">{translate('addPicture')}</InputLabel>
+          </Grid>
+          <Grid item xs>
+            {/* <label htmlFor='image-upload' className='cursor-pointer' hidden="hidden">{translate('upload')}</label> */}
+            <form encType="multipart/form-data" action="/somewhere/to/upload">
+              <Input
+                id="image-upload"
+                type='file'
+                accept='image/*'
+                onChange={handleFileChange}
+              />  
+              </form>
           </Grid>
         </Grid>
       </DialogContent>

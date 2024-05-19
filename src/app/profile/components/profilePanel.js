@@ -1,23 +1,37 @@
 'use client';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, use } from 'react';
 import { DataContext } from '@/app/components/dataContext';
 import { getToken } from '@/utils/getToken';
 import { Button,InputLabel, TextField,Box,} from "@mui/material";
+//import { jwtDecode } from "jwt-decode";
 
+import { getProfile } from '@/services/getProfile';
+import { updateProfile } from '@/services/updateProfile';
 
 const ProfilePanel = ({}) => {
 
   const { currentLang } = useContext(DataContext);
+  const token = getToken();
+  const [reload, setReload] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [profileData, setProfileData] = useState([]);
 
-  // const [loading, setLoading] = useState(false);
-    const token = getToken();
-    const [reload, setReload] = useState(false);
-    const [profile, setProfile] = useState({}); 
-    const [profileData, setProfileData] = useState({});
 
-    const defaultName = "John Doe";
-    const defaultEmail = "john@example.com";
-    const defaultPhone = "1234567890";
+    useEffect(() => {
+      const fetchProfile = async () => {
+        try {
+          const response = await getProfile(token);
+          setProfileData(response.userProfile);
+        } catch (error) {
+          console.error("getProfile Error:", error);
+        }
+      };
+      fetchProfile();
+    }, [reload]);
+
+    console.log(profileData);
+  
 
     const translate = (key) => {
         const translations = {
@@ -31,7 +45,7 @@ const ProfilePanel = ({}) => {
             },
             phone: {
               zh: "手機號碼",
-              en: "Phone",
+              en: "Phone Number",
             },
             password: {
               zh: "密碼",
@@ -47,61 +61,81 @@ const ProfilePanel = ({}) => {
             },
         };
         return translations[key][currentLang];
-    }
+    };
 
-    
     const handleNameChange = (e) => {
-      setProfileData({...profileData, name: e.target.value});
-    }
+      setProfileData({...profileData, user_name: e.target.value});
 
-    const handleEmailChange = (e) => {
-      setProfileData({...profileData, email: e.target.value});
-    }
+    };
 
     const handlePhoneChange = (e) => {
       setProfileData({...profileData, phone: e.target.value});
-    }
+    };
 
-    const handlePasswordChange = (e) => {
-      setProfileData({...profileData, password: e.target.value});
-    }
-
-    const handleUpdateButtonClick = () => {
-      console.log(profileData);
-    }
-
+    const handleUpdateButtonClick = async () => {
+        // try {
+        //   const response = await updateProfile(token);
+        //   console.log("updateResponse", response);
+        //   console.log(response.returned[0]);
+        //   setProfileData(response.returned[0]);
+        //   setReload(!reload); //Trigger reload to fetch updated data
+        // } catch (error) {
+        //   console.error("updateProfile Error:", error);
+        // }
+      };
+  
     const handleResetButtonClick = () => {
-      setProfileData(profile);
+      setReload(!reload); //Reset to original profile data
     }
-
 
   return (
-      <Box className="overflow-y-auto max-h-[calc(100vh-150px)]"> 
-        <div className="p-10 space-y-4">
-          <div>
-              <InputLabel htmlFor="my-name">{translate("name")}</InputLabel>
-              <TextField label="" defaultValue={defaultName} fullWidth onChange={handleNameChange} style={{ marginTop: 6 }} />
+    <Box className="overflow-y-auto max-h-[calc(100vh-150px)]">
+      <div className='p-10 space-y-4'>
+        {profileData.map((profile) => (
+          <div key={profile.user_id}>
+            <div>
+              <InputLabel>{translate("name")}</InputLabel>
+              <TextField
+                value={profile.user_name}
+                onChange={handleNameChange}
+                variant="outlined"
+                fullWidth
+                style={{ marginTop: 6 }}
+              />
+            </div>
+            <div>
+              <InputLabel>{translate("phone")}</InputLabel>
+              <TextField
+                value={profile.phone}
+                onChange={handlePhoneChange}
+                variant="outlined"
+                fullWidth
+                style={{ marginTop: 6 }}
+              />
+            </div>
+            <div className='flex justify-center space-x-4'>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => handleUpdateButtonClick()}
+              >
+                {translate("update")}
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleResetButtonClick}
+              >
+                {translate("reset")}
+              </Button>
           </div>
-          <div>
-              <InputLabel htmlFor="my-email">{translate("email")}</InputLabel>
-              <TextField label="" defaultValue={defaultEmail} fullWidth onChange={handleEmailChange} style={{ marginTop: 6 }} />
           </div>
-          <div>
-              <InputLabel htmlFor="my-phone">{translate("phone")}</InputLabel>
-              <TextField label="" defaultValue={defaultPhone} fullWidth onChange={handlePhoneChange} style={{ marginTop: 6 }} />
-          </div>
-          {/* <div>
-              <InputLabel htmlFor="my-password">{translate("password")}</InputLabel>
-              <TextField label="" fullWidth onChange={handlePasswordChange} style={{ marginTop: 6 }} />
-          </div> */}
-          <div className='flex justify-center space-x-4'>
-              <Button variant="contained" onClick={handleUpdateButtonClick}>{translate("update")}</Button>
-              <Button variant="contained" onClick={handleResetButtonClick}>{translate("reset")}</Button>
-          </div>
-        </div>
-      </Box>
-
+        ))
+          }
+      </div>
+    </Box>
   );
 }
-
 export default ProfilePanel;
+
+
