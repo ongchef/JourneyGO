@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const pgp = pgPromise()
+const pgp = pgPromise();
 const db = pgp({
   host: process.env.HOST,
   port: process.env.DB_PORT,

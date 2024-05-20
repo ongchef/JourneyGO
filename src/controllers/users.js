@@ -94,8 +94,6 @@ export const registerUser = async function (req, res) {
 };
 
 export const getUserProfile = async function (req, res) {
-  //console.log(req);
-
   try {
     const userProfile = await getUser({ userID: req.userID });
     return res.status(200).json({ userProfile });
@@ -108,9 +106,7 @@ export const getUserProfile = async function (req, res) {
 export const updateUserInfo = async function (req, res) {
   const userID = req.userID;
   // get updated user info from frontend
-  const { userName, userEmail, userPhone } = req.body;
-  const origuserName = req.userName;
-  const origuserEmail = req.email;
+  const { userName, userPhone } = req.body;
   const filename = req.filename;
   
   try {
@@ -127,7 +123,6 @@ export const updateUserInfo = async function (req, res) {
     // update database user info
     const returned = await updateUser({
       userID: userID,
-      userEmail: origuserEmail,
       userName: userName,
       status: "Active",
       filename: filename,

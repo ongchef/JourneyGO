@@ -14,15 +14,15 @@ export const addNewUser = ({ userID, userEmail, userName, status }) => {
   return db.query(query, values);
 };
 
-export const updateUser = ({ userID, userEmail, userName, status, filename, phone}) => {
+export const updateUser = ({ userID, userName, status, filename, phone}) => {
   let query = `
       UPDATE user_account
-      SET status = $1, user_name = $2, email = $3, phone = $4
+      SET status = $1, user_name = $2, phone = $3
     `;
-  const values = [status, userName, userEmail, phone];
+  const values = [status, userName, phone];
 
   if (filename !== null){
-    query += `, image = $5`;
+    query += `, image = $4`;
     values.push(filename);
   }
 
