@@ -1,14 +1,17 @@
 "use client";
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
+import { getProfile } from "@/services/getProfile";
 import { Grid, Button, Box, Typography, Avatar } from "@mui/material";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DataContext } from "@/app/components/dataContext";
+import { getToken } from "@/utils/getToken";
 import NewBill from "./newBill";
 
 function BillPanel({ group_id, reloadTabPanel }) {
 
     const { currentLang, setCurrentLang } = useContext(DataContext);
+    const [userName, setUserName] = useState("");
     const router = useRouter();
 
     const [openDialog, setOpenDialog] = useState(false);
@@ -16,8 +19,8 @@ function BillPanel({ group_id, reloadTabPanel }) {
     const translate = (key) => {
         const translations = {
             hello: {
-                zh: "你好!",
-                en: "Hello!",
+                zh: "你好！",
+                en: "Hello! ",
             },
             addBill: {
                 zh: "+ 新增花費",
@@ -44,6 +47,22 @@ function BillPanel({ group_id, reloadTabPanel }) {
         setOpenDialog(false);
     };
 
+    useEffect(() => {
+    async function fetchProfile() {
+        try {
+            const Token = getToken();
+            const data = await getProfile(Token);
+            console.log("profile result:", data);
+            if (data && data.userProfile){
+                setUserName(data.userProfile[0].user_name);
+            }
+        } catch (error) {
+            console.error("Error fetching profile result:", error);
+        }
+    }
+    fetchProfile();
+    }, []);
+
     return (
         <main>
             <Box>
@@ -56,7 +75,7 @@ function BillPanel({ group_id, reloadTabPanel }) {
                             </div>
                             <div className="pr-5">
                                 <Typography variant="body1" sx={{ fontSize: "20px" }}>
-                                    {translate("hello")}
+                                    {translate("hello")}{userName}
                                 </Typography>
                             </div>
                             <Button variant="contained" onClick={handleOpenDialog} sx={{ bgcolor: "#EB684E" }}>
