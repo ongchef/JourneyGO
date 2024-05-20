@@ -107,8 +107,10 @@ const CommentDialog = ({ open, onClose, spotId }) => {
 
   useEffect(() => {
     console.log("render comment dialog for spotId: ", spotId);
-    fetchComments();
-  }, []);
+    if (open) {
+      fetchComments();
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={fullScreen ? "xs" : "sm"} fullWidth>
@@ -130,10 +132,9 @@ const CommentDialog = ({ open, onClose, spotId }) => {
               onMouseEnter={() => setHoveredComment(message.comment_id)}
               onMouseLeave={() => setHoveredComment(null)}>
               <div className="flex flex-row items-center space-x-2">
-                <Avatar>{message.advisor_id}</Avatar>
+                <Avatar>{message.advisor_name[0].toUpperCase()}</Avatar>
                 <Typography variant="body2" color="text.secondary">
-                  {" "}
-                  {message.advisor_id}{" "}
+                  {" "}{message.advisor_name}{" "}
                 </Typography>
                 <Typography> {message.content} </Typography>
                 <Typography variant="caption" color="text.secondary">
