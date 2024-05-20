@@ -61,7 +61,7 @@ export default function TripPlan({ groupInfo }) {
                             {groupInfo?.user_names?.map((user, index) => {
                                 return (
                                     <Tooltip title={user} key={index}>
-                                        <Avatar key={index}>{user[0].toUpperCase()}</Avatar>
+                                        <Avatar key={index}>{user[0]}</Avatar>
                                     </Tooltip>
                                 );
                             })}

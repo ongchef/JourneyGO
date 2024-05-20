@@ -111,11 +111,11 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
                             <div>
                                 <AvatarGroup sx={avatarStyles}>
                                     <Tooltip title={data.payee}>
-                                        <Avatar> {data.payee[0].toUpperCase()} </Avatar>
+                                        <Avatar> {data.payee[0]} </Avatar>
                                     </Tooltip>
                                     <ArrowForwardIcon fontSize="large" style={{ color: "#2EB3D0" }} />
                                     <Tooltip title={data.payer}>
-                                        <Avatar> {data.payer[0].toUpperCase()} </Avatar>
+                                        <Avatar> {data.payer[0]} </Avatar>
                                     </Tooltip>
                                 </AvatarGroup>
                             </div>

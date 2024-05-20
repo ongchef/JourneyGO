@@ -84,7 +84,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
                                 {data?.user_names.map((name, index) => (
                                     <Tooltip title={name} key={index}>
                                         <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
-                                            {name[0].toUpperCase()}
+                                            {name[0]}
                                         </Avatar>
                                     </Tooltip>
                                 ))}

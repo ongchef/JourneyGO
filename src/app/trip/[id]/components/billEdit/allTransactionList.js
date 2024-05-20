@@ -142,7 +142,7 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
                     <StyledCard key={index} onClick={() => handleDialogOpen(data)}>
                         <Box className="flex ml-5 p-5">
                             <Tooltip title={data.payer_name}>
-                                <Avatar>{data.payer_name[0].toUpperCase()}</Avatar>
+                                <Avatar>{data.payer_name[0]}</Avatar>
                             </Tooltip>
                         </Box>
                         <CardContent className="flex overflow-hidden whitespace-nowrap flex-shrink" style={{ maxWidth: "12rem" }}>
@@ -171,7 +171,7 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
                                         data.participants.map((name, index) => (
                                             <Tooltip title={name} key={index}>
                                                 <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
-                                                    {name[0].toUpperCase()}
+                                                    {name[0]}
                                                 </Avatar>
                                             </Tooltip>
                                         ))}
