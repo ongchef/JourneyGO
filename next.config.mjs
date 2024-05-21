@@ -8,6 +8,14 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { dev, isServer }) => {
+    if (dev && !isServer) {
+      config.devServer = {
+        hot: true,
+      };
+    }
+    return config;
+  },
 };
 
 export default nextConfig;
