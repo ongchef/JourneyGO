@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useContext } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper, Box } from '@mui/material';
+import React, { useState, useContext, useEffect } from 'react';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Autocomplete, Paper, Box } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { DataContext } from '@/app/components/dataContext';
@@ -17,7 +17,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const [endDate, setEndDate] = useState(null);
   const [groupName, setGroupName] = useState('');
   const [country, setCountry] = useState("臺灣");
-  const [inviteeEmail, setCompanionEmail] = useState('');
+  const [inviteeEmail, setInviteeEmail] = useState([]);
   const [creationStatusOpen, setCreationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   
@@ -93,8 +93,11 @@ const NewJourneyDialog = ({ open, onClose}) => {
   //   setCountry(event.target.value);
   // };
 
-  const handleInviteeEmailChange = (event) => {
-    setCompanionEmail(event.target.value);
+  const handleInviteeEmailChange = (event, value) => {
+    if (value !== undefined) {
+      setInviteeEmail(value);
+    }
+    // console.log('inviteeEmail:', inviteeEmail);
   };
 
 
@@ -107,6 +110,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const handleSave = async () => {
     try {
       const Token = getToken();
+      // console.log('emails:', inviteeEmail);
       const responseStatus = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail);
       // console.log('Trip group created:', responseStatus);
 
@@ -170,7 +174,14 @@ const NewJourneyDialog = ({ open, onClose}) => {
             <InputLabel htmlFor="add-companion">{translate('addMember')}</InputLabel>
           </Grid>
           <Grid item xs>
-            <TextField label="email" fullWidth 
+            <Autocomplete
+              multiple
+              freeSolo
+              options={[]}
+              value={inviteeEmail}
+              renderInput={({ key, ...params }) => (
+                <TextField key={key} {...params} label="Emails" fullWidth />
+              )}
               onChange={handleInviteeEmailChange}
             />
           </Grid>
