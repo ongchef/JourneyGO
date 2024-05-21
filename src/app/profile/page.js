@@ -92,7 +92,7 @@ export default function Profile({}) {
                 </Box>
             </Box>
 
-            <PicturePanel />
+            {/* <PicturePanel /> */}
             <ProfilePanel />
         </main>
     );

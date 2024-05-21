@@ -3,6 +3,7 @@ import { formatISO, format } from "date-fns";
 import { getComments } from "@/services/getComments";
 import { postComment } from "@/services/postComment";
 import { deleteComment } from "@/services/deleteComment";
+import { getProfile } from "@/services/getProfile";
 import { DataContext } from "@/app/components/dataContext";
 import { getToken } from "@/utils/getToken";
 
@@ -15,11 +16,26 @@ const CommentDialog = ({ open, onClose, spotId }) => {
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
   const [commentCnt, setCommentCnt] = useState(0);
+  const [userName, setUserName] = useState("");
   const [hoveredComment, setHoveredComment] = useState(null);
   const [key, setKey] = useState(0);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const translate = (key) => {
+    const translations = {
+      submit: {
+        zh: "送出",
+        en: "Submit",
+      },
+      comment: {
+        zh: "發表...",
+        en: "Comment...",
+      },
+    };
+    return translations[key][currentLang];
+  };
 
   async function fetchComments() {
     try {
@@ -37,19 +53,20 @@ const CommentDialog = ({ open, onClose, spotId }) => {
     }
   }
 
-  const translate = (key) => {
-    const translations = {
-      submit: {
-        zh: "送出",
-        en: "Submit",
-      },
-      comment: {
-        zh: "發表...",
-        en: "Comment...",
-      },
-    };
-    return translations[key][currentLang];
-  };
+  async function fetchProfile() {
+    try {
+      const Token = getToken();
+      const data = await getProfile(Token);
+      console.log("profile result:", data);
+      if (data && data.userProfile){
+        setUserName(data.userProfile[0].user_name);
+      }
+
+    } catch (error) {
+      console.error("Error fetching profile result:", error);
+    }
+  }
+
 
   const handleClose = () => {
     //setNewMessage('');
@@ -107,8 +124,11 @@ const CommentDialog = ({ open, onClose, spotId }) => {
 
   useEffect(() => {
     console.log("render comment dialog for spotId: ", spotId);
-    fetchComments();
-  }, []);
+    if (open) {
+      fetchComments();
+      fetchProfile();
+    }
+  }, [open]);
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={fullScreen ? "xs" : "sm"} fullWidth>
@@ -130,10 +150,9 @@ const CommentDialog = ({ open, onClose, spotId }) => {
               onMouseEnter={() => setHoveredComment(message.comment_id)}
               onMouseLeave={() => setHoveredComment(null)}>
               <div className="flex flex-row items-center space-x-2">
-                <Avatar>{message.advisor_id}</Avatar>
+                <Avatar>{message.advisor_name[0]}</Avatar>
                 <Typography variant="body2" color="text.secondary">
-                  {" "}
-                  {message.advisor_id}{" "}
+                  {" "}{message.advisor_name}{" "}
                 </Typography>
                 <Typography> {message.content} </Typography>
                 <Typography variant="caption" color="text.secondary">
@@ -170,8 +189,8 @@ const CommentDialog = ({ open, onClose, spotId }) => {
         <Container maxWidth="sm" className="space-y-4">
           <div className="flex flex-row items-center space-x-4">
             <div>
-              <Tooltip title="Bobby">
-                <Avatar>B</Avatar>
+              <Tooltip title="You">
+                <Avatar>{userName[0]}</Avatar>
               </Tooltip>
             </div>
             <div className="grow">

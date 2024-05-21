@@ -3,14 +3,31 @@ import React, { useState, useEffect, useContext } from 'react';
 import { DataContext } from '@/app/components/dataContext';
 import {Avatar, InputLabel, Input} from "@mui/material";
 //import { Input } from 'postcss';
-
+import { getToken } from '@/utils/getToken';
+import { getProfile } from '@/services/getProfile';
+import { updateProfile } from '@/services/updateProfile';
 
 const PicturePanel = ({avatarUrl}) => {
     const { currentLang } = useContext(DataContext);
 
-    const [reload, setReload] = useState(false);
-    const [profile, setProfile] = useState({});
+    //const [reload, setReload] = useState(false);
+    const [image, setImage] = useState("");
     const [newAvatarUrl, setNewAvatarUrl] = useState(null); 
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const token = getToken();
+                const response = await getProfile(token);
+                const profile = response.userProfile[0];
+                //console.log(profile);
+                setImage(profile.image);
+            } catch (error) {
+                console.error("getProfile Error:", error);
+            }
+        };
+        fetchProfile();
+    },[]);
 
     const translate = (key) => {
         const translations = {

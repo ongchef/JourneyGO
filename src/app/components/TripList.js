@@ -116,9 +116,9 @@ function TripList({ data, tabValue, setTripOverview }) {
                                 </CardContent>
                             </div>
                         </div>
-                        <IconButton aria-label="settings" className="self-start p-2">
+                        {/* <IconButton aria-label="settings" className="self-start p-2">
                             <MoreVertIcon />
-                        </IconButton>
+                        </IconButton> */}
                     </Card>
                 ))
         )

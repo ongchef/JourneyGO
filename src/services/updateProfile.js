@@ -1,29 +1,42 @@
 "use server";
+import FormData from "form-data";
 
-export async function updateProfile(Token){
+export async function updateProfile(Token, user_name, phone){
     
     const url = `${process.env.BASE_URL}/api/user/userProfile`;
     const bearer_token = `Bearer ${Token}`;
   
+    console.log(Token + "//" + user_name + "//" + phone);
 
-    const requestBody = {
-      user_name: user_name,
-      phone: phone,
-      image: image,
-    };
+    // const requestBody = {
+    //   userName: user_name,
+    //   userPhone: phone,
+    //   image: "",
+    // };
 
-    console.log('Request body:', requestBody);
+    const formData = new FormData();
+    formData.append("userName", user_name);
+    formData.append("userPhone", phone);
+    formData.append("image", "");
+
+    // console.log("formData", formData);
+    // console.log(Token);
+    // console.log(url);
+    
+    //console.log('Request body:', requestBody);
     
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          //'Content-Type': "multipart/form-data",
           'Authorization': `${bearer_token}`,
+          ...formData.getHeaders()
         },
-        body: JSON.stringify(requestBody),
+        // body: JSON.stringify(requestBody),
+        body: formData,
       });
-      
+
       console.log('updateProfile Response:', response);
 
       if(response.ok){

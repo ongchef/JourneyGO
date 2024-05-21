@@ -2,36 +2,44 @@
 import React, { useState, useEffect, useContext, use } from 'react';
 import { DataContext } from '@/app/components/dataContext';
 import { getToken } from '@/utils/getToken';
-import { Button,InputLabel, TextField,Box,} from "@mui/material";
+import { Avatar, Input, Button,InputLabel, TextField,Box,} from "@mui/material";
 //import { jwtDecode } from "jwt-decode";
-
 import { getProfile } from '@/services/getProfile';
 import { updateProfile } from '@/services/updateProfile';
 
 const ProfilePanel = ({}) => {
-
   const { currentLang } = useContext(DataContext);
-  const token = getToken();
-  const [reload, setReload] = useState(false);
+  //const token = getToken();
+
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [profileData, setProfileData] = useState([]);
+  const [phone, setPhone] = useState("");
+  
+  const [profileData, setProfileData] = useState({});
+  const [initialProfileData, setInitialProfileData] = useState({});
+  const [avatarUrl, setAvatarUrl] = useState("");
+  const [newAvatarUrl, setNewAvatarUrl] = useState(null); 
 
 
     useEffect(() => {
       const fetchProfile = async () => {
         try {
+          const token = getToken();
           const response = await getProfile(token);
-          setProfileData(response.userProfile);
+          const profile = response.userProfile[0];
+          setInitialProfileData(profile);
+          setProfileData(profile);
+          setName(profile.user_name);
+          setPhone(profile.phone);
+          setAvatarUrl(profile.image);
+         
         } catch (error) {
           console.error("getProfile Error:", error);
         }
       };
       fetchProfile();
-    }, [reload]);
-
-    console.log(profileData);
+    },[]);
   
+    //console.log(profileData);
 
     const translate = (key) => {
         const translations = {
@@ -59,44 +67,89 @@ const ProfilePanel = ({}) => {
               zh: "清除",
               en: "Reset",
             },
+            myPhoto: {
+              zh: "我的照片",
+              en: "My Photo",
+            },
+            upload: {
+                zh: "上傳",
+                en: "Upload",
+            },
         };
         return translations[key][currentLang];
     };
 
     const handleNameChange = (e) => {
-      setProfileData({...profileData, user_name: e.target.value});
-
+      //setProfileData({...profileData, user_name: e.target.value});
+      setName(e.target.value);
     };
 
     const handlePhoneChange = (e) => {
-      setProfileData({...profileData, phone: e.target.value});
+      //setProfileData({...profileData, phone: e.target.value});
+      setPhone(e.target.value);
     };
 
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if(file) {
+          const reader = new FileReader();
+          
+          reader.onload = () => {
+            setNewAvatarUrl(reader.result);
+            console.log(reader.result);
+          }
+          reader.readAsDataURL(file);
+      }
+  }
+
     const handleUpdateButtonClick = async () => {
-        // try {
-        //   const response = await updateProfile(token);
-        //   console.log("updateResponse", response);
-        //   console.log(response.returned[0]);
-        //   setProfileData(response.returned[0]);
-        //   setReload(!reload); //Trigger reload to fetch updated data
-        // } catch (error) {
-        //   console.error("updateProfile Error:", error);
-        // }
-      };
+     
+        try {
+          const token = getToken();
+          console.log(token)
+          
+          console.log(name)
+          console.log(phone)
+          const response = await updateProfile(token, name, phone);
+          console.log("updateResponse", response);
+
+          const profile = response.returned[0];
+          setProfileData(profile);
+          setInitialProfileData(profile);
+        } catch (error) {
+          console.error("updateProfile Error:", error);
+        }
+    };
   
     const handleResetButtonClick = () => {
-      setReload(!reload); //Reset to original profile data
+      setName(initialProfileData.user_name);
+      setPhone(initialProfileData.phone);
     }
 
   return (
+    <div>
+    <div className='flex flex-col items-center'>
+      <div className='mt-10'>
+        <Avatar alt="User Avatar" src={avatarUrl} sx={{ width: 200, height: 200 }}/>
+      </div>
+      <div className='mt-5'>
+        {/* <InputLabel htmlFor="avatar-upload" className='mx-auto' >{translate('myPhoto')}</InputLabel> */}
+        <label htmlFor="avatar-upload" className='cursor-pointer' hidden="hidden">{translate('upload')}</label>
+        <Input
+          id="avatar-upload"
+          type='file'
+          
+          accept='image/*'
+          onChange={handleFileChange}
+        />  
+      </div>
+    </div>
     <Box className="overflow-y-auto max-h-[calc(100vh-150px)]">
       <div className='p-10 space-y-4'>
-        {profileData.map((profile) => (
-          <div key={profile.user_id}>
-            <div>
+          <div>
               <InputLabel>{translate("name")}</InputLabel>
               <TextField
-                value={profile.user_name}
+                value={name}
                 onChange={handleNameChange}
                 variant="outlined"
                 fullWidth
@@ -106,7 +159,7 @@ const ProfilePanel = ({}) => {
             <div>
               <InputLabel>{translate("phone")}</InputLabel>
               <TextField
-                value={profile.phone}
+                value={phone}
                 onChange={handlePhoneChange}
                 variant="outlined"
                 fullWidth
@@ -117,7 +170,7 @@ const ProfilePanel = ({}) => {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => handleUpdateButtonClick()}
+                onClick={handleUpdateButtonClick}
               >
                 {translate("update")}
               </Button>
@@ -130,10 +183,9 @@ const ProfilePanel = ({}) => {
               </Button>
           </div>
           </div>
-        ))
-          }
-      </div>
+
     </Box>
+    </div>
   );
 }
 export default ProfilePanel;
