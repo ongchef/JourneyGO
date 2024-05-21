@@ -13,7 +13,6 @@ const ProfilePanel = ({}) => {
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
-  
   const [profileData, setProfileData] = useState({});
   const [initialProfileData, setInitialProfileData] = useState({});
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -30,7 +29,6 @@ const ProfilePanel = ({}) => {
           setName(profile.user_name);
           setPhone(profile.phone);
           setAvatarUrl(profile.image);
-         
         } catch (error) {
           console.error("getProfile Error:", error);
         }
@@ -39,7 +37,6 @@ const ProfilePanel = ({}) => {
     },[]);
   
     //console.log(profileData);
-
 
     const translate = (key) => {
         const translations = {
