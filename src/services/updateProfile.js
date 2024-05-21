@@ -1,7 +1,7 @@
 "use server";
 import FormData from "form-data";
 
-export async function updateProfile(Token, user_name, phone){
+export async function updateProfile(Token, user_name, phone, image){
     
     const url = `${process.env.BASE_URL}/api/user/userProfile`;
     const bearer_token = `Bearer ${Token}`;
@@ -17,7 +17,7 @@ export async function updateProfile(Token, user_name, phone){
     const formData = new FormData();
     formData.append("userName", user_name);
     formData.append("userPhone", phone);
-    formData.append("image", "");
+    formData.append("image", image);
 
     // console.log("formData", formData);
     // console.log(Token);

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useContext, useEffect } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Autocomplete, Paper, Box } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Autocomplete, Paper, Box, Input } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { DataContext } from '@/app/components/dataContext';
@@ -107,6 +107,11 @@ const NewJourneyDialog = ({ open, onClose}) => {
       setInviteeEmail(value);
     }
     // console.log('inviteeEmail:', inviteeEmail);
+  };
+
+  const handleFileChange = (e) => {
+    //setImage(e.target.files[0]);
+    //const file = e.target.files[0];
   };
 
 

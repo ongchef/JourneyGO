@@ -17,7 +17,6 @@ const ProfilePanel = ({}) => {
   const [profileData, setProfileData] = useState({});
   const [initialProfileData, setInitialProfileData] = useState({});
   const [avatarUrl, setAvatarUrl] = useState("");
-  const [newAvatarUrl, setNewAvatarUrl] = useState(null); 
 
 
     useEffect(() => {
@@ -40,6 +39,7 @@ const ProfilePanel = ({}) => {
     },[]);
   
     //console.log(profileData);
+
 
     const translate = (key) => {
         const translations = {
@@ -95,7 +95,7 @@ const ProfilePanel = ({}) => {
           const reader = new FileReader();
           
           reader.onload = () => {
-            setNewAvatarUrl(reader.result);
+            setAvatarUrl(reader.result);
             console.log(reader.result);
           }
           reader.readAsDataURL(file);
@@ -110,7 +110,8 @@ const ProfilePanel = ({}) => {
           
           console.log(name)
           console.log(phone)
-          const response = await updateProfile(token, name, phone);
+          console.log(avatarUrl)
+          const response = await updateProfile(token, name, phone, avatarUrl);
           console.log("updateResponse", response);
 
           const profile = response.returned[0];
