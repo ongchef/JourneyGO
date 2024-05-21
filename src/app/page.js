@@ -6,10 +6,12 @@ import { getToken } from '@/utils/getToken';
 import SelectedContent from './components/SelectedContent';
 import TripList from './components/TripList';
 import NewJourneyDialog from './components/newJourney';
+import CopyJourneyDialog from "./components/CopyJourneyDialog";
 
 import { useContext, useState, useEffect } from 'react';
 import { CircularProgress, Box, Typography, Tabs, Tab, Grid, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import InputIcon from '@mui/icons-material/Input';
 
 function LoadingIndicator() {
   return (
@@ -24,7 +26,8 @@ export default function Home() {
   const { currentLang, setCurrentLang } = useContext(DataContext);
 
   const [tabValue, setTabValue] = useState('All');
-  const [openDialog, setOpenDialog] = useState(false); 
+  const [newJourneyOpenDialog, setNewJourneyOpenDialog] = useState(false); 
+  const [copyJourneyOpenDialog, setCopyJourneyOpenDialog] = useState(false);
   const [tripGroups, setTripGroups] = useState([]); // [{group_id, group_name, start_date, end_date, status}
   const [tripOverview, setTripOverview] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -38,25 +41,29 @@ export default function Home() {
   
   const translate = (key) => {
     const translations = {
-      'myJourney': {
-        'zh': '我的旅程',
-        'en': 'My Journeys'
+      myJourney: {
+        zh: '我的旅程',
+        en: 'My Journeys'
       },
-      'newJourney': {
-        'zh': '新增旅程',
-        'en': 'New Journey'
+      newJourney: {
+        zh: '新增旅程',
+        en: 'New Journey'
       },
-      'all': {
-        'zh': '全部',
-        'en': 'All'
+      copyJourney: {
+        zh: ' 匯入旅程',
+        en: 'Import Journey'
       },
-      'incoming': {
-        'zh': '即將來臨',
-        'en': 'Incoming'
+      all: {
+        zh: '全部',
+        en: 'All'
       },
-      'finished': {
-        'zh': '已完成',
-        'en': 'Finished'
+      incoming: {
+        zh: '即將來臨',
+        en: 'Incoming'
+      },
+      finished: {
+        zh: '已完成',
+        en: 'Finished'
       },
     };
     return translations[key][currentLang];
@@ -105,12 +112,18 @@ export default function Home() {
   }
 
   
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
+  const handleNewJourneyOpenDialog = () => {
+    setNewJourneyOpenDialog(true);
   };
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
+  const handleNewJourneyCloseDialog = () => {
+    setNewJourneyOpenDialog(false);
   };
+  const handleCopyJourneyOpenDialog = () => {
+    setCopyJourneyOpenDialog(true);
+  }
+  const handleCopyJourneyCloseDialog = () => {
+    setCopyJourneyOpenDialog(false);
+  }
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
   };
@@ -131,12 +144,15 @@ export default function Home() {
           <Grid item xs={12} md={tripOverview !== null ? 6 : 12} sx={setDividerStyles}>
 
             <Box className="flex items-center p-2 m-3">
-                <Typography variant="h4" component="div" className="pr-5">
-                  {translate('myJourney')}
-                </Typography>
-                <Button variant="contained" size="small" startIcon={<AddIcon />} onClick={handleOpenDialog}>
-                  {translate('newJourney')}
-                </Button>
+              <Typography variant="h4" component="div" className="pr-5">
+                {translate('myJourney')}
+              </Typography>
+              <Button variant="contained" size="small" sx={{ mr: 1 }} startIcon={<AddIcon />} onClick={handleNewJourneyOpenDialog}>
+                {translate('newJourney')}
+              </Button>
+              <Button variant="outlined" size="small" sx={{ ml: 1 }} startIcon={<InputIcon />} onClick={handleCopyJourneyOpenDialog}>
+                {translate('copyJourney')}
+              </Button>
             </Box>
               
             <Tabs value={tabValue} onChange={handleTabChange} aria-label="trip tabs" className="">
@@ -152,7 +168,8 @@ export default function Home() {
         </Grid>
       </Box>
 
-      <NewJourneyDialog open={openDialog} onClose={handleCloseDialog} />
+      <NewJourneyDialog open={newJourneyOpenDialog} onClose={handleNewJourneyCloseDialog} />
+      <CopyJourneyDialog open={copyJourneyOpenDialog} onClose={handleCopyJourneyCloseDialog} />
     
   </main>
 );

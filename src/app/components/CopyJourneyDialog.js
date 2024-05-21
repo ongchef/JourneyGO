@@ -1,71 +1,44 @@
 'use client';
 
 import React, { useState, useContext } from 'react';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Select, MenuItem, Paper, Box } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Paper, Box } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { DataContext } from '@/app/components/dataContext';
 import { getToken } from '@/utils/getToken';
+import { postShareCode } from '@/services/postShareCode';
 
-import { createTripGroup } from '@/services/createTripGroup';
-
-const NewJourneyDialog = ({ open, onClose}) => {
+const CopyJourneyDialog = ({ open, onClose}) => {
 
   const { currentLang } = useContext(DataContext);
 
+  const [shareCode, setShareCode] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [groupName, setGroupName] = useState('');
-  const [country, setCountry] = useState("臺灣");
-  const [inviteeEmail, setCompanionEmail] = useState('');
   const [creationStatusOpen, setCreationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
   
   const translate = (key) => {
     const translations = {
-        notification: {
-            zh: "通知",
-            en: "Notifications",
-        },
-        invitesYou: {
-            zh: "邀請您加入",
-            en: "invites you to join",
-        },
-        accept: {
-            zh: "確認",
-            en: "Accept",
-        },
-        cancel: {
-            zh: "取消",
-            en: "Cancel",
+        importJourney: {
+          zh: '匯入旅程',
+          en: 'Import Journey'
         },
         added: {
-          zh: "已新增行程",
-          en: "New journey added"
-        },
-        rejected: {
-          zh: "已拒絕邀請",
-          en: "Invitation rejected"
+          zh: "已匯入行程",
+          en: "New journey imported"
         },
         addTripFailed: {
-          zh: "新增行程失敗!",
-          en: "Failed to add new trip!"
-        },
-        newJourney: {
-          zh: '新增旅程',
-          en: 'New Journey'
-        },
-        tripName: {
-          zh: '行程名稱',
-          en: 'Trip Name'
-        },
-        selectCountry: {
-          zh: '選擇國家',
-          en: 'Select Country'
+          zh: "匯入行程失敗!",
+          en: "Failed to import new journey!"
         },
         addMember: {
           zh: '新增旅伴',
           en: 'Add Companion'
+        },
+        shareCode: {
+          zh: '輸入分享碼',
+          en: 'Enter Share Code'
         },
         tripTime: {
           zh: '旅程時間',
@@ -75,6 +48,10 @@ const NewJourneyDialog = ({ open, onClose}) => {
           zh: '儲存',
           en: 'Save'
         },
+        cancel: {
+          zh: "取消",
+          en: "Cancel",
+      },
     };
     return translations[key][currentLang];
 };
@@ -83,22 +60,17 @@ const NewJourneyDialog = ({ open, onClose}) => {
     const [start, end] = dates;
     setStartDate(start);
     setEndDate(end);
+    // console.log('startDate:', start);
+    // console.log('endDate:', end);
   };
 
-  const handleGroupNameChange = (event) => {
-    setGroupName(event.target.value);
-  };
-
-  // const handleCountryChange = (event) => {
-  //   setCountry(event.target.value);
-  // };
-
-  const handleInviteeEmailChange = (event) => {
-    setCompanionEmail(event.target.value);
+  const handleShareCodeChange = (event) => {
+    setShareCode(event.target.value);
   };
 
 
   const handleCancel = () => {
+    setShareCode('');
     setStartDate(null);
     setEndDate(null);
     onClose();
@@ -107,7 +79,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const handleSave = async () => {
     try {
       const Token = getToken();
-      const responseStatus = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail);
+      const responseStatus = await postShareCode(Token, shareCode, startDate, endDate);
       // console.log('Trip group created:', responseStatus);
 
       if (!responseStatus) {
@@ -121,7 +93,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
       // onClose();
       // window.location.reload();
     } catch (error) {
-      console.error('Error creating trip group:', error);
+      console.error('Error importing journey:', error);
       setStatusMessage(translate('addTripFailed'));
       setCreationStatusOpen(true);
     }
@@ -136,43 +108,15 @@ const NewJourneyDialog = ({ open, onClose}) => {
   return (
   <div>
     <Dialog open={open} onClose={onClose} fullWidth>
-      <DialogTitle>{translate('newJourney')}</DialogTitle>
+      <DialogTitle>{translate('importJourney')}</DialogTitle>
+
       <DialogContent>
-        <Grid container spacing={4} alignItems="center">
+        <Grid container spacing={2} alignItems="center">
           <Grid item>
-            <InputLabel htmlFor="trip-name">{translate('tripName')}</InputLabel>
+            <InputLabel htmlFor="share-code">{translate('shareCode')}</InputLabel>
           </Grid>
           <Grid item xs>
-            <TextField label={translate('tripName')} fullWidth 
-              onChange={handleGroupNameChange}
-            />
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={4} alignItems="center">
-          <Grid item>
-            <InputLabel htmlFor="trip-location">{translate('selectCountry')}</InputLabel>
-          </Grid>
-          <Grid item xs>
-            <TextField fullWidth defaultValue="臺灣"></TextField>
-          {/* <Grid item xs>
-            <Select id="trip-location" label="選擇國家" fullWidth>
-              <MenuItem value="Taiwan">Taiwan</MenuItem>
-              <MenuItem value="Paris">Paris</MenuItem>
-            </Select>
-            
-          </Grid> */}
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={4} alignItems="center">
-          <Grid item>
-            <InputLabel htmlFor="add-companion">{translate('addMember')}</InputLabel>
-          </Grid>
-          <Grid item xs>
-            <TextField label="email" fullWidth 
-              onChange={handleInviteeEmailChange}
-            />
+            <TextField fullWidth onChange={handleShareCodeChange}/>
           </Grid>
         </Grid>
 
@@ -217,4 +161,4 @@ const NewJourneyDialog = ({ open, onClose}) => {
   );
 };
 
-export default NewJourneyDialog;
+export default CopyJourneyDialog;
