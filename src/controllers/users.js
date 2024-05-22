@@ -108,7 +108,6 @@ export const updateUserInfo = async function (req, res) {
   // get updated user info from frontend
   const { userName, userPhone } = req.body;
   const filename = req.filename;
-  
   try {
     // update clerk user info (can only update user name for now)
     const updatedUser = await clerkClient.users.updateUser(userID, {
