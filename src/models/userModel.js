@@ -14,20 +14,20 @@ export const addNewUser = ({ userID, userEmail, userName, status }) => {
   return db.query(query, values);
 };
 
-export const updateUser = ({ userID, userName, status, filename, phone}) => {
+export const updateUser = ({ userID, userName, status, filename, phone }) => {
   let query = `
       UPDATE user_account
       SET status = $1, user_name = $2, phone = $3
     `;
   const values = [status, userName, phone];
 
-  if (filename !== null){
+  if (filename !== null) {
     query += `, image = $4`;
     values.push(filename);
   }
 
-  query += `WHERE clerk_user_id = $${values.length + 1} RETURNING *;`
-  values.push(userID)
+  query += `WHERE clerk_user_id = $${values.length + 1} RETURNING *;`;
+  values.push(userID);
 
   return db.query(query, values);
 };
@@ -35,7 +35,7 @@ export const updateUser = ({ userID, userName, status, filename, phone}) => {
 export const getUser = ({ userID }) => {
   console.log(userID);
   const query = `
-      SELECT * FROM user_account
+      SELECT status,user_name,email,image,phone FROM user_account
       WHERE clerk_user_id = $1;
     `;
   const values = [userID];
