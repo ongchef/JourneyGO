@@ -16,6 +16,7 @@ const ProfilePanel = ({}) => {
   const [profileData, setProfileData] = useState({});
   const [initialProfileData, setInitialProfileData] = useState({});
   const [avatarUrl, setAvatarUrl] = useState("");
+  //const [image, setImage] = useState(null);
 
 
     useEffect(() => {
@@ -93,29 +94,29 @@ const ProfilePanel = ({}) => {
           
           reader.onload = () => {
             setAvatarUrl(reader.result);
-            console.log(reader.result);
           }
           reader.readAsDataURL(file);
+          /* const reader2 = new FileReader();
+          reader2.onloadend = () => {
+            const imgBlob = new Blob([reader2.result], { type: file.type});
+            setImage(imgBlob);
+          }
+          reader2.readAsArrayBuffer(file); */
       }
   }
 
     const handleUpdateButtonClick = async () => {
-     
         try {
           const token = getToken();
-          console.log(token)
-          
-          console.log(name)
-          console.log(phone)
-          console.log(avatarUrl)
-          const response = await updateProfile(token, name, phone, avatarUrl);
+          const response = await updateProfile(token, name, phone, avatarUrl)
           console.log("updateResponse", response);
 
           const profile = response.returned[0];
           setProfileData(profile);
           setInitialProfileData(profile);
+          
         } catch (error) {
-          console.error("updateProfile Error:", error);
+          console.log("updateProfile Error:", error);
         }
     };
   
