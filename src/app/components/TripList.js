@@ -95,7 +95,7 @@ function TripList({ data, tabValue, setTripOverview }) {
                             <div className="flex flex-col h-full">
                                 <CardContent sx={cardContentStyles}>
                                     <Stack direction="row" spacing={2}>
-                                        <Chip label="place" size="small" />
+                                        {/* <Chip label="place" size="small" /> */}
                                         <Chip label={translate(trip.status.toLowerCase())} size="small" color="primary" />
                                     </Stack>
                                     <div className="pt-1">
@@ -104,10 +104,6 @@ function TripList({ data, tabValue, setTripOverview }) {
                                         </Typography>
                                     </div>
                                     <CardActions sx={cardActionsStyles} disableSpacing>
-                                        {/* <IconButton aria-label="creator" size="small">
-                                <PersonIcon />
-                                <span className="ml-1 text-sm">{trip.creator}</span>
-                            </IconButton> */}
                                         <IconButton aria-label="duration" size="small">
                                             <DateRangeIcon />
                                             <span className="ml-1 text-sm">{trip.duration} {translate('days')}</span>
@@ -116,9 +112,6 @@ function TripList({ data, tabValue, setTripOverview }) {
                                 </CardContent>
                             </div>
                         </div>
-                        {/* <IconButton aria-label="settings" className="self-start p-2">
-                            <MoreVertIcon />
-                        </IconButton> */}
                     </Card>
                 ))
         )
