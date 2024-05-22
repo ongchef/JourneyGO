@@ -1,6 +1,6 @@
 "use server";
 
-export async function postShareCode(Token, share_code, start_date, end_date) {
+export async function postShareCode(Token, share_code, group_name, start_date, end_date) {
     const url = `${process.env.BASE_URL}/api/share`;
     const bearer_token = `Bearer ${Token}`;
     // console.log('url:', url);
@@ -8,6 +8,7 @@ export async function postShareCode(Token, share_code, start_date, end_date) {
 
     const requestBody = {
         share_code: share_code,
+        group_name: group_name,
         start_date: start_date,
         end_date: end_date,
     };

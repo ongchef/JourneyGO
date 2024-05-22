@@ -13,6 +13,7 @@ const CopyJourneyDialog = ({ open, onClose}) => {
   const { currentLang } = useContext(DataContext);
 
   const [shareCode, setShareCode] = useState('');
+  const [groupName, setGroupName] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [creationStatusOpen, setCreationStatusOpen] = useState(false);
@@ -37,8 +38,12 @@ const CopyJourneyDialog = ({ open, onClose}) => {
           en: 'Add Companion'
         },
         shareCode: {
-          zh: '輸入分享碼',
-          en: 'Enter Share Code'
+          zh: '分享碼',
+          en: 'Share Code'
+        },
+        groupName: {
+          zh: '行程名稱',
+          en: 'Trip Name'
         },
         tripTime: {
           zh: '旅程時間',
@@ -68,9 +73,14 @@ const CopyJourneyDialog = ({ open, onClose}) => {
     setShareCode(event.target.value);
   };
 
+  const handleGroupNameChange = (event) => {
+    setGroupName(event.target.value);
+  };
+
 
   const handleCancel = () => {
     setShareCode('');
+    setGroupName('');
     setStartDate(null);
     setEndDate(null);
     onClose();
@@ -79,7 +89,7 @@ const CopyJourneyDialog = ({ open, onClose}) => {
   const handleSave = async () => {
     try {
       const Token = getToken();
-      const responseStatus = await postShareCode(Token, shareCode, startDate, endDate);
+      const responseStatus = await postShareCode(Token, shareCode, groupName, startDate, endDate);
       // console.log('Trip group created:', responseStatus);
 
       if (!responseStatus) {
@@ -111,20 +121,29 @@ const CopyJourneyDialog = ({ open, onClose}) => {
       <DialogTitle>{translate('importJourney')}</DialogTitle>
 
       <DialogContent>
-        <Grid container spacing={2} alignItems="center">
-          <Grid item>
+        <Grid container alignItems="center">
+          <Grid item  style={{ flex: 1 }}>
             <InputLabel htmlFor="share-code">{translate('shareCode')}</InputLabel>
           </Grid>
-          <Grid item xs>
+          <Grid item  style={{ flex: 3 }}>
             <TextField fullWidth onChange={handleShareCodeChange}/>
           </Grid>
         </Grid>
 
-        <Grid container spacing={4} alignItems="center">
-          <Grid item>
+        <Grid container alignItems="center">
+          <Grid item  style={{ flex: 1 }}>
+            <InputLabel htmlFor="group-name">{translate('groupName')}</InputLabel>
+          </Grid>
+          <Grid item  style={{ flex: 3 }}>
+            <TextField fullWidth onChange={handleGroupNameChange}/>
+          </Grid>
+        </Grid>
+
+        <Grid container alignItems="center">
+          <Grid item  style={{ flex: 1 }}>
             <InputLabel htmlFor="trip-time">{translate('tripTime')}</InputLabel>
           </Grid>
-          <Grid item xs sx={{ minWidth: 200 }}>
+          <Grid item style={{ flex: 3 }}>
             <Paper variant="outlined" sx={{ borderRadius: '5px', padding: '15px' }}>
               <DatePicker
                 selected={startDate}

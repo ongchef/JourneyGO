@@ -157,10 +157,10 @@ const NewJourneyDialog = ({ open, onClose}) => {
       <DialogTitle>{translate('newJourney')}</DialogTitle>
       <DialogContent>
         <Grid container spacing={4} alignItems="center">
-          <Grid item>
+          <Grid item style={{ flex: 1 }}>
             <InputLabel htmlFor="trip-name">{translate('tripName')}</InputLabel>
           </Grid>
-          <Grid item xs>
+          <Grid item style={{ flex: 3 }}>
             <TextField label={translate('tripName')} fullWidth 
               onChange={handleGroupNameChange}
             />
@@ -168,10 +168,10 @@ const NewJourneyDialog = ({ open, onClose}) => {
         </Grid>
 
         <Grid container spacing={4} alignItems="center">
-          <Grid item>
+          <Grid item style={{ flex: 1 }}>
             <InputLabel htmlFor="trip-location">{translate('selectCountry')}</InputLabel>
           </Grid>
-          <Grid item xs>
+          <Grid item style={{ flex: 3 }}>
             <TextField fullWidth defaultValue="臺灣"></TextField>
           {/* <Grid item xs>
             <Select id="trip-location" label="選擇國家" fullWidth>
@@ -184,10 +184,10 @@ const NewJourneyDialog = ({ open, onClose}) => {
         </Grid>
 
         <Grid container spacing={4} alignItems="center">
-          <Grid item>
+          <Grid item style={{ flex: 1 }}>
             <InputLabel htmlFor="add-companion">{translate('addMember')}</InputLabel>
           </Grid>
-          <Grid item xs>
+          <Grid item style={{ flex: 3 }}>
             <Autocomplete
               multiple
               freeSolo
@@ -202,10 +202,10 @@ const NewJourneyDialog = ({ open, onClose}) => {
         </Grid>
 
         <Grid container spacing={4} alignItems="center">
-          <Grid item>
+          <Grid item style={{ flex: 1 }}>
             <InputLabel htmlFor="trip-time">{translate('tripTime')}</InputLabel>
           </Grid>
-          <Grid item xs sx={{ minWidth: 200 }}>
+          <Grid item style={{ flex: 3 }}>
             <Paper variant="outlined" sx={{ borderRadius: '5px', padding: '15px' }}>
               <DatePicker
                 selected={startDate}
@@ -223,10 +223,10 @@ const NewJourneyDialog = ({ open, onClose}) => {
         </Grid>
 
         <Grid container spacing={4} alignItems="center">
-          <Grid item>
+          <Grid item style={{ flex: 1 }}>
             <InputLabel htmlFor="add-companion">{translate('addPicture')}</InputLabel>
           </Grid>
-          <Grid item xs>
+          <Grid item style={{ flex: 3 }}>
             {/* <label htmlFor='image-upload' className='cursor-pointer' hidden="hidden">{translate('upload')}</label> */}
             <form encType="multipart/form-data" action="/somewhere/to/upload">
               <Input
