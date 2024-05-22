@@ -45,8 +45,11 @@ const CommentDialog = ({ open, onClose, spotId }) => {
       if (data && data.length !== 0) {
         setCommentList(data);
         setCommentCnt(data.length);
-      } else {
-        console.error("No comment data found by given spotId ", spotId);
+      }
+      else {
+        console.warn("Error fetching all comments result:", data);
+        setCommentList([]);
+        setCommentCnt(0);
       }
     } catch (error) {
       console.error("Error fetching all comments result:", error);

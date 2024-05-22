@@ -18,7 +18,7 @@ export async function getComments(Token, spot_id) {
         if (res.ok) {
             const data = await res.json();
             const status = res.status;
-            console.log('getComments Status:', spot_id, status);
+            console.log('getComments spot_id: ', spot_id, ', status: ',status);
             // if data is empty array means no comments, and still return empty array
             
             return data;
@@ -26,7 +26,7 @@ export async function getComments(Token, spot_id) {
             // no comment data by given spotId
             // but this api uses 200 and empty array to represent no comments
             console.log('Spot comments result not found:', res.status);
-            return null;
+            return undefined;
         }
         else {
             console.error('getComments Error:', res.status, res.statusText);
