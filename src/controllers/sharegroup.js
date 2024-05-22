@@ -4,11 +4,11 @@ import { createGroupModel, getuserIdbyClerkId } from "../models/userModel.js";
 
 export const copyGroup = async(req, res) => {
     const clerkId = req.userID;
-    const { share_code, start_date, end_date } = req.body
+    const { share_code, start_date, end_date, group_name } = req.body
     try{
         let userId = await getuserIdbyClerkId(clerkId);
         userId = userId[0].user_id;
-        const { group_id, group_name } = await getGroupByShareCode(share_code)
+        const { group_id } = await getGroupByShareCode(share_code)
         console.log(group_id)
         var countries = await getCountriesByGroupId(group_id)
         countries = countries.map(({country_name})=>country_name)
