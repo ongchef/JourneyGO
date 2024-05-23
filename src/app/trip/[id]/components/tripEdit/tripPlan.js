@@ -57,14 +57,14 @@ export default function TripPlan({ groupInfo }) {
     };
 
     return (
-        <div className="mx-4 lg:w-[50vw] lg:overflow-auto lg:h-[70vh]">
+        <div className="mx-4 lg:w-[50vw] lg:overflow-auto lg:h-[75vh]">
             <div className="flex flex-row justify-between p-2">
                 <div className="flex flex-col gap-3">
                     <div className="flex flex-row lg:gap-3 gap-2 items-center">
                         <h2 className="lg:text-xl text-base">
                             {groupInfo?.start_date} ~ {groupInfo?.end_date}
                         </h2>
-                        <Button variant="text">{translate('edit')}</Button>
+                        <Button variant="text" sx={{textTransform: 'none'}}>{translate('edit')}</Button>
                         <IconButton color="primary" aria-label="share" onClick={handleShareClick}>
                             <ShareIcon />
                         </IconButton>
@@ -79,10 +79,10 @@ export default function TripPlan({ groupInfo }) {
                                 );
                             })}
                         </AvatarGroup>
-                        <Button variant="outlined" onClick={handleAddMemberClick}>
+                        <Button variant="outlined" onClick={handleAddMemberClick} sx={{textTransform: 'none'}}>
                             {translate('addMember')}
                         </Button>
-                        <Button variant="contained" onClick={handleQuitGroupClick}>
+                        <Button variant="contained" onClick={handleQuitGroupClick} sx={{textTransform: 'none'}}>
                             {translate('quitGroup')}
                         </Button>
                     </div>

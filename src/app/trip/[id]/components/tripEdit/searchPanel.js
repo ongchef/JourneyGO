@@ -33,7 +33,7 @@ export default function SearchPanel() {
   }
   
   return (
-    <div className='mx-4 flex flex-col gap-3 lg:overflow-auto lg:h-[calc(70vh_-_3rem)] mt-[1rem]'>
+    <div className='mx-4 flex flex-col gap-3 lg:overflow-auto lg:h-[calc(75vh_-_3rem)] mt-[1rem]'>
       <div className='flex flex-row justify-between'>
         <Typography variant='h6'>{translate('addSpot')}</Typography>
         <div className='flex items-center'>

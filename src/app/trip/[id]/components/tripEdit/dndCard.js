@@ -117,7 +117,7 @@ export const DndCard = ({ id, index, title, location, moveCard, spotChange }) =>
         <Typography variant='inherit'>{title}</Typography>
         <div className='flex gap-2 items-center'>
           <CommentIcon onClick={handleCommentClick}/>
-          <Button variant='outlined' onClick={handleClick}>{translate('delete')}</Button>
+          <Button variant='outlined' onClick={handleClick} sx={{textTransform: 'none'}}>{translate('delete')}</Button>
         </div>
       </div>
       <Typography variant='caption'>{location}</Typography>

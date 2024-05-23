@@ -54,7 +54,7 @@ export default function TripSearch() {
               sx={{height: '1rem', minHeight: '1rem'}}
               label={
                 <div>
-                  <Typography variant='p'>{translate('map')}</Typography>
+                  <Typography variant='p' sx={{textTransform: 'none'}}>{translate('map')}</Typography>
                 </div>
               } 
               {...tabProps(0)}   
@@ -63,7 +63,7 @@ export default function TripSearch() {
               sx={{height: '1rem', minHeight: '1rem'}}
               label={
                 <div>
-                  <Typography variant='p'>{translate('search')}</Typography>
+                  <Typography variant='p' sx={{textTransform: 'none'}}>{translate('search')}</Typography>
                 </div>
               }
               {...tabProps(1)} 
@@ -72,7 +72,7 @@ export default function TripSearch() {
               sx={{height: '1rem', minHeight: '1rem'}}
               label={
                 <div>
-                  <Typography variant='p'>{translate('recommend')}</Typography>
+                  <Typography variant='p' sx={{textTransform: 'none'}}>{translate('recommend')}</Typography>
                 </div>
               }
               {...tabProps(2)} 

@@ -86,7 +86,7 @@ export default function Trip({params}) {
             label={
               <div className='flex flex-row items-center gap-3'>
                 <RoomIcon className='scale-125'/>
-                <Typography variant='p'>{translate('tripPlan')}</Typography>
+                <Typography variant='p' sx={{textTransform: 'none'}}>{translate('tripPlan')}</Typography>
               </div>
             } 
             {...tabProps(0)}   
@@ -95,7 +95,7 @@ export default function Trip({params}) {
             label={
               <div className='flex flex-row items-center gap-3'>
                 <DescriptionIcon className='scale-125'/>
-                <Typography variant='p'>{translate('bill')}</Typography>
+                <Typography variant='p' sx={{textTransform: 'none'}}>{translate('bill')}</Typography>
               </div>
             }
             {...tabProps(1)} 

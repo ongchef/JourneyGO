@@ -97,7 +97,7 @@ const Map = () => {
       initMap();
     }
   }, [markerPositions]);
-  return <div ref={mapRef} className='h-[calc(70vh_-_3rem)] mt-[1rem]'/>;
+  return <div ref={mapRef} className='lg:h-[calc(75vh_-_3rem)] h-[50vh] mt-[1rem]'/>;
 };
 
 export default function GoogleMap() {

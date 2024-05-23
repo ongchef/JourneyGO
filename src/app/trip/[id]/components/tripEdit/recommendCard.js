@@ -23,9 +23,9 @@ export default function RecommendCard({recommend}) {
 
   return (
     <div>
-      <Card sx={{ boxShadow: 3 }} className='p-5 flex flex-col lg:gap-3 gap-3'>
-        <div className='h-[7rem]'>
-          <div className='lg:text-xl text-lg'>{recommend?.title}</div>
+      <Card sx={{ boxShadow: 3 }} className='p-5 flex flex-col gap-2'>
+        <div className='h-[8rem]'>
+          <div className='lg:text-xl leading-tight'>{recommend?.title}</div>
           <div className='text-sm'>{recommend?.location}</div>
           <div className='flex flex-row text-neutral-500 gap-2'>
             <div className='flex flex-row items-center'>
@@ -39,7 +39,7 @@ export default function RecommendCard({recommend}) {
           component="img"
           image={recommend?.img}
           alt="place_photo"
-          sx={{ objectFit: 'cover', height: {lg: 240, xs: 180}}}
+          sx={{ objectFit: 'cover', height: {lg: 240, xs: 120}}}
         />
         <RecommendDialog recommend={recommend} />
       </Card>

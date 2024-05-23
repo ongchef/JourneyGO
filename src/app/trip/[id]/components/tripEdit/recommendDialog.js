@@ -130,7 +130,7 @@ export default function RecommendDialog({recommend}) {
                 {translate('price')}{recommend?.price || translate('na')}
               </div>
               <div className='w-full flex justify-center'>
-                <img src={recommend?.img} alt='place_photo' width={240} className='object-cover aspect-square shadow-md shadow-neutral-400' />
+                <img src={recommend?.img} alt='place_photo' width={240} className='object-cover aspect-square lg:w-[240px] w-[180px] shadow-md shadow-neutral-400' />
               </div>
             </div>
           </DialogContent>

@@ -62,7 +62,7 @@ const NavBar = ({ children }) => {
                 <NotificationButton/>
                 <IconButton aria-label='Profile' size='large' sx={{ color: 'inherit', cursor: 'pointer' }} onClick={handleProfile}><PersonRoundedIcon /></IconButton>
                 <IconButton aria-label="Change Language" size="large" sx={{ marginRight: { xs: 1, sm: 2, md: 3 }, color: 'inherit', cursor: 'pointer', fontSize: { xs: '0.6rem', sm: '0.7rem', md: '0.8rem' } }} onClick={switchLanguage}><TranslateIcon /></IconButton>
-                <Button variant="outlined" sx={{ marginRight: { xs: 1, sm: 2, md: 3 }, color: 'inherit', textDecoration: 'none', cursor: 'pointer', border: { xs: '1px solid', sm: '1.5px solid', md: '1.5px solid' }, fontSize: { xs: '0.7rem', sm: '0.8rem', md: '1rem' }, minWidth: { xs: 'auto', sm: 'auto', md: 'auto' }, maxWidth: { xs: '70px', sm: '80px', md: '100px' } }} onClick={handleLogout}>{translate('logout')}</Button>
+                <Button variant="outlined" sx={{ marginRight: { xs: 1, sm: 2, md: 3 }, color: 'inherit', textDecoration: 'none', cursor: 'pointer', border: { xs: '1px solid', sm: '1.5px solid', md: '1.5px solid' }, fontSize: { xs: '0.7rem', sm: '0.8rem', md: '1rem' }, minWidth: { xs: 'auto', sm: 'auto', md: 'auto' }, maxWidth: { xs: '70px', sm: '80px', md: '100px' }, textTransform: 'none', lineHeight: 'normal' }} onClick={handleLogout} >{translate('logout')}</Button>
             </Toolbar>
         </AppBar>
     </Box>

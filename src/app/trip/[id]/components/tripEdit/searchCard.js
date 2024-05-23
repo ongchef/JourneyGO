@@ -62,13 +62,13 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
 
   return (
     <div className='flex flex-row'>
-      {photo && <Image src={photo} alt='place_photo' width={100} height={100} className='object-cover aspect-square'/>}
-      <div className='flex flex-row shadow-lg w-full justify-between'>
+      <Image src={photo} alt='place_photo' width={100} height={100} className='object-cover aspect-square hidden lg:block'/>
+      <div className='flex lg:flex-row shadow-lg w-full justify-between'>
         <div className='flex flex-col p-3'>
-          <Typography variant='h6'>{title}</Typography>
+          <Typography sx={{fontSize: 18, fontWeight: "bold"}}>{title}</Typography>
           <Typography variant='subtitile'>{location}</Typography>
         </div>
-        <div className='p-1 h-full flex items-center gap-2'>
+        <div className='p-2 h-full flex items-center gap-2'>
           <div className='flex items-center'>
             <Typography variant='body2'>{rating}/5</Typography>
             <StarIcon />

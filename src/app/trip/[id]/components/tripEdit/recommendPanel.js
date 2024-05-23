@@ -42,7 +42,7 @@ export default function RecommendPanel() {
         en: "Coffee",
       },
       active: {
-        zh: "戶外活動",
+        zh: "戶外",
         en: "Active",
       },
       nightlife: {
@@ -58,7 +58,9 @@ export default function RecommendPanel() {
   }
 
   const fetchData = async (Token, lat, lng) => {
-    const {res, status} = await getRecommend(Token, lat, lng, category, page);
+    const data = await getRecommend(Token, lat, lng, category, page);
+    const res = data?.res;
+    const status = data?.status;
     if (status === 200) {
       if (res?.length === 0) {
         setIsLast(true);
@@ -114,10 +116,10 @@ export default function RecommendPanel() {
   ];
 
   return (
-    <div className='mx-4 flex flex-col gap-3 lg:overflow-y-scroll lg:h-[calc(70vh_-_3rem)] my-[1rem] p-[1rem]'>
-      <Box sx={{flexWrap: 'wrap', display: 'flex', gap: '1rem'}}>
+    <div className='mx-4 flex flex-col gap-3 lg:overflow-y-scroll lg:h-[calc(75vh_-_3rem)] my-[1rem] p-[1rem]'>
+      <Box sx={{flexWrap: 'wrap', display: {lg: 'flex', xs: 'grid'}, gridTemplateColumns: 'repeat(4,1fr)', gap: '1rem'}}>
         {categories?.map((category, index) => (
-          <Button key={index} variant='outlined' fullWidth onClick={() => handleClick(category[0])}  sx={{maxWidth: {lg: '7rem', xs: '6rem'}}}>
+          <Button key={index} variant='outlined' onClick={() => handleClick(category[0])}  sx={{maxWidth: {lg: '7rem', xs: '6rem'}, textTransform: 'none'}}>
             <Typography sx={{fontSize: {lg: 14, xs: 12}}}>{category[1]}</Typography>
           </Button>
         ))}
