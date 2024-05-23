@@ -5,11 +5,13 @@ import { getTripGroupOverview } from "@/services/getTripGroupOverview";
 import { DataContext } from "@/app/components/dataContext";
 import { getToken } from "@/utils/getToken";
 
-import { useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia, CardActions, IconButton } from "@mui/material";
-import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
+import { useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia, CardActions, IconButton, useMediaQuery } from "@mui/material";
+import { DateRange as DateRangeIcon } from "@mui/icons-material";
 
 function TripList({ data, tabValue, setTripOverview }) {
     const { setAllGroups, currentLang } = useContext(DataContext);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleClick = (group_id) => {
         async function fetch() {
@@ -52,7 +54,6 @@ function TripList({ data, tabValue, setTripOverview }) {
         return translations[key][currentLang];
     };
 
-    const theme = useTheme();
     // Determine the square size based on theme or fixed value
     const squareSize = theme.spacing(20);
 
@@ -96,17 +97,29 @@ function TripList({ data, tabValue, setTripOverview }) {
                                 <CardContent sx={cardContentStyles}>
                                     <Stack direction="row" spacing={2}>
                                         {/* <Chip label="place" size="small" /> */}
-                                        <Chip label={translate(trip.status.toLowerCase())} size="small" color="primary" />
+                                        <Chip 
+                                            label={translate(trip.status.toLowerCase())} 
+                                            size="small" 
+                                            color="primary" 
+                                            sx={{
+                                                height: isMobile ? '20px' : '28px', 
+                                                fontSize: isMobile ? '0.7rem' : '0.875rem'
+                                            }}
+                                        />
                                     </Stack>
                                     <div className="pt-1">
-                                        <Typography variant="h6" component="div">
+                                        <Typography variant={isMobile ? "body2" : "h6"} component="div">
                                             {trip.group_name}
                                         </Typography>
                                     </div>
                                     <CardActions sx={cardActionsStyles} disableSpacing>
                                         <IconButton aria-label="duration" size="small">
                                             <DateRangeIcon />
-                                            <span className="ml-1 text-sm">{trip.duration} {translate('days')}</span>
+                                            <span className="ml-1 text-sm">
+                                                <Typography variant={isMobile ? "body2" : "body1"} component="span">
+                                                    {trip.duration} {translate('days')}
+                                                </Typography>
+                                            </span>
                                         </IconButton>
                                     </CardActions>
                                 </CardContent>

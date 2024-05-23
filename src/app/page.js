@@ -9,9 +9,13 @@ import NewJourneyDialog from './components/newJourney';
 import CopyJourneyDialog from "./components/CopyJourneyDialog";
 
 import { useContext, useState, useEffect } from 'react';
-import { CircularProgress, Box, Typography, Tabs, Tab, Grid, Button } from '@mui/material';
+import { CircularProgress, Box, Typography, Tabs, Tab, Grid, Button, useMediaQuery } from '@mui/material';
+import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
 import InputIcon from '@mui/icons-material/Input';
+
+let theme = createTheme();
+theme = responsiveFontSizes(theme);
 
 function LoadingIndicator() {
   return (
@@ -132,21 +136,25 @@ export default function Home() {
     marginTop: `3rem !important`,
   };
 
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
 
   if (loading) {
     return <LoadingIndicator />;
   }
 
   return (
+    <ThemeProvider theme={theme}>
     <main className="m-3">
       <Box className="m-3 flex">
         <Grid container spacing={2}>
           <Grid item xs={12} md={tripOverview !== null ? 6 : 12} sx={setDividerStyles}>
 
-            <Box className="flex items-center p-2 m-3">
-              <Typography variant="h4" component="div" className="pr-5">
-                {translate('myJourney')}
-              </Typography>
+          <Box display="flex" flexDirection={isMobile ? "column" : "row"}>
+            <Typography variant="h4" component="div" className="pr-5 pb-3">
+              {translate('myJourney')}
+            </Typography>
+            <Box display="flex" flexDirection="row" className="mb-5">
               <Button variant="contained" size="small" sx={{ mr: 1 }} startIcon={<AddIcon />} onClick={handleNewJourneyOpenDialog}>
                 {translate('newJourney')}
               </Button>
@@ -154,6 +162,7 @@ export default function Home() {
                 {translate('copyJourney')}
               </Button>
             </Box>
+          </Box>
               
             <Tabs value={tabValue} onChange={handleTabChange} aria-label="trip tabs" className="">
               <Tab label={translate('all')} value="All"/>
@@ -172,5 +181,6 @@ export default function Home() {
       <CopyJourneyDialog open={copyJourneyOpenDialog} onClose={handleCopyJourneyCloseDialog} />
     
   </main>
+  </ThemeProvider>
 );
 }

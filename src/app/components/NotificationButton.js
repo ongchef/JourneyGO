@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
 import IconButton from "@mui/material/IconButton";
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 // import { DataContext } from '@/app/components/dataContext';
 import { getToken } from "@/utils/getToken";
 import { getInvitation } from "@/services/getInvitation";
@@ -40,9 +41,9 @@ const NotificationButton = ({}) => {
 
     return (
         <>
-            <IconButton color="inherit" aria-label="notification" onClick={handleButtonClick}>
+            <IconButton color="inherit" aria-label="notification" size="large" onClick={handleButtonClick}>
                 <div style={{ position: "relative" }}>
-                    <img src="/notification.png" alt="notification" style={{ color: "white", width: 35, height: 35, marginRight: 10 }} />
+                    <NotificationsNoneOutlinedIcon className="mb-2" fontSize="inherit" />
                     {pendingInvitationCount > 0 && (
                         <span
                             style={{
