@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useContext, use } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { DataContext } from '@/app/components/dataContext';
 import { getToken } from '@/utils/getToken';
 import { Avatar, Input, Button,InputLabel, TextField,Box,} from "@mui/material";
@@ -16,7 +16,8 @@ const ProfilePanel = ({}) => {
   const [profileData, setProfileData] = useState({});
   const [initialProfileData, setInitialProfileData] = useState({});
   const [avatarUrl, setAvatarUrl] = useState("");
-  //const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null); //圖案的blob
+  const [tempAvatarUrl, setTempAvatarUrl] = useState("");
 
 
     useEffect(() => {
@@ -25,18 +26,22 @@ const ProfilePanel = ({}) => {
           const token = getToken();
           const response = await getProfile(token);
           const profile = response.userProfile[0];
+          //console.log("profile:", profile);
           setInitialProfileData(profile);
           setProfileData(profile);
           setName(profile.user_name);
           setPhone(profile.phone);
+          setTempAvatarUrl(profile.image);
           setAvatarUrl(profile.image);
+        
+          
         } catch (error) {
           console.error("getProfile Error:", error);
         }
       };
       fetchProfile();
     },[]);
-  
+
     //console.log(profileData);
 
     const translate = (key) => {
@@ -89,32 +94,39 @@ const ProfilePanel = ({}) => {
 
     const handleFileChange = (e) => {
       const file = e.target.files[0];
+      console.log("file:", file);
+      setImageFile(file);
       if(file) {
           const reader = new FileReader();
-          
           reader.onload = () => {
-            setAvatarUrl(reader.result);
+            setTempAvatarUrl(reader.result);
           }
           reader.readAsDataURL(file);
-          /* const reader2 = new FileReader();
-          reader2.onloadend = () => {
-            const imgBlob = new Blob([reader2.result], { type: file.type});
-            setImage(imgBlob);
-          }
-          reader2.readAsArrayBuffer(file); */
       }
   }
 
     const handleUpdateButtonClick = async () => {
         try {
           const token = getToken();
-          const response = await updateProfile(token, name, phone, avatarUrl)
+          console.log("token:", token);
+          console.log("name:", name);
+          console.log("phone:", phone);
+          console.log("imageFile:", imageFile);
+          
+          setAvatarUrl(tempAvatarUrl);
+          console.log("avatarUrl:", avatarUrl);
+
+          const fileName = imageFile.name;
+          
+          const response = await updateProfile(token, name, phone, avatarUrl, fileName);
           console.log("updateResponse", response);
 
           const profile = response.returned[0];
           setProfileData(profile);
           setInitialProfileData(profile);
-          
+          setName(profile.user_name);
+          setPhone(profile.phone);
+          setAvatarUrl(tempAvatarUrl);   
         } catch (error) {
           console.log("updateProfile Error:", error);
         }
@@ -123,17 +135,19 @@ const ProfilePanel = ({}) => {
     const handleResetButtonClick = () => {
       setName(initialProfileData.user_name);
       setPhone(initialProfileData.phone);
+      setTempAvatarUrl(avatarUrl);
+      
     }
 
   return (
     <div>
     <div className='flex flex-col items-center'>
       <div className='mt-10'>
-        <Avatar alt="User Avatar" src={avatarUrl} sx={{ width: 200, height: 200 }}/>
+        <Avatar alt="User Avatar" src={tempAvatarUrl} sx={{ width: 200, height: 200 }}/>
       </div>
       <div className='mt-5'>
         {/* <InputLabel htmlFor="avatar-upload" className='mx-auto' >{translate('myPhoto')}</InputLabel> */}
-        <label htmlFor="avatar-upload" className='cursor-pointer' hidden="hidden">{translate('upload')}</label>
+        <label htmlFor="avatar-upload" className='cursor-pointer' hidden="hidden" >{translate('upload')}</label>
         <Input
           id="avatar-upload"
           type='file'
