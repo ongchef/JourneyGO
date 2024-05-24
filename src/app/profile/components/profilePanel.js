@@ -9,6 +9,7 @@ import { updateProfile } from '@/services/updateProfile';
 
 const ProfilePanel = ({}) => {
   const { currentLang } = useContext(DataContext);
+  const IMAGE_BASE_URL =  'https://storage.googleapis.com/journeygo_photoL/';
   //const token = getToken();
 
   const [name, setName] = useState("");
@@ -26,13 +27,18 @@ const ProfilePanel = ({}) => {
           const token = getToken();
           const response = await getProfile(token);
           const profile = response.userProfile[0];
+
+          const imageURL = IMAGE_BASE_URL + profile.image;
+          console.log("profile:", profile);
+          console.log("imageURL:", imageURL);
+
           //console.log("profile:", profile);
           setInitialProfileData(profile);
           setProfileData(profile);
           setName(profile.user_name);
           setPhone(profile.phone);
-          setTempAvatarUrl(profile.image);
-          setAvatarUrl(profile.image);
+          setTempAvatarUrl(imageURL);
+          setAvatarUrl(imageURL);
         
           
         } catch (error) {
@@ -113,20 +119,24 @@ const ProfilePanel = ({}) => {
           console.log("phone:", phone);
           console.log("imageFile:", imageFile);
           
-          setAvatarUrl(tempAvatarUrl);
-          console.log("avatarUrl:", avatarUrl);
-
-          const fileName = imageFile.name;
+          console.log("TempavatarUrl:", tempAvatarUrl);
           
-          const response = await updateProfile(token, name, phone, avatarUrl, fileName);
+
+          const fileName = imageFile ? imageFile.name : null;
+
+          const response = await updateProfile(token, name, phone, tempAvatarUrl, fileName);
           console.log("updateResponse", response);
 
           const profile = response.returned[0];
+
+          //const updatedImageURL = IMAGE_BASE_URL + profile.image;
+
           setProfileData(profile);
           setInitialProfileData(profile);
           setName(profile.user_name);
           setPhone(profile.phone);
-          setAvatarUrl(tempAvatarUrl);   
+          setAvatarUrl(profile.image);
+          
         } catch (error) {
           console.log("updateProfile Error:", error);
         }
@@ -135,7 +145,10 @@ const ProfilePanel = ({}) => {
     const handleResetButtonClick = () => {
       setName(initialProfileData.user_name);
       setPhone(initialProfileData.phone);
+      //const intitialImageURL = IMAGE_BASE_URL + initialProfileData.image;
       setTempAvatarUrl(avatarUrl);
+      //setAvatarUrl(avatarUrl);
+      //setImageFile(null);
       
     }
 
