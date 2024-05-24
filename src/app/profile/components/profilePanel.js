@@ -184,6 +184,7 @@ const ProfilePanel = ({}) => {
                 variant="contained"
                 color="primary"
                 onClick={handleUpdateButtonClick}
+                sx={{textTransform: 'none'}}
               >
                 {translate("update")}
               </Button>
@@ -191,6 +192,7 @@ const ProfilePanel = ({}) => {
                 variant="contained"
                 color="secondary"
                 onClick={handleResetButtonClick}
+                sx={{textTransform: 'none'}}
               >
                 {translate("reset")}
               </Button>

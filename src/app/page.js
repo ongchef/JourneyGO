@@ -155,19 +155,19 @@ export default function Home() {
               {translate('myJourney')}
             </Typography>
             <Box display="flex" flexDirection="row" className="mb-5">
-              <Button variant="contained" size="small" sx={{ mr: 1 }} startIcon={<AddIcon />} onClick={handleNewJourneyOpenDialog}>
+              <Button variant="contained" size="small" sx={{ mr: 1, textTransform: 'none' }} startIcon={<AddIcon />} onClick={handleNewJourneyOpenDialog}>
                 {translate('newJourney')}
               </Button>
-              <Button variant="outlined" size="small" sx={{ ml: 1 }} startIcon={<InputIcon />} onClick={handleCopyJourneyOpenDialog}>
+              <Button variant="outlined" size="small" sx={{ ml: 1, textTransform: 'none' }} startIcon={<InputIcon />} onClick={handleCopyJourneyOpenDialog}>
                 {translate('copyJourney')}
               </Button>
             </Box>
           </Box>
               
             <Tabs value={tabValue} onChange={handleTabChange} aria-label="trip tabs" className="">
-              <Tab label={translate('all')} value="All"/>
-              <Tab label={translate('incoming')} value={tabValues.incoming}/>
-              <Tab label={translate('finished')} value={tabValues.finished}/>
+              <Tab label={translate('all')} sx={{textTransform: 'none'}} value="All"/>
+              <Tab label={translate('incoming')} sx={{textTransform: 'none'}} value={tabValues.incoming}/>
+              <Tab label={translate('finished')} sx={{textTransform: 'none'}} value={tabValues.finished}/>
             </Tabs>
 
             <TripList data={tripGroups} tabValue={tabValue} setTripOverview={setTripOverview}/>

@@ -104,7 +104,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
                     </Box>
 
                     <Box className="flex justify-end items-end">
-                        <Button variant="text" size="large" endIcon={<ArrowForwardRoundedIcon />} sx={{ fontSize: "1.5rem" }} onClick={handleClick}>
+                        <Button variant="text" size="large" endIcon={<ArrowForwardRoundedIcon />} sx={{ fontSize: "1.5rem", textTransform: 'none' }} onClick={handleClick}>
                             {translate('viewDetails')}
                         </Button>
                     </Box>
