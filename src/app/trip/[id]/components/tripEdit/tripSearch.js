@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Fab from '@mui/material/Fab';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import TabPanel from './tabPanel';
 import GoogleMap from './googleMap';
 import SearchPanel from './searchPanel';
@@ -20,8 +22,20 @@ function tabProps(index) {
 
 export default function TripSearch() {
   const [value, setValue] = useState(0);
-
+  const [showButton, setShowButton] = useState(false);
   const { currentLang } = useContext(DataContext);
+
+  useEffect(() => {
+    const changeScroll = () => {
+      if (window.scrollY > 0) {
+        setShowButton(true);
+      } else {
+        setShowButton(false);
+      }
+    };
+    window.addEventListener('scroll', changeScroll);
+    return () => window.removeEventListener('scroll', changeScroll);
+  }, []);
 
   const translate = (key) => {
     const translations = {
@@ -43,6 +57,10 @@ export default function TripSearch() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleScroll = () => {
+    window.scrollTo({top: 0, behavior: 'smooth'});
   };
 
   return (
@@ -91,6 +109,9 @@ export default function TripSearch() {
           </TabPanel>
         </Box>
       </Box>
+      {showButton && <Fab color="primary" aria-label="scroll back to top" sx={{position: 'fixed', bottom: '2rem', right: '2rem', display: {lg: "none"}}} onClick={handleScroll}>  
+        <ArrowUpwardIcon />
+      </Fab>}
     </div>
   );
 }

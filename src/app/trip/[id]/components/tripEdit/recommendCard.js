@@ -24,7 +24,7 @@ export default function RecommendCard({recommend}) {
   return (
     <div>
       <Card sx={{ boxShadow: 3 }} className='p-5 flex flex-col gap-2'>
-        <div className='h-[8rem]'>
+        <div>
           <div className='lg:text-xl leading-tight'>{recommend?.title}</div>
           <div className='text-sm'>{recommend?.location}</div>
           <div className='flex flex-row text-neutral-500 gap-2'>

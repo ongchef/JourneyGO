@@ -69,10 +69,10 @@ const quitGroupDialog = ({ open, onClose}) => {
         {translate('WantToQuit')}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleCancel} color="primary">
+        <Button onClick={handleCancel} color="primary" sx={{textTransform: 'none'}}>
           {translate('cancel')}
         </Button>
-        <Button onClick={handleSave} color="primary">
+        <Button onClick={handleSave} color="primary" sx={{textTransform: 'none'}}>
           {translate('quit')}
         </Button>
       </DialogActions>

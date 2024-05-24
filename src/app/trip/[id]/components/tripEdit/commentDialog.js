@@ -33,6 +33,10 @@ const CommentDialog = ({ open, onClose, spotId }) => {
         zh: "發表...",
         en: "Comment...",
       },
+      board: {
+        zh: "留言板",
+        en: "Bulletin Board",
+      },
     };
     return translations[key][currentLang];
   };
@@ -136,7 +140,7 @@ const CommentDialog = ({ open, onClose, spotId }) => {
   return (
     <Dialog open={open} onClose={handleClose} maxWidth={fullScreen ? "xs" : "sm"} fullWidth>
       <DialogTitle>
-          留言板 ({commentCnt})
+          {translate("board")} ({commentCnt})
       </DialogTitle>
       <DialogContent dividers>
         <Box sx={{ position: "absolute", top: 0, right: 0 }}>
@@ -200,7 +204,7 @@ const CommentDialog = ({ open, onClose, spotId }) => {
               <TextField key={key} label={translate("comment")} value={comment} onChange={handleCommentChange} fullWidth />
             </div>
             <div>
-              <Button onClick={handleSubmit} variant="contained" color="primary">
+              <Button onClick={handleSubmit} variant="contained" color="primary" sx={{textTransform: 'none'}}>
                 {translate("submit")}
               </Button>
             </div>

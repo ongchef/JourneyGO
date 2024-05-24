@@ -100,7 +100,7 @@ export default function RecommendDialog({recommend}) {
 
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>查看更多</Button>
+      <Button variant="outlined" onClick={handleClickOpen} sx={{textTransform: 'none'}}>{translate('viewMore')}</Button>
         <Dialog
           open={open}
           onClose={handleClose}

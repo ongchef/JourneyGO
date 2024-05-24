@@ -78,7 +78,7 @@ function BillPanel({ group_id, reloadTabPanel }) {
                                     {translate("hello")}{userName}
                                 </Typography>
                             </div>
-                            <Button variant="contained" onClick={handleOpenDialog} sx={{ bgcolor: "#EB684E" }}>
+                            <Button variant="contained" onClick={handleOpenDialog} sx={{ bgcolor: "#EB684E", textTransform: 'none' }}>
                                 {translate("addBill")}
                             </Button>
                         </Box>

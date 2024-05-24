@@ -104,10 +104,10 @@ const newMemberDialog = ({ open, onClose }) => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel} color="primary">
+                    <Button onClick={handleCancel} color="primary" sx={{textTransform: 'none'}}>
                         {translate('cancel')}
                     </Button>
-                    <Button onClick={handleSave} color="primary">
+                    <Button onClick={handleSave} color="primary" sx={{textTransform: 'none'}}>
                         {translate('add')}
                     </Button>
                 </DialogActions>

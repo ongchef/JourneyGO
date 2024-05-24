@@ -58,7 +58,7 @@ const ShareDialog = ({ open, onClose }) => {
                     你的分享碼是：{shareCode}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCancel} color="primary">
+                    <Button onClick={handleCancel} color="primary" sx={{textTransform: 'none'}}>
                         {translate('accept')}
                     </Button>
                 </DialogActions>

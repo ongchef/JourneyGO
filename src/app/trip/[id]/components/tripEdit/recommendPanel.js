@@ -49,10 +49,6 @@ export default function RecommendPanel() {
         zh: "夜生活",
         en: "Nightlife",
       },
-      dessert: {
-        zh: "甜點",
-        en: "Dessert",
-      },
     };
     return translations?.[key]?.[currentLang];
   }
@@ -106,7 +102,6 @@ export default function RecommendPanel() {
 
   const categories = [
     ["restaurants", translate("restaurants")],
-    ["dessert", translate("dessert")],
     ["coffee", translate("coffee")],
     ["hotels", translate("hotels")],
     ["arts", translate("arts")],

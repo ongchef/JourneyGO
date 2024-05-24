@@ -69,7 +69,7 @@ export default function TripPlan({ groupInfo }) {
                             <ShareIcon />
                         </IconButton>
                     </div>
-                    <div className="flex gap-5 items-center">
+                    <div className="flex gap-5 items-center flex-wrap">
                         <AvatarGroup max={5} spacing={-10}>
                             {groupInfo?.user_names?.map((user, index) => {
                                 return (

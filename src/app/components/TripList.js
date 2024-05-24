@@ -30,6 +30,10 @@ function TripList({ data, tabValue, setTripOverview }) {
             }
         }
         fetch();
+        setTimeout(() => {
+            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }); // scroll to the bottom
+        }
+        , 500);
     };
 
     const translate = (key) => {
