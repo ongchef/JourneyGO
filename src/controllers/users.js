@@ -105,7 +105,6 @@ export const getUserProfile = async function (req, res) {
 
 export const updateUserInfo = async function (req, res) {
   const userID = req.userID;
-  // get updated user info from frontend
   const { userName, userPhone } = req.body;
   const filename = req.filename;
   
@@ -115,6 +114,7 @@ export const updateUserInfo = async function (req, res) {
       username: userName,
     });
   } catch (error) {
+    console.log(error);
     return res
       .status(error.status)
       .json({ success: false, message: error.errors[0].message });

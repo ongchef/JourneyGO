@@ -1,4 +1,4 @@
-import { Storage } from "@google-cloud/storage";
+import { ApiError, Storage } from "@google-cloud/storage";
 import crypto from "crypto";
 import dotenv from "dotenv";
 
@@ -19,7 +19,8 @@ export default function uploadImage (req, res, next){
         return next();
     }
     
-    const newFilename = `${crypto.randomUUID()}-${file.originalname}`;
+    const extension = file.originalname.slice(file.originalname.lastIndexOf('.') + 1);
+    const newFilename = `${crypto.randomUUID()}.${extension}`
     const blob = bucket.file(newFilename);
     const blobStream = blob.createWriteStream();
 

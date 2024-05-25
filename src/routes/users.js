@@ -52,4 +52,12 @@ router.put(
   putInvitation
 );
 
+router.post(
+  "/test",
+  (req, res) => {
+    console.log(req.rawHeaders);
+    return res.status(200).json({msg: "hello world"})
+  }
+)
+
 export default router;
