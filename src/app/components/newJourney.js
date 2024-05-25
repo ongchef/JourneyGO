@@ -6,7 +6,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { DataContext } from '@/app/components/dataContext';
 import { getToken } from '@/utils/getToken';
-
 import { createTripGroup } from '@/services/createTripGroup';
 
 const NewJourneyDialog = ({ open, onClose}) => {
@@ -20,6 +19,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const [inviteeEmail, setInviteeEmail] = useState([]);
   const [creationStatusOpen, setCreationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [image, setImage] = useState(null);
   
   const translate = (key) => {
@@ -110,8 +110,17 @@ const NewJourneyDialog = ({ open, onClose}) => {
   };
 
   const handleFileChange = (e) => {
-    //setImage(e.target.files[0]);
-    //const file = e.target.files[0];
+    const file = e.target.files[0];
+    console.log("file:", file);
+    setImage(file);
+
+    if(file){
+      const reader = new FileReader();
+      reader.onload = () => {
+        setAvatarUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
 
@@ -125,8 +134,11 @@ const NewJourneyDialog = ({ open, onClose}) => {
     try {
       const Token = getToken();
       // console.log('emails:', inviteeEmail);
-      const responseStatus = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail);
-      // console.log('Trip group created:', responseStatus);
+      console.log('avatarUrl:', avatarUrl);
+      console.log('image:', image);
+
+      const responseStatus = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail, avatarUrl, image);
+      console.log('Trip group created:', responseStatus);
 
       if (!responseStatus) {
         setStatusMessage(translate('addTripFailed'));
@@ -166,16 +178,6 @@ const NewJourneyDialog = ({ open, onClose}) => {
             />
           </Grid>
         </Grid>
-
-        {/* <Grid container spacing={4} alignItems="center">
-          <Grid item style={{ flex: 1 }}>
-            <InputLabel htmlFor="trip-location">{translate('selectCountry')}</InputLabel>
-          </Grid>
-          <Grid item style={{ flex: 3 }}>
-            <TextField fullWidth defaultValue="臺灣"></TextField>
-          </Grid>
-        </Grid> */}
-
         <Grid container spacing={4} alignItems="center">
           <Grid item style={{ flex: 1 }}>
             <InputLabel htmlFor="add-companion">{translate('addMember')}</InputLabel>

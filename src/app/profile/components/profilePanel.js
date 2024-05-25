@@ -2,14 +2,14 @@
 import React, { useState, useEffect, useContext} from 'react';
 import { DataContext } from '@/app/components/dataContext';
 import { getToken } from '@/utils/getToken';
-import { Avatar, Input, Button,InputLabel, TextField,Box,} from "@mui/material";
+import { Avatar, Input, Button,InputLabel, TextField,Box,Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 //import { jwtDecode } from "jwt-decode";
 import { getProfile } from '@/services/getProfile';
 import { updateProfile } from '@/services/updateProfile';
 
 const ProfilePanel = ({}) => {
   const { currentLang } = useContext(DataContext);
-  const IMAGE_BASE_URL =  'https://storage.googleapis.com/journeygo_photoL/';
+  const host =  "https://storage.googleapis.com/journeygo_photo/";
   //const token = getToken();
 
   const [name, setName] = useState("");
@@ -19,6 +19,8 @@ const ProfilePanel = ({}) => {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [imageFile, setImageFile] = useState(null); //圖案的blob
   const [tempAvatarUrl, setTempAvatarUrl] = useState("");
+  const [phoneError, setPhoneError] = useState(""); //追蹤電話輸入是否有效
+  const [openDialog, setOpenDialog] = useState(false);
 
 
     useEffect(() => {
@@ -28,7 +30,7 @@ const ProfilePanel = ({}) => {
           const response = await getProfile(token);
           const profile = response.userProfile[0];
 
-          const imageURL = IMAGE_BASE_URL + profile.image;
+          const imageURL = host + profile.image;
           console.log("profile:", profile);
           console.log("imageURL:", imageURL);
 
@@ -40,7 +42,6 @@ const ProfilePanel = ({}) => {
           setTempAvatarUrl(imageURL);
           setAvatarUrl(imageURL);
         
-          
         } catch (error) {
           console.error("getProfile Error:", error);
         }
@@ -84,6 +85,14 @@ const ProfilePanel = ({}) => {
                 zh: "上傳",
                 en: "Upload",
             },
+            updateMessage: {
+                zh: "您的資料更新成功",
+                en: "Your profile has been successfully updated.",
+            },
+            close: {
+                zh: "關閉",
+                en: "Close",
+            },
         };
         return translations[key][currentLang];
     };
@@ -95,7 +104,16 @@ const ProfilePanel = ({}) => {
 
     const handlePhoneChange = (e) => {
       //setProfileData({...profileData, phone: e.target.value});
-      setPhone(e.target.value);
+      const value = e.target.value;
+      setPhone(value);
+
+      const phonePattern = /^[0-9]{10}$/; //0~9數字，共10位
+
+        if (!phonePattern.test(value)) {
+          setPhoneError("無效的電話號碼");
+        } else {
+          setPhoneError(""); // 清除错误信息
+        }
     };
 
     const handleFileChange = (e) => {
@@ -113,30 +131,32 @@ const ProfilePanel = ({}) => {
 
     const handleUpdateButtonClick = async () => {
         try {
-          const token = getToken();
-          console.log("token:", token);
-          console.log("name:", name);
-          console.log("phone:", phone);
-          console.log("imageFile:", imageFile);
-          
-          console.log("TempavatarUrl:", tempAvatarUrl);
-          
+          if(name && phone && !phoneError) {
+            const token = getToken();
+            console.log("token:", token);
+            console.log("name:", name);
+            console.log("phone:", phone);
+            console.log("imageFile:", imageFile);
+            
+            console.log("TempavatarUrl:", tempAvatarUrl);
+            
 
-          const fileName = imageFile ? imageFile.name : null;
+            const fileName = imageFile ? imageFile.name : null;
 
-          const response = await updateProfile(token, name, phone, tempAvatarUrl, fileName);
-          console.log("updateResponse", response);
+            const response = await updateProfile(token, name, phone, tempAvatarUrl, fileName);
+            console.log("updateResponse", response);
 
-          const profile = response.returned[0];
+            const profile = response.returned[0];
 
-          //const updatedImageURL = IMAGE_BASE_URL + profile.image;
+            //const updatedImageURL = IMAGE_BASE_URL + profile.image;
 
-          setProfileData(profile);
-          setInitialProfileData(profile);
-          setName(profile.user_name);
-          setPhone(profile.phone);
-          setAvatarUrl(profile.image);
-          
+            setProfileData(profile);
+            setInitialProfileData(profile);
+            setName(profile.user_name);
+            setPhone(profile.phone);
+            setAvatarUrl(profile.image);
+            setOpenDialog(true);
+          }
         } catch (error) {
           console.log("updateProfile Error:", error);
         }
@@ -152,6 +172,10 @@ const ProfilePanel = ({}) => {
       
     }
 
+    const handleCloseDialog = () => {
+      setOpenDialog(false);
+    }
+
   return (
     <div>
     <div className='flex flex-col items-center'>
@@ -164,7 +188,6 @@ const ProfilePanel = ({}) => {
         <Input
           id="avatar-upload"
           type='file'
-          
           accept='image/*'
           onChange={handleFileChange}
         />  
@@ -190,6 +213,7 @@ const ProfilePanel = ({}) => {
                 variant="outlined"
                 fullWidth
                 style={{ marginTop: 6 }}
+                helperText={phoneError}
               />
             </div>
             <div className='flex justify-center space-x-4'>
@@ -198,6 +222,7 @@ const ProfilePanel = ({}) => {
                 color="primary"
                 onClick={handleUpdateButtonClick}
                 sx={{textTransform: 'none'}}
+                disabled ={!!phoneError}//如果phoneError有值，則disabled
               >
                 {translate("update")}
               </Button>
@@ -213,6 +238,19 @@ const ProfilePanel = ({}) => {
           </div>
 
     </Box>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        {/* <DialogTitle>{translate('updateSuccess')}</DialogTitle> */}
+        <DialogContent>
+          <DialogContentText>
+          {translate('updateMessage')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}  color="primary">
+            {translate('close')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
