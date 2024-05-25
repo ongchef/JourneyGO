@@ -15,6 +15,10 @@ export const addNewUser = ({ userID, userEmail, userName, status }) => {
 };
 
 export const updateUser = ({ userID, userName, status, filename, phone }) => {
+  // frontend has resolved the issue by restricting the input to valid phone numbers
+  if (phone === "null") {
+    phone = null;
+  }
   let query = `
       UPDATE user_account
       SET status = $1, user_name = $2, phone = $3
