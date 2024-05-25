@@ -18,6 +18,12 @@ import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
+const test = (req, res, next) => {
+  console.log(req._readableState);
+  console.log((0,req._readableState.buffer).toString())
+  next();
+}
+
 router.post(
   "/register",
   bodyParser.raw({ type: "application/json" }),
