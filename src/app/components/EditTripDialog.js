@@ -17,9 +17,15 @@ const EditTripDialog = ({ open, onClose, groupInfo }) => {
   const [groupName, setGroupName] = useState(groupInfo?.group_name);
   const [editStatusOpen, setEditStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
+  const [isGroupNameValid, setIsGroupNameValid] = useState(true);
+  const [isEditSuccessful, setIsEditSuccessful] = useState(false);
   
   const translate = (key) => {
     const translations = {
+        OK: {
+          zh: "確定",
+          en: "OK",
+        },
         edited: {
           zh: "已編輯旅程",
           en: "Journey edited successfully!"
@@ -47,10 +53,21 @@ const EditTripDialog = ({ open, onClose, groupInfo }) => {
         cancel: {
           zh: "取消",
           en: "Cancel",
-      },
+        },
+        all_fields_are_required: {
+          zh: "所有欄位都為必填！",
+          en: "All fields are required",
+        }
+
     };
     return translations[key][currentLang];
 };
+
+  useEffect(() => {
+    setStartDate(new Date(groupInfo?.start_date));
+    setEndDate(new Date(groupInfo?.end_date));
+    setGroupName(groupInfo?.group_name);
+  }, [groupInfo]);
 
   const handleDateChange = (dates) => {
     const [start, end] = dates;
@@ -59,23 +76,23 @@ const EditTripDialog = ({ open, onClose, groupInfo }) => {
   };
 
   const handleGroupNameChange = (event) => {
-    setGroupName(event.target.value);
-  };
-
-  const handleCancel = () => {
-    setGroupName('');
-    setStartDate(null);
-    setEndDate(null);
-    onClose();
+    const value = event.target.value;
+    setGroupName(value);
+    setIsGroupNameValid(!!value); 
   };
 
   const handleSave = async () => {
+    if (!groupName || !startDate || !endDate) {
+      setStatusMessage(translate('all_fields_are_required'));
+      setEditStatusOpen(true);
+      return;
+    }
+    
     try {
       const Token = getToken();
-      // console.log('currGroupId: ', currGroupId);
       const responseStatus = await putTripGroupDetail(Token, currGroupId, groupName, startDate, endDate);
       console.log('Trip group edited:', responseStatus);
-
+      
       if (!responseStatus) {
         setStatusMessage(translate('editFailed'));
         setEditStatusOpen(true);
@@ -83,7 +100,7 @@ const EditTripDialog = ({ open, onClose, groupInfo }) => {
       }
       setStatusMessage(translate('edited'));
       setEditStatusOpen(true);
-
+      setIsEditSuccessful(true);
     } catch (error) {
       console.error('Error editing trip group:', error);
       setStatusMessage(translate('editFailed'));
@@ -91,9 +108,18 @@ const EditTripDialog = ({ open, onClose, groupInfo }) => {
     }
   };
 
+  const handleCancel = () => {
+    setGroupName(groupInfo?.group_name);
+    setStartDate(new Date(groupInfo?.start_date));
+    setEndDate(new Date(groupInfo?.end_date));
+    onClose();
+  };
+
   const handleEditStatusDialogClose = () => {
-    setEditStatusOpen(false)
-    window.location.reload();
+    setEditStatusOpen(false);
+    if (isEditSuccessful) {
+      window.location.reload();
+    }
   }
 
 
@@ -110,6 +136,7 @@ const EditTripDialog = ({ open, onClose, groupInfo }) => {
             <TextField fullWidth 
               onChange={handleGroupNameChange}
               defaultValue={groupName}
+              error={!isGroupNameValid}
             />
           </Grid>
         </Grid>
@@ -148,7 +175,7 @@ const EditTripDialog = ({ open, onClose, groupInfo }) => {
         {statusMessage}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', height: '100%'}}>
           <Button onClick={handleEditStatusDialogClose}>
-            {translate('save')}
+            {translate('OK')}
           </Button>
         </Box>
       </DialogContent>
