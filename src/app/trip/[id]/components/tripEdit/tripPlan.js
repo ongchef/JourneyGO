@@ -9,6 +9,7 @@ import DayPanel from "./dayPanel";
 import NewMemberDialog from "/src/app/components/newMember";
 import QuitGroupDialog from "/src/app/components/QuitGroupDialog";
 import ShareDialog from "/src/app/components/shareDialog";
+import EditTripDialog from "@/app/components/EditTripDialog";
 // import { getNewMember } from '@/services/getNewMember';
 
 export default function TripPlan({ groupInfo }) {
@@ -17,6 +18,7 @@ export default function TripPlan({ groupInfo }) {
     const [openDialog, setOpenDialog] = useState(false);
     const [openQuitDialog, setOpenQuitDialog] = useState(false);
     const [openShareDialog, setOpenShareDialog] = useState(false);
+    const [openEditDialog, setOpenEditDialog] = useState(false);
 
     const translate = (key) => {
         const translations = {
@@ -40,11 +42,13 @@ export default function TripPlan({ groupInfo }) {
         return translations[key][currentLang];
     };
 
+    const handleEditClick = async () => {
+        setOpenEditDialog(true);
+    }
     const handleAddMemberClick = async (inviteeID) => {
         // const result = await getNewMember(inviteeID, groupId);
         setOpenDialog(true);
     };
-
     const handleQuitGroupClick = async () => {
         setOpenQuitDialog(true);
     };
@@ -64,7 +68,9 @@ export default function TripPlan({ groupInfo }) {
                         <h2 className="lg:text-xl text-base">
                             {groupInfo?.start_date} ~ {groupInfo?.end_date}
                         </h2>
-                        <Button variant="text" sx={{textTransform: 'none'}}>{translate('edit')}</Button>
+                        <Button variant="text" sx={{textTransform: 'none'}} onClick={handleEditClick}>
+                            {translate('edit')}
+                        </Button>
                         <IconButton color="primary" aria-label="share" onClick={handleShareClick}>
                             <ShareIcon />
                         </IconButton>
@@ -94,6 +100,7 @@ export default function TripPlan({ groupInfo }) {
             <NewMemberDialog open={openDialog} onClose={() => setOpenDialog(false)} onSave={handleSaveNewMember} />
             <QuitGroupDialog open={openQuitDialog} onClose={() => setOpenQuitDialog(false)} />
             <ShareDialog open={openShareDialog} onClose={() => setOpenShareDialog(false)} />
+            <EditTripDialog open={openEditDialog} onClose={() => setOpenEditDialog(false)} groupInfo={groupInfo}/>
         </div>
     );
 }
