@@ -19,7 +19,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const [inviteeEmail, setInviteeEmail] = useState([]);
   const [creationStatusOpen, setCreationStatusOpen] = useState(false);
   const [statusMessage, setStatusMessage] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState(null);
   
   const translate = (key) => {
@@ -117,7 +117,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
     if(file){
       const reader = new FileReader();
       reader.onload = () => {
-        setAvatarUrl(reader.result);
+        setImageUrl(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -134,10 +134,19 @@ const NewJourneyDialog = ({ open, onClose}) => {
     try {
       const Token = getToken();
       // console.log('emails:', inviteeEmail);
-      console.log('avatarUrl:', avatarUrl);
       console.log('image:', image);
 
-      const responseStatus = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail, avatarUrl, image);
+      const fileName = image ? image.name : null;
+      console.log('fileName:', fileName);
+
+      console.log('groupName:', groupName);
+      console.log('startDate:', startDate);
+      console.log('endDate:', endDate);
+      console.log('country:', country);
+      console.log('inviteeEmail:', inviteeEmail);
+      console.log('imageUrl:', imageUrl);
+
+      const responseStatus = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail, imageUrl, fileName);
       console.log('Trip group created:', responseStatus);
 
       if (!responseStatus) {
