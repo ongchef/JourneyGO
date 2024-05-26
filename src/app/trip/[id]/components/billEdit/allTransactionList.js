@@ -48,7 +48,7 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
     };
 
     useEffect(() => {
-        console.log("render allTransactionList");
+        // console.log("render allTransactionList");
         fetchTransactionList();
     }, []);
 
@@ -56,7 +56,7 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
         try {
             const Token = getToken();
             const data = await getAllTransactions(Token, group_id);
-            console.log("all transaction result:", data);
+            // console.log("all transaction result:", data);
             if (data && data.length !== 0) {
                 // change the format of the date and time
                 data.forEach((element) => {

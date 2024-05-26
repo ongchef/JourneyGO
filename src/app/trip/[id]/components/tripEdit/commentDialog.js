@@ -91,7 +91,7 @@ const CommentDialog = ({ open, onClose, spotId }) => {
           // console.log("currentDate:", currentDate);
           // console.log("currentTime:", currentTime);
           const postStatus = await postComment(Token, spotId, comment, currentDate, currentTime);
-          console.log("post comment result:", postStatus);
+          // console.log("post comment result:", postStatus);
           if (postStatus) {
             fetchComments();
             setComment("");
@@ -111,12 +111,12 @@ const CommentDialog = ({ open, onClose, spotId }) => {
 
   const handleDelete = (commentId) => {
     // Delete the comment with the given ID
-    console.log("delete comment with ID: ", commentId);
+    // console.log("delete comment with ID: ", commentId);
     async function deleteCommentById() {
       try {
         const Token = getToken();
         const deleteStatus = await deleteComment(Token, spotId, commentId);
-        console.log("delete comment result:", deleteStatus);
+        // console.log("delete comment result:", deleteStatus);
 
         if (deleteStatus === 200) {
           // refetch comments and rerender
@@ -130,7 +130,7 @@ const CommentDialog = ({ open, onClose, spotId }) => {
   };
 
   useEffect(() => {
-    console.log("render comment dialog for spotId: ", spotId);
+    // console.log("render comment dialog for spotId: ", spotId);
     if (open) {
       fetchComments();
       fetchProfile();

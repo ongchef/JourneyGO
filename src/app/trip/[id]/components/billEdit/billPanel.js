@@ -52,7 +52,7 @@ function BillPanel({ group_id, reloadTabPanel }) {
         try {
             const Token = getToken();
             const data = await getProfile(Token);
-            console.log("profile result:", data);
+            // console.log("profile result:", data);
             if (data && data.userProfile){
                 setUserName(data.userProfile[0].user_name);
             }

@@ -14,7 +14,7 @@ const ShareDialog = ({ open, onClose }) => {
     const [shareCode, setShareCode] = useState("");
 
     useEffect(() => {
-        console.log("render ShareDialog");
+        // console.log("render ShareDialog");
 
         const fetchData = async () => {
             const token = getToken();

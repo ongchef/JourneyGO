@@ -127,7 +127,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
     };
 
     useEffect(() => {
-        console.log("render newBill");
+        // console.log("render newBill");
         async function fetch() {
             try {
                 const Token = getToken();

@@ -69,7 +69,7 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
 
                 <Box className="m-5" style={{ position: "sticky", right: 0, top: 0 }}>
                     <Box position="relative" className="w-full h-60 overflow-hidden rounded-xl">
-                        <CardMedia component="img" image={data.image} alt="Trip image" className="w-full h-full object-cover rounded-xl" />
+                        <CardMedia component="img" image="/images/hualian.jpg" alt="Trip image" className="w-full h-full object-cover rounded-xl" />
                         <Typography variant="h5" component="div" className="absolute top-1/2 right-0 bg-opacity-50 text-white p-2 transform -translate-y-1/2 whitespace-normal w-2/5 text-right">
                             {data?.group_name}
                         </Typography>

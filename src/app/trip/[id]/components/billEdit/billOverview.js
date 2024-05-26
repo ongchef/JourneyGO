@@ -14,7 +14,7 @@ const BillOverview = ({ group_id, reloadTabPanel }) => {
     const [transactionResult, setTransactionResult] = useState([]);
 
     useEffect(() => {
-        console.log("render billOverview");
+        // console.log("render billOverview");
         fetchTransactions();
     }, []);
 
@@ -22,7 +22,7 @@ const BillOverview = ({ group_id, reloadTabPanel }) => {
         try {
             const Token = getToken();
             const data = await getTransactionResult(Token, group_id);
-            console.log("group transaction result:", data);
+            // console.log("group transaction result:", data);
             if (data && data.length !== 0) {
                 setUserBalance(data.balance);
                 setTransactionResult(data.transactions);

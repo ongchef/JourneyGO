@@ -18,7 +18,7 @@ export default function AllSpots({day}) {
 
   const spotChange = (_day, updateCards) => {
     const spot_sequence = updateCards?.map(card => card.id);
-    console.log(`${socket?.id} client_spot_change`);
+    // console.log(`${socket?.id} client_spot_change`);
     setSocketId(socket?.id)
     socket?.emit("client_spot_change", {
       groupId: currGroupId,
@@ -48,7 +48,7 @@ export default function AllSpots({day}) {
     // console.log("enter_effect");
     const handleServerSpotChange = data => {
       const { day, spot_sequence } = data;
-      console.log(`${socket.id} server_spot_change ${day} ${spot_sequence}`);
+      // console.log(`${socket.id} server_spot_change ${day} ${spot_sequence}`);
       setRefetch(prev => prev + 1);
     }
     if(socket){

@@ -16,7 +16,7 @@ function MyBill({userBalance}) {
     }
 
     useEffect(() => {
-        console.log('[render] userBalance updated:', userBalance);
+        // console.log('[render] userBalance updated:', userBalance);
     }, [userBalance]);
 
     return (
