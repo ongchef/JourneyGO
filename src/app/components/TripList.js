@@ -10,6 +10,7 @@ import { DateRange as DateRangeIcon } from "@mui/icons-material";
 
 function TripList({ data, tabValue, setTripOverview }) {
     const { setAllGroups, currentLang } = useContext(DataContext);
+    const imgHost =  "https://storage.googleapis.com/journeygo_photo/";
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -20,13 +21,19 @@ function TripList({ data, tabValue, setTripOverview }) {
                 const data = await getTripGroupOverview(Token, group_id);
                 // console.log('Trip group overview:', data);
                 if (data && data.length !== 0) {
+                    if (data.image === null) {
+                        data.image = '/images/groupDefaultImg.png'
+                    }else {
+                        const imageURL = imgHost + data.image;
+                        data.image = imageURL;
+                    }
                     setTripOverview(data);
                     setAllGroups(data);
                 } else {
-                    console.error("No trip group overview data found");
+                    // console.error("No trip group overview data found");
                 }
             } catch (error) {
-                console.error("Error fetching trip group overview:", error);
+                // console.error("Error fetching trip group overview:", error);
             }
         }
         fetch();
@@ -96,7 +103,7 @@ function TripList({ data, tabValue, setTripOverview }) {
                 .map((trip) => (
                     <Card key={trip.group_id} className="flex justify-start my-10 mr-10 hover:bg-gray-200" onClick={() => handleClick(trip.group_id)}>
                         <div className="flex-grow flex">
-                            <CardMedia component="img" sx={mediaStyles} image="/images/hualian.jpg" alt={trip.group_name} />
+                            <CardMedia component="img" sx={mediaStyles} image={trip.image} alt={trip.group_name} />
                             <div className="flex flex-col h-full">
                                 <CardContent sx={cardContentStyles}>
                                     <Stack direction="row" spacing={2}>

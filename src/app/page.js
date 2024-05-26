@@ -38,6 +38,8 @@ export default function Home() {
   // for resetting the page
   const [key, setKey] = useState(0); 
 
+  const imgHost =  "https://storage.googleapis.com/journeygo_photo/";
+
   const tabValues = {
     incoming: ['incoming', 'Incoming'],
     finished: ['finished', 'Finished'],
@@ -106,12 +108,18 @@ export default function Home() {
           const endDate = new Date(trip.end_date);
           const duration = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
           trip.duration = duration;
+          if (trip.image === null) {
+            trip.image = '/images/groupDefaultImg.png'
+          }else {
+            const imageURL = imgHost + trip.image;
+            trip.image = imageURL;
+          }
         });
       }
       setTripGroups(data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching all groups:', error);
+      // console.error('Error fetching all groups:', error);
     }
   }
 
