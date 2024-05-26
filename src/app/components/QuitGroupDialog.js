@@ -41,19 +41,19 @@ const quitGroupDialog = ({ open, onClose}) => {
 
   const handleSave = async() => {
     try {
-      console.log("group_id: "+groupId);
+      // console.log("group_id: "+groupId);
       
       const Token = getToken();
       const valid = await quitGroup(Token, groupId);
       onClose();
-      console.log(valid)
+      // console.log(valid)
       if(valid){
         window.location.href = '/'
       }
       
 
     } catch (error) {
-      console.error('Error fetching invitations:', error);
+      // console.error('Error fetching invitations:', error);
     }
   };
 

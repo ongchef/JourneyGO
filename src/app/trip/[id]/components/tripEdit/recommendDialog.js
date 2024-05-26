@@ -90,7 +90,7 @@ export default function RecommendDialog({recommend}) {
           router.push(pathname, undefined, { scroll: false });
         }
       } catch (error) {
-        console.log("post", error)
+        // console.log("post", error)
       }
     }
     const Token = getToken();

@@ -27,10 +27,10 @@ const BillOverview = ({ group_id, reloadTabPanel }) => {
                 setUserBalance(data.balance);
                 setTransactionResult(data.transactions);
             } else {
-                console.error("No group transaction result data found");
+                // console.error("No group transaction result data found");
             }
         } catch (error) {
-            console.error("Error fetching group transaction result:", error);
+            // console.error("Error fetching group transaction result:", error);
         }
     }
 

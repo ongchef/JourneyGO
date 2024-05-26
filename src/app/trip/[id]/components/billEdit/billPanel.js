@@ -57,7 +57,7 @@ function BillPanel({ group_id, reloadTabPanel }) {
                 setUserName(data.userProfile[0].user_name);
             }
         } catch (error) {
-            console.error("Error fetching profile result:", error);
+            // console.error("Error fetching profile result:", error);
         }
     }
     fetchProfile();

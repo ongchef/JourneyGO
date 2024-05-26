@@ -92,12 +92,12 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
         const date = now.format("YYYY-MM-DD");
         const time = now.format("HH:mm");
         
-        console.log("handleSubmit data:", data);
+        // console.log("handleSubmit data:", data);
 
         const Token = getToken();
         // postWriteOffBill(Token, group_id, date, time, debtor_id, creditor_id, amount);
         let response = postWriteOffBill(Token, group_id, date, time, data.payee_id, data.payer_id, data.amount);
-        console.log("postWriteOffBill response:", response);
+        // console.log("postWriteOffBill response:", response);
         reloadTabPanel();
     };
 

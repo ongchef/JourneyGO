@@ -91,7 +91,7 @@ const EditTripDialog = ({ open, onClose, groupInfo }) => {
     try {
       const Token = getToken();
       const responseStatus = await putTripGroupDetail(Token, currGroupId, groupName, startDate, endDate);
-      console.log('Trip group edited:', responseStatus);
+      // console.log('Trip group edited:', responseStatus);
       
       if (!responseStatus) {
         setStatusMessage(translate('editFailed'));
@@ -102,7 +102,7 @@ const EditTripDialog = ({ open, onClose, groupInfo }) => {
       setEditStatusOpen(true);
       setIsEditSuccessful(true);
     } catch (error) {
-      console.error('Error editing trip group:', error);
+      // console.error('Error editing trip group:', error);
       setStatusMessage(translate('editFailed'));
       setEditStatusOpen(true);
     }

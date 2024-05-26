@@ -90,7 +90,7 @@ const Map = () => {
           });
         });
       } catch (error) {
-        console.error('Error initializing Google Maps:', error);
+        // console.error('Error initializing Google Maps:', error);
       }
     };
     if (markerPositions?.length > 0){

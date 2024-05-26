@@ -40,7 +40,7 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
     const handleDialogOpen = (data) => {
         // wrap up the data and pass it to the dialog
         setSelectedTransaction(data);
-        console.log("selected transaction:", data);
+        // console.log("selected transaction:", data);
         setIsDialogOpen(true);
     };
     const handleDialogClose = () => {
@@ -66,10 +66,10 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
                 });
                 setTransactionList(data);
             } else {
-                console.error("No transaction data found in this group");
+                // console.error("No transaction data found in this group");
             }
         } catch (error) {
-            console.error("Error fetching all transaction list result:", error);
+            // console.error("Error fetching all transaction list result:", error);
         }
     }
 

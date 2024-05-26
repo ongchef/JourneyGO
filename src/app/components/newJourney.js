@@ -160,7 +160,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
       // onClose();
       // window.location.reload();
     } catch (error) {
-      console.error('Error creating trip group:', error);
+      // console.error('Error creating trip group:', error);
       setStatusMessage(translate('addTripFailed'));
       setCreationStatusOpen(true);
     }

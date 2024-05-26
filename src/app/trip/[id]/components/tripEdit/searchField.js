@@ -59,7 +59,7 @@ export default function SearchField({ setSearchRes, checked }) {
           setSearchRes(res);
         }
       } catch (error) {
-        console.log("search", error)
+        // console.log("search", error)
       }
     };
     const Token = getToken();

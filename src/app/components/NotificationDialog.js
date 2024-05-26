@@ -55,7 +55,7 @@ const NotificationDialog = ({ open, onClose, pendingInvitations, setPendingInvit
     //accept invitation
     const handleAccept = async (invitation) => {
         try {
-            console.log("invitation " + invitation);
+            // console.log("invitation " + invitation);
             const Token = getToken();
             await updateInvitationStatus(Token, invitation.invitation_id, "accepted");
             // console.log("Invitation status:" + invitation.status)
@@ -65,7 +65,7 @@ const NotificationDialog = ({ open, onClose, pendingInvitations, setPendingInvit
             setInvitationStatusOpen(true);
             setAcceptInvitation(true);
         } catch (error) {
-            console.error("Error accepting invitation:", error);
+            // console.error("Error accepting invitation:", error);
             setStatusMessage(translate("acceptFailed"));
             setInvitationStatusOpen(true);
         }
@@ -80,7 +80,7 @@ const NotificationDialog = ({ open, onClose, pendingInvitations, setPendingInvit
             setStatusMessage(translate("rejected"));
             setInvitationStatusOpen(true);
         } catch (error) {
-            console.error("Error declining invitation:", error);
+            // console.error("Error declining invitation:", error);
             setStatusMessage(translate("rejectFailed"));
             setInvitationStatusOpen(true);
         }
@@ -89,7 +89,7 @@ const NotificationDialog = ({ open, onClose, pendingInvitations, setPendingInvit
     const handleCancel = () => {
         onClose();
         setReload((reload) => !reload);
-        console.log("reload navbar");
+        // console.log("reload navbar");
     };
 
     const handleInvitationStatusDialogClose = () => {

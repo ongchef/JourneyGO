@@ -108,7 +108,7 @@ export default function DndContainer({day, spotChange}) {
           });
         }
       } catch (e) {
-        console.error(e);
+        // console.error(e);
       }
     };
     const Token = getToken();

@@ -138,10 +138,10 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                     // setParticipantsGroupMembers(data.user_names);
                     // setParticipantsGroupMembersId(data.user_ids);
                 } else {
-                    console.error("No group members found");
+                    // console.error("No group members found");
                 }
             } catch (error) {
-                console.error("Error fetching group members:", error);
+                // console.error("Error fetching group members:", error);
             }
         }
         fetch();
@@ -185,7 +185,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                 setCreationStatusOpen(true);
             }
         } catch (error) {
-            console.error("Error posting transaction:", error);
+            // console.error("Error posting transaction:", error);
             setStatusMessage(translate("addFail"));
             setCreationStatusOpen(true);
         }
@@ -203,7 +203,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                 time: billTime,
             };
 
-            console.log("putTransactionData dataToSend:", dataToSend);
+            // console.log("putTransactionData dataToSend:", dataToSend);
             const Token = getToken();
             let data = await putTransaction(Token, group_id, billId, dataToSend);
 
@@ -215,7 +215,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                 setCreationStatusOpen(true);
             }
         } catch (error) {
-            console.error("Error putting transaction:", error);
+            // console.error("Error putting transaction:", error);
             setStatusMessage(translate("editFail"));
             setCreationStatusOpen(true);
         }
@@ -284,27 +284,27 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
         let isValid = true;
 
         if (billName === "") {
-            console.log("billName is empty");
+            // console.log("billName is empty");
             setBillNameError(translate("fillItemName"));
             isValid = false;
         }
         if (payer === "") {
-            console.log("payer is empty");
+            // console.log("payer is empty");
             setPayerError(translate("selectPayer"));
             isValid = false;
         }
         if (participants.length === 0) {
-            console.log("participants is empty");
+            // console.log("participants is empty");
             setParticipantsError(translate("selectParticipants"));
             isValid = false;
         }
         if (amount === "" || isNaN(amount)) {
-            console.log("amount is empty or not a number");
+            // console.log("amount is empty or not a number");
             setAmountError(translate("fillAmount"));
             isValid = false;
         }
         if (billDate === "" || billTime === "") {
-            console.log("billDate or billTime is empty");
+            // console.log("billDate or billTime is empty");
             setBillDateTimeError(translate("selectDate"));
             isValid = false;
         }
@@ -323,7 +323,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                 await postTransactionData();
             }
         } else {
-            console.log("Form validation failed");
+            // console.log("Form validation failed");
         }
     };
     const handleCancel = () => {

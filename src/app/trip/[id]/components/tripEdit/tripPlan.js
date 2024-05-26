@@ -57,7 +57,7 @@ export default function TripPlan({ groupInfo }) {
     };
 
     const handleSaveNewMember = (email) => {
-        console.log("Saving new member with email :", email);
+        // console.log("Saving new member with email :", email);
     };
 
     return (

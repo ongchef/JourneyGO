@@ -43,7 +43,7 @@ const ProfilePanel = ({}) => {
           setAvatarUrl(imageURL);
         
         } catch (error) {
-          console.error("getProfile Error:", error);
+          // console.error("getProfile Error:", error);
         }
       };
       fetchProfile();
@@ -118,7 +118,7 @@ const ProfilePanel = ({}) => {
 
     const handleFileChange = (e) => {
       const file = e.target.files[0];
-      console.log("file:", file);
+      // console.log("file:", file);
       setImageFile(file);
       if(file) {
           const reader = new FileReader();
@@ -158,7 +158,7 @@ const ProfilePanel = ({}) => {
             setOpenDialog(true);
           }
         } catch (error) {
-          console.log("updateProfile Error:", error);
+          // console.log("updateProfile Error:", error);
         }
     };
   

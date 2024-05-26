@@ -70,7 +70,7 @@ const newMemberDialog = ({ open, onClose }) => {
 
             onClose();
         } catch (error) {
-            console.error("Error fetching invitations:", error);
+            // console.error("Error fetching invitations:", error);
             setStatusMessage("新增成員失敗!");
             setCreationStatusOpen(true);
         }

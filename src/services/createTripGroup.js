@@ -29,7 +29,7 @@ export async function createTripGroup(Token, groupName, startDate, endDate, coun
     formData.append("startDate", formatedStartDate);
     formData.append("endDate", formatedEndDate);
     
-    console.log("formData:", formData);
+    // console.log("formData:", formData);
 
     if(image){
       try{

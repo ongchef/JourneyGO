@@ -23,7 +23,7 @@ const PicturePanel = ({avatarUrl}) => {
                 //console.log(profile);
                 setImage(profile.image);
             } catch (error) {
-                console.error("getProfile Error:", error);
+                // console.error("getProfile Error:", error);
             }
         };
         fetchProfile();
@@ -50,7 +50,7 @@ const PicturePanel = ({avatarUrl}) => {
             
             reader.onload = () => {
               setNewAvatarUrl(reader.result);
-              console.log(reader.result);
+              // console.log(reader.result);
             }
             reader.readAsDataURL(file);
         }

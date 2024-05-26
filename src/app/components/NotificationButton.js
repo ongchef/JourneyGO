@@ -27,7 +27,7 @@ const NotificationButton = ({}) => {
                 const fetchedInvitations = await getInvitation(Token);
                 setInvitations(fetchedInvitations);
             } catch (error) {
-                console.error("Error fetching invitations:", error);
+                // console.error("Error fetching invitations:", error);
             } finally {
                 // setLoading(false);
             }

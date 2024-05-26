@@ -53,7 +53,7 @@ export default function SearchCard({title, location, rating, lng, lat, photo}) {
           router.push(pathname, undefined, { scroll: false });
         }
       } catch (error) {
-        console.log("post", error)
+        // console.log("post", error)
       }
     }
     const Token = getToken();

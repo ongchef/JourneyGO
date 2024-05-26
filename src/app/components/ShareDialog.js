@@ -18,10 +18,10 @@ const ShareDialog = ({ open, onClose }) => {
 
         const fetchData = async () => {
             const token = getToken();
-            console.log("currGroupId: ", currGroupId);
+            // console.log("currGroupId: ", currGroupId);
             const response = await getShareCode(token, currGroupId);
             if (response) {
-                console.log("share_code: ", response.share_code);
+                // console.log("share_code: ", response.share_code);
                 setShareCode(response.share_code);
             }
         };

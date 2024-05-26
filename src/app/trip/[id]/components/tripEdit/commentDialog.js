@@ -45,18 +45,18 @@ const CommentDialog = ({ open, onClose, spotId }) => {
     try {
       const Token = getToken();
       const data = await getComments(Token, spotId);
-      console.log("comments result:", data);
+      // console.log("comments result:", data);
       if (data && data.length !== 0) {
         setCommentList(data);
         setCommentCnt(data.length);
       }
       else {
-        console.warn("Error fetching all comments result:", data);
+        // console.warn("Error fetching all comments result:", data);
         setCommentList([]);
         setCommentCnt(0);
       }
     } catch (error) {
-      console.error("Error fetching all comments result:", error);
+      // console.error("Error fetching all comments result:", error);
     }
   }
 
@@ -64,13 +64,13 @@ const CommentDialog = ({ open, onClose, spotId }) => {
     try {
       const Token = getToken();
       const data = await getProfile(Token);
-      console.log("profile result:", data);
+      // console.log("profile result:", data);
       if (data && data.userProfile){
         setUserName(data.userProfile[0].user_name);
       }
 
     } catch (error) {
-      console.error("Error fetching profile result:", error);
+      // console.error("Error fetching profile result:", error);
     }
   }
 
@@ -97,7 +97,7 @@ const CommentDialog = ({ open, onClose, spotId }) => {
             setComment("");
           }
         } catch (error) {
-          console.error("Error posting comment result:", error);
+          // console.error("Error posting comment result:", error);
         }
       }
       await postNewComment();
@@ -123,7 +123,7 @@ const CommentDialog = ({ open, onClose, spotId }) => {
           fetchComments();
         }
       } catch (error) {
-        console.error("Error deleting comment result:", error);
+        // console.error("Error deleting comment result:", error);
       }
     }
     deleteCommentById();
