@@ -137,7 +137,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
       //console.log('image:', image);
 
       const fileName = image ? image.name : null;
-      console.log('fileName:', fileName);
+      //console.log('fileName:', fileName);
 
       // console.log('groupName:', groupName);
       // console.log('startDate:', startDate);
