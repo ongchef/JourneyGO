@@ -8,7 +8,7 @@ export const getuserIdbyClerkId = (clerkId) => {
 
 export const getGroupByUserId = (userId) => {
   return db.query(`
-    SELECT tg.group_name, tg.start_date, tg.end_date, tg.status
+    SELECT tg.group_name, tg.start_date, tg.end_date, tg.status, tg.image
     FROM trip_groups tg
     JOIN group_member gm ON tg.group_id = gm.g_id
     JOIN group_country gc ON tg.group_id = gc.g_id
@@ -89,7 +89,7 @@ export const createInvitationModel = (inviterId, inviteeId, groupId) => {
 
 export const getOverviewByGroupId = (groupId) => {
   return db.manyOrNone(
-    `SELECT tg.group_name, tg.start_date, tg.end_date, tg.status, ARRAY_AGG(u.user_name) AS user_names
+    `SELECT tg.group_name, tg.start_date, tg.end_date, tg.status, tg.image, ARRAY_AGG(u.user_name) AS user_names
     FROM trip_groups tg
     JOIN group_member gm ON tg.group_id = gm.g_id
     JOIN user_account u ON gm.u_id = u.user_id

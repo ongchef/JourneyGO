@@ -76,7 +76,7 @@ export const getuserNamebyClerkId = (clerkId) => {
 export const getGroupByUserId = (userId) => {
   return db.query(
     `
-    SELECT tg.group_id, tg.group_name, tg.start_date, tg.end_date, tg.status
+    SELECT tg.group_id, tg.group_name, tg.start_date, tg.end_date, tg.status, tg.image
     FROM trip_groups tg
     JOIN group_member gm ON tg.group_id = gm.g_id
     WHERE gm.u_id = $1;
@@ -90,7 +90,8 @@ export const createGroupModel = (
   groupName,
   countries,
   startDate,
-  endDate
+  endDate,
+  image
 ) => {
   return new Promise((resolve, reject) => {
     console.log("endDate", endDate);
@@ -121,10 +122,10 @@ export const createGroupModel = (
       }
       // Step 2: Insert group into trip_groups table
       const { group_id: groupId } = await t.one(
-        `INSERT INTO trip_groups (group_name, start_date, end_date, status, share_code)VALUES 
-        ($1, $2, $3, 'Incoming', gen_random_uuid())
+        `INSERT INTO trip_groups (group_name, start_date, end_date, status, share_code, image)VALUES 
+        ($1, $2, $3, 'Incoming', gen_random_uuid(), $4)
          RETURNING group_id`,
-        [groupName, startDate, endDate]
+        [groupName, startDate, endDate, image]
       );
       // Step 3: Insert into group_country table for each country_id
       for (const groupCountry of groupCountries) {

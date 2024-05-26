@@ -190,6 +190,7 @@ export const createGroup = async (req, res) => {
   const clerkId = req.userID;
   console.log(req.body);
   const { groupName, countries, inviteeEmail, startDate, endDate } = req.body;
+  const filename = req.filename;
   try {
     let userId = await getuserIdbyClerkId(clerkId);
     userId = userId[0].user_id;
@@ -199,7 +200,8 @@ export const createGroup = async (req, res) => {
       groupName,
       ["臺灣"],
       startDate,
-      endDate
+      endDate,
+      filename
     );
     console.log("newGroup", newGroup);
     console.log("?");
