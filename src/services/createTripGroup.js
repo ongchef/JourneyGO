@@ -14,16 +14,14 @@ export async function createTripGroup(Token, groupName, startDate, endDate, coun
     const formatedStartDate = formatDate(startDate);
     const formatedEndDate = formatDate(endDate);
     
+    // console.log("groupName:", groupName);
+    // console.log("startDate:", formatedStartDate);
+    // console.log("endDate:", formatedEndDate);
+    // console.log("country_id:", country_id);
+    // console.log("inviteeEmail:", inviteeEmail);
+    // console.log("imageURL:", imageURL);
+    // console.log("fileName:", fileName);
 
-    console.log("groupName:", groupName);
-    console.log("startDate:", formatedStartDate);
-    console.log("endDate:", formatedEndDate);
-    console.log("country_id:", country_id);
-    console.log("inviteeEmail:", inviteeEmail);
-    console.log("imageURL:", imageURL);
-    console.log("fileName:", fileName);
-
-    
     const formData = new FormData();
     formData.append("groupName", groupName);
     formData.append("countries", country_id);
@@ -35,9 +33,9 @@ export async function createTripGroup(Token, groupName, startDate, endDate, coun
 
     if(image){
       try{
-        console.log("image:", image);
+        //console.log("image:", image);
         formData.append("image", image, fileName);
-        console.log("formData_withImage:", formData);
+        //console.log("formData_withImage:", formData);
         const result = await sendFormData(formData);
         return result;
       }
@@ -56,7 +54,7 @@ export async function createTripGroup(Token, groupName, startDate, endDate, coun
           body: formData,
         });
     
-        console.log('createTripGroup Response:', response);
+        //console.log('createTripGroup Response:', response);
     
         if(response.ok){
           const data = await response.json();
@@ -74,36 +72,6 @@ export async function createTripGroup(Token, groupName, startDate, endDate, coun
           return undefined;
       }
     }
-  
-  //   console.log('Request body:', requestBody);
-  //   try {
-  //     const response = await fetch(url, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `${bearer_token}`,
-  //       },
-  //       body: JSON.stringify(requestBody),
-  //     });
-      
-  //     console.log('createTripGroup Response:', response);
-
-  //     if (!response.ok) {
-  //       // const data = await response.json();
-  //       // console.log('Group:', data);
-  //       // return data; 
-  //       console.error('Failed to create trip group:', response.statusText);
-  //       return false
-  //     }else {
-  //       return true;
-  //     }
-  //   } catch (error) {
-  //     console.error('Error creating trip group:', error);
-  //     return false;
-  //   }
-  // };
-
-
 }
 
 

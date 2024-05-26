@@ -111,7 +111,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    console.log("file:", file);
+    //console.log("file:", file);
     setImage(file);
 
     if(file){
@@ -134,20 +134,20 @@ const NewJourneyDialog = ({ open, onClose}) => {
     try {
       const Token = getToken();
       // console.log('emails:', inviteeEmail);
-      console.log('image:', image);
+      //console.log('image:', image);
 
       const fileName = image ? image.name : null;
       console.log('fileName:', fileName);
 
-      console.log('groupName:', groupName);
-      console.log('startDate:', startDate);
-      console.log('endDate:', endDate);
-      console.log('country:', country);
-      console.log('inviteeEmail:', inviteeEmail);
-      console.log('imageUrl:', imageUrl);
+      // console.log('groupName:', groupName);
+      // console.log('startDate:', startDate);
+      // console.log('endDate:', endDate);
+      // console.log('country:', country);
+      // console.log('inviteeEmail:', inviteeEmail);
+      // console.log('imageUrl:', imageUrl);
 
       const responseStatus = await createTripGroup(Token, groupName, startDate, endDate, country, inviteeEmail, imageUrl, fileName);
-      console.log('Trip group created:', responseStatus);
+      //console.log('Trip group created:', responseStatus);
 
       if (!responseStatus) {
         setStatusMessage(translate('addTripFailed'));

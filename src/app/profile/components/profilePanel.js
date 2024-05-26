@@ -31,8 +31,8 @@ const ProfilePanel = ({}) => {
           const profile = response.userProfile[0];
 
           const imageURL = host + profile.image;
-          console.log("profile:", profile);
-          console.log("imageURL:", imageURL);
+          //console.log("profile:", profile);
+          //console.log("imageURL:", imageURL);
 
           //console.log("profile:", profile);
           setInitialProfileData(profile);
@@ -133,18 +133,18 @@ const ProfilePanel = ({}) => {
         try {
           if(name && phone && !phoneError) {
             const token = getToken();
-            console.log("token:", token);
-            console.log("name:", name);
-            console.log("phone:", phone);
-            console.log("imageFile:", imageFile);
+            //console.log("token:", token);
+            // console.log("name:", name);
+            // console.log("phone:", phone);
+            // console.log("imageFile:", imageFile);
             
-            console.log("TempavatarUrl:", tempAvatarUrl);
+            // console.log("TempavatarUrl:", tempAvatarUrl);
             
 
             const fileName = imageFile ? imageFile.name : null;
 
             const response = await updateProfile(token, name, phone, tempAvatarUrl, fileName);
-            console.log("updateResponse", response);
+            // console.log("updateResponse", response);
 
             const profile = response.returned[0];
 
