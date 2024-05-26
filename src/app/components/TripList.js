@@ -13,13 +13,14 @@ function TripList({ data, tabValue, setTripOverview }) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const handleClick = (group_id) => {
+    const handleClick = (group_id, image_url) => {
         async function fetch() {
             try {
                 const Token = getToken();
                 const data = await getTripGroupOverview(Token, group_id);
                 // console.log('Trip group overview:', data);
                 if (data && data.length !== 0) {
+                    data.image = image_url;
                     setTripOverview(data);
                     setAllGroups(data);
                 } else {
@@ -94,9 +95,9 @@ function TripList({ data, tabValue, setTripOverview }) {
             data
                 .filter((trip) => tabValue === "All" || tabValue.includes(trip.status))
                 .map((trip) => (
-                    <Card key={trip.group_id} className="flex justify-start my-10 mr-10 hover:bg-gray-200" onClick={() => handleClick(trip.group_id)}>
+                    <Card key={trip.group_id} className="flex justify-start my-10 mr-10 hover:bg-gray-200" onClick={() => handleClick(trip.group_id, trip.image)}>
                         <div className="flex-grow flex">
-                            <CardMedia component="img" sx={mediaStyles} image="/images/hualian.jpg" alt={trip.group_name} />
+                            <CardMedia component="img" sx={mediaStyles} image={trip.image} alt={trip.group_name} />
                             <div className="flex flex-col h-full">
                                 <CardContent sx={cardContentStyles}>
                                     <Stack direction="row" spacing={2}>
