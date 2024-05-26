@@ -11,7 +11,7 @@ export const createInvitationModel = (inviterId, inviteeId, groupId) => {
 //days, groupId
 export const getOverviewByGroupId = (groupId) => {
   return db.manyOrNone(
-    `SELECT tg.group_id, tg.group_name, tg.start_date, tg.end_date, tg.status, ARRAY_AGG(u.user_name) AS user_names,ARRAY_AGG(u.user_id) AS user_ids
+    `SELECT tg.group_id, tg.group_name, tg.start_date, tg.end_date, tg.status, tg.image, ARRAY_AGG(u.user_name) AS user_names,ARRAY_AGG(u.user_id) AS user_ids
     , ARRAY_AGG(u.image) AS images, (DATE_PART('day', tg.end_date) - DATE_PART('day', tg.start_date) + 1) AS days
     FROM trip_groups tg
     JOIN group_member gm ON tg.group_id = gm.g_id
