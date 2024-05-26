@@ -6,9 +6,9 @@ import ShareIcon from '@mui/icons-material/Share';
 import { DataContext } from "@/app/components/dataContext";
 
 import DayPanel from "./dayPanel";
-import NewMemberDialog from "/src/app/components/newMember";
-import QuitGroupDialog from "/src/app/components/QuitGroupDialog";
-import ShareDialog from "/src/app/components/shareDialog";
+import NewMemberDialog from "@/app/components/newMember";
+import QuitGroupDialog from "@/app/components/QuitGroupDialog";
+import ShareDialog from "@/app/components/ShareDialog"
 import EditTripDialog from "@/app/components/EditTripDialog";
 // import { getNewMember } from '@/services/getNewMember';
 
