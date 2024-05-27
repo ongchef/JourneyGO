@@ -10,8 +10,9 @@ import NewBill from "./newBill";
 
 function BillPanel({ group_id, reloadTabPanel }) {
 
-    const { currentLang, setCurrentLang } = useContext(DataContext);
+    const { currentLang, imgHost, avatarColors } = useContext(DataContext);
     const [userName, setUserName] = useState("");
+    const [userImage, setUserImage] = useState("");
     const router = useRouter();
 
     const [openDialog, setOpenDialog] = useState(false);
@@ -55,6 +56,12 @@ function BillPanel({ group_id, reloadTabPanel }) {
             // console.log("profile result:", data);
             if (data && data.userProfile){
                 setUserName(data.userProfile[0].user_name);
+                if (data.userProfile[0].image === null) {
+                    setUserImage('');
+                } else {
+                    const imageURL = imgHost + data.userProfile[0].image;
+                    setUserImage(imageURL);
+                }
             }
         } catch (error) {
             // console.error("Error fetching profile result:", error);
@@ -71,7 +78,8 @@ function BillPanel({ group_id, reloadTabPanel }) {
                         <Box className="flex items-center p-2 m-3">
                             <div className="pr-2">
                                 {/* <div className='flex gap-2 items-center' style={{ justifyContent: 'flex-start' }}> */}
-                                <Avatar alt="User"/>
+                                {userImage !== ''? <Avatar alt="User" src={userImage}/> : <Avatar alt="User" sx={{ bgcolor: avatarColors[0]}}>{userName[0]}</Avatar>}
+                                {/* <Avatar alt="User" src={userImage}/> */}
                             </div>
                             <div className="pr-5">
                                 <Typography variant="body1" sx={{ fontSize: "20px" }}>

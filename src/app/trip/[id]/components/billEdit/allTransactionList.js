@@ -4,18 +4,19 @@ import NewBill from "./newBill";
 import { DataContext } from "@/app/components/dataContext";
 import { getToken } from "@/utils/getToken";
 import { getAllTransactions } from "@/services/getAllTransactions";
+import { getTripGroupOverview } from "@/services/getTripGroupOverview";
 
 import { Box, Typography, Card, CardContent, AvatarGroup, Avatar, colors, Tooltip } from "@mui/material";
 import { MoreVert as MoreVertIcon, DateRange as DateRangeIcon } from "@mui/icons-material";
 import { styled } from "@mui/system";
 
-const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
-
 const AllTransactionList = ({ group_id, reloadTabPanel }) => {
 
-    const { currentLang, setCurrentLang } = useContext(DataContext);
+    const { currentLang, imgHost, avatarColors } = useContext(DataContext);
 
     const [transactionList, setTransactionList] = useState([]);
+    const [memberNames, setMemberNames] = useState([]);
+    const [memberImages, setMemberImages] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedTransaction, setSelectedTransaction] = useState(null);
 
@@ -50,6 +51,7 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
     useEffect(() => {
         // console.log("render allTransactionList");
         fetchTransactionList();
+        fetchGroup();
     }, []);
 
     async function fetchTransactionList() {
@@ -70,6 +72,25 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
             }
         } catch (error) {
             // console.error("Error fetching all transaction list result:", error);
+        }
+    }
+
+    async function fetchGroup() {
+        try {
+            const Token = getToken();
+            const data = await getTripGroupOverview(Token, group_id);
+            if (data && data.length !== 0) {
+                setMemberNames(data.user_names);
+                await data.images.forEach((image, index) => {
+                    if (image !== null) {
+                        data.images[index] = imgHost + image;
+                        // console.log("image:", data.images[index]);
+                    }
+                });
+                setMemberImages(data.images);
+            }
+        } catch (error) {
+            // console.error("Error fetching group data:", error);
         }
     }
 
@@ -121,14 +142,6 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
         //marginRight: '10px',
     };
 
-    const avatarColors = [];
-    avatarColors.push(green[500]);
-    avatarColors.push(deepOrange[500]);
-    avatarColors.push(deepPurple[500]);
-    avatarColors.push(green[700]);
-    avatarColors.push(lightBlue[700]);
-    avatarColors.push(lightBlue[700]);
-
     return (
         <div className="px-8">
             <Typography variant="h6" className="font-bold">
@@ -142,7 +155,12 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
                     <StyledCard key={index} onClick={() => handleDialogOpen(data)}>
                         <Box className="flex ml-5 p-5">
                             <Tooltip title={data.payer_name}>
-                                <Avatar>{data.payer_name[0]}</Avatar>
+                                {/* <Avatar>{data.payer_name[0]}</Avatar> */}
+                                {memberImages[memberNames.indexOf(data.payer_name)] !== null ? (
+                                    <Avatar src={memberImages[memberNames.indexOf(data.payer_name)]} />
+                                ) : (
+                                    <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }}> {data.payer_name[0]} </Avatar>
+                                )}
                             </Tooltip>
                         </Box>
                         <CardContent className="flex overflow-hidden whitespace-nowrap flex-shrink" style={{ maxWidth: "12rem" }}>
@@ -170,9 +188,14 @@ const AllTransactionList = ({ group_id, reloadTabPanel }) => {
                                     {data &&
                                         data.participants.map((name, index) => (
                                             <Tooltip title={name} key={index}>
-                                                <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
+                                                {/* <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
                                                     {name[0]}
-                                                </Avatar>
+                                                </Avatar> */}
+                                                {memberImages[memberNames.indexOf(name)] !== null ? (
+                                                    <Avatar src={memberImages[memberNames.indexOf(name)]} />
+                                                ) : (
+                                                    <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }}> {name[0]} </Avatar>
+                                                )}
                                             </Tooltip>
                                         ))}
                                 </AvatarGroup>

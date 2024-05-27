@@ -10,11 +10,12 @@ import { ArrowBackIos as ArrowBackIosIcon, ArrowForwardRounded as ArrowForwardRo
 const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
 
 function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndicator }) {
-    // console.log('trip overview data:' + JSON.stringify(data));
+    // console.log('trip overview data:');
+    // console.log(data);
 
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-    const { currentLang } = useContext(DataContext);
+    const { currentLang, avatarColors, imgHost } = useContext(DataContext);
 
     const handleClick = () => {
         setLoading(true);
@@ -44,13 +45,13 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
         return translations[key][currentLang];
     };
 
-    const avatarColors = [];
-    avatarColors.push(green[500]);
-    avatarColors.push(deepOrange[500]);
-    avatarColors.push(deepPurple[500]);
-    avatarColors.push(green[700]);
-    avatarColors.push(lightBlue[700]);
-    avatarColors.push(lightBlue[700]);
+    // const avatarColors = [];
+    // avatarColors.push(green[500]);
+    // avatarColors.push(deepOrange[500]);
+    // avatarColors.push(deepPurple[500]);
+    // avatarColors.push(green[700]);
+    // avatarColors.push(lightBlue[700]);
+    // avatarColors.push(lightBlue[700]);
 
     return (
         data !== null &&
@@ -82,13 +83,21 @@ function SelectedContent({ data, setTripOverview, setDividerStyles, LoadingIndic
                         <Box className="flex items-center mt-2">
                             <AvatarGroup max={5} spacing={-20}>
                                 {data?.user_names.map((name, index) => (
+                                    data?.images[index] !== null ? (
                                     <Tooltip title={name} key={index}>
-                                        <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} key={index}>
-                                            {name[0]}
+                                        <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} src={imgHost + data.images[index]}>
+                                        {name[0]}
                                         </Avatar>
                                     </Tooltip>
+                                    ) : (
+                                    <Tooltip title={name} key={index}>
+                                        <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }}>
+                                        {name[0]}
+                                        </Avatar>
+                                    </Tooltip>
+                                    )
                                 ))}
-                            </AvatarGroup>
+                                </AvatarGroup>
                         </Box>
                     </Box>
 

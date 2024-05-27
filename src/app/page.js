@@ -27,7 +27,7 @@ function LoadingIndicator() {
 
 export default function Home() {
 
-  const { currentLang, setCurrentLang } = useContext(DataContext);
+  const { currentLang, imgHost } = useContext(DataContext);
 
   const [tabValue, setTabValue] = useState('All');
   const [newJourneyOpenDialog, setNewJourneyOpenDialog] = useState(false); 
@@ -37,8 +37,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   // for resetting the page
   const [key, setKey] = useState(0); 
-
-  const imgHost =  "https://storage.googleapis.com/journeygo_photo/";
 
   const tabValues = {
     incoming: ['incoming', 'Incoming'],

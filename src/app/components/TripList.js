@@ -9,8 +9,7 @@ import { useTheme, Typography, Chip, Stack, Card, CardContent, CardMedia, CardAc
 import { DateRange as DateRangeIcon } from "@mui/icons-material";
 
 function TripList({ data, tabValue, setTripOverview }) {
-    const { setAllGroups, currentLang } = useContext(DataContext);
-    const imgHost =  "https://storage.googleapis.com/journeygo_photo/";
+    const { setAllGroups, currentLang, imgHost } = useContext(DataContext);
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 

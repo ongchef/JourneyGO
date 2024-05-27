@@ -1,8 +1,9 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import dayjs from "dayjs";
 import { DataContext } from "@/app/components/dataContext";
 
 import { postWriteOffBill } from "@/services/postWriteOffBill";
+import { getTripGroupOverview } from "@/services/getTripGroupOverview";
 import { getToken } from "@/utils/getToken";
 
 import { Button, Box, useTheme, Typography, Card, CardContent, AvatarGroup, Avatar, Dialog, DialogContent, Tooltip } from "@mui/material";
@@ -10,10 +11,12 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 function BillList({ group_id, transactionResult, reloadTabPanel }) {
 
-    const { currentLang, setCurrentLang } = useContext(DataContext);
+    const { currentLang, imgHost, avatarColors } = useContext(DataContext);
     
     const [writeOffStatusOpen, setWriteOffStatusOpen] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(null);
+    const [memberNames, setMemberNames] = useState([]);
+    const [memberImages, setMemberImages] = useState([]);
     const theme = useTheme();
 
     const translate = (key) => {
@@ -101,6 +104,29 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
         reloadTabPanel();
     };
 
+    useEffect( () => {
+        // get group user names and images
+        async function fetchGroup() {
+            try {
+                const Token = getToken();
+                const data = await getTripGroupOverview(Token, group_id);
+                if (data && data.length !== 0) {
+                    setMemberNames(data.user_names);
+                    await data.images.forEach((image, index) => {
+                        if (image !== null) {
+                            data.images[index] = imgHost + image;
+                            // console.log("image:", data.images[index]);
+                        }
+                    });
+                    setMemberImages(data.images);
+                }
+            } catch (error) {
+                // console.error("Error fetching group data:", error);
+            }
+        }
+        fetchGroup();
+    }, [group_id]);
+
     return (
         transactionResult &&
         transactionResult.map((data, index) => (
@@ -111,11 +137,21 @@ function BillList({ group_id, transactionResult, reloadTabPanel }) {
                             <div>
                                 <AvatarGroup sx={avatarStyles}>
                                     <Tooltip title={data.payee}>
-                                        <Avatar> {data.payee[0]} </Avatar>
+                                        {/* <Avatar> {data.payee[0]} </Avatar> */}
+                                        {memberImages[memberNames.indexOf(data.payee)] !== null ? (
+                                            <Avatar src={memberImages[memberNames.indexOf(data.payee)]} />
+                                        ) : (
+                                            <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }}> {data.payee[0]} </Avatar>
+                                        )}
                                     </Tooltip>
                                     <ArrowForwardIcon fontSize="large" style={{ color: "#2EB3D0" }} />
                                     <Tooltip title={data.payer}>
-                                        <Avatar> {data.payer[0]} </Avatar>
+                                        {/* <Avatar> {data.payer[0]} </Avatar> */}
+                                        {memberImages[memberNames.indexOf(data.payer)] !== null ? (
+                                            <Avatar src={memberImages[memberNames.indexOf(data.payer)]} />
+                                        ) : (
+                                            <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }}> {data.payer[0]} </Avatar>
+                                        )}
                                     </Tooltip>
                                 </AvatarGroup>
                             </div>

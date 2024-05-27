@@ -13,7 +13,7 @@ import EditTripDialog from "@/app/components/EditTripDialog";
 // import { getNewMember } from '@/services/getNewMember';
 
 export default function TripPlan({ groupInfo }) {
-    const { currentLang } = useContext(DataContext);
+    const { currentLang, avatarColors, imgHost } = useContext(DataContext);
 
     const [openDialog, setOpenDialog] = useState(false);
     const [openQuitDialog, setOpenQuitDialog] = useState(false);
@@ -77,13 +77,21 @@ export default function TripPlan({ groupInfo }) {
                     </div>
                     <div className="flex gap-5 items-center flex-wrap">
                         <AvatarGroup max={5} spacing={-10}>
-                            {groupInfo?.user_names?.map((user, index) => {
-                                return (
-                                    <Tooltip title={user} key={index}>
-                                        <Avatar key={index}>{user[0]}</Avatar>
-                                    </Tooltip>
-                                );
-                            })}
+                            {groupInfo?.user_names.map((name, index) => (
+                                groupInfo?.images[index] !== null ? (
+                                <Tooltip title={name} key={index}>
+                                    <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }} src={imgHost + groupInfo.images[index]}>
+                                    {name[0]}
+                                    </Avatar>
+                                </Tooltip>
+                                ) : (
+                                <Tooltip title={name} key={index}>
+                                    <Avatar sx={{ bgcolor: avatarColors[index % avatarColors.length] }}>
+                                    {name[0]}
+                                    </Avatar>
+                                </Tooltip>
+                                )
+                            ))}
                         </AvatarGroup>
                         <Button variant="outlined" onClick={handleAddMemberClick} sx={{textTransform: 'none'}}>
                             {translate('addMember')}

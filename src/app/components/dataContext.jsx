@@ -1,6 +1,8 @@
 'use client';
 import { createContext, useState, useEffect } from 'react';
 import { getToken } from '@/utils/getToken';
+import { colors } from "@mui/material";
+const { deepOrange, deepPurple, lightBlue, green, cyan } = colors;
 
 export const DataContext = createContext();
 export const DataProvider = ({children}) => {
@@ -38,6 +40,10 @@ export const DataProvider = ({children}) => {
   // store current language
   const [currentLang, setCurrentLang] = useState('zh');
 
+  const [avatarColors] = useState([deepOrange[500], deepPurple[500], lightBlue[500], green[500], cyan[500] ]);
+
+  const [imgHost] = useState("https://storage.googleapis.com/journeygo_photo/");
+
   return (
     <DataContext.Provider value={{
         allGroups, 
@@ -58,7 +64,9 @@ export const DataProvider = ({children}) => {
         newSpot, 
         setNewSpot,
         currentLang,
-        setCurrentLang
+        setCurrentLang, 
+        avatarColors, 
+        imgHost
       }}>
       {children} 
     </DataContext.Provider>
