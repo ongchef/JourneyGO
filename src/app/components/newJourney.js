@@ -113,7 +113,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
     if (!file.type.startsWith('image/')) {
       setStatusMessage(translate('invalidImageType'));
       setReload(true);
-      // setCreationStatusOpen(true);
+      setCreationStatusOpen(true);
       // fileInputRef.current.value = "";
       // setImage(null);
     }else {
