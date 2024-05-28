@@ -4,6 +4,7 @@ import { getComments } from "@/services/getComments";
 import { postComment } from "@/services/postComment";
 import { deleteComment } from "@/services/deleteComment";
 import { getProfile } from "@/services/getProfile";
+import { getTripGroupOverview } from "@/services/getTripGroupOverview";
 import { DataContext } from "@/app/components/dataContext";
 import { getToken } from "@/utils/getToken";
 
@@ -11,12 +12,15 @@ import { Dialog, DialogTitle, DialogContent, Container, Button, TextField, Box, 
 import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
 
 const CommentDialog = ({ open, onClose, spotId }) => {
-  const { currentLang } = useContext(DataContext);
+  const { currentLang, currGroupId, imgHost, avatarColors } = useContext(DataContext);
 
   const [comment, setComment] = useState("");
   const [commentList, setCommentList] = useState([]);
   const [commentCnt, setCommentCnt] = useState(0);
   const [userName, setUserName] = useState("");
+  const [userImage, setUserImage] = useState("");
+  const [memberNames, setMemberNames] = useState([]);
+  const [memberImages, setMemberImages] = useState([]);
   const [hoveredComment, setHoveredComment] = useState(null);
   const [key, setKey] = useState(0);
 
@@ -67,12 +71,34 @@ const CommentDialog = ({ open, onClose, spotId }) => {
       // console.log("profile result:", data);
       if (data && data.userProfile){
         setUserName(data.userProfile[0].user_name);
+        if (data.userProfile[0].image !== null) {
+          setUserImage(imgHost + data.userProfile[0].image);
+        }
       }
 
     } catch (error) {
       // console.error("Error fetching profile result:", error);
     }
   }
+
+  async function fetchGroup() {
+    try {
+        const Token = getToken();
+        const data = await getTripGroupOverview(Token, currGroupId);
+        if (data && data.length !== 0) {
+            setMemberNames(data.user_names);
+            await data.images.forEach((image, index) => {
+                if (image !== null) {
+                    data.images[index] = imgHost + image;
+                    // console.log("image:", data.images[index]);
+                }
+            });
+            setMemberImages(data.images);
+        }
+    } catch (error) {
+      // console.error("Error fetching group data:", error);
+    }
+}
 
 
   const handleClose = () => {
@@ -132,6 +158,7 @@ const CommentDialog = ({ open, onClose, spotId }) => {
   useEffect(() => {
     // console.log("render comment dialog for spotId: ", spotId);
     if (open) {
+      fetchGroup();
       fetchComments();
       fetchProfile();
     }
@@ -157,7 +184,14 @@ const CommentDialog = ({ open, onClose, spotId }) => {
               onMouseEnter={() => setHoveredComment(message.comment_id)}
               onMouseLeave={() => setHoveredComment(null)}>
               <div className="flex flex-row items-center space-x-2">
-                <Avatar>{message.advisor_name[0]}</Avatar>
+                {memberImages[memberNames.indexOf(message.advisor_name)] ? (
+                  <Avatar src={memberImages[memberNames.indexOf(message.advisor_name)]} />
+                ) : (
+                  <Avatar sx={{ bgcolor: avatarColors[memberNames.indexOf(message.advisor_name)] }}>
+                    {message.advisor_name[0]}
+                  </Avatar>
+                )}
+                {/* <Avatar>{message.advisor_name[0]}</Avatar> */}
                 <Typography variant="body2" color="text.secondary">
                   {" "}{message.advisor_name}{" "}
                 </Typography>
@@ -175,29 +209,14 @@ const CommentDialog = ({ open, onClose, spotId }) => {
               )}
             </div>
           ))}
-
-          {/* <div className="flex flex-row items-center space-x-4">
-              <div>
-                  <Box className="flex flex-row items-center space-x-2">
-                      <Avatar>A</Avatar>
-                      <Typography variant="body2" color="text.secondary">
-                          Abbie
-                      </Typography>
-                  </Box>
-              </div>
-              <div>
-                  <Typography>
-                      這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!這個要不要改第二天去!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                  </Typography>
-              </div>
-          </div> */}
         </Container>
 
         <Container maxWidth="sm" className="space-y-4">
           <div className="flex flex-row items-center space-x-4">
             <div>
               <Tooltip title="You">
-                <Avatar>{userName[0]}</Avatar>
+                {userImage ? <Avatar src={userImage} /> : <Avatar>{userName[0]}</Avatar>}
+                {/* <Avatar>{userName[0]}</Avatar> */}
               </Tooltip>
             </div>
             <div className="grow">
