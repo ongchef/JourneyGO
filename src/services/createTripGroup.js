@@ -18,18 +18,21 @@ export async function createTripGroup(Token, groupName, startDate, endDate, coun
     // console.log("startDate:", formatedStartDate);
     // console.log("endDate:", formatedEndDate);
     // console.log("country_id:", country_id);
-    // console.log("inviteeEmail:", inviteeEmail);
+      console.log("[createTripGroup] inviteeEmail:", inviteeEmail);
     // console.log("imageURL:", imageURL);
+    
     // console.log("fileName:", fileName);
 
     const formData = new FormData();
     formData.append("groupName", groupName);
     formData.append("countries", country_id);
-    formData.append("inviteeEmail", inviteeEmail);
+    inviteeEmail.forEach((email, index) => {
+      formData.append(`inviteeEmail[${index}]`, email);
+    });
     formData.append("startDate", formatedStartDate);
     formData.append("endDate", formatedEndDate);
     
-    // console.log("formData:", formData);
+    console.log("[createTripGroup] formData:", formData);
 
     if(image){
       try{

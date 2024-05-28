@@ -118,6 +118,10 @@ const ProfilePanel = ({}) => {
 
     const handleFileChange = (e) => {
       const file = e.target.files[0];
+      if (!file.type.startsWith('image/')) {
+        alert('圖片格式錯誤！');
+        window.location.reload();
+      }
       // console.log("file:", file);
       setImageFile(file);
       if(file) {

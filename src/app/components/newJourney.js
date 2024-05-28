@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Grid, InputLabel, TextField, Autocomplete, Paper, Box, Input } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -11,6 +11,7 @@ import { createTripGroup } from '@/services/createTripGroup';
 const NewJourneyDialog = ({ open, onClose}) => {
 
   const { currentLang } = useContext(DataContext);
+  const fileInputRef = useRef();
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -21,17 +22,10 @@ const NewJourneyDialog = ({ open, onClose}) => {
   const [statusMessage, setStatusMessage] = useState('');
   const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState(null);
+  const [reload, setReload] = useState(false);
   
   const translate = (key) => {
     const translations = {
-        notification: {
-            zh: "通知",
-            en: "Notifications",
-        },
-        invitesYou: {
-            zh: "邀請您加入",
-            en: "invites you to join",
-        },
         accept: {
             zh: "確認",
             en: "Accept",
@@ -79,11 +73,15 @@ const NewJourneyDialog = ({ open, onClose}) => {
         upload: {
           zh: "上傳",
           en: "Upload",
-      },
+        },
         save: {
           zh: '儲存',
           en: 'Save'
         },
+        invalidImageType: {
+          zh: '圖片格式錯誤！',
+          en: 'Invalid image format'
+        }
     };
     return translations[key][currentLang];
 };
@@ -104,6 +102,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
   const handleInviteeEmailChange = (event, value) => {
     if (value !== undefined) {
+      // console.log('invitee changed: ', value);
       setInviteeEmail(value);
     }
     // console.log('inviteeEmail:', inviteeEmail);
@@ -111,16 +110,24 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    //console.log("file:", file);
-    setImage(file);
+    if (!file.type.startsWith('image/')) {
+      setStatusMessage(translate('invalidImageType'));
+      setReload(true);
+      // setCreationStatusOpen(true);
+      // fileInputRef.current.value = "";
+      // setImage(null);
+    }else {
+      setImage(file);
 
-    if(file){
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImageUrl(reader.result);
-      };
-      reader.readAsDataURL(file);
+      if(file){
+        const reader = new FileReader();
+        reader.onload = () => {
+          setImageUrl(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
     }
+    
   };
 
 
@@ -151,10 +158,12 @@ const NewJourneyDialog = ({ open, onClose}) => {
 
       if (!responseStatus) {
         setStatusMessage(translate('addTripFailed'));
+        setReload(false);
         setCreationStatusOpen(true);
         return;
       }
       setStatusMessage(translate('added'));
+      setReload(true);
       setCreationStatusOpen(true);
 
       // onClose();
@@ -162,13 +171,16 @@ const NewJourneyDialog = ({ open, onClose}) => {
     } catch (error) {
       // console.error('Error creating trip group:', error);
       setStatusMessage(translate('addTripFailed'));
+      setReload(false);
       setCreationStatusOpen(true);
     }
   };
 
   const handleCreationStatusDialogClose = () => {
     setCreationStatusOpen(false)
-    window.location.reload();
+    if (reload) {
+      window.location.reload();
+    }
   }
 
 
@@ -234,6 +246,7 @@ const NewJourneyDialog = ({ open, onClose}) => {
             {/* <label htmlFor='image-upload' className='cursor-pointer' hidden="hidden">{translate('upload')}</label> */}
             <form encType="multipart/form-data" action="/somewhere/to/upload">
               <Input
+                ref={fileInputRef}
                 id="image-upload"
                 type='file'
                 accept='image/*'

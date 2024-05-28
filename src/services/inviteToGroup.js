@@ -6,7 +6,7 @@ export async function inviteToGroup(Token, inviteeEmail, groupId) {
     const bearer_token = `Bearer ${Token}`;
 
     const requestBody = {
-      inviteeEmail: inviteeEmail,
+      inviteeEmail: [inviteeEmail],
       groupId: groupId,
     };
 
@@ -28,6 +28,8 @@ export async function inviteToGroup(Token, inviteeEmail, groupId) {
           console.error('Failed to invite to group:', response.statusText);
           return false;
         }else {
+          console.log('Invite to group response:');
+          console.log(response)
           return true;
         }
         console.log(`Invitation sent to ${inviteeEmail} successfully`);
