@@ -74,6 +74,10 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                 zh: "時間",
                 en: "Time",
             },
+            comfirm: {
+                zh: "確定",
+                en: "comfirm",
+            },
             edit: {
                 zh: "修改",
                 en: "Edit",
@@ -446,11 +450,11 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                     </Grid>
 
                     <div style={{ textAlign: "center", marginTop: 20 }}>
-                        <Button onClick={handleSubmit} variant="contained" color="primary" style={{ marginRight: 10 }}>
-                            {editMode ? translate("edit") : translate("submit")}
-                        </Button>
-                        <Button onClick={handleCancel} variant="contained" color="primary">
+                        <Button onClick={handleCancel} variant="outlined"  style={{ marginRight: 10 }}>
                             {translate("cancel")}
+                        </Button>
+                        <Button onClick={handleSubmit} variant="contained" color="primary">
+                            {editMode ? translate("edit") : translate("submit")}
                         </Button>
                     </div>
                 </DialogContent>
@@ -460,7 +464,7 @@ const NewBill = ({ open, onClose, group_id, reloadTabPanel, editMode = false, tr
                 <DialogContent>
                     {statusMessage}
                     <Box sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", height: "100%" }}>
-                        <Button onClick={handleCreationStatusDialogClose}>{translate("cancel")}</Button>
+                        <Button onClick={handleCreationStatusDialogClose}>{translate("comfirm")}</Button>
                     </Box>
                 </DialogContent>
             </Dialog>
