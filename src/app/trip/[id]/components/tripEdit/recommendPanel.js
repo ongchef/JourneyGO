@@ -100,6 +100,11 @@ export default function RecommendPanel() {
     }
   }, [page, category, currGroupId, currDay]);
 
+  useEffect(() => {
+    setPage(1);
+    setRecommends([]);
+  }, [currGroupId, currDay]);
+
   const categories = [
     ["restaurants", translate("restaurants")],
     ["coffee", translate("coffee")],
