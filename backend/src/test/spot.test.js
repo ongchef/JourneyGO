@@ -6,6 +6,7 @@ import {
   searchNearby,
   searchPlace,
   constructRoute,
+  recommendSpot,
 } from "../controllers/spot.js";
 import { findNearby, findPlace, getRoute } from "../services/map.js";
 import {
@@ -15,6 +16,7 @@ import {
   updateSpotBySpotId,
   deleteSpotBySpotId,
   getLocationBySpotId,
+  getSpotRecommend,
 } from "../models/spotModel.js";
 import { getTripGroupMember } from "../models/tripgroupModel.js";
 import {
@@ -406,7 +408,6 @@ describe("searchPlace", () => {
 });
 
 // constructRoute
-
 describe("constructRoute", () => {
   let mockReq, mockRes;
 
@@ -430,7 +431,9 @@ describe("constructRoute", () => {
     await constructRoute(mockReq, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(400);
-    expect(mockRes.json).toHaveBeenCalledWith({ message: "No Spot" });
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "Unable to plan routes.",
+    });
   });
 
   it("should return 205 status when available travel modes are found", async () => {
@@ -466,3 +469,5 @@ describe("constructRoute", () => {
     expect(mockRes.json).toHaveBeenCalledWith({ message: mockError.message });
   });
 });
+
+// recommendSpot

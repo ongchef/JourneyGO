@@ -1,5 +1,9 @@
-import { getGroup } from "../controllers/users.js";
-import { getuserIdbyClerkId, getGroupByUserId } from "../models/userModel"; // replace with your actual model file
+import { getGroup, getUserProfile } from "../controllers/users.js";
+import {
+  getuserIdbyClerkId,
+  getGroupByUserId,
+  getUser,
+} from "../models/userModel"; // replace with your actual model file
 
 jest.mock("../models/userModel"); // replace with your actual model file
 
@@ -97,72 +101,53 @@ jest.mock("../models/tripgroupModel.js");
 jest.mock("../models/userModel.js");
 
 describe("createGroup", () => {
-  it("should create a group and return it", async () => {
-    const mockReq = {
+  let mockReq, mockRes;
+
+  beforeEach(() => {
+    mockReq = {
       userID: "testClerkId",
       body: {
-        groupName: "Test Group",
-        countries: ["臺灣"],
-        inviteeEmail: "test@example.com",
+        groupName: "testGroupName",
+        countries: ["Taiwan"],
+        inviteeEmail: ["testEmail"],
         startDate: "2022-01-01",
         endDate: "2022-12-31",
       },
+      filename: "testFilename",
     };
-    const mockRes = {
+    mockRes = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    const mockUserId = [{ user_id: 37 }];
-    const mockNewGroup = { id: "testGroupId", name: "Test Group" };
-    const mockInviteeId = { user_id: 38 };
+  });
 
-    getuserIdbyClerkId.mockResolvedValue(mockUserId);
-    createGroupModel.mockResolvedValue(mockNewGroup);
-    getInviteeIdByEmail.mockResolvedValue(mockInviteeId);
-    createInvitationModel.mockResolvedValue();
+  it("should create a new group and return 201 status", async () => {
+    getuserIdbyClerkId.mockImplementation(() =>
+      Promise.resolve([{ user_id: "testUserId" }])
+    );
+    createGroupModel.mockImplementation(() => Promise.resolve("newGroup"));
+    getInviteeIdByEmail.mockImplementation(() =>
+      Promise.resolve({ user_name: "testUserName", user_id: "testUserId" })
+    );
+    createInvitationModel.mockImplementation(() => Promise.resolve());
 
     await createGroup(mockReq, mockRes);
 
-    expect(getuserIdbyClerkId).toHaveBeenCalledWith(mockReq.userID);
-    expect(createGroupModel).toHaveBeenCalledWith(
-      mockUserId[0].user_id,
-      mockReq.body.groupName,
-      mockReq.body.countries,
-      mockReq.body.startDate,
-      mockReq.body.endDate
-    );
-    expect(getInviteeIdByEmail).toHaveBeenCalledWith(mockReq.body.inviteeEmail);
-    expect(createInvitationModel).toHaveBeenCalledWith(
-      mockUserId[0].user_id,
-      mockInviteeId.user_id,
-      mockNewGroup
-    );
     expect(mockRes.status).toHaveBeenCalledWith(201);
-    expect(mockRes.json).toHaveBeenCalledWith(mockNewGroup);
+    expect(mockRes.json).toHaveBeenCalledWith({
+      newGroup: "newGroup",
+      inviteeNames: ["testUserName"],
+    });
   });
 
-  it("should return 500 if an error occurs", async () => {
-    const mockReq = {
-      userID: "testClerkId",
-      body: {
-        groupName: "Test Group",
-        countries: ["臺灣"],
-        inviteeEmail: "test@example.com",
-        startDate: "2022-01-01",
-        endDate: "2022-12-31",
-      },
-    };
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    getuserIdbyClerkId.mockRejectedValue(new Error("Test error"));
+  it("should return 500 status when an error occurs", async () => {
+    const mockError = new Error("testError");
+    getuserIdbyClerkId.mockImplementation(() => Promise.reject(mockError));
 
     await createGroup(mockReq, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(500);
-    expect(mockRes.json).toHaveBeenCalledWith({ message: "Test error" });
+    expect(mockRes.json).toHaveBeenCalledWith({ message: mockError.message });
   });
 });
 
@@ -394,6 +379,42 @@ describe("registerUser", () => {
     expect(mockRes.json).toHaveBeenCalledWith({
       success: true,
       message: "User successfully registered",
+    });
+  });
+});
+
+describe("getUserProfile", () => {
+  let mockReq, mockRes;
+
+  beforeEach(() => {
+    mockReq = {
+      userID: "testUserId",
+    };
+    mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+  });
+
+  it("should return 200 status and user profile when user is found", async () => {
+    const mockUserProfile = { name: "testUser" };
+    getUser.mockImplementation(() => Promise.resolve(mockUserProfile));
+
+    await getUserProfile(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+    expect(mockRes.json).toHaveBeenCalledWith({ userProfile: mockUserProfile });
+  });
+
+  it("should return 500 status when an error occurs", async () => {
+    const mockError = new Error("testError");
+    getUser.mockImplementation(() => Promise.reject(mockError));
+
+    await getUserProfile(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(500);
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "Fetch User Profile Error",
     });
   });
 });

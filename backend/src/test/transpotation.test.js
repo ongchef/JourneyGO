@@ -5,7 +5,6 @@ jest.mock("../models/transportationModel.js");
 
 describe("getTransportation", () => {
   let mockReq, mockRes;
-
   beforeEach(() => {
     mockReq = {
       params: {
