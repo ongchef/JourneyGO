@@ -10,11 +10,15 @@ import {
   getBillDetail,
   writeBill,
   deleteTripGroupMember,
+  getComments,
+  createComment,
+  deleteComment,
 } from "../controllers/tripgroup";
 import {
   getuserIdbyClerkId,
   getInviteeIdByEmail,
   getuserNamebyClerkId,
+  getuserIdbyName,
 } from "../models/userModel"; // replace with actual path
 import {
   getGroupMemberName,
@@ -31,43 +35,54 @@ import {
   deleteShareBillModel,
   getBillsByBillId,
   deleteTripGroupMemberbyIds,
+  getCommentsBySpotId,
+  createCommentModel,
+  deleteCommentModel,
 } from "../models/tripgroupModel"; // replace with actual path
-jest.mock("../models/userModel"); // replace with actual path
-jest.mock("../models/tripgroupModel"); // replace with actual path
+jest.mock("../models/userModel");
+jest.mock("../models/tripgroupModel");
 
 // createInvitation
 describe("createInvitation", () => {
-  it("should create an invitation and return it", async () => {
-    const mockReq = {
+  let mockReq, mockRes;
+
+  beforeEach(() => {
+    mockReq = {
+      userID: "testUserId",
       body: {
-        inviteeEmail: "testEmail",
+        inviteeEmail: ["testEmail1", "testEmail2"],
         groupId: "testGroupId",
       },
-      userID: "testClerkId",
     };
-    const mockRes = {
+    mockRes = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    const mockInviterId = [{ user_id: "testInviterId" }];
-    const mockInviteeId = { user_id: "testInviteeId" };
-    const mockNewInvitation = { id: "testInvitationId" };
+  });
 
-    getuserIdbyClerkId.mockResolvedValue(mockInviterId);
-    getInviteeIdByEmail.mockResolvedValue(mockInviteeId);
-    createInvitationModel.mockResolvedValue(mockNewInvitation);
+  it("should return 201 status when invitations are successfully created", async () => {
+    const mockData = [{ user_id: "testUserId", user_name: "testUserName" }];
+    getuserIdbyClerkId.mockImplementation(() => Promise.resolve(mockData));
+    getInviteeIdByEmail.mockImplementation(() => Promise.resolve(mockData[0]));
+    createInvitationModel.mockImplementation(() => Promise.resolve());
 
     await createInvitation(mockReq, mockRes);
 
-    expect(getuserIdbyClerkId).toHaveBeenCalledWith(mockReq.userID);
-    expect(getInviteeIdByEmail).toHaveBeenCalledWith(mockReq.body.inviteeEmail);
-    expect(createInvitationModel).toHaveBeenCalledWith(
-      mockInviterId[0].user_id,
-      mockInviteeId.user_id,
-      mockReq.body.groupId
-    );
     expect(mockRes.status).toHaveBeenCalledWith(201);
-    expect(mockRes.json).toHaveBeenCalledWith(mockNewInvitation);
+    expect(mockRes.json).toHaveBeenCalledWith([
+      mockData[0].user_name,
+      mockData[0].user_name,
+    ]);
+  });
+
+  it("should return 500 status when an error occurs", async () => {
+    const mockError = new Error("testError");
+    getuserIdbyClerkId.mockImplementation(() => Promise.reject(mockError));
+
+    await createInvitation(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(500);
+    expect(mockRes.json).toHaveBeenCalledWith({ message: mockError.message });
   });
 });
 
@@ -84,11 +99,8 @@ describe("getGroupOverview", () => {
       json: jest.fn(),
     };
     const mockData = [{ id: "testId", name: "testName" }];
-
     getOverviewByGroupId.mockResolvedValue(mockData);
-
     await getGroupOverview(mockReq, mockRes);
-
     expect(getOverviewByGroupId).toHaveBeenCalledWith(mockReq.params.groupId);
     expect(mockRes.status).toHaveBeenCalledWith(200);
     expect(mockRes.json).toHaveBeenCalledWith(mockData);
@@ -372,52 +384,53 @@ describe("getBills", () => {
 
 // getBillResult
 describe("getBillResult", () => {
-  it("should return bill result and status 200", async () => {
-    const mockReq = {
+  let mockReq, mockRes;
+
+  beforeEach(() => {
+    mockReq = {
+      userID: "testUserId",
       params: {
         groupId: "testGroupId",
       },
-      userID: "testUserId",
     };
-    const mockRes = {
+    mockRes = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     };
-    const mockMembers = [{ id: "testId", name: "testName" }];
-    const mockTransactions = [
-      { payer_name: "testPayer", user_name: "testPayer,testUser", amount: 100 },
-    ];
-    const mockUserName = [{ user_name: "testUserName" }];
+  });
 
-    getGroupMemberName.mockResolvedValue(mockMembers);
-    getUndoneBillsByGroupId.mockResolvedValue(mockTransactions);
-    getuserNamebyClerkId.mockResolvedValue(mockUserName);
+  it("should return 200 status when bill results are successfully retrieved", async () => {
+    const mockMembers = [{ user_id: "testUserId", user_name: "testUserName" }];
+    const mockTransactions = [
+      { payer_name: "testPayerName", user_name: "testUserName", amount: -100 },
+    ];
+    getGroupMemberName.mockImplementation(() => Promise.resolve(mockMembers));
+    getUndoneBillsByGroupId.mockImplementation(() =>
+      Promise.resolve(mockTransactions)
+    );
+    getuserIdbyName.mockImplementation(() => Promise.resolve(mockMembers));
+    getuserNamebyClerkId.mockImplementation(() => Promise.resolve(mockMembers));
 
     await getBillResult(mockReq, mockRes);
 
-    expect(getGroupMemberName).toHaveBeenCalledWith(mockReq.params.groupId);
-    expect(getUndoneBillsByGroupId).toHaveBeenCalledWith(
-      mockReq.params.groupId
-    );
-    expect(getuserNamebyClerkId).toHaveBeenCalledWith(mockReq.userID);
     expect(mockRes.status).toHaveBeenCalledWith(200);
-    expect(mockRes.json).toHaveBeenCalled();
+    expect(mockRes.json).toHaveBeenCalledWith({
+      balance: -100,
+      transactions: [
+        {
+          payer: "testPayerName",
+          payee: "testUserName",
+          amount: 100,
+          payer_id: "testUserId",
+          payee_id: "testUserId",
+        },
+      ],
+    });
   });
 
-  it("should return status 404 if no data found", async () => {
-    const mockReq = {
-      params: {
-        groupId: "testGroupId",
-      },
-      userID: "testUserId",
-    };
-    const mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-    };
-
-    getGroupMemberName.mockResolvedValue([]);
-    getUndoneBillsByGroupId.mockResolvedValue([]);
+  it("should return 404 status when no transactions or members are found", async () => {
+    getGroupMemberName.mockImplementation(() => Promise.resolve([]));
+    getUndoneBillsByGroupId.mockImplementation(() => Promise.resolve([]));
 
     await getBillResult(mockReq, mockRes);
 
@@ -425,6 +438,16 @@ describe("getBillResult", () => {
     expect(mockRes.json).toHaveBeenCalledWith({
       message: "Cannot find overviews by given groupId.",
     });
+  });
+
+  it("should return 500 status when an error occurs", async () => {
+    const mockError = new Error("testError");
+    getGroupMemberName.mockImplementation(() => Promise.reject(mockError));
+
+    await getBillResult(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(500);
+    expect(mockRes.json).toHaveBeenCalledWith({ message: mockError.message });
   });
 });
 
@@ -607,6 +630,138 @@ describe("writeBill", () => {
     createBillModel.mockImplementation(() => Promise.reject(mockError));
 
     await writeBill(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(500);
+    expect(mockRes.json).toHaveBeenCalledWith({ message: mockError.message });
+  });
+});
+
+// getComments
+describe("getComments", () => {
+  let mockReq, mockRes;
+
+  beforeEach(() => {
+    mockReq = {
+      params: {
+        spotId: "testSpotId",
+      },
+    };
+    mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+  });
+
+  it("should return 200 status and an empty array when no comments are found", async () => {
+    getCommentsBySpotId.mockImplementation(() => Promise.resolve([]));
+
+    await getComments(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+    expect(mockRes.json).toHaveBeenCalledWith([]);
+  });
+
+  it("should return 200 status and comments when comments are found", async () => {
+    const mockComments = [{ comment: "testComment" }];
+    getCommentsBySpotId.mockImplementation(() => Promise.resolve(mockComments));
+
+    await getComments(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+    expect(mockRes.json).toHaveBeenCalledWith(mockComments);
+  });
+
+  it("should return 500 status when an error occurs", async () => {
+    const mockError = new Error("testError");
+    getCommentsBySpotId.mockImplementation(() => Promise.reject(mockError));
+
+    await getComments(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(500);
+    expect(mockRes.json).toHaveBeenCalledWith({ message: mockError.message });
+  });
+});
+
+// createComment
+describe("createComment", () => {
+  let mockReq, mockRes;
+
+  beforeEach(() => {
+    mockReq = {
+      params: {
+        spotId: "testSpotId",
+      },
+      body: {
+        comment_text: "testComment",
+        date: "2022-01-01",
+        time: "12:00",
+      },
+      userID: "testClerkId",
+    };
+    mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+  });
+
+  it("should create a new comment and return 201 status", async () => {
+    getuserIdbyClerkId.mockImplementation(() =>
+      Promise.resolve([{ user_id: "testUserId" }])
+    );
+    createCommentModel.mockImplementation(() => Promise.resolve("newComment"));
+
+    await createComment(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(201);
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "create Comment Success",
+    });
+  });
+
+  it("should return 500 status when an error occurs", async () => {
+    const mockError = new Error("testError");
+    getuserIdbyClerkId.mockImplementation(() => Promise.reject(mockError));
+
+    await createComment(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(500);
+    expect(mockRes.json).toHaveBeenCalledWith({ message: mockError.message });
+  });
+});
+
+// deleteComment
+describe("deleteComment", () => {
+  let mockReq, mockRes;
+
+  beforeEach(() => {
+    mockReq = {
+      params: {
+        spotId: "testSpotId",
+        commentId: "testCommentId",
+      },
+    };
+    mockRes = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+  });
+
+  it("should delete a comment and return 200 status", async () => {
+    deleteCommentModel.mockImplementation(() => Promise.resolve());
+
+    await deleteComment(mockReq, mockRes);
+
+    expect(mockRes.status).toHaveBeenCalledWith(200);
+    expect(mockRes.json).toHaveBeenCalledWith({
+      message: "delete Comment Success",
+    });
+  });
+
+  it("should return 500 status when an error occurs", async () => {
+    const mockError = new Error("testError");
+    deleteCommentModel.mockImplementation(() => Promise.reject(mockError));
+
+    await deleteComment(mockReq, mockRes);
 
     expect(mockRes.status).toHaveBeenCalledWith(500);
     expect(mockRes.json).toHaveBeenCalledWith({ message: mockError.message });
